@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>js基本功- 物件與陣列 | Let&#39;s Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2020-12-27</span>
+    <h2>js基本功- 物件與陣列</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/array/" rel="tag">array</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/js/" rel="tag">js</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/object/" rel="tag">object</a></div>
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <blockquote>
+<p>程式柴<br><img src="https://i.imgur.com/44kqCRM.png" alt=""></p>
+<h3 id="Function、array都屬於物件"><a href="#Function、array都屬於物件" class="headerlink" title="Function、array都屬於物件"></a>Function、array都屬於物件</h3><p><img src="https://i.imgur.com/1bYo7eM.png" alt=""></p>
+</blockquote>
+<h2 id="物件的例子"><a href="#物件的例子" class="headerlink" title="物件的例子"></a>物件的例子</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">      name: [<span class="string">'Bob'</span>, <span class="string">'Smith'</span>],</span><br><span class="line">      age: <span class="number">32</span>,</span><br><span class="line">      gender: <span class="string">'male'</span>,</span><br><span class="line">      interest: [<span class="string">'music'</span>, <span class="string">'movie'</span>],</span><br><span class="line">      greeting: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'hi I\'m'</span> + <span class="keyword">this</span>.name[<span class="number">0</span>] + <span class="string">'.'</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="物件的創建"><a href="#物件的創建" class="headerlink" title="物件的創建"></a>物件的創建</h2><p><code>var x={}</code></p>
+<ul>
+<li>有一隻狗,其名字、年齡，函式<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dog = &#123;</span><br><span class="line">      name: <span class="string">'tracy'</span>,</span><br><span class="line">      age: <span class="number">20</span>,</span><br><span class="line"></span><br><span class="line">      bow: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'bow!bow!'</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+<li>用.呼叫屬性，或是dog[‘key’] :point_down:<br><img src="https://i.imgur.com/OgrYwjF.png" alt=""></li>
+<li>物件內的函式<br><img src="https://i.imgur.com/jOWuwxQ.png" alt=""></li>
+</ul>
+<h2 id="添加屬性至物件上"><a href="#添加屬性至物件上" class="headerlink" title="添加屬性至物件上"></a>添加屬性至物件上</h2><ul>
+<li><h4 id="增加值的方式"><a href="#增加值的方式" class="headerlink" title="增加值的方式"></a>增加值的方式</h4><ul>
+<li><code>dog.color = &#39;white&#39;;</code></li>
+<li><code>dog[&#39;size&#39;] = &#39;small&#39;;</code> =&gt;較常用</li>
+</ul>
+</li>
+<li><h4 id="增加函式-gt-一樣用-的方式"><a href="#增加函式-gt-一樣用-的方式" class="headerlink" title="增加函式 =&gt; 一樣用.的方式"></a>增加函式 =&gt; 一樣用.的方式</h4><ul>
+<li><code>dog.bowbow = function () {
+console.log(&#39;bow!bow!～～&#39;) }</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dog = &#123;</span><br><span class="line">     name: <span class="string">'tracy'</span>,</span><br><span class="line">     age: <span class="number">7</span>,</span><br><span class="line">     bow: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">'bow!'</span>);</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//增加值的方式</span></span><br><span class="line">   <span class="comment">//1</span></span><br><span class="line">   dog.color = <span class="string">'white'</span>;</span><br><span class="line">   dog.eyes = <span class="string">'big'</span>;</span><br><span class="line">   <span class="comment">//2</span></span><br><span class="line">   dog[<span class="string">'size'</span>] = <span class="string">'small'</span>;</span><br><span class="line">   <span class="comment">//增加函式</span></span><br><span class="line">   dog.bowbow = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">'bow!bow!～～'</span>)</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/4qqgZRy.png" alt=""></p>
+<h2 id="陣列"><a href="#陣列" class="headerlink" title="陣列"></a>陣列</h2><blockquote>
+<p>程式柴<br><img src="https://i.imgur.com/FdH3fty.png" alt=""></p>
+</blockquote>
+<ul>
+<li><p>陣列用 中括號<code>[ ]</code></p>
+</li>
+<li><p>陣列的計算是從零開始（取陣列的索引）</p>
+<ul>
+<li>呼應for 迴圈，從0開始，從索引第一個<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">arr = [<span class="number">111</span>, <span class="number">222</span>, <span class="number">333</span>]</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">    <span class="built_in">console</span>.log(arr[<span class="number">1</span>]); <span class="comment">//222</span></span><br><span class="line">    <span class="comment">//呼應for 迴圈，從0開始，從索引第一個</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>陣列中的東西都是相同屬性，比較好操作</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr2 = [<span class="string">'dog'</span>, <span class="string">'cat'</span>, <span class="string">'sth'</span>]</span><br><span class="line">    <span class="built_in">console</span>.log(arr.length); <span class="comment">//3</span></span><br><span class="line">  arr3 = [<span class="number">111</span>, <span class="string">'cat'</span>, <span class="string">'sth'</span>]</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/2WztSsO.png" alt=""></p>
+</li>
+<li><p>練習：要紀錄10位學生的分數，並加總</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> score = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">100</span>];</span><br><span class="line">    <span class="built_in">console</span>.log(score);</span><br></pre></td></tr></table></figure>
+<h3 id="陣列基本操作-gt-pop-與push-較常用"><a href="#陣列基本操作-gt-pop-與push-較常用" class="headerlink" title="陣列基本操作 -&gt; pop 與push 較常用"></a>陣列基本操作 -&gt; <code>pop</code> 與<code>push</code> 較常用</h3></li>
+<li><p><code>score.push(1000)</code> -&gt; 新增元素到現有陣列中，加入尾端</p>
+</li>
+<li><p><code>score.unshift(888)</code> -&gt; 加入陣列最前面</p>
+</li>
+<li><p>pop:從最末端抽走元素<br><img src="https://i.imgur.com/e55Oxbz.png" alt=""></p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myHeros=[<span class="string">'孫悟空'</span>, <span class="string">'佐助'</span>, <span class="string">'女超人'</span>, <span class="string">'美國隊長'</span>];</span><br><span class="line"><span class="comment">//從最末端抽走元素</span></span><br><span class="line">myHeros.pop();</span><br><span class="line"></span><br><span class="line"><span class="comment">//從頭抽走元素</span></span><br><span class="line">myHeros.shift();</span><br><span class="line"><span class="built_in">console</span>.log(myHeros);</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="陣列替換元素"><a href="#陣列替換元素" class="headerlink" title="陣列替換元素"></a>陣列替換元素</h3><ul>
+<li>在原本陣列中，選取要取代的該元素，後面加=，並輸入內容</li>
+</ul>
+<p><img src="https://i.imgur.com/gnVybmt.png" alt=""></p>
+<h2 id="陣列取得最後一個元素"><a href="#陣列取得最後一個元素" class="headerlink" title="陣列取得最後一個元素"></a>陣列取得最後一個元素</h2><ul>
+<li>該陣列長度-1，就可以取得最後一個元素<ul>
+<li>長度為七，最後一個的索引是6 :point_down:<br><img src="https://i.imgur.com/Ytlzihy.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="用-indexOf-取得元素的索引"><a href="#用-indexOf-取得元素的索引" class="headerlink" title="用 indexOf 取得元素的索引"></a>用 indexOf 取得元素的索引</h2><ul>
+<li>Of的o要大寫</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myHeros=[<span class="string">'孫悟空'</span>, <span class="string">'佐助'</span>, <span class="string">'女超人'</span>, <span class="string">'美國隊長'</span>];</span><br><span class="line"><span class="comment">//檢查誰誰誰有在陣列中嗎</span></span><br><span class="line"><span class="built_in">console</span>.log(myHeros.indexOf(<span class="string">'達爾'</span>)); <span class="comment">//印出-1，意指此元素不存在陣列中</span></span><br><span class="line"><span class="built_in">console</span>.log(myHeros.indexOf(<span class="string">'美國隊長'</span>)); <span class="comment">//印出3（在陣列中第幾個索引</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="切片-slice-與方法"><a href="#切片-slice-與方法" class="headerlink" title="切片 slice 與方法"></a>切片 slice 與方法</h3><p><img src="https://i.imgur.com/h3ltQ3Q.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span>, <span class="string">'g'</span>];</span><br><span class="line">   <span class="comment">//用索引</span></span><br><span class="line">   <span class="built_in">console</span>.log(arr.slice(<span class="number">2</span>, <span class="number">4</span>));<span class="comment">//不包含最後一個</span></span><br><span class="line">   <span class="built_in">console</span>.log(arr.slice(<span class="number">2</span>, <span class="number">5</span>));</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/bzKmwQi.png" alt=""></p>
+<ul>
+<li>複製陣列<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> shallowCopy = fruits.slice(); <span class="comment">// 這就是複製陣列的方式</span></span><br><span class="line"><span class="comment">// ["Strawberry", "Mango"]</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank" rel="noopener">MDN slice</a><br><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">MDN array</a><br><a href="https://www.oxxostudio.tw/articles/201908/js-array.html" target="_blank" rel="noopener">JavaScript Array 陣列操作方法大全 ( 含 ES6 )</a></p>
+<h2 id="陣列與物件"><a href="#陣列與物件" class="headerlink" title="陣列與物件"></a>陣列與物件</h2><ul>
+<li><p>例子：被老師要求要記錄，學生的名字,分數,地址…</p>
+</li>
+<li><p>以陣列的想法，會將各類別分類，放入同屬性的結果</p>
+<ul>
+<li>學生的分數,名字個一個陣列<br><img src="https://i.imgur.com/6DP47iL.png" alt=""></li>
+<li>要取得同一位學生的所有資料，要個別從矩陣中拿取<br><img src="https://i.imgur.com/5q4VitE.png" alt=""></li>
+</ul>
+</li>
+<li><p>一個資料集合，就能代表一個學生 –&gt;物件</p>
+<ul>
+<li>以下面的資料結構來代表學生的一些屬性<br><img src="https://i.imgur.com/Gk5T01w.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h3><ul>
+<li>物件與陣列，與等號的關係,理解<ul>
+<li>下方的結果都是false<br><img src="https://i.imgur.com/6L0AI2n.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<p>因為：</p>
+<ul>
+<li><code>var obj=[a:1]</code>，會將它放在某一個記憶體位置</li>
+<li><code>var obj2=[a:1]</code>，會將它放在另一個記憶體位置<div class="note info">
+            <p>即便內容,數值一樣，但js判斷的是記憶體位置不一樣</p>
+          </div>
+</li>
+</ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2020/12/28/js-browser/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>js-brow...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2020/12/27/js-function/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>js基本功- ...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Coding</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>
