@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>js實作- expense tracker 記帳簿 | Let&#39;s Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-01-10</span>
+    <h2>js實作- expens...</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/append/" rel="tag">append</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/forEach/" rel="tag">forEach</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/js/" rel="tag">js</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/local-storage/" rel="tag">local storage</a></div>
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <p>完成後的<a href="https://eva813.github.io/Eva_portfolio/expenseTracker/expenseTracker.html" target="_blank" rel="noopener">成品</a><br><img src="https://i.imgur.com/VSjpRSa.png" alt=""></p>
+<h1 id="觀察須製作的功能"><a href="#觀察須製作的功能" class="headerlink" title="觀察須製作的功能"></a>觀察須製作的功能</h1><ol>
+<li>重新整理網頁後，保有過去執行的狀態：localstorage<ul>
+<li>實作內有使用:</li>
+<li>localstorage:setItem,getItem</li>
+<li>jason.stringfy/jason.parse</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://i.imgur.com/abUVHGM.png" alt=""></p>
+<p><img src="https://i.imgur.com/c53IDMj.png" alt=""></p>
+<ol start="2">
+<li>在new transation輸入資料後，會將資料傳入history中<ul>
+<li>add transation之後，頁面不會刷新(spa)(e.preventdefault)</li>
+</ul>
+</li>
+<li>摸到history中的項目，會出現刪除符號，點擊後刪除</li>
+</ol>
+<p><img src="https://i.imgur.com/X06EsA4.png" alt=""></p>
+<ol start="4">
+<li>輸入的金額，會顯示於上方income、expense，並且計算總額<ul>
+<li>有正負值</li>
+<li>計算收入、花費<br><img src="https://i.imgur.com/uofQVuf.png" alt=""></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="呈現完整語法"><a href="#呈現完整語法" class="headerlink" title="呈現完整語法"></a>呈現完整語法</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//預設值的設置，取得存在本地的資料或是空陣列</span></span><br><span class="line">  <span class="keyword">var</span> transactions = <span class="built_in">JSON</span>.parse(localStorage.getItem(<span class="string">'Transactions'</span>)) || [];</span><br><span class="line"></span><br><span class="line">  <span class="comment">//陣列初始</span></span><br><span class="line">  <span class="keyword">if</span> (transactions.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    initHistory(transactions);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//點擊按鈕的事件</span></span><br><span class="line">  $(<span class="string">'.btn'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.preventDefault();</span><br><span class="line">    <span class="comment">//console.log('click');</span></span><br><span class="line">    <span class="comment">//取得表格中的值</span></span><br><span class="line">    <span class="keyword">const</span> text_val = $(<span class="string">'#text'</span>).val();</span><br><span class="line">    <span class="keyword">const</span> amount_val = $(<span class="string">'#amount'</span>).val();</span><br><span class="line">    <span class="keyword">let</span> id = generateID();</span><br><span class="line"></span><br><span class="line">    addTransactions(id, text_val, amount_val, transactions);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//推入陣列</span></span><br><span class="line">    transactions.push(&#123;</span><br><span class="line">      id: id,</span><br><span class="line">      name: text_val,</span><br><span class="line">      amount: amount_val</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    localStorage.setItem(<span class="string">'Transactions'</span>, <span class="built_in">JSON</span>.stringify(transactions));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;)</span><br><span class="line">  updateValue(transactions);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//在list中插入</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addTransactions</span>(<span class="params">id, name, amount, transactions</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'amount:'</span>, amount);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> Transaction_str = $(<span class="string">'&lt;li&gt;&lt;/li&gt;'</span>).appendTo(<span class="string">'#list'</span>);</span><br><span class="line"></span><br><span class="line">  Transaction_str.addClass(amount &lt; <span class="number">0</span> ? <span class="string">'minus'</span> : <span class="string">'plus'</span>);</span><br><span class="line">  Transaction_str.html(<span class="string">`<span class="subst">$&#123;name&#125;</span>&lt;span&gt; <span class="subst">$&#123;amount&#125;</span>&lt;/span&gt;&lt;button class="delete-btn"  data-id="<span class="subst">$&#123;id&#125;</span>"&gt;x&lt;/button&gt;`</span>);</span><br><span class="line">  $(<span class="string">'#list'</span>).append(Transaction_str);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  $(<span class="string">'#text'</span>).val(<span class="string">''</span>);</span><br><span class="line">  $(<span class="string">'#amount'</span>).val(<span class="string">''</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//刪除鈕 要交易交出後再綁事件</span></span><br><span class="line">  $(<span class="string">'.delete-btn'</span>).last().click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="keyword">this</span>).parent().remove();</span><br><span class="line">    <span class="keyword">let</span> id = $(<span class="keyword">this</span>).data(<span class="string">'id'</span>);</span><br><span class="line">    <span class="comment">//console.log(id);</span></span><br><span class="line">    deleteFromLocalstorage(transactions, id); <span class="comment">//要記得傳入id</span></span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//從localstorage刪除</span></span><br><span class="line"><span class="comment">//要記得在參數放入id</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteFromLocalstorage</span>(<span class="params">transactions, id</span>) </span>&#123;</span><br><span class="line">  transactions.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">item, index, arr</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//console.log('item', item);</span></span><br><span class="line">    <span class="comment">//console.log('index', index);</span></span><br><span class="line">    <span class="comment">//console.log('arr', arr);</span></span><br><span class="line">    <span class="keyword">if</span> (item.id === id) &#123;</span><br><span class="line">      arr.splice(index, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//迴圈刪除後，要儲存到localStorage才有確實刪去</span></span><br><span class="line">  localStorage.setItem(<span class="string">'Transactions'</span>, <span class="built_in">JSON</span>.stringify(transactions));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate random ID</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateID</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">100000000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//數值更新計算</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateValue</span>(<span class="params">transactions</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> amounts_arr = transactions.map(<span class="function"><span class="keyword">function</span> (<span class="params">transaction</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> transaction.amount</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(amounts_arr);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//計算加總 </span></span><br><span class="line">  <span class="keyword">var</span> total = <span class="number">0</span>;</span><br><span class="line">  $.each(amounts_arr, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; total += <span class="built_in">parseFloat</span>((<span class="keyword">this</span>)) || <span class="number">0</span>; &#125;);</span><br><span class="line">  <span class="comment">//傳回YOUR BALANCE</span></span><br><span class="line">  $(<span class="string">'#balance'</span>).text(<span class="string">`$<span class="subst">$&#123;total&#125;</span>`</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(total);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">//*************************** */</span></span><br><span class="line">  <span class="comment">//從陣列找出&gt;0的值，放置income</span></span><br><span class="line">  <span class="comment">//console.log(amounts)</span></span><br><span class="line">  <span class="keyword">var</span> income = amounts_arr.filter(</span><br><span class="line">    <span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> item &gt; <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(income);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> totalIncome = <span class="number">0</span>;</span><br><span class="line">  $.each(income, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; totalIncome += <span class="built_in">parseFloat</span>((<span class="keyword">this</span>)) || <span class="number">0</span>; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(totalIncome); <span class="comment">//回傳220</span></span><br><span class="line">  <span class="comment">//傳回到income</span></span><br><span class="line">  $(<span class="string">'#money-plus'</span>).text(<span class="string">`$<span class="subst">$&#123;totalIncome&#125;</span>`</span>);</span><br><span class="line">  <span class="comment">//***************************** */</span></span><br><span class="line">  <span class="comment">//從陣列找出&lt;0的值，放置income</span></span><br><span class="line">  <span class="keyword">var</span> expense = amounts_arr.filter(</span><br><span class="line">    <span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> item &lt; <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(expense);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> totalExpense = <span class="number">0</span>;</span><br><span class="line">  $.each(expense, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; totalExpense += <span class="built_in">parseFloat</span>((<span class="keyword">this</span>)) || <span class="number">0</span>; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(totalExpense);</span><br><span class="line">  <span class="comment">//傳回到expense</span></span><br><span class="line">  $(<span class="string">'#money-minus'</span>).text(<span class="string">`$<span class="subst">$&#123;totalExpense&#125;</span>`</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//init</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initHistory</span>(<span class="params">transactions</span>) </span>&#123;</span><br><span class="line">  transactions.forEach(<span class="function"><span class="params">transaction</span> =&gt;</span> &#123;</span><br><span class="line">    addTransactions(transaction.id, transaction.name, transaction.amount, transactions);</span><br><span class="line">  &#125;);</span><br><span class="line">  updateValue(transactions);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="各項目拆解："><a href="#各項目拆解：" class="headerlink" title="各項目拆解："></a>各項目拆解：</h1><h2 id="add-transations按下去之後，頁面不刷新，直接將資料傳入紀錄中"><a href="#add-transations按下去之後，頁面不刷新，直接將資料傳入紀錄中" class="headerlink" title="add transations按下去之後，頁面不刷新，直接將資料傳入紀錄中"></a><code>add transations</code>按下去之後，頁面不刷新，直接將資料傳入紀錄中</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">'.btn'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'click'</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//點擊後，有印出click，但很快的刷新頁面</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>加入<code>e.preventDefault();</code> 用來阻止預設動作的發生</li>
+</ul>
+<p><img src="https://i.imgur.com/4y0J1vA.png" alt=""></p>
+<h2 id="讓transation輸入後顯示"><a href="#讓transation輸入後顯示" class="headerlink" title="讓transation輸入後顯示"></a>讓transation輸入後顯示</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">'.btn'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.preventDefault();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'click'</span>);</span><br><span class="line">    addTransactions(<span class="string">'cash'</span>, <span class="string">'200'</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addTransactions</span>(<span class="params">name, amount</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> Transaction_str = <span class="string">`&lt;li class='plus' &gt;<span class="subst">$&#123;name&#125;</span>&lt;span&gt; <span class="subst">$&#123;amount&#125;</span>&lt;/span&gt;&lt;button class="delete-btn"&gt;x&lt;/button&gt;&lt;/li&gt;`</span></span><br><span class="line">  $(<span class="string">'#list'</span>).append(Transaction_str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/Vh9uPvJ.png" alt=""></p>
+<ul>
+<li>提交之後清空<ul>
+<li>選擇該輸入框，並利用<code>val()</code>，使內部的值清空</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#text'</span>).val(<span class="string">''</span>);</span><br><span class="line"> $(<span class="string">'#amount'</span>).val(<span class="string">''</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/uKnX7fd.png" alt=""></p>
+<h2 id="從表格中取得值"><a href="#從表格中取得值" class="headerlink" title="從表格中取得值"></a>從表格中取得值</h2><ul>
+<li>製作按鈕的點擊事件，取得表格中的值</li>
+<li>將值傳入函式的參數<code>addTransactions(text_val, amount_val);</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">'.btn'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.preventDefault();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'click'</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//取得表格中的值</span></span><br><span class="line">    <span class="keyword">const</span> text_val = $(<span class="string">'#text'</span>).val();</span><br><span class="line">    <span class="keyword">const</span> amount_val = $(<span class="string">'#amount'</span>).val();</span><br><span class="line">    addTransactions(text_val, amount_val);</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="製作刪除紐"><a href="#製作刪除紐" class="headerlink" title="製作刪除紐"></a>製作刪除紐</h2><ul>
+<li>原本的撰寫方式，為選到最後一個刪除鈕，並點擊加以刪除</li>
+<li>此方式造成，無法確實刪除資料</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'.delete-btn'</span>).last().click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'del'</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/v7n8t3L.png" alt=""></p>
+<ul>
+<li><p>修改方式，只能綁定一筆transatin或是綁定最後一筆<br><img src="https://i.imgur.com/lhqdwYA.png" alt=""></p>
+</li>
+<li><p>查看若實現點擊後刪除，是會刪除什麼？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> $(<span class="string">'.delete-btn'</span>).last().click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/9dYre8g.png" alt=""></p>
+</li>
+<li><p>要刪除的是整筆資料，所以要去尋找他鄰近的元素</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'.delete-btn'</span>).last().click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="keyword">this</span>).parent().remove();</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="localstorage-執行"><a href="#localstorage-執行" class="headerlink" title="localstorage 執行"></a>localstorage 執行</h2><p>筆記補充：<a href="https://hackmd.io/MNn_G1QWSH6xQdaeXXxmGg?view" target="_blank" rel="noopener">LocalStorage介紹</a></p>
+<p>從此實作，可以看到它是一個陣列，裡面是物件</p>
+<ul>
+<li>設置一個空陣列</li>
+<li>並將物件push進去</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//預設值的設置，取得存在本地的資料或是空陣列</span></span><br><span class="line">  <span class="keyword">var</span> transactions = <span class="built_in">JSON</span>.parse(localStorage.getItem(<span class="string">'Transactions'</span>)) || [];</span><br><span class="line">  </span><br><span class="line">   <span class="comment">//推入陣列</span></span><br><span class="line">    transactions.push(&#123;</span><br><span class="line">      name: text_val,</span><br><span class="line">      amount: amount_val</span><br><span class="line">    &#125;)</span><br><span class="line">    localStorage.setItem(<span class="string">'Transactions'</span>, <span class="built_in">JSON</span>.stringify(transactions));</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/HC2XCpT.png" alt=""></p>
+<p><img src="https://i.imgur.com/0b4mWW6.png" alt=""></p>
+<ul>
+<li>增加初始function<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//init</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initHistory</span>(<span class="params">transactions</span>) </span>&#123;</span><br><span class="line">  transactions.forEach(<span class="function"><span class="params">transaction</span> =&gt;</span> &#123;</span><br><span class="line">    addTransactions(transaction.name, transaction.amount);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//將此函式放於 $(document).ready()之中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//陣列初始</span></span><br><span class="line">  <span class="keyword">if</span> (transactions.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    initHistory(transactions);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/dH3nJ6K.png" alt=""></p>
+<h2 id="將transation刪除後，並沒有完全從localstorage刪除"><a href="#將transation刪除後，並沒有完全從localstorage刪除" class="headerlink" title="將transation刪除後，並沒有完全從localstorage刪除"></a>將transation刪除後，並沒有完全從localstorage刪除</h2><p>運用id來刪除</p>
+<ul>
+<li><p>從此段落：<a href="#localstorage-執行">localstorage 執行</a>，圖片中的存取陣列可以看到，沒有設置id</p>
+</li>
+<li><p>id是在addTransactions使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Generate random ID</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateID</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">100000000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//floor：無條件捨去</span></span><br><span class="line"><span class="comment">//ceil：無條件進位</span></span><br></pre></td></tr></table></figure></li>
+<li><p>在創造的陣列中\物件，都加入id</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> id = generateID();</span><br><span class="line"> addTransactions(id, text_val, amount_val);</span><br><span class="line"></span><br><span class="line"> <span class="comment">//推入陣列</span></span><br><span class="line"> transactions.push(&#123;</span><br><span class="line">   id: id,</span><br><span class="line">   name: text_val,</span><br><span class="line">   amount: amount_val</span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure></li>
+<li><p>在addTransactions的函式中也要加入id</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addTransactions</span>(<span class="params">id, name, amount</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(id, name, amount);&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/sMtoogJ.png" alt=""></p>
+<ul>
+<li>在button加入data-id</li>
+</ul>
+<p>和資料有關的時候：data-原來欄位名稱</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Transaction_str = <span class="string">`&lt;li class='plus' &gt;<span class="subst">$&#123;name&#125;</span>&lt;span&gt; <span class="subst">$&#123;amount&#125;</span>&lt;/span&gt;&lt;button class="delete-btn"  data-id="<span class="subst">$&#123;id&#125;</span>"&gt;x&lt;/button&gt;&lt;/li&gt;`</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/cmamimU.png" alt=""></p>
+<p><img src="https://i.imgur.com/v8TQspA.png" alt=""></p>
+<ul>
+<li>確定點擊刪除鈕的時後，是有抓到該id<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$(<span class="string">'.delete-btn'</span>).last().click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="keyword">this</span>).parent().remove();</span><br><span class="line">  <span class="keyword">let</span> id = $(<span class="keyword">this</span>).data(<span class="string">'id'</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(id);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><code>let id = $(this).data(); 查看id時</code> 取得的是物件<br><img src="https://i.imgur.com/BeBkXAN.png" alt=""></li>
+<li>應改為<br><img src="https://i.imgur.com/snvF7AX.png" alt=""></li>
+</ul>
+<div class="note warning">
+            <p>此時還沒有真正刪除id，只是確定有抓到id :point_up_2: </p>
+          </div>
+
+<div class="note info">
+            <p>jquery <code>data()</code>： 自定義屬性 (data attributes)，讓我們可以任意讀寫資料在元素上，而且不會影響頁面的 layout<br><a href="https://www.fooish.com/jquery/data.html" target="_blank" rel="noopener">jQuery Data</a></p>
+          </div>
+
+<ul>
+<li><h4 id="利用forEach、splice-刪除陣列內的資料"><a href="#利用forEach、splice-刪除陣列內的資料" class="headerlink" title="利用forEach、splice()刪除陣列內的資料"></a>利用forEach、splice()刪除陣列內的資料</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteFromLocalstorage</span>(<span class="params">transactions, id</span>) </span>&#123;</span><br><span class="line">  transactions.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">item, index, arr</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//console.log('item', item);</span></span><br><span class="line">    <span class="comment">//console.log('index', index);</span></span><br><span class="line">    <span class="comment">//console.log('arr', arr);</span></span><br><span class="line">    <span class="keyword">if</span> (item.id === id) &#123;</span><br><span class="line">      arr.splice(index, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//迴圈刪除後，要儲存到localStorage才有確實刪去</span></span><br><span class="line">  localStorage.setItem(<span class="string">'Transactions'</span>, <span class="built_in">JSON</span>.stringify(transactions));</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>查看迴圈的資料<br><img src="https://i.imgur.com/FexS5lt.png" alt=""></li>
+</ul>
+<ul>
+<li>確實刪除存在localstorage的資料<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localStorage.setItem(<span class="string">'Transactions'</span>, <span class="built_in">JSON</span>.stringify(transactions));</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="判斷輸入的數字大小，並給予class"><a href="#判斷輸入的數字大小，並給予class" class="headerlink" title="判斷輸入的數字大小，並給予class"></a>判斷輸入的數字大小，並給予class</h3><ul>
+<li>放在addTransactions()函式之中</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Transaction_str = $(<span class="string">'&lt;li&gt;&lt;/li&gt;'</span>).appendTo(<span class="string">'#list'</span>);</span><br><span class="line"></span><br><span class="line">  Transaction_str.addClass(amount &lt; <span class="number">0</span> ? <span class="string">'minus'</span> : <span class="string">'plus'</span>);</span><br><span class="line">  Transaction_str.html(<span class="string">`<span class="subst">$&#123;name&#125;</span>&lt;span&gt; <span class="subst">$&#123;amount&#125;</span>&lt;/span&gt;&lt;button class="delete-btn"  data-id="<span class="subst">$&#123;id&#125;</span>"&gt;x&lt;/button&gt;`</span>);</span><br><span class="line">  $(<span class="string">'#list'</span>).append(Transaction_str);</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/NYXCDtS.png" alt=""></p>
+<h3 id="數值的更新"><a href="#數值的更新" class="headerlink" title="數值的更新"></a>數值的更新</h3><p><img src="https://i.imgur.com/EdCN1cd.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateValue</span>(<span class="params">transactions</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> amounts_arr = transactions.map(<span class="function"><span class="keyword">function</span> (<span class="params">transaction</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> transaction.amount</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(amounts_arr);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//計算加總 </span></span><br><span class="line">  <span class="keyword">var</span> total = <span class="number">0</span>;</span><br><span class="line">  $.each(amounts_arr, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; total += <span class="built_in">parseFloat</span>((<span class="keyword">this</span>)) || <span class="number">0</span>; &#125;);</span><br><span class="line">  <span class="comment">//傳回YOUR BALANCE</span></span><br><span class="line">  $(<span class="string">'#balance'</span>).text(<span class="string">`$<span class="subst">$&#123;total&#125;</span>`</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(total);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">//*************************** */</span></span><br><span class="line">  <span class="comment">//從陣列找出&gt;0的值，放置income</span></span><br><span class="line">  <span class="comment">//console.log(amounts)</span></span><br><span class="line">  <span class="keyword">var</span> income = amounts_arr.filter(</span><br><span class="line">    <span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> item &gt; <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(income);</span><br><span class="line">  <span class="keyword">var</span> totalIncome = <span class="number">0</span>;</span><br><span class="line">  $.each(income, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; totalIncome += <span class="built_in">parseFloat</span>((<span class="keyword">this</span>)) || <span class="number">0</span>; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//console.log(totalIncome); //回傳220</span></span><br><span class="line">  <span class="comment">//傳回到income</span></span><br><span class="line">  $(<span class="string">'#money-plus'</span>).text(<span class="string">`$<span class="subst">$&#123;totalIncome&#125;</span>`</span>);</span><br><span class="line">  <span class="comment">//***************************** */</span></span><br><span class="line">  <span class="comment">//從陣列找出&lt;0的值，放置income</span></span><br><span class="line">  <span class="keyword">var</span> expense = amounts_arr.filter(</span><br><span class="line">    <span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> item &lt; <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(expense);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> totalExpense = <span class="number">0</span>;</span><br><span class="line">  $.each(expense, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; totalExpense += <span class="built_in">parseFloat</span>((<span class="keyword">this</span>)) || <span class="number">0</span>; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(totalExpense);</span><br><span class="line">  <span class="comment">//傳回到expense</span></span><br><span class="line">  $(<span class="string">'#money-minus'</span>).text(<span class="string">`$<span class="subst">$&#123;totalExpense&#125;</span>`</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>創造一個amount的陣列</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> amounts_arr = transactions.map(<span class="function"><span class="keyword">function</span> (<span class="params">transaction</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> transaction.amount</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(amounts_arr);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/sG0YS9J.png" alt=""></p>
+<ul>
+<li>計算加總數值<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> total = <span class="number">0</span>;</span><br><span class="line">  $.each(amounts_arr, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; total += <span class="built_in">parseFloat</span>((<span class="keyword">this</span>)) || <span class="number">0</span>; &#125;);</span><br><span class="line">  <span class="comment">//傳回YOUR BALANCE</span></span><br><span class="line">  $(<span class="string">'#balance'</span>).text(<span class="string">`$<span class="subst">$&#123;total&#125;</span>`</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(total);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/7c2MqFo.png" alt=""></p>
+<p><img src="https://i.imgur.com/CCXAirK.png" alt=""></p>
+<ul>
+<li>income 收入加總計算</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//從陣列找出&gt;0的值，放置income</span></span><br><span class="line">  <span class="comment">//console.log(amounts)</span></span><br><span class="line">  <span class="keyword">var</span> income = amounts_arr.filter(</span><br><span class="line">    <span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> item &gt; <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(income);</span><br><span class="line">  <span class="keyword">var</span> totalIncome = <span class="number">0</span>;</span><br><span class="line">  $.each(income, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; totalIncome += <span class="built_in">parseFloat</span>((<span class="keyword">this</span>)) || <span class="number">0</span>; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//console.log(totalIncome); //回傳220</span></span><br><span class="line">  <span class="comment">//傳回到income</span></span><br><span class="line">  $(<span class="string">'#money-plus'</span>).text(<span class="string">`$<span class="subst">$&#123;totalIncome&#125;</span>`</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/9d8Hx3Y.png" alt=""></p>
+<p><img src="https://i.imgur.com/KXRi18A.png" alt=""></p>
+<ul>
+<li>expense支出加總</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//從陣列找出&lt;0的值，放置expense</span></span><br><span class="line">  <span class="keyword">var</span> expense = amounts_arr.filter(</span><br><span class="line">    <span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> item &lt; <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(expense);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> totalExpense = <span class="number">0</span>;</span><br><span class="line">  $.each(expense, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; totalExpense += <span class="built_in">parseFloat</span>((<span class="keyword">this</span>)) || <span class="number">0</span>; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(totalExpense);</span><br><span class="line">  <span class="comment">//傳回到expense</span></span><br><span class="line">  $(<span class="string">'#money-minus'</span>).text(<span class="string">`$<span class="subst">$&#123;totalExpense&#125;</span>`</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/AaIZORC.png" alt=""></p>
+<p><img src="https://i.imgur.com/TM4EQrH.png" alt=""></p>
+<hr>
+<p>錯誤修正：</p>
+<ul>
+<li>調換推入陣列以及<code>addTransactions</code>的順序<br><img src="https://i.imgur.com/7jdJ7kO.png" alt=""></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//點擊按鈕的事件</span></span><br><span class="line">  $(<span class="string">'.btn'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.preventDefault();</span><br><span class="line">    <span class="comment">//console.log('click');</span></span><br><span class="line">    <span class="comment">//取得表格中的值</span></span><br><span class="line">    <span class="keyword">const</span> text_val = $(<span class="string">'#text'</span>).val();</span><br><span class="line">    <span class="keyword">const</span> amount_val = $(<span class="string">'#amount'</span>).val();</span><br><span class="line">    <span class="keyword">let</span> id = generateID();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//推入陣列</span></span><br><span class="line">    transactions.push(&#123;</span><br><span class="line">      id: id,</span><br><span class="line">      name: text_val,</span><br><span class="line">      amount: amount_val</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    addTransactions(id, text_val, amount_val, transactions);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    localStorage.setItem(<span class="string">'Transactions'</span>, <span class="built_in">JSON</span>.stringify(transactions));</span><br><span class="line"></span><br><span class="line">    updateValue(transactions);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>將updateValue()放入事件中</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//刪除鈕 要交易交出後再綁事件</span></span><br><span class="line">  $(<span class="string">'.delete-btn'</span>).last().click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="keyword">this</span>).parent().remove();</span><br><span class="line">    <span class="keyword">let</span> id = $(<span class="keyword">this</span>).data(<span class="string">'id'</span>);</span><br><span class="line">    <span class="comment">//console.log(id);</span></span><br><span class="line">    deleteFromLocalstorage(transactions, id); <span class="comment">//要記得傳入id</span></span><br><span class="line">    updateValue(transactions);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/01/10/localstorage/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>認識什麼是Lo...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/01/10/js-exchangeRate/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>js實作- e...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Coding</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>
