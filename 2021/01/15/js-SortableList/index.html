@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>JS實作- SortableList | Let&#39;s Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-01-15</span>
+    <h2>JS實作- Sortab...</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/drag-drop/" rel="tag">drag&drop</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/js/" rel="tag">js</a></div>
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <p><a href="https://eva813.github.io/Eva_portfolio/sortableList/sortableList.html" target="_blank" rel="noopener">成品</a></p>
+<h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><ul>
+<li><p>Drag &amp; Drop API</p>
+<ul>
+<li>使元素可以拖放，在 HTML5，只要為它加上 draggable=”true” 屬性，它就能「被拖曳」了</li>
+</ul>
+</li>
+<li><p>拖曳該項目時，會使下方的格子顏色變成灰色</p>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/sZVXh9r.png" alt=""></p>
+<ul>
+<li>拖曳項目到目標位置，會使了者交換</li>
+<li>排序最後會有一個檢查順序正確與否的按鈕</li>
+</ul>
+<h2 id="js部分"><a href="#js部分" class="headerlink" title="js部分"></a>js部分</h2><h3 id="1-排行榜的設置"><a href="#1-排行榜的設置" class="headerlink" title="1.排行榜的設置"></a>1.排行榜的設置</h3><ul>
+<li>設定熱門旅遊縣市排行榜的陣列</li>
+<li>並宣告一個空陣列，以利後面使用</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bestPlace = [</span><br><span class="line">  <span class="string">'台南'</span>,</span><br><span class="line">  <span class="string">'台中'</span>,</span><br><span class="line">  <span class="string">'高雄'</span>,</span><br><span class="line">  <span class="string">'台東'</span>,</span><br><span class="line">  <span class="string">'屏東'</span>,</span><br><span class="line">  <span class="string">'新北'</span>,</span><br><span class="line">  <span class="string">'宜蘭'</span>,</span><br><span class="line">  <span class="string">'花蓮'</span>,</span><br><span class="line">  <span class="string">'澎湖'</span>,</span><br><span class="line">  <span class="string">'桃園'</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> listItems = [];</span><br></pre></td></tr></table></figure>
+<h3 id="2-創建排行列表，並將其呈現於頁面上"><a href="#2-創建排行列表，並將其呈現於頁面上" class="headerlink" title="2.創建排行列表，並將其呈現於頁面上"></a>2.創建排行列表，並將其呈現於頁面上</h3><ul>
+<li>宣告新的變數，並利用Fisher-Yates，創造隨機的效果<ul>
+<li>注意新變數，是帶入展開運算元(把陣列中的元素取出)</li>
+</ul>
+</li>
+<li>利用<code>each</code>跑陣列，創造變數填入<code>&lt;li&gt;</code>，並於其中填入html標籤，使畫面呈現列表。</li>
+<li>jquery稱增加屬性<code>listItem.setAttribute(&#39;data-index&#39;, index);</code>,<a href="https://api.jquery.com/attr/" target="_blank" rel="noopener">.attr()</a></li>
+</ul>
+<p><img src="https://i.imgur.com/OqjHMda.png" alt=""></p>
+<ul>
+<li><code>listItems.push(listItem);</code>將列表項目，放入空陣列中</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Fisher-Yates洗牌演算法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fisherYatesShuffle</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = arr.length - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">var</span> j = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (i + <span class="number">1</span>)); <span class="comment">//random index</span></span><br><span class="line">    [arr[i], arr[j]] = [arr[j], arr[i]]; <span class="comment">// swap</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">/製作實際可以看到的list</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">creatList</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> placeArr = [...bestPlace];</span><br><span class="line">  fisherYatesShuffle(placeArr);</span><br><span class="line">  $.each(placeArr, <span class="function"><span class="keyword">function</span> (<span class="params">index, place</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> listItem = $(<span class="string">'&lt;li&gt;&lt;/li&gt;'</span>).appendTo(<span class="string">'#draggable-list'</span>);</span><br><span class="line">    <span class="comment">// console.log(listItem);</span></span><br><span class="line">    listItem.attr(<span class="string">"data-index"</span>, index);</span><br><span class="line">    <span class="comment">//listItem.addClass('wrong')</span></span><br><span class="line">    listItem.html(<span class="string">`&lt;span class="number"&gt;<span class="subst">$&#123;index + <span class="number">1</span>&#125;</span>&lt;/span&gt;</span></span><br><span class="line"><span class="string">        &lt;div class="draggable" draggable="true"&gt;</span></span><br><span class="line"><span class="string">          &lt;p class="place-name"&gt;<span class="subst">$&#123;place&#125;</span>&lt;/p&gt;</span></span><br><span class="line"><span class="string">          &lt;i class="fas fa-grip-lines"&gt;&lt;/i&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;`</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    listItems.push(listItem);</span><br><span class="line">    <span class="comment">//insert into dom</span></span><br><span class="line">    $(<span class="string">'#draggable-list'</span>).append(listItem);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  addEventListeners()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>參考資料：<br>push：<br><a href="https://ithelp.ithome.com.tw/articles/10222922" target="_blank" rel="noopener">JS 從陣列 Array 尾端新增元素的 push()</a><br><a href="https://www.oxxostudio.tw/articles/201908/js-array.html" target="_blank" rel="noopener">JavaScript Array 陣列操作方法大全 ( 含 ES6 )</a></p>
+          </div>
+<h3 id="3-拖曳的監聽事件"><a href="#3-拖曳的監聽事件" class="headerlink" title="3.拖曳的監聽事件"></a>3.拖曳的監聽事件</h3><ul>
+<li>拖曳開始的監聽，元素是抓取<code>draggables</code>，後續的drop、dragenter、dragover等事件，元素是<code>.draggable-list li</code></li>
+<li>針對要被拖曳的元素（dragSource）監聽事件</li>
+<li>利用forEach方式，允許多個可拖曳的物件</li>
+</ul>
+<ul>
+<li>抓取的元素：<br><img src="https://i.imgur.com/5G60Pmr.png" alt=""><br><img src="https://i.imgur.com/zXR4YWT.png" alt=""></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//監聽事件</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addEventListeners</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> draggables = <span class="built_in">document</span>.querySelectorAll(<span class="string">'.draggable'</span>);</span><br><span class="line">  <span class="keyword">const</span> dragListItems = <span class="built_in">document</span>.querySelectorAll(<span class="string">'.draggable-list li'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//Dragable dot 增加監聽事件</span></span><br><span class="line"></span><br><span class="line">  draggables.forEach(<span class="function"><span class="params">draggable</span> =&gt;</span> &#123;</span><br><span class="line">    draggable.addEventListener(<span class="string">'dragstart'</span>, dragStart);</span><br><span class="line">  &#125;);</span><br><span class="line">  dragListItems.forEach(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    item.addEventListener(<span class="string">'dragover'</span>, dragOver);</span><br><span class="line">    item.addEventListener(<span class="string">'drop'</span>, dragDrop);</span><br><span class="line">    item.addEventListener(<span class="string">'dragenter'</span>, dragEnter);</span><br><span class="line">    item.addEventListener(<span class="string">'dragleave'</span>, dragLeave);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://pjchender.blogspot.com/2017/08/html5-drag-and-drop-api.html" target="_blank" rel="noopener">[筆記] 製作可拖曳的元素（HTML5 Drag and Drop API）</a></p>
+<h3 id="4-針對監聽事件，設置各執行的函式"><a href="#4-針對監聽事件，設置各執行的函式" class="headerlink" title="4.針對監聽事件，設置各執行的函式"></a>4.針對監聽事件，設置各執行的函式</h3><ul>
+<li>為了能夠追蹤抓取項目，所以一開始先宣告一個索引變數。</li>
+<li><code>dragStart()</code>:宣告<code>dragStartIndex</code>變數為抓取到的<code>li</code>-&gt;<code>data-index</code></li>
+</ul>
+<p><img src="https://i.imgur.com/6tMHuYr.png" alt=""></p>
+<ul>
+<li>有拖曳的開始，就會有結束，也就是放置(<code>dragDrop()</code>)：<code>dragEndIndex</code>同樣也是以索引來作為依據，並在設置一個交換的函式</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要能夠持續追蹤每個項目的index，所以要有個初始變數</span></span><br><span class="line"><span class="keyword">let</span> dragStartIndex;</span><br><span class="line"><span class="comment">//拖拉的各函式</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dragStart</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//console.log('Event: ', 'dragstart');</span></span><br><span class="line">  dragStartIndex = +$(<span class="keyword">this</span>).closest(<span class="string">'li'</span>).attr(<span class="string">'data-index'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(dragStartIndex);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dragOver</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// console.log('Event: ', 'dragover');</span></span><br><span class="line">  e.preventDefault();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//設定開始的index,以及結束的index是為了交換</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dragDrop</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// console.log('Event: ', 'dragdrop');</span></span><br><span class="line">  <span class="keyword">const</span> dragEndIndex = +$(<span class="keyword">this</span>).attr(<span class="string">'data-index'</span>);</span><br><span class="line">  swapItems(dragStartIndex, dragEndIndex);</span><br><span class="line">  $(<span class="keyword">this</span>).removeClass(<span class="string">'over'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-交換索引，使物件交換位置swapItems"><a href="#5-交換索引，使物件交換位置swapItems" class="headerlink" title="5.交換索引，使物件交換位置swapItems"></a>5.交換索引，使物件交換位置<code>swapItems</code></h3><ul>
+<li>透過抓取到的開始與結束的索引，來填入要交換的變數</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">swapItems</span>(<span class="params">fromIndex, toIndex</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//要設定交換之前，要先到dragover去設定e.preventDefault();（因為dragover會擋到交換的執行）</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> itemOne = listItems[fromIndex].find(<span class="string">'.draggable'</span>);</span><br><span class="line">  <span class="keyword">const</span> itemTwo = listItems[toIndex].find(<span class="string">'.draggable'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//console.log(itemOne, itemTwo)</span></span><br><span class="line">  listItems[fromIndex].append(itemTwo);</span><br><span class="line">  listItems[toIndex].append(itemOne);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-延續拖曳監聽事件，所要執行的其他函式"><a href="#6-延續拖曳監聽事件，所要執行的其他函式" class="headerlink" title="6.延續拖曳監聽事件，所要執行的其他函式"></a>6.延續拖曳監聽事件，所要執行的其他函式</h3><ul>
+<li><p><code>dragEnter()</code>拖曳元素進入要放置的目標位置，所觸發的事件。在此是設定要放入目標位置時，增加一個<code>class</code>的效果</p>
+</li>
+<li><p>進入目標位置，其相互搭配的事件就是離開<code>dragLeave()</code>，當拖曳元素離開放置位置時，所發生的事件。在此為設定，去除於原本<code>class</code>的效果。</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dragEnter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// console.log('Event: ', 'dragenter');</span></span><br><span class="line">  $(<span class="keyword">this</span>).addClass(<span class="string">'over'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dragLeave</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// console.log('Event: ', 'dragleave');</span></span><br><span class="line">  $(<span class="keyword">this</span>).removeClass(<span class="string">'over'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-核對順序"><a href="#7-核對順序" class="headerlink" title="7.核對順序"></a>7.核對順序</h3><ul>
+<li>抓取listItems，來跑forEach，其要參照的參數是，項目、索引。</li>
+<li>宣告<code>placeName</code>為參數<code>listItem</code>，draggable的文字字串。<ul>
+<li>trim()用來去除字串前後的空白</li>
+</ul>
+</li>
+<li>判斷句<code>placeName !== bestPlace[index]</code></li>
+<li><code>console.log(bestPlace[index])</code>會印出，正確的順序。</li>
+</ul>
+<p><img src="https://i.imgur.com/xIR3X98.png" alt=""></p>
+<ul>
+<li>核對結果：就是分別加入<code>wrong</code>、<code>&#39;right&#39;</code>。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//核對排名順序</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkOrder</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  listItems.forEach(<span class="function">(<span class="params">listItem, index</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> placeName = listItem.find(<span class="string">'.draggable'</span>).text().trim();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (placeName !== bestPlace[index]) &#123;</span><br><span class="line">      listItem.addClass(<span class="string">'wrong'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      listItem.removeClass(<span class="string">'wrong'</span>);</span><br><span class="line">      listItem.addClass(<span class="string">'right'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<hr>
+<h2 id="以下為補充資料："><a href="#以下為補充資料：" class="headerlink" title="以下為補充資料："></a>以下為補充資料：</h2><h3 id="拖曳補充資料："><a href="#拖曳補充資料：" class="headerlink" title="拖曳補充資料："></a>拖曳補充資料：</h3><p><a href="https://ourcodeworld.com/articles/read/664/top-5-best-sortable-and-draggable-list-javascript-and-jquery-plugins" target="_blank" rel="noopener">Top 5: Best Sortable &amp; Draggable List JavaScript and jQuery Plugins</a><br><a href="https://ithelp.ithome.com.tw/articles/10120587" target="_blank" rel="noopener">實用網頁工具庫 - jQuery UI (上) 元件篇
+</a></p>
+<h3 id="使陣列隨機排序"><a href="#使陣列隨機排序" class="headerlink" title="使陣列隨機排序"></a>使陣列隨機排序</h3><ul>
+<li>使用<code>map</code>將陣列轉換為新陣列，創造vale、以及加上sort排序值(利用<code>Math.random()</code>來產生亂數)</li>
+<li>使用sort隨機排序，剛剛的sort值是隨機產生，再一次使用sort，來使排的順序也隨機。</li>
+<li>最後，因為排序後陣列中的物件是<code>{ value: , sort:  }</code>，而我們要讓畫面只顯示<code>value:</code>，所以再使用<code>map</code>將新陣列轉回只有該資料的陣列。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createList</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  [...richestPeople]</span><br><span class="line">    .map(<span class="function"><span class="params">a</span> =&gt;</span> (&#123; <span class="attr">value</span>: a, <span class="attr">sort</span>: <span class="built_in">Math</span>.random() &#125;))</span><br><span class="line">    .sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a.sort - b.sort)</span><br><span class="line">    .map(<span class="function"><span class="params">a</span> =&gt;</span> a.value)</span><br><span class="line">    .forEach(<span class="function">(<span class="params">person, index</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> listItem = <span class="built_in">document</span>.createElement(<span class="string">'li'</span>);</span><br><span class="line"></span><br><span class="line">      listItem.setAttribute(<span class="string">'data-index'</span>, index);</span><br><span class="line"></span><br><span class="line">      listItem.innerHTML = <span class="string">`</span></span><br><span class="line"><span class="string">        &lt;span class="number"&gt;<span class="subst">$&#123;index + <span class="number">1</span>&#125;</span>&lt;/span&gt;</span></span><br><span class="line"><span class="string">        &lt;div class="draggable" draggable="true"&gt;</span></span><br><span class="line"><span class="string">          &lt;p class="person-name"&gt;<span class="subst">$&#123;person&#125;</span>&lt;/p&gt;</span></span><br><span class="line"><span class="string">          &lt;i class="fas fa-grip-lines"&gt;&lt;/i&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">      `</span>;</span><br><span class="line"></span><br><span class="line">      listItems.push(listItem);</span><br><span class="line"></span><br><span class="line">      draggable_list.appendChild(listItem);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">  addEventListeners();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a href="https://shubo.io/javascript-random-shuffle/" target="_blank" rel="noopener">[筆記] 如何正確實作 JavaScript Array Random Shuffle 亂數排序演算法</a><br><a href="https://www.delftstack.com/zh-tw/howto/javascript/shuffle-array-javascript/" target="_blank" rel="noopener">在 JavaScript 中對一個陣列進行隨機化或洗牌
+</a></li>
+</ul>
+<hr>
+<h3 id="jquery-ui"><a href="#jquery-ui" class="headerlink" title="jquery ui"></a>jquery ui</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//https://stackoverflow.com/questions/6426795/what-is-disableselection-used-for-in-jquery-ui</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dragdrop</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">"#draggable-list"</span>).sortable(&#123;</span><br><span class="line">    <span class="comment">//connectWith: "ul",</span></span><br><span class="line">    delay: <span class="number">300</span>,</span><br><span class="line">    distance: <span class="number">15</span>,</span><br><span class="line">    <span class="comment">//number: "span:not(.number)",</span></span><br><span class="line">    iframeFix: <span class="literal">true</span>,</span><br><span class="line"></span><br><span class="line">  &#125;).disableSelection();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h3 id="顏色"><a href="#顏色" class="headerlink" title="顏色"></a>顏色</h3><p><a href="https://www.0to255.com/f2e8cf" target="_blank" rel="noopener">0-255</a><br><a href="https://webgradients.com/" target="_blank" rel="noopener">漸層顏色</a><br><a href="https://coolors.co/palettes/trending" target="_blank" rel="noopener">colors</a><br><a href="https://stackoverflow.com/questions/34494873/why-is-my-jquery-selector-returning-a-n-fn-init0-and-what-is-it" target="_blank" rel="noopener">Why is my JQuery selector returning a n.fn.init[0], and what is it?</a></p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/01/15/js-DOMArrayMethods/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>JS實作- D...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/01/15/js-musicPlayer/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>JS實作-mu...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Coding</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>

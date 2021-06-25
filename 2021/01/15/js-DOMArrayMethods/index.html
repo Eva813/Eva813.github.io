@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>JS實作- DOM Array Methods | Let&#39;s Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-01-15</span>
+    <h2>JS實作- DOM Ar...</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/Array/" rel="tag">Array</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/js/" rel="tag">js</a></div>
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <p><a href="https://eva813.github.io/Eva_portfolio/ArrayMethods/arrayMethod.html" target="_blank" rel="noopener">成品</a><br><img src="https://i.imgur.com/gtaxVol.png" alt=""></p>
+<h1 id="需求觀察"><a href="#需求觀察" class="headerlink" title="需求觀察"></a>需求觀察</h1><ul>
+<li>使用fetch來串接API</li>
+<li>透過左側按鈕，使用陣列的方法來實現不同事件<ul>
+<li>運用<code>forEach()</code>來將陣列資料呈現到畫面</li>
+<li>運用<code>map()</code>計算金額的倍數</li>
+<li><code>filter()</code>篩選出符合條件的資料</li>
+<li><code>sort()</code>用來排序資料</li>
+<li><code>reduce()</code>計算陣列中資料的累加結果</li>
+</ul>
+</li>
+</ul>
+<h1 id="使用fetch來串接資料"><a href="#使用fetch來串接資料" class="headerlink" title="使用fetch來串接資料"></a>使用fetch來串接資料</h1><ul>
+<li>實作專案的資料來源<code>https://randomuser.me/api</code></li>
+</ul>
+<p>1.原本使用<code>fetch</code></p>
+<ul>
+<li>送出 Request，如果得到回應就會回傳帶有 Response 的 Promise 物件，使用 then 將回傳值傳遞下去。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomUser</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">fetch(<span class="string">'https://randomuser.me/api'</span>).then(<span class="function"><span class="params">response</span> =&gt;</span>    response.json()).then(<span class="function"><span class="params">data</span> =&gt;</span> data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a href="https://www.oxxostudio.tw/articles/201908/js-fetch.html" target="_blank" rel="noopener">JavaScript Fetch API 使用教學</a></li>
+</ul>
+<p>2.Fetch 搭配 async、await</p>
+<ul>
+<li>使用async很容易：在定義function時，開頭加上 async</li>
+<li>用fetch取得資料</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getRandomUser</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> res = <span class="keyword">await</span> fetch(<span class="string">'https://randomuser.me/api'</span>);  <span class="comment">//執行完後發出promise</span></span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">await</span> res.json();</span><br><span class="line">  <span class="comment">//查看取得的資料，並從中選擇要用的部分</span></span><br><span class="line">  <span class="comment">//console.log(data);</span></span><br><span class="line">  <span class="keyword">const</span> user = data.results[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">//創造新的使用者，並建立新的物件</span></span><br><span class="line">  <span class="keyword">const</span> newUser = &#123;</span><br><span class="line">    name: <span class="string">`<span class="subst">$&#123;user.name.first&#125;</span> <span class="subst">$&#123;user.name.last&#125;</span>`</span>,</span><br><span class="line">    money: <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">1000000</span>)</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="built_in">console</span>.log(newUser);</span><br><span class="line">  addData(newUser);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.函式中的撰寫</p>
+<ul>
+<li>查看取得的<code>data</code><br><img src="https://i.imgur.com/TjYFhjC.png" alt=""></li>
+<li>變數宣告要取用資料的哪個部分，並用以建立新物件的內容<ul>
+<li><code>const user = data.results[0];</code></li>
+<li><code>user.name.first</code><br><img src="https://i.imgur.com/NAmWK88.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="將物件傳入陣列"><a href="#將物件傳入陣列" class="headerlink" title="將物件傳入陣列"></a>將物件傳入陣列</h2><ul>
+<li><p>data 為前面</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//將新建立的物件(newUser)放入陣列中</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addData</span>(<span class="params">newObj</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//這裡的data是在最前面所宣告的 初始陣列</span></span><br><span class="line">  data.push(newObj);</span><br><span class="line">  </span><br><span class="line">    <span class="comment">//不放入參數，使用預設data</span></span><br><span class="line">  updateDOM();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="將傳入新物件的陣列，顯示於畫面"><a href="#將傳入新物件的陣列，顯示於畫面" class="headerlink" title="將傳入新物件的陣列，顯示於畫面"></a>將傳入新物件的陣列，顯示於畫面</h2></li>
+<li><p>使用<code>forEach()</code>來呈現畫面的資料</p>
+<ul>
+<li>傳入參數為item，為新創的物件資料，內有：name,money</li>
+<li>創造新的<code>div</code>並增加class給他</li>
+<li>用<code>innerHTML</code>插入內容</li>
+<li>用 appendChild() 把上面新增的內容放入，新增的內容會依序排列在後面，不會被洗掉</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將新創立的物件輸出呈現到畫面上(dom)</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateDOM</span>(<span class="params">provideData = data</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(provideData);</span><br><span class="line">  <span class="comment">//清除main區域的div</span></span><br><span class="line">  main.innerHTML = <span class="string">`&lt;h2&gt;&lt;strong&gt;Person&lt;/strong&gt;  Wealth&lt;/h2&gt;`</span>;</span><br><span class="line">  provideData.forEach(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> element = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line">    <span class="comment">//在新div增加class</span></span><br><span class="line">    element.classList.add(<span class="string">'person'</span>);</span><br><span class="line">    element.innerHTML = <span class="string">`&lt;strong&gt;<span class="subst">$&#123;item.name&#125;</span>&lt;/strong&gt; <span class="subst">$&#123;item.money&#125;</span>`</span>;</span><br><span class="line">    main.appendChild(element);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>注意：如果本來 HTML 某元素有既有的內容，但是又用 innerHTML 在同樣的元素上加上內容的時候，innerHTML 會把原本寫的東西覆蓋掉。</p>
+          </div>
+
+<p><img src="https://i.imgur.com/xjxIGr7.png" alt=""></p>
+<ul>
+<li>注意參數的回傳<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateDOM</span>(<span class="params">provideData</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(provideData);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/0O0629Q.png" alt=""><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateDOM</span>(<span class="params">provideData = data</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(provideData);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/qW5Vqq9.png" alt=""></p>
+<p><a href="https://ithelp.ithome.com.tw/articles/10218607" target="_blank" rel="noopener">JavaScript 初心者筆記: DOM - 如何用 JS 新增 HTML 內容</a></p>
+<h2 id="數字轉金錢格式"><a href="#數字轉金錢格式" class="headerlink" title="數字轉金錢格式"></a>數字轉金錢格式</h2><p><img src="https://i.imgur.com/JKQrEyd.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將回傳的隨機數字，轉換為金錢格式 -https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">formatMoney</span>(<span class="params">Money</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'$'</span> + Money.toFixed(<span class="number">2</span>).replace(<span class="regexp">/\d(?=(\d&#123;3&#125;)+\.)/g</span>, <span class="string">'$&amp;,'</span>);;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>formatMoney()</code>要放入剛剛forEach所傳入的金額，從這邊去調整數字的格式<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">element.innerHTML = <span class="string">`&lt;strong&gt;<span class="subst">$&#123;item.name&#125;</span>&lt;/strong&gt;  <span class="subst">$&#123;formatMoney(item.money)&#125;</span>`</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/8DLGtgC.png" alt=""></p>
+<h2 id="增加人員事件"><a href="#增加人員事件" class="headerlink" title="增加人員事件"></a>增加人員事件</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//設置點擊事件，按下add user，增加人</span></span><br><span class="line">addUserBtn.addEventListener(<span class="string">'click'</span>, getRandomUser);</span><br></pre></td></tr></table></figure>
+
+<h2 id="運用map-來，建立-double-money事件"><a href="#運用map-來，建立-double-money事件" class="headerlink" title="運用map()來，建立 double money事件"></a>運用<code>map()</code>來，建立 double money事件</h2><ul>
+<li>loop through array 就像forEach，但不同的是他會回傳東西<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//double money </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doubleMoney</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  data = data.map(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; ...item &#125;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="built_in">console</span>.log(data);</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/PpZ5v7v.png" alt=""></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//double money </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doubleMoney</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  data = data.map(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; ...item, <span class="attr">money</span>: item.money * <span class="number">2</span> &#125;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="built_in">console</span>.log(data);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/joXfDXT.png" alt=""></p>
+<p>呈現於畫面</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//double money </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doubleMoney</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  data = data.map(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; ...item, <span class="attr">money</span>: item.money * <span class="number">2</span> &#125;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="built_in">console</span>.log(data);</span><br><span class="line">   updateDOM();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/M0R5KV4.png" alt=""></p>
+<div class="note info">
+            <p><code>forEach()</code>: 针对每一个元素执行提供的函数(executes a provided function once for each array element)。<br><code>map()</code>: 创建一个新的数组，其中每一个元素由调用数组中的每一个元素执行提供的函数得来(creates a new array with the results of calling a provided function on every element in the calling array)。<br><a href="https://blog.fundebug.com/2018/02/05/map_vs_foreach/" target="_blank" rel="noopener">JavaScript中Map和ForEach的区别</a></p>
+          </div>
+
+<h2 id="運用sort來建立排名"><a href="#運用sort來建立排名" class="headerlink" title="運用sort來建立排名"></a>運用<code>sort</code>來建立排名</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//sortEvent</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortEvent</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  data = data.sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> b.money - a.money;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//console.log(data);</span></span><br><span class="line">  updateDOM();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div class="note info">
+            <p><code>sort</code>依據字串的 Unicode 編碼進行排序，會改變原本的陣列。</p><ul><li>排序進行方式：<code>sort()</code>會將所有元素轉成字串後，且以第一個字元為對象，再進行排序。</li><li>比較好的方式：一般會建議，還是以函式傳入參數來當排序條件會比較穩定。</li></ul><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">5</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">6</span>];</span><br><span class="line"><span class="comment">// 以匿名函式回參數做「升序」排序</span></span><br><span class="line">arr.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a - b; <span class="comment">// a - b &gt; 0</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [1, 2, 3, 5, 6, 9]</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果要反過來做「降序」排序</span></span><br><span class="line">arr.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> b - a;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [9, 6, 5, 3, 2, 1]</span></span><br></pre></td></tr></table></figure>
+          </div>
+<p>參考資料：<a href="https://ithelp.ithome.com.tw/articles/10225733" target="_blank" rel="noopener">JS 將陣列 Array 重新排列的 sort()</a>、<a href="https://medium.com/@leokao0726/%E6%B7%BA%E8%AB%87-js-sort-%E5%88%B0%E8%83%8C%E5%BE%8C%E6%8E%92%E5%BA%8F%E6%96%B9%E6%B3%95-1035f5b8cde8" target="_blank" rel="noopener">淺談 JS sort() 到背後排序方法</a></p>
+<h2 id="filter篩選百萬以上的人員"><a href="#filter篩選百萬以上的人員" class="headerlink" title="filter篩選百萬以上的人員"></a><code>filter</code>篩選百萬以上的人員</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filterMillionaires</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  data = data.filter(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> item.money &gt; <span class="number">1000000</span>;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  updateDOM();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div class="note info">
+            <p><code>filter()</code>的使用是回傳新陣列，原陣列不改變</p>
+          </div>
+
+
+<h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h2><p>拆解內部參數<br>accumulator<br>用來累積回呼函式回傳值的累加器（accumulator）或 initialValue（若有提供的話，詳如下敘）。累加器是上一次呼叫後，所回傳的累加數值。<br>currentValue<br>原陣列目前所迭代處理中的元素。</p>
+<ul>
+<li><code>console.log(accumulator);</code></li>
+</ul>
+<p><img src="https://i.imgur.com/dGpG42b.png" alt=""></p>
+<ul>
+<li><code>console.log(currentValue);</code></li>
+</ul>
+<p><img src="https://i.imgur.com/P0yQK34.png" alt=""></p>
+<ul>
+<li>console.log(currentValue.money);</li>
+</ul>
+<p><img src="https://i.imgur.com/vNfFozL.png" alt=""></p>
+<p><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce" target="_blank" rel="noopener">MDN</a><br><a href="https://w3c.hexschool.com/blog/a2cb755f" target="_blank" rel="noopener">JavaScript reduce 在做什麼？</a></p>
+<h3 id="理解完reduce-所回傳的參數資料後…"><a href="#理解完reduce-所回傳的參數資料後…" class="headerlink" title="理解完reduce()所回傳的參數資料後…"></a>理解完<code>reduce()</code>所回傳的參數資料後…</h3><ul>
+<li>讓金額加總計算<code>accumulator += currentValue.money</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//calculateMoney</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculateMoney</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> reduceArr = data.reduce(<span class="function">(<span class="params">accumulator, currentValue</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//console.log(accumulator);</span></span><br><span class="line">   <span class="comment">// console.log(currentValue.money);</span></span><br><span class="line">    <span class="keyword">return</span> accumulator += currentValue.money;</span><br><span class="line">  &#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> totalEl = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line">  totalEl.innerHTML = <span class="string">`&lt;h3&gt;Total Wealth: &lt;strong&gt; <span class="subst">$&#123;formatMoney(reduceArr)&#125;</span> &lt;/strong&gt; &lt;/h3&gt; `</span>;</span><br><span class="line">  main.appendChild(totalEl);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>No newer post</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/01/15/js-SortableList/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>JS實作- S...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Coding</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>
