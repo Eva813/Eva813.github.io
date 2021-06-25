@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>JS實作-musicPlayer | Let&#39;s Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-01-15</span>
+    <h2>JS實作-musicPl...</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/append/" rel="tag">append</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/jQuery/" rel="tag">jQuery </a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/js/" rel="tag">js</a></div>
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <h2 id="觀察須製作的功能"><a href="#觀察須製作的功能" class="headerlink" title="觀察須製作的功能"></a>觀察須製作的功能</h2><p><a href="https://eva813.github.io/Eva_portfolio/musicPlayer/musicPlayer.html" target="_blank" rel="noopener">成品</a></p>
+<ol>
+<li>播放器API的樣式</li>
+</ol>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio" target="_blank" rel="noopener">&lt;audio&gt;: The Embed Audio element</a></p>
+<ol start="2">
+<li>播放時，左方的圓型圖示會旋轉。</li>
+</ol>
+<ul>
+<li>先於css檔案製作符合動畫的class</li>
+<li>在js時，依照符合的情況加入該class</li>
+</ul>
+<p><img src="https://i.imgur.com/3LBdMiU.png" alt=""></p>
+<ol start="3">
+<li>播放時，上方會跳出播放歌曲的名稱。</li>
+</ol>
+<ul>
+<li>先於css檔案製作符合動畫的class，設定<code>opacity</code>1或0，<code>translateY</code>位置的移動</li>
+<li>在js時，依照符合的情況加入該class</li>
+</ul>
+<p><img src="https://i.imgur.com/U3dx7yG.png" alt=""></p>
+<ol start="4">
+<li>左右按鍵可以更換曲目，同時圖片會更換</li>
+</ol>
+<ul>
+<li>設定陣列，使歌曲與圖片相符</li>
+<li>並讓前後的跳轉鍵，依照順序或條件來變化</li>
+</ul>
+<p><img src="https://i.imgur.com/NuxfsOb.png" alt=""></p>
+<hr>
+<h2 id="html部分"><a href="#html部分" class="headerlink" title="html部分"></a>html部分</h2><h3 id="跳轉按鍵"><a href="#跳轉按鍵" class="headerlink" title="跳轉按鍵"></a>跳轉按鍵</h3><ul>
+<li>播放鍵、前/後跳轉的按鈕 </li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"nav"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"prev"</span> <span class="attr">class</span>=<span class="string">"action-btn"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"fas fa-backward"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"play"</span> <span class="attr">class</span>=<span class="string">"action-btn  action-btn-big"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"fas fa-play"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"next"</span> <span class="attr">class</span>=<span class="string">"action-btn"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"fas fa-forward"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/w1bpDjr.png" alt=""></p>
+<h2 id="css部分"><a href="#css部分" class="headerlink" title="css部分"></a>css部分</h2><h3 id="背景顏色"><a href="#背景顏色" class="headerlink" title="背景顏色"></a>背景顏色</h3><p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient()" target="_blank" rel="noopener">linear-gradient()</a></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 傾斜度\顏色、從哪個位置開始 */</span></span><br><span class="line">  <span class="selector-tag">background-image</span><span class="selector-pseudo">:linear-gradient(0deg</span></span><br><span class="line">  ,<span class="selector-tag">rgb</span>(247, 247, 247,1) 23<span class="selector-class">.8</span>%,</span><br><span class="line">  <span class="selector-tag">rgba</span>(252,221,221,1) 92% );</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/Xb5PpmY.png" alt=""></p>
+<h2 id="圖片圓形以及旋轉"><a href="#圖片圓形以及旋轉" class="headerlink" title="圖片圓形以及旋轉"></a>圖片圓形以及旋轉</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.img-container</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">110px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*圖片圓形*/</span></span><br><span class="line"><span class="selector-class">.img-container</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">object-fit</span>: cover;</span><br><span class="line"><span class="comment">/*填滿元素的寬度及高度(維持原比例)，通常會剪掉部分的物件*/</span></span><br><span class="line"> <span class="attribute">height</span>: <span class="number">110px</span>;</span><br><span class="line"> <span class="attribute">width</span>: inherit; <span class="comment">/*繼承自父層的寬度屬性值。*/</span></span><br><span class="line"> <span class="attribute">position</span>:absolute;</span><br><span class="line"> <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line"> <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"> <span class="attribute">animation</span>: rotate <span class="number">3s</span> linear infinite;</span><br><span class="line"> <span class="attribute">animation-play-state</span>: paused;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 播放class的製作 */</span></span><br><span class="line"><span class="selector-class">.music-container</span><span class="selector-class">.play</span> <span class="selector-class">.img-container</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line"> <span class="attribute">animation-play-state</span>:running;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@keyframes</span> rotate&#123;</span><br><span class="line">  <span class="selector-tag">from</span>&#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">rotate</span>(<span class="number">0deg</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">to</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">rotate</span>(<span class="number">360deg</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用animation@keyframe<br><a href="https://wcc723.github.io/development/2020/10/11/img-cover/" target="_blank" rel="noopener">新手前端也不該犯的錯：圖片變形</a></li>
+</ul>
+<p><img src="https://i.imgur.com/RfUz8Pk.png" alt=""></p>
+<ul>
+<li>在圖片中間加入圓形點，以看起來像光碟樣式</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.img-container</span><span class="selector-pseudo">::after</span>&#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">bottom</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">25px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">25px</span>;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translate</span>(-<span class="number">50%</span>,<span class="number">50%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/HlnWKJb.png" alt=""></p>
+<h3 id="播放進度條的製作"><a href="#播放進度條的製作" class="headerlink" title="播放進度條的製作"></a>播放進度條的製作</h3><ol>
+<li>標題<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.music-info</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>,.<span class="number">5</span>);</span><br><span class="line">  <span class="attribute">border-radius</span>:<span class="number">15px</span> <span class="number">15px</span> <span class="number">0</span> <span class="number">0</span> ;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateY</span>(<span class="number">0%</span>);</span><br><span class="line">  <span class="attribute">transition</span>: transform <span class="number">0.3s</span> ease-in,opacity <span class="number">0.3s</span> ease-in;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.music-container</span><span class="selector-class">.play</span> <span class="selector-class">.music-info</span>&#123;</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">   <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-<span class="number">100%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>將曲目標題設置背景、圓角</li>
+<li>利用 transfor、opacity來呈現位置的變化</li>
+</ul>
+<p><img src="https://i.imgur.com/icBK0qt.png" alt=""></p>
+<ul>
+<li>修改標題位置</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*放入.music-info之中*/</span></span><br><span class="line"><span class="selector-tag">width</span>: <span class="selector-tag">calc</span>(100% <span class="selector-tag">-</span> 40<span class="selector-tag">px</span>);</span><br><span class="line"> <span class="selector-tag">padding</span>: 10<span class="selector-tag">px</span> 10<span class="selector-tag">px</span> 10<span class="selector-tag">px</span> 150<span class="selector-tag">px</span>;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>calc() 的運算式一樣是按照先乘除後加減進行計算<br> width: calc(100% - 40px);<br>/* 意思是 100% 的寬度 - 去 40px */<br><a href="https://5xruby.tw/posts/css-calc/" target="_blank" rel="noopener">CSS： calc() 數值運算</a></p>
+          </div>
+
+
+<p><img src="https://i.imgur.com/er3G6Wd.png" alt=""></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.music-info</span> <span class="selector-tag">h4</span>&#123;</span><br><span class="line"><span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/qiWmxmu.png" alt=""></p>
+<p>2.進度條（progress）</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.progress-container</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">4px</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">10px</span> <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">cursor</span>: pointer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.progress</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fe8daa</span>;</span><br><span class="line"> <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">4px</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">0%</span>;</span><br><span class="line">  <span class="attribute">transition</span>: width .<span class="number">1s</span> linear ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/uPUHWcM.png" alt=""></p>
+<h2 id="js部分"><a href="#js部分" class="headerlink" title="js部分"></a>js部分</h2><h3 id="1-音樂播放鍵-播放與停止"><a href="#1-音樂播放鍵-播放與停止" class="headerlink" title="1.音樂播放鍵(播放與停止)"></a>1.音樂播放鍵(播放與停止)</h3><ul>
+<li>分別有兩個函式：<code>playMusic()</code> 、<code>pauseMusic()</code></li>
+<li>在css設定<code>.play</code>的css，並於js綁定事件，加入css的效果(使圖片如同轉盤，會旋轉)</li>
+<li>在icon的部分：在播放時：為暫停鍵圖示;在暫停時：為播放鍵的圖示</li>
+<li>透過play()、pause()，讓音源播放與暫停</li>
+</ul>
+<div class="note info">
+            <p>因為play()、pause()是DOM元素，不是jQuery的function，而要用jQuery取得DOM元素<br><code>$(&#39;#audio&#39;).get(0).play()</code> =&gt;<code>$(&#39;#audio&#39;)[0].play()</code><br><code>$(&#39;#audio&#39;).get(0).pause()</code> =&gt;<code>$(&#39;#audio&#39;)[0].pause()</code></p>
+          </div>
+
+<p>參考資料：<br><a href="https://learn.jquery.com/using-jquery-core/faq/how-do-i-pull-a-native-dom-element-from-a-jquery-object/" target="_blank" rel="noopener">How do I pull a native DOM element from a jQuery object?</a><br><a href="https://stackoverflow.com/questions/4646998/play-pause-html-5-video-using-jquery" target="_blank" rel="noopener">Play/pause HTML 5 video using JQuery</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//播放音樂</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">playMusic</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  $(<span class="string">'.music-container'</span>).addClass(<span class="string">'play'</span>);</span><br><span class="line">  $(<span class="string">'#play'</span>).find(<span class="string">'i'</span>).removeClass(<span class="string">'fa-play'</span>);</span><br><span class="line">  $(<span class="string">'#play'</span>).find(<span class="string">'i'</span>).addClass(<span class="string">'fa-pause'</span>);</span><br><span class="line">  $(<span class="string">'#audio'</span>).get(<span class="number">0</span>).play();</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//停止音樂</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pauseMusic</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">'.music-container'</span>).removeClass(<span class="string">'play'</span>);</span><br><span class="line">  $(<span class="string">'#play'</span>).find(<span class="string">'i'</span>).addClass(<span class="string">'fa-play'</span>);</span><br><span class="line">  $(<span class="string">'#play'</span>).find(<span class="string">'i'</span>).removeClass(<span class="string">'fa-pause'</span>);</span><br><span class="line">  $(<span class="string">'#audio'</span>).get(<span class="number">0</span>).pause();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><h4 id="綁定事件："><a href="#綁定事件：" class="headerlink" title="綁定事件："></a>綁定事件：</h4>如果音樂是播放狀態的話，就執行<code>pauseMusic()</code>，反之，音樂不處於波方時，執行<code>playMusic()</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#play'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">var</span> hasPlay = $(<span class="string">'#music-container'</span>).hasClass(<span class="string">'play'</span>);</span><br><span class="line">   <span class="comment">//var a = $('#audio').paused;</span></span><br><span class="line">   <span class="keyword">if</span> (hasPlay) &#123;</span><br><span class="line">     pauseMusic();</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     playMusic();</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+
+</li>
+</ul>
+<h3 id="2-載入音樂"><a href="#2-載入音樂" class="headerlink" title="2.載入音樂"></a>2.載入音樂</h3><ul>
+<li>將歌曲名稱建立陣列，並將此回傳到建立的函式中</li>
+<li>設定預設的索引<code>let songIndex = 1</code></li>
+<li>使用 attr( 屬性名, 屬性值 )，獲取屬性的值，在這部分，透過歌曲名稱來取得歌曲與照片</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> songs_name = [<span class="string">'hey'</span>, <span class="string">'summer'</span>, <span class="string">'ukulele'</span>];</span><br><span class="line"><span class="keyword">let</span> songIndex = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadSongs</span>(<span class="params">song</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//console.log(song);</span></span><br><span class="line">  $(<span class="string">'#title'</span>).text(song);</span><br><span class="line">  </span><br><span class="line">  $(<span class="string">'#audio'</span>).attr(<span class="string">'src'</span>, <span class="string">`music/<span class="subst">$&#123;song&#125;</span>.mp3`</span>);</span><br><span class="line">  $(<span class="string">'#cover'</span>).attr(<span class="string">'src'</span>, <span class="string">`img/<span class="subst">$&#123;song&#125;</span>.jpg`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Initially load song details into DOM</span></span><br><span class="line">loadSongs(songs_name[songIndex]);</span><br></pre></td></tr></table></figure>
+<h4 id="綁定於下一首、前一首的圖示被點擊時"><a href="#綁定於下一首、前一首的圖示被點擊時" class="headerlink" title="綁定於下一首、前一首的圖示被點擊時"></a>綁定於下一首、前一首的圖示被點擊時</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#next'</span>).click(nextSong)</span><br><span class="line">  $(<span class="string">'#prev'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; prevSong();</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li><p>查看函式回傳</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loadSongs(songs_name);</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/je9hXJY.png" alt=""></p>
+</li>
+<li><p>要抓取到該索引</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loadSongs(songs_name[songIndex]);</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/5not1Ji.png" alt=""><br>此段落執行時，出現問題：<br><img src="https://i.imgur.com/dj4H5hb.png" alt=""></p>
+</li>
+<li><p>搜尋到的處理方式：在html的<code>head</code><link rel="shortcut icon" href="#"><br><a href="https://stackoverflow.com/questions/31075893/im-getting-favicon-ico-error/31329574" target="_blank" rel="noopener">I’m getting favicon.ico error
+</a></p>
+</li>
+</ul>
+<p>參考資料：<br><a href="https://iter01.com/470327.html" target="_blank" rel="noopener">jquery prop和attr的區別</a><br><a href="https://cythilya.github.io/2017/09/10/jquery-attr-vs-prop/" target="_blank" rel="noopener">jQuery .attr() vs .prop()</a></p>
+<h3 id="3-左右鍵的跳轉"><a href="#3-左右鍵的跳轉" class="headerlink" title="3.左右鍵的跳轉"></a>3.左右鍵的跳轉</h3><ul>
+<li>下一首歌曲，與跳至前一首歌曲，兩個函式的撰寫有異曲同工之妙，只有在設條條件上的差異。</li>
+<li><code>nextSong()</code>:設定條件為歌曲索引<code>songIndex</code>比 歌曲陣列長度-1<code>songs_name.length - 1</code>還要小，我們就要將索引+1。<ul>
+<li>例如這裏預設的索引為1，所以在點擊當下，判斷&lt;<code>songs_name.length - 1</code>，所以需加1，索引變成2，跳至下一首 ‘ukulele’</li>
+</ul>
+</li>
+<li>prevSong()：設定條件為歌曲索引<code>songIndex</code>比0大，就要索引-1，跳轉至上一首歌曲。若沒符合的話，索引就等於<code>songs_name.length - 1</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//歌曲的索引，如果比歌曲總數-1還小，就將索引加1，跳轉下一首</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">nextSong</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (songIndex &lt; songs_name.length - <span class="number">1</span>) &#123; songIndex += <span class="number">1</span>; &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    songIndex = <span class="number">0</span></span><br><span class="line">  &#125;;</span><br><span class="line">  loadSongs(songs_name[songIndex]);</span><br><span class="line">  playMusic();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//跳轉前一首</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prevSong</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//如果索引沒有大於0。就會播索引[2]</span></span><br><span class="line">  <span class="keyword">if</span> (songIndex &gt; <span class="number">0</span>) &#123; songIndex -= <span class="number">1</span>; &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    songIndex = songs_name.length - <span class="number">1</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">  loadSongs(songs_name[songIndex]);</span><br><span class="line">  playMusic();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>參考資料：<br><a href="https://www.geeksforgeeks.org/create-a-music-player-using-javascript/" target="_blank" rel="noopener">Create a Music Player using JavaScript</a></p>
+<h3 id="4-點擊進度條，可以跳轉音樂位置"><a href="#4-點擊進度條，可以跳轉音樂位置" class="headerlink" title="4.點擊進度條，可以跳轉音樂位置"></a>4.點擊進度條，可以跳轉音樂位置</h3><h4 id="1-顯示粉色進度條"><a href="#1-顯示粉色進度條" class="headerlink" title="(1).顯示粉色進度條"></a>(1).顯示粉色進度條</h4><ul>
+<li>duration：音源的時間(一樣是使用get方式取得)</li>
+<li>currentTime：音樂播放的當前位置（以秒計）</li>
+<li>progressBar：進度條</li>
+<li>計算百分比：<code>(currentTime / duration) * 100</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//顯示進度條</span></span><br><span class="line"><span class="comment">//為何取[0]</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleProgress</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> duration = $(<span class="string">'#audio'</span>).get(<span class="number">0</span>).duration;</span><br><span class="line">  <span class="comment">//console.log(duration)</span></span><br><span class="line">  <span class="keyword">var</span> currentTime = $(<span class="string">'#audio'</span>)[<span class="number">0</span>].currentTime;</span><br><span class="line">  <span class="comment">//console.log(currentTime)</span></span><br><span class="line">  <span class="keyword">const</span> progressBar = $(<span class="string">'#progress'</span>);</span><br><span class="line">  <span class="keyword">const</span> progressPercent = (currentTime / duration) * <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//currentTime目前播放時間去與影片長度duration轉換成百分比，即可得到目前播放時間的百分比</span></span><br><span class="line"></span><br><span class="line">  progressBar.css(<span class="string">'width'</span>, <span class="string">`<span class="subst">$&#123;progressPercent&#125;</span>%`</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-點擊進度條，會跳轉到該位置播放"><a href="#2-點擊進度條，會跳轉到該位置播放" class="headerlink" title="(2).點擊進度條，會跳轉到該位置播放"></a>(2).點擊進度條，會跳轉到該位置播放</h4><ul>
+<li>width:獲取該進度條容器的寬度</li>
+<li>抓取點擊位置：<ul>
+<li>e.pageX:取得滑鼠在頁面裡的位置</li>
+<li>elm.offset().left:絕對座標X軸</li>
+</ul>
+</li>
+<li>將（點擊位置除以進度條的總長）乘以 音樂的時間長度，就可以取得點擊的時間位置<code>theTime = ((xPos / width))* duration;</code></li>
+<li>最後現在時間設為，計算好的點擊時間</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//點擊進度條</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//https://ithelp.ithome.com.tw/articles/10194871</span></span><br><span class="line"><span class="comment">//https://tools.wingzero.tw/article/sn/102</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$(<span class="string">'#progress-container'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> width = $(<span class="string">'#progress-container'</span>).width(); <span class="comment">//216.25</span></span><br><span class="line">  <span class="comment">//console.log(width);</span></span><br><span class="line">  <span class="comment">//取得點擊位置</span></span><br><span class="line">  <span class="keyword">var</span> elm = $(<span class="keyword">this</span>);</span><br><span class="line">  <span class="keyword">var</span> xPos = e.pageX - elm.offset().left;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//console.log(xPos);</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> duration = $(<span class="string">'#audio'</span>)[<span class="number">0</span>].duration;</span><br><span class="line">  <span class="keyword">var</span> theTime = ((xPos / width))</span><br><span class="line">    * duration;</span><br><span class="line">  <span class="comment">//console.log(theTime);</span></span><br><span class="line">  $(<span class="string">'#audio'</span>)[<span class="number">0</span>].currentTime = theTime;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>執行過程，利用console來查看</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(e.pageX);</span><br><span class="line"><span class="built_in">console</span>.log(elm.offset().left);</span><br><span class="line"><span class="built_in">console</span>.log(xPos)</span><br></pre></td></tr></table></figure>
+<p>參考資料：<br><a href="https://tools.wingzero.tw/article/sn/102" target="_blank" rel="noopener">取得滑鼠位置、元素位置與區塊內的相對位置</a></p>
+<h3 id="5-歌曲播完後，換下一首"><a href="#5-歌曲播完後，換下一首" class="headerlink" title="5.歌曲播完後，換下一首"></a>5.歌曲播完後，換下一首</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#audio'</span>).on(<span class="string">'ended'</span>,nextSong);</span><br></pre></td></tr></table></figure>
+<p>參考資料：<br><a href="https://stackoverflow.com/questions/39325637/audio-auto-play-next-song-when-previous-is-finished/52228798" target="_blank" rel="noopener">audio auto play next song when previous is finished</a></p>
+<h2 id="6-增加隨機的變換背景色彩"><a href="#6-增加隨機的變換背景色彩" class="headerlink" title="6.增加隨機的變換背景色彩"></a>6.增加隨機的變換背景色彩</h2><ul>
+<li>色彩為0-256;而因為想取的較亮的色系，所以取64-256<ul>
+<li><code>Math.random()</code> 會回傳一個偽隨機小數 (pseudo-random) 介於0到1之間(包含 0，不包含1) </li>
+<li><code>Math.floor()</code>會將所有的小數無條件捨去到比自身小的最大整數</li>
+<li><code>Math.floor(Math.random() * 255) + 64</code>就會取得64 to 256</li>
+</ul>
+</li>
+<li>宣告變數<code>bgColor</code>為rdba(red,green,blue,a)</li>
+<li>最後將此函式，放入<code>loadSongs()</code>函式當中，每次播放、跳轉歌曲，同時背景顏色也會改變<br><img src="https://i.imgur.com/piYCbc5.png" alt=""></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">random_bg_color</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Get a random number between 64 to 256 </span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// (for getting lighter colors) </span></span><br><span class="line">  <span class="keyword">let</span> red = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">255</span>) + <span class="number">64</span>;</span><br><span class="line">  <span class="keyword">let</span> green = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">255</span>) + <span class="number">64</span>;</span><br><span class="line">  <span class="keyword">let</span> blue = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">255</span>) + <span class="number">64</span>;</span><br><span class="line">  <span class="keyword">let</span> a = <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Construct a color withe the given values </span></span><br><span class="line">  <span class="keyword">let</span> bgColor = <span class="string">"rgba("</span> + red + <span class="string">", "</span> + green + <span class="string">", "</span> + blue + <span class="string">", "</span> + a + <span class="string">")"</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> bg = $(<span class="built_in">document</span>.body).css(<span class="string">'background'</span>, <span class="string">`<span class="subst">$&#123;bgColor&#125;</span>`</span>);</span><br><span class="line">  <span class="comment">// Set the background to the new color </span></span><br><span class="line">  bg = bgColor;</span><br><span class="line">  <span class="built_in">console</span>.log(bg)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>參考資料：<br><a href="https://www.geeksforgeeks.org/create-a-music-player-using-javascript/" target="_blank" rel="noopener">Create a Music Player using JavaScript</a><br><a href="https://stackoverflow.com/questions/20790579/wont-math-floormath-random-255-generate-uneven-probabilities" target="_blank" rel="noopener">Won’t Math.floor(Math.random() * 255) generate uneven probabilities?
+</a><a href="https://ithelp.ithome.com.tw/articles/10197904" target="_blank" rel="noopener">[筆記][JavaScript]用Math.random()取得亂數的技巧</a></p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>No newer post</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/01/10/localstorage/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>認識什麼是Lo...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Coding</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>
