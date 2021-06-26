@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>SCSS- ClothesStore | Let&#39;s Coding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-03-05</span>
+    <h2>SCSS- Clothe...</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/SCSS/" rel="tag">SCSS</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/grid/" rel="tag">grid</a></div>
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <p><a href="https://eva813.github.io/Eva_portfolio/sass-ClothesStore/ClothesStore.html" target="_blank" rel="noopener">成品</a></p>
+<h2 id="scss-檔案的建立"><a href="#scss-檔案的建立" class="headerlink" title="scss 檔案的建立"></a>scss 檔案的建立</h2><p>所建立的各分檔，個別會負責不同的區塊，並透過<code>@import</code>放入主要的sass檔</p>
+<ul>
+<li>main.scss 引入其他分檔<br><img src="https://i.imgur.com/PLNNF5k.png" alt=""></li>
+<li>abstracts<ul>
+<li>/_variables.scss：設定常用的變數，如：顏色、字體大小</li>
+<li>/_mixin.scss：設定某些區段中，重複用到的樣式，並於該區段要使用的時候引用</li>
+</ul>
+</li>
+<li>base<ul>
+<li>/_base.scss：為設定大框架，如html、body、container，等主幹的大小、字型的設定</li>
+</ul>
+</li>
+<li>components:放置部分功能元件<ul>
+<li>/_button.scss：按鈕的設定</li>
+<li>/_heading.scss：標題</li>
+<li>/_logo.scss</li>
+<li>/_dropdown.scss</li>
+</ul>
+</li>
+<li>layout （設計網頁版面配置(Layout)）<ul>
+<li>/_header.scss</li>
+<li>/_navigation.scss</li>
+<li>/_products.scss</li>
+<li>/_slidshow.scss</li>
+<li>/_footer.scss</li>
+</ul>
+</li>
+<li>pages 通常是用來放置其他分頁（網頁內會連結到其他相關分頁）</li>
+<li>venders 放置外部套件</li>
+</ul>
+<p><img src="https://i.imgur.com/GmeHZ7w.png" alt=""></p>
+<h3 id="1-基礎設置"><a href="#1-基礎設置" class="headerlink" title="(1)基礎設置"></a>(1)基礎設置</h3><h4 id="1-1-Grid-練習"><a href="#1-1-Grid-練習" class="headerlink" title="(1.1)Grid 練習"></a>(1.1)Grid 練習</h4><p><code>_base.scss</code></p>
+<ul>
+<li>總共要設置10欄</li>
+<li>列的則是設置4區塊</li>
+<li>並設置每個區塊都有1.6rem的gap<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: grid;</span><br><span class="line">    grid-template-<span class="attribute">columns</span>:minmax(<span class="number">6rem</span>,<span class="number">1</span>fr) repeat(<span class="number">8</span>,minmax(min-content,<span class="number">16</span> rem))   minmax(<span class="number">6rem</span>,<span class="number">1</span>fr);<span class="comment">//10欄</span></span><br><span class="line">    grid-template-rows: repeat(<span class="number">4</span>,min-content);</span><br><span class="line">    grid-row-gap:<span class="number">1.6rem</span> ;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/QA3NLgt.png" alt=""></p>
+<ul>
+<li><code>minmax(min, max)</code><br><code>minmax(6rem,1fr)</code>:設定格線最小6rem，最大1fr<br>fr 單位就是為了格線布局而生，fraction，中文意思是分數，當使用在網格軌道上時，可以直接想像成 “我的這個空位要佔有總 fr 數量的幾等份”</li>
+<li><code>repeat(8,minmax(min-content,16rem))</code>:重複8個，最小：min-content;最大16rem<ul>
+<li>repeat() 重複網格線及間距<ul>
+<li>max-content/min-content 最小內容尺寸/最大內容尺寸<ul>
+<li>max-content：給予網格區域所需的最大尺寸空間，內容盡可能避免折行。</li>
+<li>min-content：給予網格區域所需的最小尺寸空間，內容盡可能的折行，但不會溢出邊界。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://ithelp.ithome.com.tw/articles/10248418" target="_blank" rel="noopener">[Day19] grid-template 屬性之 rows/columns</a><br><a href="https://www.youtube.com/watch?v=lZ2JX_6SGNI" target="_blank" rel="noopener">Min &amp; Max Content Sizing in CSS Grid — 1/3 Flexibility</a><br><a href="http://csscoke.com/2013/10/17/css-layout-generator/" target="_blank" rel="noopener">CSS Layout很難？用這招30秒就讓你輕鬆生出網頁版面！</a></p>
+<hr>
+<h4 id="1-2-常用變數"><a href="#1-2-常用變數" class="headerlink" title="(1.2)常用變數"></a>(1.2)常用變數</h4><ul>
+<li><code>_variable.scss</code>map與function的搭配使用</li>
+<li>設定不同的顏色，並設置函式，以利後續使用</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$colors</span>:(</span><br><span class="line">  primary:<span class="number">#333</span>,</span><br><span class="line">  secondary:<span class="number">#ffe</span>,</span><br><span class="line">  tertiary:<span class="number">#f2f0f1</span>,</span><br><span class="line">  quaternary:<span class="number">#f5b149</span></span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"><span class="comment">//創造函式</span></span><br><span class="line"><span class="comment">//函式名稱為color代入參數為$color-name，使用map代入物件，最為回傳的結果</span></span><br><span class="line"><span class="keyword">@function</span> color(<span class="variable">$color-name</span>)&#123;</span><br><span class="line">  <span class="keyword">@return</span> map-get(<span class="variable">$map</span>: <span class="variable">$colors</span>, <span class="variable">$key</span>:<span class="variable">$color-name</span> )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$font-size</span>:(</span><br><span class="line">  xl:<span class="number">3rem</span>,</span><br><span class="line">  lg:<span class="number">2.5rem</span>,</span><br><span class="line">  md:<span class="number">2rem</span>,</span><br><span class="line">  sm:<span class="number">1.8rem</span>,</span><br><span class="line">  xs:<span class="number">1.6rem</span></span><br><span class="line">);</span><br><span class="line"><span class="keyword">@function</span> size(<span class="variable">$size</span>)&#123;</span><br><span class="line">  <span class="keyword">@return</span> map-get(<span class="variable">$map</span>: <span class="variable">$font-size</span>, <span class="variable">$key</span>:<span class="variable">$size</span> )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-layout-header-scss"><a href="#2-layout-header-scss" class="headerlink" title="(2)layout/_header.scss"></a>(2)<code>layout/_header.scss</code></h3><p>header的版面</p>
+<ul>
+<li><code>grid-column: 1/-1; (1/11) grid-row: 1/2;</code>表示所佔的區隔<br><img src="https://i.imgur.com/C1W2Urq.png" alt=""></li>
+<li>而在header這區，在設置grid劃分區塊<ul>
+<li>有9欄</li>
+<li>列設置3區塊<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line">  grid-column: <span class="number">1</span>/-<span class="number">1</span>; <span class="comment">//1/11</span></span><br><span class="line">  grid-row: <span class="number">1</span>/<span class="number">2</span>;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  grid-template-<span class="attribute">columns</span>: <span class="number">1</span>fr repeat(<span class="number">7</span>,minmax(min-content,<span class="number">16rem</span>)) <span class="number">1</span>fr;</span><br><span class="line">  grid-template-rows: repeat(<span class="number">3</span>,min-content);</span><br><span class="line"> grid-gap: <span class="number">2rem</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><code>grid-column: 1/-1; //1/11  ; grid-row: 1/2;</code> <a href="https://stackoverflow.com/questions/49005233/whats-the-difference-between-grid-column-value-1-1-and-1-2" target="_blank" rel="noopener">What’s the difference between grid-column value 1/1 and 1/2?
+</a></li>
+</ul>
+<h3 id="3-logo的大小設置"><a href="#3-logo的大小設置" class="headerlink" title="(3)logo的大小設置"></a>(3)logo的大小設置</h3><p><code>_logo.scss</code></p>
+<ul>
+<li>注意：設立所設定的欄和列的區塊，是在header設置的grid底下<br><img src="https://i.imgur.com/OEkTxyS.png" alt=""></li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.logo</span>&#123;</span><br><span class="line">  grid-column: <span class="number">1</span>/<span class="number">2</span>;</span><br><span class="line">  grid-row: <span class="number">1</span>/<span class="number">2</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">1rem</span>;</span><br><span class="line">  <span class="comment">//class="logo-img"</span></span><br><span class="line">  &amp;-<span class="selector-tag">img</span>&#123;  </span><br><span class="line">    <span class="attribute">width</span>: <span class="number">10rem</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-heading"><a href="#4-heading" class="headerlink" title="(4)heading"></a>(4)heading</h3><ul>
+<li>標題的位置一樣利用grid來設定</li>
+<li>在文字的字體、大小、間距進行調整<br><code>_heading.scss</code><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.heading</span>&#123;</span><br><span class="line">  grid-column: <span class="number">4</span>/<span class="number">7</span>;</span><br><span class="line">  grid-row: <span class="number">2</span>/<span class="number">3</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  &amp;-text&#123;</span><br><span class="line">    <span class="attribute">font-family</span>: <span class="string">'Great Vibes'</span>,cursive;</span><br><span class="line">    <span class="attribute">font-size</span>: size(xl)*<span class="number">2</span>; <span class="comment">//結果為6rem</span></span><br><span class="line">    <span class="attribute">font-weight</span>: lighter;</span><br><span class="line">    <span class="attribute">letter-spacing</span>: <span class="number">0.5rem</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/JfkrqEb.png" alt=""></li>
+</ul>
+<h3 id="5-heading中的navigation"><a href="#5-heading中的navigation" class="headerlink" title="(5)heading中的navigation"></a>(5)heading中的navigation</h3><p> <code>layout/_navigation.scss</code></p>
+<ul>
+<li><code>.first-nav</code>為放置右上角</li>
+<li><code>.second-nav</code>為放置下方，中間的位置<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-class">.first-nav</span>&#123; </span><br><span class="line">  <span class="comment">//放在最後三欄</span></span><br><span class="line">  grid-column: <span class="number">7</span>/<span class="number">10</span>;</span><br><span class="line">  grid-row: <span class="number">1</span>/<span class="number">2</span>;</span><br><span class="line">  <span class="keyword">@include</span> navigation;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.second-nav</span>&#123;</span><br><span class="line">  grid-column: <span class="number">3</span>/<span class="number">8</span>;</span><br><span class="line">  grid-row: <span class="number">3</span>/<span class="number">4</span>;</span><br><span class="line">  <span class="keyword">@include</span> navigation;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.dropdown</span>&#123;</span><br><span class="line">  <span class="attribute">display</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/PWJoEoH.png" alt=""></p>
+<ul>
+<li>@mixin，創造navigstion共用樣式<ul>
+<li>使navigation的li-list可以橫向分散排列</li>
+<li>設定hover效果，使游標摸到顏色變淺<code>lighten()</code><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//.first-nav-list</span></span><br><span class="line"><span class="keyword">@mixin</span> navigation&#123;</span><br><span class="line"></span><br><span class="line">  &amp;-list&#123;  </span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">justify-content</span>: space-around;</span><br><span class="line">    <span class="attribute">align-items</span>: center;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;-item&#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;-<span class="selector-tag">link</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: color(primary);</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: size(sm);</span><br><span class="line">    <span class="attribute">transition</span>: all .<span class="number">3s</span>;</span><br><span class="line"></span><br><span class="line">    &amp;<span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">      <span class="attribute">color</span>: lighten(color(primary),<span class="number">40%</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/t6KdpJ9.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="6-下拉選項：dropdown-list的箭頭符號"><a href="#6-下拉選項：dropdown-list的箭頭符號" class="headerlink" title="(6)下拉選項：dropdown list的箭頭符號"></a>(6)下拉選項：dropdown list的箭頭符號</h3><p><code>components/_dropdown.scss</code></p>
+<ul>
+<li><code>font-family: &#39;Font Awesome 5 Free&#39;</code>：把icon當作字體使用<br><a href="https://yuwensaf.github.io/6110beb1/" target="_blank" rel="noopener">使用 fontAwesome 動態加入連結 icon</a></li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.dropdown-li</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line"> <span class="comment">//創造下拉選單的箭頭符號</span></span><br><span class="line"> &amp;<span class="selector-pseudo">::after</span>&#123;</span><br><span class="line">   <span class="attribute">font-family</span>: <span class="string">'Font Awesome 5 Free'</span>;</span><br><span class="line">   <span class="attribute">content</span>: <span class="string">'\f078'</span>;</span><br><span class="line">   <span class="attribute">font-weight</span>:bold ;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/4pg8oNR.png" alt=""></p>
+<ul>
+<li><p>製作下拉式選單的三角形</p>
+<ul>
+<li>先利用border製作出上、下、左、右的三角<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.dropdown</span>&#123;</span><br><span class="line"> &amp;<span class="selector-pseudo">::before</span>&#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: -<span class="number">1.5rem</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">7.3rem</span>;</span><br><span class="line">    <span class="attribute">border-top</span>: <span class="number">15px</span> solid red;</span><br><span class="line">    <span class="attribute">border-right</span>: <span class="number">15px</span> solid green;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">15px</span> solid orange;</span><br><span class="line">    <span class="attribute">border-left</span>: <span class="number">15px</span> solid blue;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/chq5TM1.png" alt=""></li>
+</ul>
+</li>
+<li><p>調整上方各色的三角形，並留下要保留的一個三角形</p>
+</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&amp;<span class="selector-pseudo">::before</span>&#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: -<span class="number">1.5rem</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">7.3rem</span>;</span><br><span class="line">  <span class="comment">// border-top: 15px solid red;</span></span><br><span class="line">  <span class="attribute">border-right</span>: <span class="number">15px</span> solid transparent;</span><br><span class="line">  <span class="attribute">border-bottom</span>: <span class="number">15px</span> solid orange;</span><br><span class="line">  <span class="attribute">border-left</span>: <span class="number">15px</span> solid transparent;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/YhxKI4C.png" alt=""></p>
+<ul>
+<li><code>right: -2.8rem;</code>:條整位置對齊正方形list</li>
+<li><code>border-bottom: 15px solid darken(color(tertiary),5%);</code>：修改三角形的顏色，使整體為灰色</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.dropdown</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">3rem</span>;</span><br><span class="line">  <span class="attribute">right</span>: -<span class="number">2.8rem</span>; <span class="comment">//使整個往右移動</span></span><br><span class="line">  <span class="attribute">width</span>: <span class="number">10rem</span>;</span><br><span class="line">  <span class="attribute">background-color</span>:darken(color(tertiary),<span class="number">5%</span>);</span><br><span class="line">  <span class="keyword">@include</span> navigation;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">1rem</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">0.2rem</span>;</span><br><span class="line"></span><br><span class="line">  &amp;<span class="selector-pseudo">::before</span>&#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: -<span class="number">1.5rem</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">7.3rem</span>;</span><br><span class="line">    <span class="comment">// border-top: 15px solid red;</span></span><br><span class="line">    <span class="attribute">border-right</span>: <span class="number">15px</span> solid transparent;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">15px</span> solid darken(color(tertiary),<span class="number">5%</span>);</span><br><span class="line">    <span class="attribute">border-left</span>: <span class="number">15px</span> solid transparent;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/JMI2Zgc.png" alt=""></p>
+<ul>
+<li>hover使下拉選單消失\出現<ul>
+<li>建立游標摸到<code>.dropdown-li</code>，會顯示下拉選單</li>
+<li><code>visibility</code>、<code>opacity</code><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.dropdown-li</span>&#123;</span><br><span class="line"></span><br><span class="line">  &amp;<span class="selector-pseudo">:hover</span> <span class="selector-class">.dropdown</span>&#123;</span><br><span class="line">  <span class="attribute">visibility</span>: visible;</span><br><span class="line">   <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.dropdown</span>&#123;</span><br><span class="line"><span class="attribute">visibility</span>: hidden;</span><br><span class="line">   <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">transition</span>: opicity .<span class="number">3s</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/vY3cbuj.gif" alt=""></p>
+<p><img src="https://i.imgur.com/0zOvMTI.png" alt=""></p>
+<h2 id="使slideshow可以跳轉-如幻燈片效果"><a href="#使slideshow可以跳轉-如幻燈片效果" class="headerlink" title="使slideshow可以跳轉(如幻燈片效果)"></a>使slideshow可以跳轉(如幻燈片效果)</h2><ul>
+<li><p>使用<code>@keyframes</code>做出動畫位置</p>
+</li>
+<li><p>Animation Duration(動畫整個完成一次的時間): (fade-in + visible) × images = duration.</p>
+<ul>
+<li>假設你要讓圖片花1秒fade-in，再讓他顯示1秒。而你共有3張圖片，所以總共所需時間為6秒。</li>
+</ul>
+</li>
+<li><p>Animation Delay:(fade-in + visible) × (ordinal position − 1) = delay.</p>
+</li>
+<li><p>Keyframes: 100 ÷ animation duration = percentage for 1 second.(100/20=5%)，5％為1秒，所以4秒大約是20％的位置</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.slideshow</span>&#123;</span><br><span class="line"></span><br><span class="line"> &amp;-slide&#123;</span><br><span class="line">    <span class="comment">//使圖片、文字都放在同一個位置</span></span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">   <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">   <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">   <span class="attribute">width</span>: inherit;</span><br><span class="line">   <span class="attribute">height</span>: inherit;<span class="comment">//預設先讓slide消失</span></span><br><span class="line"></span><br><span class="line">   <span class="attribute">visibility</span>: hidden;</span><br><span class="line">    <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">   <span class="attribute">animation</span>: slideshow <span class="number">20s</span> linear infinite ;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@keyframes</span> slideshow&#123; </span><br><span class="line"></span><br><span class="line">  <span class="comment">//主要是0~20時圖片顯示，之後都消失，讓其他圖片得宜顯示</span></span><br><span class="line">  <span class="comment">//0~2%創造fade的效果</span></span><br><span class="line">  0%&#123;</span><br><span class="line">    <span class="attribute">visibility</span>: hidden;</span><br><span class="line">    <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">  2%&#123;</span><br><span class="line">    <span class="attribute">visibility</span>: visible;</span><br><span class="line">    <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//2%~18% slide要顯示</span></span><br><span class="line">  18%&#123;</span><br><span class="line">    <span class="attribute">visibility</span>: visible;</span><br><span class="line">    <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//18~20要消失</span></span><br><span class="line">  20%&#123;</span><br><span class="line">    <span class="attribute">visibility</span>: hidden;</span><br><span class="line">    <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  100%&#123;</span><br><span class="line">    <span class="attribute">visibility</span>: hidden;</span><br><span class="line">    <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://snook.ca/archives/html_and_css/simplest-css-slideshow" target="_blank" rel="noopener">Simplest CSS Slideshow</a><br><a href="https://www.smashingmagazine.com/2012/04/pure-css3-cycling-slideshow/#4" target="_blank" rel="noopener">CSS3 Keyframes Animation</a><br><a href="https://pjchender.blogspot.com/2015/12/cssanimation-keyframes.html" target="_blank" rel="noopener">[筆記] CSS動畫Animation — @keyframes</a><br><a href="https://www.oxxostudio.tw/articles/201803/css-animation.html" target="_blank" rel="noopener">完整解析 CSS 動畫 ( CSS Animation )</a></p>
+</li>
+<li><p>設置延遲時間(4秒)，使每張圖片呈現(css的撰寫方式)</p>
+<ul>
+<li><code>:nth-child()</code>選擇第幾張圖片<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*設置延遲時間，讓每張slide呈現4秒替換*/</span></span><br><span class="line"> <span class="selector-class">.slideshow-slide</span><span class="selector-pseudo">:nth-child(1)</span>&#123;</span><br><span class="line">   <span class="attribute">animation-delay</span>: <span class="number">0s</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="selector-class">.slideshow-slide</span><span class="selector-pseudo">:nth-child(2)</span>&#123;</span><br><span class="line">   <span class="attribute">animation-delay</span>: <span class="number">4s</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="selector-class">.slideshow-slide</span><span class="selector-pseudo">:nth-child(3)</span>&#123;</span><br><span class="line">   <span class="attribute">animation-delay</span>: <span class="number">8s</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="selector-class">.slideshow-slide</span><span class="selector-pseudo">:nth-child(4)</span>&#123;</span><br><span class="line">   <span class="attribute">animation-delay</span>: <span class="number">12s</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="selector-class">.slideshow-slide</span><span class="selector-pseudo">:nth-child(5)</span>&#123;</span><br><span class="line">   <span class="attribute">animation-delay</span>: <span class="number">16s</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>將上方轉化為<code>@each</code>的寫法<ul>
+<li>先創造一個列表<code>$animlist</code>，在each迴圈時要但進去的項目</li>
+<li>在each迴圈中<code>.slideshow-slide:nth-child</code>放入slide of number(取得列表中第一個值)，後面接著寫下要執行的動作<code>animation-delay: nth($item,2);</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///改寫為=&gt;$animlist:第幾個 延遲秒數,</span></span><br><span class="line"><span class="comment">//#&#123;nth($item,1)&#125;: 1表示(2 4s)，第一個值=2</span></span><br><span class="line"><span class="variable">$animList</span>:<span class="number">1</span> <span class="number">0s</span>,<span class="number">2</span> <span class="number">4s</span>,<span class="number">3</span> <span class="number">8s</span>,<span class="number">4</span> <span class="number">12s</span>, <span class="number">5</span> <span class="number">16s</span>;</span><br><span class="line"><span class="keyword">@each</span> <span class="variable">$item</span> in <span class="variable">$animList</span> &#123;</span><br><span class="line">   <span class="selector-class">.slideshow-slide</span><span class="selector-pseudo">:nth-child</span>(#&#123;nth(<span class="variable">$item</span>,1)&#125;)&#123;</span><br><span class="line">     <span class="attribute">animation-delay</span>: nth(<span class="variable">$item</span>,<span class="number">2</span>);</span><br><span class="line">     <span class="comment">//2就是指秒數</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.youtube.com/watch?v=O4hPOMX8AaU" target="_blank" rel="noopener">Sass Tutorials #9 - Nth Function In Lists</a></p>
+<h2 id="產品區下方see-more按鈕"><a href="#產品區下方see-more按鈕" class="headerlink" title="產品區下方see more按鈕"></a>產品區下方see more按鈕</h2><ul>
+<li>html part<ul>
+<li>有三個<code>arrow-line</code>，於後續在scss中會運用此三個div製作箭頭符號<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"products-btn"</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"btn"</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"btn-bg"</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"arrow"</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"arrow-line arrow-line-1"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"arrow-line arrow-line-2"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"arrow-line arrow-line-3"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"btn-text"</span>&gt;</span></span><br><span class="line">           See More</span><br><span class="line">         <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>創造arrow<br><code>transform: rotateZ</code> :Z軸 (使其斜向旋轉45度)<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&amp;-line &#123;</span><br><span class="line">     <span class="attribute">height</span>: .<span class="number">2rem</span>;</span><br><span class="line">     <span class="attribute">background-color</span>: color(secondary);</span><br><span class="line">     <span class="attribute">position</span>: absolute;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">   &amp;-line-2 &#123;</span><br><span class="line">    </span><br><span class="line">     <span class="attribute">width</span>: <span class="number">1rem</span>;</span><br><span class="line">     <span class="comment">//透過旋轉線2,線3使其成為交叉</span></span><br><span class="line">     <span class="attribute">transform</span>: rotateZ(<span class="number">45deg</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   &amp;-line-3 &#123;</span><br><span class="line">    </span><br><span class="line">     <span class="attribute">width</span>: <span class="number">1rem</span>;</span><br><span class="line">     <span class="attribute">transform</span>: rotateZ(-<span class="number">45deg</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/s62AXMY.png" alt=""></li>
+</ul>
+<p><code>transform-origin去設定物件變形的起始點</code></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&amp;-line &#123;</span><br><span class="line">      <span class="attribute">height</span>: .<span class="number">2rem</span>;</span><br><span class="line">      <span class="attribute">background-color</span>: color(secondary);</span><br><span class="line">      <span class="attribute">position</span>: absolute;</span><br><span class="line">      <span class="comment">//將x變成arrow &gt; ;因預設原點是在center，所以須將原點拉到右邊，形成箭頭</span></span><br><span class="line">      <span class="attribute">transform-origin</span><span class="selector-pseudo">:right</span> ;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/wbRTSeb.png" alt=""></p>
+<p><a href="https://juejin.cn/post/6844903780937367565" target="_blank" rel="noopener">CSS 属性篇(三)：transform-origin属性
+</a></p>
+<ul>
+<li>增加橫向直線</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&amp;-line-1&#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">2rem</span>;</span><br><span class="line">      <span class="attribute">transform</span>: translateX(-<span class="number">0.7rem</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/sdIdcZI.png" alt=""></p>
+<ul>
+<li>設置動畫，透過摸到箭頭，會延展<ul>
+<li>bg的的寬度進行延展</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-class">.btn</span>&#123;</span><br><span class="line"></span><br><span class="line">&amp;<span class="selector-pseudo">:hover</span> <span class="selector-class">.btn-bg</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">18rem</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  &amp;-bg&#123;</span><br><span class="line">     <span class="attribute">width</span>: <span class="number">4rem</span>;</span><br><span class="line">     <span class="attribute">height</span>: <span class="number">4rem</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: color(primary) ;</span><br><span class="line">    <span class="comment">//使其變圓形</span></span><br><span class="line">     <span class="attribute">border-radius</span>: <span class="number">5rem</span> ;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">transition</span>: width .<span class="number">2s</span> ;</span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  &amp;-line-1&#123; </span><br><span class="line"> </span><br><span class="line">      <span class="attribute">width</span>: <span class="number">0</span>;</span><br><span class="line">      <span class="attribute">transform</span>: translateX(-<span class="number">0.7rem</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//* line-1預設看不到，透過hover出現</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/vQjUp05.gif" alt=""></p>
+<ul>
+<li><p>使see more 出現</p>
+<ul>
+<li>先修改see more的顏色</li>
+<li>即便改變顏色，還是會被bg覆蓋，所以要調整z-index<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.btn</span>&#123;</span><br><span class="line"></span><br><span class="line">  &amp;<span class="selector-pseudo">:hover</span> <span class="selector-class">.btn-text</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: color(secondary);</span><br><span class="line">   &#125;</span><br><span class="line">  </span><br><span class="line"> </span><br><span class="line">  &amp;-text&#123;</span><br><span class="line">    <span class="attribute">font-size</span>: size(xs);</span><br><span class="line">    <span class="attribute">text-transform</span>: uppercase;</span><br><span class="line">    <span class="attribute">color</span>: color(primary);</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/bo8TJLy.gif" alt=""></li>
+</ul>
+</li>
+<li><p>將箭頭向右移動，並呈現完整箭頭符號</p>
+<ul>
+<li>設定<code>.arrow</code>右移，並讓line-1得宜呈現並延展<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.btn</span>&#123;</span><br><span class="line"></span><br><span class="line">   &amp;<span class="selector-pseudo">:hover</span> <span class="selector-class">.arrow</span>&#123;</span><br><span class="line">    <span class="attribute">transform</span>: translateX(<span class="number">1rem</span>);</span><br><span class="line">  &#125;</span><br><span class="line">   &amp;<span class="selector-pseudo">:hover</span> <span class="selector-class">.arrow-line-1</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">2rem</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> <span class="selector-class">.arrow</span>&#123;</span><br><span class="line">    <span class="keyword">@include</span> flexPosition;</span><br><span class="line">    <span class="attribute">transition</span>: transform .<span class="number">2s</span> ;</span><br><span class="line">    </span><br><span class="line">    &amp;-line-1&#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">0</span>;</span><br><span class="line">      <span class="attribute">transform</span>: translateX(-<span class="number">0.7rem</span>);</span><br><span class="line">      <span class="attribute">transition</span>: width .<span class="number">2s</span> ;</span><br><span class="line">      &#125;</span><br><span class="line">   </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/9pptj0t.gif" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="表尾區塊"><a href="#表尾區塊" class="headerlink" title="表尾區塊"></a>表尾區塊</h2><p><img src="https://i.imgur.com/yHeHkU8.png" alt=""></p>
+<h3 id="1-footer區塊的樣式"><a href="#1-footer區塊的樣式" class="headerlink" title="(1)footer區塊的樣式"></a>(1)footer區塊的樣式</h3><p> <code>layout/_footer.scss</code></p>
+<ul>
+<li>footer有三區，中間是表單，左右邊分別為資訊連結<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  grid-column: <span class="number">1</span>/-<span class="number">1</span>;</span><br><span class="line">  grid-row: <span class="number">4</span>/<span class="number">5</span>;</span><br><span class="line">  <span class="keyword">@include</span> flexPosition(space-around);</span><br><span class="line">  <span class="attribute">padding</span>:<span class="number">5rem</span> <span class="number">0</span> ;</span><br><span class="line">  <span class="attribute">border-top</span>: .<span class="number">1rem</span> solid color(primary);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/tSWtPTW.png" alt=""></p>
+<ul>
+<li>透過<code>＠mixin</code>一次修改2區的條例項目（<code>mixin_scss</code>）<ul>
+<li>其中包含文字大小、樣式、hover效果<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@mixin</span> footerList &#123;</span><br><span class="line">  &amp;-heading&#123;</span><br><span class="line">    <span class="attribute">font-size</span>: size(lg);</span><br><span class="line">    <span class="attribute">color</span>:color(primary);</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;-item&#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">1rem</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;-<span class="selector-tag">link</span>&#123;</span><br><span class="line">    <span class="attribute">font-size</span>: size(xs);</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">color</span>: lighten(color(primary),<span class="number">15%</span>);</span><br><span class="line">    <span class="attribute">transition</span>: color .<span class="number">2s</span> ;</span><br><span class="line"></span><br><span class="line">    &amp;<span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">      <span class="attribute">color</span>:lighten(color(primary),<span class="number">35%</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/X9BA5K0.gif" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-社群icon"><a href="#2-社群icon" class="headerlink" title="(2)社群icon"></a>(2)社群icon</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-class">.social-icons</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">justify-content</span>: space-between;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">1rem</span>;</span><br><span class="line">    <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line"></span><br><span class="line">    &amp;-item&#123;</span><br><span class="line">      <span class="attribute">list-style</span>: none;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;-<span class="selector-tag">link</span>&#123;</span><br><span class="line">      <span class="attribute">text-decoration</span>: none;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">4rem</span>;</span><br><span class="line">      <span class="attribute">height</span>: <span class="number">4rem</span>;</span><br><span class="line">      <span class="attribute">border</span>:.<span class="number">1rem</span> solid color(primary);</span><br><span class="line">     </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/IZzM7eK.png" alt=""></p>
+<ul>
+<li><code>border-radius: 100%;</code>調整為圓形外框</li>
+<li>a標籤的前放為i的圖示，所以flex的設置，是針對<code>social-icons-lik</code><br><img src="https://i.imgur.com/kd6jbyV.png" alt=""></li>
+<li>利用<code>@each</code>來套入icon的顏色</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&amp;-<span class="selector-tag">link</span>&#123;</span><br><span class="line">      <span class="attribute">text-decoration</span>: none;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">4rem</span>;</span><br><span class="line">      <span class="attribute">height</span>: <span class="number">4rem</span>;</span><br><span class="line">      <span class="attribute">border</span>:.<span class="number">1rem</span> solid color(primary);</span><br><span class="line"></span><br><span class="line">      <span class="comment">//修改icon成圓形</span></span><br><span class="line">      <span class="comment">// display: block;</span></span><br><span class="line">      <span class="attribute">border-radius</span>: <span class="number">100%</span>;</span><br><span class="line">      <span class="keyword">@include</span> flexPosition;</span><br><span class="line"></span><br><span class="line">      <span class="selector-tag">i</span>&#123;</span><br><span class="line">        <span class="attribute">font-size</span>: size(md);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="variable">$socialMediaColors</span>: <span class="number">1</span> <span class="number">#3b5998</span>, <span class="number">2</span> <span class="number">#b31217</span>, <span class="number">3</span> <span class="number">#dc4e41</span>, <span class="number">4</span> <span class="number">#55acee</span>, <span class="number">5</span> <span class="number">#517fa4</span>, <span class="number">6</span> <span class="number">#0077b5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@each</span> <span class="variable">$color</span> in <span class="variable">$socialMediaColors</span> &#123;</span><br><span class="line">  <span class="selector-class">.social-icons-item</span><span class="selector-pseudo">:nth-child</span>(#&#123;nth((<span class="variable">$color</span>),1)&#125;) <span class="selector-class">.social-icons-link</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>:nth(<span class="variable">$color</span>,<span class="number">2</span>);</span><br><span class="line">    <span class="attribute">border</span>:.<span class="number">1rem</span> solid nth(<span class="variable">$color</span>,<span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>轉為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.social-icons-item</span><span class="selector-pseudo">:nth-child(1)</span> <span class="selector-class">.social-icons-link</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#3b5998</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">0.1rem</span> solid <span class="number">#3b5998</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.social-icons-item</span><span class="selector-pseudo">:nth-child(2)</span> <span class="selector-class">.social-icons-link</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#b31217</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">0.1rem</span> solid <span class="number">#b31217</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.social-icons-item</span><span class="selector-pseudo">:nth-child(3)</span> <span class="selector-class">.social-icons-link</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#dc4e41</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">0.1rem</span> solid <span class="number">#dc4e41</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.social-icons-item</span><span class="selector-pseudo">:nth-child(4)</span> <span class="selector-class">.social-icons-link</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#55acee</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">0.1rem</span> solid <span class="number">#55acee</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.social-icons-item</span><span class="selector-pseudo">:nth-child(5)</span> <span class="selector-class">.social-icons-link</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#517fa4</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">0.1rem</span> solid <span class="number">#517fa4</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.social-icons-item</span><span class="selector-pseudo">:nth-child(6)</span> <span class="selector-class">.social-icons-link</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#0077b5</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">0.1rem</span> solid <span class="number">#0077b5</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/8aWeLiw.png" alt=""></p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>No newer post</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/03/05/sass-1/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>CSS 預處理...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Coding</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>
