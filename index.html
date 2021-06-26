@@ -81,6 +81,358 @@
 
   <div class="lx-entry padding">
     <div>
+      <h2 class="title"><a href="/2021/03/05/sass-1/">CSS 預處理器- Sass/SCSS 基本介紹</a></h2>
+      <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2021-03-05</span>
+      <p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>CSS預處理器，增加了一些編寫的特性，也可以說是運用程式化的方式寫CSS。</p>
+<ul>
+<li>其中SASS最廣泛使用：Sass包含SASS與SCSS兩種<ul>
+<li>兩者之間不同之處有以下兩點：</li>
+<li>1.文件擴展名不同，Sass 是以“.sass”後綴為擴展名，而SCSS 是以“.scss”後綴為擴展名</li>
+<li>2.語法書寫方式不同，Sass是以嚴格的縮進式語法規則來書寫，不帶大括號({})和分號(;)，而SCSS的語法書寫和我們的CSS語法書寫方式非常類似。<h2 id="安裝sass"><a href="#安裝sass" class="headerlink" title="安裝sass"></a>安裝sass</h2><a href="https://github.com/sass/sass">sass-github</a></li>
+</ul>
+</li>
+<li>在專案底下，安裝<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g sass</span><br></pre></td></tr></table></figure></li>
+<li>安裝後，建立<code>index.scss</code>檔案<br><img src="https://i.imgur.com/cQtE8T5.png" alt=""></li>
+<li>手動轉擋<br><img src="https://i.imgur.com/6TYjGnV.png" alt=""><ul>
+<li>會出現css檔案<br><img src="https://i.imgur.com/SHoaMLN.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="使用node-sass編譯"><a href="#使用node-sass編譯" class="headerlink" title="使用node-sass編譯"></a>使用node-sass編譯</h2><ol>
+<li>先取得package.json檔案<br>安裝語法：<code>npm init --yes</code><br>(要注意安裝的路徑位置)<br><img src="https://i.imgur.com/f9QFcH0.png" alt=""><br><img src="https://i.imgur.com/4B623eU.png" alt=""></li>
+<li>安裝node-sass</li>
+</ol>
+<ul>
+<li><code>npm i -g node-sass</code>  (i -&gt; install)<br><img src="https://i.imgur.com/vgGzk85.png" alt=""></li>
+<li>查尋安裝是否完成<br><img src="https://i.imgur.com/EdeoV1H.png" alt=""></li>
+</ul>
+<ol start="3">
+<li>將檔案編譯為css<br>建立css(資料夾)<h3 id="使用watch，使每次修改sass檔案時，會自動編譯到css中"><a href="#使用watch，使每次修改sass檔案時，會自動編譯到css中" class="headerlink" title="使用watch，使每次修改sass檔案時，會自動編譯到css中"></a>使用watch，使每次修改sass檔案時，會自動編譯到css中</h3></li>
+</ol>
+<ul>
+<li>在package.jason檔案中的<code>&quot;scripts&quot;</code></li>
+<li>要注意編譯資料的位置<ul>
+<li>css :為資料夾路徑 </li>
+<li>scss/main.scss:建立的css路徑</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">   <span class="string">"watch"</span>: <span class="string">"node-sass -o css scss/main.scss -w"</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在終端機要輸入<br><code>npm run watch</code>，<code>control+c</code>退出<br><img src="https://i.imgur.com/KNReHQL.png" alt=""></li>
+</ul>
+<h2 id="基本語法實作"><a href="#基本語法實作" class="headerlink" title="基本語法實作"></a>基本語法實作</h2><h3 id="變數"><a href="#變數" class="headerlink" title="變數"></a>變數</h3><ul>
+<li>在變數前加上<code>$</code>，來宣告要使用的變數</li>
+<li>運用抽取變數方式，使運用版面顏色時，可以有一致性，修改版面時也較快速</li>
+<li>變數：數量不要超過10個，自己在記憶上會混亂<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 創造顏色、字大小的變數</span></span><br><span class="line"><span class="variable">$white</span>:<span class="number">#fff</span>;</span><br><span class="line"><span class="variable">$black</span>:<span class="number">#000</span>;</span><br><span class="line"><span class="selector-class">.button</span>&#123;</span><br><span class="line"><span class="attribute">text-align</span>:center;</span><br><span class="line"><span class="attribute">background-color</span>:<span class="variable">$black</span>;</span><br><span class="line"><span class="attribute">border</span>:<span class="number">1px</span> solid <span class="variable">$black</span>;</span><br><span class="line"><span class="attribute">color</span>:<span class="variable">$white</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$font-lg</span>:<span class="number">40px</span>;</span><br><span class="line"><span class="variable">$font-md</span>:<span class="number">30px</span>;</span><br><span class="line"><span class="variable">$font-sm</span>:<span class="number">20px</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span>&#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="variable">$font-md</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="scope-of-sass-variable"><a href="#scope-of-sass-variable" class="headerlink" title="scope of sass variable"></a>scope of sass variable</h4></li>
+<li>一般常見屬於global scope</li>
+<li>如果將變數設在，標間架構中-&gt;local scope<br><img src="https://i.imgur.com/oAeBzah.png" alt=""></li>
+<li>在後面加上<code>！global</code>就變成全域<br><img src="https://i.imgur.com/jbDV03A.png" alt=""></li>
+</ul>
+<div class="note info">
+            <p>還是建議以global 的方式進行修改，才不會造成維護的混亂</p>
+          </div>
+<ul>
+<li>命名中使用<code>-</code>以及<code>_</code>，在sass中是一樣的<ul>
+<li>如<code>$font-lg</code>改為<code>$font_lg</code>一樣也會有效</li>
+</ul>
+</li>
+</ul>
+<h3 id="Nested-巢狀"><a href="#Nested-巢狀" class="headerlink" title="Nested 巢狀"></a>Nested 巢狀</h3><h4 id="1-針對nav下的ul、li"><a href="#1-針對nav下的ul、li" class="headerlink" title="1.針對nav下的ul、li"></a>1.針對nav下的<code>ul</code>、<code>li</code></h4><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="variable">$color-primary</span>;</span><br><span class="line">  <span class="selector-tag">ul</span> <span class="selector-tag">li</span>&#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="variable">$font-sm</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>轉換為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: orange; &#125;</span><br><span class="line">  <span class="selector-class">.nav</span> <span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none; &#125;</span><br><span class="line">  <span class="selector-class">.nav</span> <span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">color</span>: gray; &#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/wQXDhMZ.png" alt=""></li>
+</ul>
+<h4 id="2-增加hover的效果"><a href="#2-增加hover的效果" class="headerlink" title="2.增加hover的效果"></a>2.增加hover的效果</h4><ul>
+<li><code>&amp;</code>，來指出<code>parent element</code>：在這便是指<code>&lt;a&gt;</code></li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="variable">$color-primary</span>;</span><br><span class="line">  <span class="selector-tag">ul</span> <span class="selector-tag">li</span>&#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="variable">$font-sm</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">    &amp;<span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">      <span class="attribute">color</span>: <span class="variable">$color-tertiary</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>轉換為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: orange; &#125;</span><br><span class="line">  <span class="selector-class">.nav</span> <span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none; &#125;</span><br><span class="line">  <span class="selector-class">.nav</span> <span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">color</span>: gray; &#125;</span><br><span class="line">    <span class="selector-class">.nav</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">      <span class="attribute">color</span>: royalblue; &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/IL4dwvL.png" alt=""></p>
+<div class="note info">
+            <p>巢狀層級不可以太多層，否則會出現效率問題</p>
+          </div>
+
+<h3 id="import-是什麼"><a href="#import-是什麼" class="headerlink" title="@import 是什麼"></a>@import 是什麼</h3><ul>
+<li>import 讓我們可以拉出特定區塊或是根據功能性不同拆成不同區塊，來撰寫scss，並利用@import放入主要的scss檔案，最後彙整到同一個css之中。</li>
+<li>再用一個css引入(@import)，各個功能</li>
+<li>要引入的檔案命名：在要import的檔案要加<code>_</code></li>
+</ul>
+<blockquote>
+<p>六角學院<br><img src="https://i.imgur.com/SRD31V7.png" alt=""></p>
+</blockquote>
+<p><code>_test.scss</code>為撰寫footer樣式的檔案</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span>&#123;</span><br><span class="line">  <span class="attribute">font-style</span>:italic ;</span><br><span class="line">  <span class="attribute">border</span>: blue <span class="number">3px</span> solid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>main.scss</code> 要引入檔案的主要檔案</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@import</span> <span class="string">"test"</span>;</span><br></pre></td></tr></table></figure>
+<p>轉譯為css(main.css)</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span> &#123;</span><br><span class="line">  <span class="attribute">font-style</span>: italic;</span><br><span class="line">  <span class="attribute">border</span>: blue <span class="number">3px</span> solid; &#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="mixin-與-include"><a href="#mixin-與-include" class="headerlink" title="@mixin 與 @include"></a>@mixin 與 @include</h2><ul>
+<li>當在多個地方想使用同一種style的方式。可以組成一組的樣式，並於scss中重複使用。</li>
+<li>以 <code>@mixin</code> 開頭，並自定義一個名稱</li>
+<li>需要它的時候就用 <code>@include</code>呼叫</li>
+</ul>
+<ol>
+<li>設定對齊方式<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@mixin</span> horizontal-list&#123;</span><br><span class="line"> <span class="selector-tag">li</span>&#123;</span><br><span class="line"> <span class="attribute">display</span>:inline-block;</span><br><span class="line"> <span class="attribute">margin</span>:&#123;</span><br><span class="line">   left:-<span class="number">2px</span>;</span><br><span class="line">   <span class="attribute">right</span>:<span class="number">2em</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*當要引用時*/</span></span><br><span class="line"><span class="selector-tag">nav</span> <span class="selector-tag">ul</span>&#123;</span><br><span class="line">  <span class="keyword">@include</span> horizontal-list</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>調整字體大小（以帶參數的方式）<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 發現h1,h3樣式一樣</span></span><br><span class="line"><span class="keyword">@mixin</span> headingStyles(<span class="variable">$fontSize</span>)&#123;</span><br><span class="line">  <span class="comment">//以代參數方式來放入不同字體大小的變數設定</span></span><br><span class="line">  <span class="attribute">font-size</span>: <span class="variable">$fontSize</span>;</span><br><span class="line"> <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">h1</span>&#123;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">@include</span> headingStyles(<span class="variable">$font-lg</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">@include</span> headingStyles(<span class="variable">$font-md</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>在css的地方，可以看到字的大小不同<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">h1</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">color</span>: gray;</span><br><span class="line">  <span class="attribute">text-align</span>: center; &#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">color</span>: gray;</span><br><span class="line">  <span class="attribute">text-align</span>: center; &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li>加入動畫效果</li>
+</ol>
+<ul>
+<li>在<code>footer h3</code>加上<code>hover</code></li>
+<li><code>@mixin transition($param...)</code>加上設定參數特性<ul>
+<li>當要同時設定特性中的多個值時，要記得在參數後面加上<code>...</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 發現h1,h3樣式一樣</span></span><br><span class="line"><span class="keyword">@mixin</span> headingStyles(<span class="variable">$fontSize</span>)&#123;</span><br><span class="line">  <span class="comment">//以代參數方式來放入不同字體大小的變數設定</span></span><br><span class="line">  <span class="attribute">font-size</span>: <span class="variable">$fontSize</span>;</span><br><span class="line"> <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">@mixin</span> transition(<span class="variable">$param</span>...) &#123;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="variable">$param</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">h1</span>&#123;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">@include</span> headingStyles(<span class="variable">$font-lg</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">@include</span> headingStyles(<span class="variable">$font-md</span>);</span><br><span class="line">  <span class="keyword">@include</span> transition(color .<span class="number">5s</span> ,background-color <span class="number">1s</span>);</span><br><span class="line">  &amp;<span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>:<span class="variable">$color-tertiary</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="variable">$color-primary</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>轉譯為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">color</span>: gray;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  <span class="attribute">transition</span>: color <span class="number">0.5s</span>, background-color <span class="number">1s</span>; &#125;</span><br><span class="line">  <span class="selector-class">.footer</span> <span class="selector-tag">h3</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: royalblue;</span><br><span class="line">    <span class="attribute">background-color</span>: orange; &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+</li>
+</ul>
+<p><a href="https://ithelp.ithome.com.tw/articles/10197303" target="_blank" rel="noopener">Day27：小事之 Transition 與 Animation</a><br><a href="https://cythilya.github.io/2017/08/27/css-animation/#transition-%E6%BC%B8%E8%AE%8A" target="_blank" rel="noopener">CSS3 Animation</a></p>
+<p><a href="https://5xruby.tw/posts/play-sass-mixin-and-include" target="_blank" rel="noopener">新手也可以輕鬆玩轉 SASS - @mixin and @include</a></p>
+<h3 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h3><ul>
+<li>透過函式的建立，可以在需要使用時，不斷地呼叫使用</li>
+<li><code>@function fontSize($size){
+ @return $size*2; }</code>建立函式</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@function</span> fontSize(<span class="variable">$size</span>)&#123;</span><br><span class="line">   <span class="keyword">@return</span> <span class="variable">$size</span>*<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="selector-tag">h1</span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">p</span>&#123;</span><br><span class="line">  <span class="attribute">font-size</span>: fontSize(<span class="variable">$font-sm</span>);</span><br><span class="line">  <span class="comment">//字的大小會變成 20px*2 =&gt;40px</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>轉譯為css</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">40px</span>; &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>將文字大小，預先設定預設值</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//設定預設為25px</span></span><br><span class="line"><span class="keyword">@function</span> fontSize(<span class="variable">$size</span>:<span class="number">25px</span>)&#123;</span><br><span class="line">   <span class="keyword">@return</span> <span class="variable">$size</span>*<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">p</span>&#123;</span><br><span class="line">  <span class="attribute">font-size</span>: fontSize();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>轉譯為css</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">50px</span>; &#125;</span><br><span class="line">  <span class="comment">/* 25*2=&gt;50 */</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>若插入數字</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">p</span>&#123;</span><br><span class="line">  <span class="attribute">font-size</span>: fontSize(<span class="number">30px</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>轉譯為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">60px</span>; &#125;</span><br><span class="line">  <span class="comment">/* 30*2=&gt;50 */</span></span><br></pre></td></tr></table></figure>
+<h3 id="內建函式介紹"><a href="#內建函式介紹" class="headerlink" title="內建函式介紹"></a>內建函式介紹</h3></li>
+</ul>
+<ol>
+<li><code>lighten()</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.nav&#123;</span><br><span class="line">  background-color: lighten($color-primary,20%);&#125;</span><br></pre></td></tr></table></figure>
+css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#ffc966</span>; &#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>顏色變淡<br><img src="https://i.imgur.com/WhTLwso.png" alt=""></li>
+</ul>
+<ol start="2">
+<li><code>darken()</code><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: darken(<span class="variable">$color-primary</span>,<span class="number">20%</span>);&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>編譯為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#996300</span>; &#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/LRzx1fH.png" alt=""></li>
+</ul>
+<p>3.<code>transparentize()</code></p>
+<ul>
+<li>透明度從0-1 (1是完全透明)<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: transparentize(<span class="variable">$color-primary</span>,<span class="number">0.6</span>);&#125;</span><br></pre></td></tr></table></figure></li>
+<li>編譯為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">255</span>, <span class="number">165</span>, <span class="number">0</span>, <span class="number">0.4</span>); &#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/6ON5Rfk.png" alt=""></li>
+</ul>
+<p>4.<code>mix()</code></p>
+<ul>
+<li>將顏色混合<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">   <span class="attribute">background-color</span>: mix(blue,green);&#125;</span><br></pre></td></tr></table></figure>
+css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#004080</span>; &#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/M9sFOr6.png" alt=""></li>
+</ul>
+<h4 id="加入百分比（利用百分比來調配顏色的比重）"><a href="#加入百分比（利用百分比來調配顏色的比重）" class="headerlink" title="加入百分比（利用百分比來調配顏色的比重）"></a>加入百分比（利用百分比來調配顏色的比重）</h4><ul>
+<li><code>mix(blue,green,10%)</code>表示只有10%的藍色，90%為綠色<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">   <span class="attribute">background-color</span>: mix(blue,green,<span class="number">10%</span>);&#125;</span><br></pre></td></tr></table></figure>
+css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#00731a</span>; &#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/TdUkHSn.png" alt=""></li>
+</ul>
+<hr>
+<h2 id="補充scss檔案編制"><a href="#補充scss檔案編制" class="headerlink" title="補充scss檔案編制"></a>補充scss檔案編制</h2><ul>
+<li>主要視自己專案上的區分來編制<br>vendor:外部套件，放置bootstrap或其他frameworks、liberaries、hover.css<br>utils(helpers):工具類的class，放置字的大小、margin、border顏色設置、hover效果<br>partials:放置一些部分區域的css，如：nav、footer; layout: （共通的佈局）如表頭、表尾，就是每頁都會出現<br>而這幾個檔案，放在main.scss要有順序<br><img src="https://i.imgur.com/tjRLJjK.png" alt=""><br>base:p段落、h1..等的全站設定(css reset)<br>components ：元件，如按鈕、卡片的設定</li>
+</ul>
+<hr>
+<p>參考資料：<a href="https://tw.alphacamp.co/blog/css-preprocessor-sass-scss" target="_blank" rel="noopener">alphacamp-Sass/SCSS 基本語法介紹，搞懂CSS 預處理器</a></p>
+</p>
+      <div class="post-button"><a class="btn" href="/2021/03/05/sass-1/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+    </div>
+  </div>
+  <div class="lx-entry padding">
+    <div>
+      <h2 class="title"><a href="/2021/01/22/js-typingGame/">JS實作- typingGame</a></h2>
+      <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2021-01-22</span>
+      <p><p><a href="https://eva813.github.io/Eva_portfolio/typeGame/typeGame.html" target="_blank" rel="noopener">成品</a><br><img src="https://i.imgur.com/fC1gVUt.png" alt=""></p>
+<h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><ul>
+<li>在difficuly地方，有設置難易度，並於重新整理後，仍然儲存選擇的難易度<ul>
+<li>使用到取表格中的值</li>
+<li>localstorage的方式，儲存設置的難易度</li>
+</ul>
+</li>
+<li>創造出隨機的單字，並呈現於畫面<ul>
+<li>輸入的值與隨機出現的值要核對</li>
+</ul>
+</li>
+<li>左上方有倒數計時;右上方有分數的計算<ul>
+<li><code>setInterval</code>設定倒數</li>
+</ul>
+</li>
+<li>設置reload的按鈕<ul>
+<li>在要加入文字內容的容器中，添加<code>location.reload()</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="html-部分"><a href="#html-部分" class="headerlink" title="html 部分"></a>html 部分</h2><p>1.icon來源<br><a href="https://www.codegrepper.com/code-examples/c/font-awesome+-+cdnjs.com+-+The+best+FOSS+CDN+for+web" target="_blank" rel="noopener">font-awesome - cdnjs</a></p>
+<ul>
+<li>fa-cog<br><img src="https://i.imgur.com/uN4HVq7.png" alt=""></li>
+</ul>
+<p>1.設置難易度選單</p>
+<ul>
+<li><p>difficulty為<code>label</code></p>
+</li>
+<li><p>下拉選單使用<code>option</code></p>
+<p><img src="https://i.imgur.com/99JhtOs.png" alt=""></p>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"settings"</span> <span class="attr">class</span>=<span class="string">"settings"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"settings-form"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"difficulty"</span>&gt;</span>Difficulty<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"difficulty"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"easy"</span>&gt;</span>Easy<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"medium"</span>&gt;</span>Medium<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"hard"</span>&gt;</span>Hard<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="js-部分"><a href="#js-部分" class="headerlink" title="js 部分"></a>js 部分</h2><h3 id="1-如何隨機取到已製作好的單字"><a href="#1-如何隨機取到已製作好的單字" class="headerlink" title="1.如何隨機取到已製作好的單字"></a>1.如何隨機取到已製作好的單字</h3><p><code>words[Math.floor(Math.random() * words.length)]</code></p>
+<ul>
+<li><code>$(&#39;#word&#39;).text(randomItem);</code>讓文字呈現於畫面中</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> words = [</span><br><span class="line">  <span class="string">'sigh'</span>,</span><br><span class="line">  <span class="string">'tense'</span>,</span><br><span class="line">  <span class="string">'airplane'</span>,</span><br><span class="line">  <span class="string">'ball'</span>,</span><br><span class="line">  <span class="string">'pies'</span>,</span><br><span class="line">  <span class="string">'juice'</span>,</span><br><span class="line">  <span class="string">'warlike'</span>,</span><br><span class="line">  <span class="string">'bad'</span>,</span><br><span class="line">  <span class="string">'north'</span>,</span><br><span class="line">  <span class="string">'dependent'</span>,</span><br><span class="line">  <span class="string">'steer'</span>,</span><br><span class="line">  <span class="string">'silver'</span>,</span><br><span class="line">  <span class="string">'highfalutin'</span>,</span><br><span class="line">  <span class="string">'superficial'</span>,</span><br><span class="line">  <span class="string">'quince'</span>,</span><br><span class="line">  <span class="string">'eight'</span>,</span><br><span class="line">  <span class="string">'feeble'</span>,</span><br><span class="line">  <span class="string">'admit'</span>,</span><br><span class="line">  <span class="string">'drag'</span>,</span><br><span class="line">  <span class="string">'loving'</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomword</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//https://www.codegrepper.com/code-examples/javascript/get+random+word+from+array+javascript</span></span><br><span class="line">  randomItem = words[<span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * words.length)];</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  $(<span class="string">'#word'</span>).text(randomItem);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">getRandomword()</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2-單字的核對"><a href="#2-單字的核對" class="headerlink" title="2.單字的核對"></a>2.單字的核對</h3><ul>
+<li>要確認抓到的單字是否一樣</li>
+<li><code>let text = $(&#39;#text&#39;).val(); let Item = randomItem;</code></li>
+<li><code>console.log(Item);</code>查看抓取到的單字</li>
+<li>設定文字核對一樣，就執行分數加一，以及創造另一組新單字  </li>
+<li>每次輸入完，並呈現新單字的同時，要清空輸入框的內容<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//輸入單字核對</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkWord</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> text = $(<span class="string">'#text'</span>).val();</span><br><span class="line">  <span class="keyword">let</span> Item = randomItem;</span><br><span class="line">  <span class="comment">//console.log(Item);</span></span><br><span class="line">  <span class="keyword">if</span> (text === Item) &#123;</span><br><span class="line">    getRandomword();</span><br><span class="line">    updateScore();</span><br><span class="line">    $(<span class="string">'#text'</span>).val(<span class="string">""</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3-倒數計時"><a href="#3-倒數計時" class="headerlink" title="3.倒數計時"></a>3.倒數計時</h3><ul>
+<li>設置起始時間為10</li>
+<li><code>setInterval()</code>「不斷循環」地固定延遲了某段時間之後，才去執行對應的程式碼，使用 <code>clearInterval()</code>来終止</li>
+<li>在秒數倒計完之後，終止循環，並呈現結束畫面</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Init time</span></span><br><span class="line"><span class="keyword">let</span> time = <span class="number">10</span>;</span><br><span class="line"><span class="comment">// 倒數計時</span></span><br><span class="line"><span class="comment">//https://jsfiddle.net/satyasrinivaschekuri/y03m54Le/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">countTime</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  time--;</span><br><span class="line">  $(<span class="string">'#time'</span>).text(<span class="string">`<span class="subst">$&#123;time&#125;</span>s`</span>)</span><br><span class="line">  <span class="keyword">if</span> (time &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    clearInterval(downloadTimer);</span><br><span class="line">    gameOver();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//   &#125; else &#123;</span></span><br><span class="line">  <span class="comment">//     time--;</span></span><br><span class="line">  <span class="comment">//     $('#time').text(`$&#123;time&#125;s`)</span></span><br><span class="line">  <span class="comment">//   &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> downloadTimer = setInterval(countTime, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="4-倒數計時結束，終止畫面"><a href="#4-倒數計時結束，終止畫面" class="headerlink" title="4.倒數計時結束，終止畫面"></a>4.倒數計時結束，終止畫面</h4><p><img src="https://i.imgur.com/r9oXFmc.png" alt=""></p>
+<ul>
+<li>在該div容器中，插入要顯示的標籤與內容</li>
+<li>利用<code>display:flex</code>呈現該內容</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//遊戲結束</span></span><br><span class="line"><span class="comment">//location.reload()</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gameOver</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">'#end-game-container'</span>).html(<span class="string">`&lt;h1&gt;Time ran out&lt;/h1&gt;</span></span><br><span class="line"><span class="string">  &lt;p&gt;Your final score is <span class="subst">$&#123;score&#125;</span>&lt;/p&gt;</span></span><br><span class="line"><span class="string">  &lt;button onclick="location.reload()"&gt;Reload&lt;/button&gt;</span></span><br><span class="line"><span class="string">  `</span>)</span><br><span class="line">  <span class="comment">// 顯示指定的flex容器</span></span><br><span class="line">  $(<span class="string">"#end-game-container"</span>).css(<span class="string">'display'</span>, <span class="string">'flex'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="5-設置難易度"><a href="#5-設置難易度" class="headerlink" title="5.設置難易度"></a>5.設置難易度</h3><ul>
+<li>設定在表格變動選項後的綁定事件</li>
+<li>抓取難易度選項的值，並以其值作為儲存local storage的內容</li>
+<li>接著將儲存的難易度，呈現於畫面<code>$(&#39;#difficulty&#39;).val()</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果儲存端不是空值(已有選擇)，就以此為主，否則的話就是medium</span></span><br><span class="line"><span class="keyword">let</span> difficulty = localStorage.getItem(<span class="string">'difficulty'</span>) !== <span class="literal">null</span></span><br><span class="line">  ? localStorage.getItem(<span class="string">'difficulty'</span>)</span><br><span class="line">  : <span class="string">'medium'</span>;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"> <span class="comment">//設置select的選擇</span></span><br><span class="line">  $(<span class="string">'form'</span>).change(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    difficulty = $(<span class="string">'#difficulty'</span>).val();</span><br><span class="line">    localStorage.setItem(<span class="string">'difficulty'</span>, difficulty);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//使畫面的難易度選擇，呈現儲存的選項</span></span><br><span class="line">  $(<span class="string">'#difficulty'</span>).val(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> a = $(<span class="string">'#difficulty'</span>).val()</span><br><span class="line">    <span class="keyword">if</span> (localStorage.getItem(<span class="string">'difficulty'</span>) !== <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> a = localStorage.getItem(<span class="string">'difficulty'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> a = <span class="string">'medium'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="6-調整難易度，每次打對題目可以增加秒數"><a href="#6-調整難易度，每次打對題目可以增加秒數" class="headerlink" title="6.調整難易度，每次打對題目可以增加秒數"></a>6.調整難易度，每次打對題目可以增加秒數</h3><ul>
+<li>在<code>checkWord()</code>函式中，如過答對題目的條件下設置</li>
+<li>判斷如果難易度為高、中、低時，可以添加的秒數分別為多少</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//time += 5;</span></span><br><span class="line">    <span class="keyword">if</span> (difficulty === <span class="string">'hard'</span>) &#123;</span><br><span class="line">      time += <span class="number">2</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (difficulty === <span class="string">'medium'</span>) &#123;</span><br><span class="line">      time += <span class="number">3</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      time += <span class="number">5</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//判斷完之後，隨之繼續倒數時間</span></span><br><span class="line">    countTime();</span><br></pre></td></tr></table></figure>
+<h3 id="7-設定結束時，分數-gt-5-，會出現good-job圖示"><a href="#7-設定結束時，分數-gt-5-，會出現good-job圖示" class="headerlink" title="7.設定結束時，分數(&gt;=5)，會出現good job圖示"></a>7.設定結束時，分數(&gt;=5)，會出現good job圖示</h3><p><img src="https://i.imgur.com/2YKGGsw.png" alt=""></p>
+<ul>
+<li>在css檔案加入show的class，並插入該圖示的顯現方式</li>
+<li>於js部分，將判斷式，加入<code>gameOver()</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//增加判斷，分數達到一標準，會出現圖示</span></span><br><span class="line">  <span class="keyword">let</span> s = score</span><br><span class="line">  <span class="built_in">console</span>.log(s)</span><br><span class="line">  <span class="keyword">if</span> (s &gt; = <span class="number">5</span>) &#123;</span><br><span class="line">    $(<span class="string">"#end-game-container"</span>).find(<span class="string">'img'</span>).addClass(<span class="string">'show'</span>);</span><br><span class="line"></span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+</p>
+      <div class="post-button"><a class="btn" href="/2021/01/22/js-typingGame/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+    </div>
+  </div>
+  <div class="lx-entry padding">
+    <div>
+      <h2 class="title"><a href="/2021/01/22/js-guessNumber/">JS實作- 猜數字遊戲</a></h2>
+      <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2021-01-22</span>
+      <p><p><a href="https://eva813.github.io/Eva_portfolio/guessNumber/guessNumber.html" target="_blank" rel="noopener">成品</a></p>
+<h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><ul>
+<li>練習語音辨識的使用： speech recognition API<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition" target="_blank" rel="noopener">SpeechRecognition-MDN</a></li>
+</ul>
+</li>
+<li>根據不同情形，有不一樣的回覆<ul>
+<li>依據猜測數字的情形給予：go higher,go lower</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/IjVZV5d.png" alt=""></p>
+<ul>
+<li>數字猜中後，會出現恭喜答對等敘述，並呈現<code>Play Again</code>的按鈕</li>
+</ul>
+<p><img src="https://i.imgur.com/MhtrTrR.png" alt=""></p>
+<h2 id="js部分"><a href="#js部分" class="headerlink" title="js部分"></a>js部分</h2><h3 id="1-設定隨機數字"><a href="#1-設定隨機數字" class="headerlink" title="1.設定隨機數字"></a>1.設定隨機數字</h3><ul>
+<li><code>Math.floor(Math.random() * 100) + 1</code>取得1-100</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 取得隨1-100隨機數字</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">theRandomNum</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">100</span>) + <span class="number">1</span>;</span><br><span class="line">  <span class="comment">//沒有加1，數字會是0-99</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> randomNum = theRandomNum();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'randomNum:'</span>, randomNum);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SpeechRecognition"><a href="#2-SpeechRecognition" class="headerlink" title="2.SpeechRecognition"></a>2.SpeechRecognition</h3><ul>
+<li>第一步要先將SpeechRecognition設為全域變數<ul>
+<li>檢查瀏覽器是否有支援不需要 prefix 的 speechRecognition 介面，若沒有則將 webkit 標頭的 webkitSpeechRecognition 指定給該全域變數，</li>
+</ul>
+</li>
+<li>要使用 speechRecognition ，必須透過 SpeechRecognition 建構式建立一個物件實例。</li>
+<li><code>recognition.onresult</code> 設定取得語音辨識的結果</li>
+<li>執行<code>writeMessage(myWord);checkNumber(myWord);</code>兩個函式<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> SpeechRecognition = <span class="built_in">window</span>.SpeechRecognition || <span class="built_in">window</span>.webkitSpeechRecognition;</span><br><span class="line">  <span class="keyword">var</span> recognition = <span class="keyword">new</span> SpeechRecognition();</span><br><span class="line">  <span class="comment">//設定辨識語言。</span></span><br><span class="line">  recognition.lang = <span class="string">'zh-tw'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (e) &#123;</span><br><span class="line">  <span class="built_in">console</span>.error(e);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 開始語音辨識</span></span><br><span class="line">recognition.start();</span><br><span class="line"><span class="comment">//取得語音辨識的結果</span></span><br><span class="line">recognition.onresult = <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//console.log(event);</span></span><br><span class="line">  <span class="keyword">let</span> myWord = event.results[<span class="number">0</span>][<span class="number">0</span>].transcript</span><br><span class="line">  <span class="comment">//console.log('You said: ', myWord);</span></span><br><span class="line">  writeMessage(myWord);</span><br><span class="line">  checkNumber(myWord);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>簡易測試，取得得語音辨識 :point_down: <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//取得語音辨識的結果</span></span><br><span class="line">recognition.onresult = <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'You said: '</span>, event.results[<span class="number">0</span>][<span class="number">0</span>].transcript);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/QLWaJB0.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/FfF5Aqv.png" alt=""></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API" target="_blank" rel="noopener">Using the Web Speech API</a><br><a href="https://www.freecodecamp.org/news/how-to-build-a-simple-speech-recognition-app-a65860da6108/" target="_blank" rel="noopener">How to build a simple speech recognition app</a></p>
+<h3 id="3-記錄下使用者所說的話"><a href="#3-記錄下使用者所說的話" class="headerlink" title="3.記錄下使用者所說的話"></a>3.記錄下使用者所說的話</h3><ul>
+<li>在<code>msg</code>的div插入辨識語言的結果文字<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeMessage</span>(<span class="params">myWord</span>) </span>&#123;</span><br><span class="line">  $(<span class="string">'#msg'</span>).html(<span class="string">`</span></span><br><span class="line"><span class="string">  &lt;div&gt;You said:&lt;/div&gt;</span></span><br><span class="line"><span class="string">    &lt;span class="box"&gt;<span class="subst">$&#123;myWord&#125;</span>&lt;/span&gt;</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">  `</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-核對隨機數字與猜的數字是否一致"><a href="#4-核對隨機數字與猜的數字是否一致" class="headerlink" title="4.核對隨機數字與猜的數字是否一致"></a>4.核對隨機數字與猜的數字是否一致</h3></li>
+<li>設定當辨識到的不是數字：This is not a valid number</li>
+<li>當範圍不在1-100之間：Number must be between 1 and 100</li>
+<li>猜中數字的結果：Congrats! You have guessed the number!</li>
+<li>數字猜測GO LOWER,GO HIGHER<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkNumber</span>(<span class="params">myWord</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> number = +myWord; <span class="comment">//轉為數字</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Number</span>.isNaN(number)) &#123;</span><br><span class="line">    $(<span class="string">'#msg'</span>).append(<span class="string">`&lt;div&gt;This is not a valid number&lt;/div&gt;`</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//設定語句</span></span><br><span class="line">  <span class="keyword">if</span> (number &gt; <span class="number">100</span> || number &lt; <span class="number">1</span>) &#123;</span><br><span class="line">    $(<span class="string">'#msg'</span>).append(<span class="string">`&lt;div&gt;Number must be between 1 and 100&lt;/div&gt;`</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (number === randomNum) &#123;</span><br><span class="line">    $(<span class="string">'body'</span>).html(<span class="string">`</span></span><br><span class="line"><span class="string">    &lt;h2&gt;Congrats! You have guessed the number! &lt;br&gt;&lt;br&gt; </span></span><br><span class="line"><span class="string">    It was <span class="subst">$&#123;number&#125;</span>&lt;/h2&gt;</span></span><br><span class="line"><span class="string">    &lt;button class="play-again" id="play-again" &gt; Play Again &lt;/button&gt;</span></span><br><span class="line"><span class="string">    `</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (number &gt; randomNum) &#123;</span><br><span class="line">    $(<span class="string">'#msg'</span>).append(<span class="string">`&lt;div&gt;GO LOWER&lt;/div&gt;`</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    $(<span class="string">'#msg'</span>).append(<span class="string">`&lt;div&gt;GO HIGHER&lt;/div&gt;`</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>透過 Number.isNaN() 語法可以判斷，若回傳 true，則表示值為 NaN，否則為 false</li>
+</ul>
+<p><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN" target="_blank" rel="noopener">Number.isNaN()</a></p>
+<h3 id="5-使猜數字可以持續猜，直到答對為止"><a href="#5-使猜數字可以持續猜，直到答對為止" class="headerlink" title="5.使猜數字可以持續猜，直到答對為止"></a>5.使猜數字可以持續猜，直到答對為止</h3><ul>
+<li><code>recognition.onend</code>使用於控制語音識別的服務，並應用在結束語音識別時的情境。</li>
+<li><code>recognition.start();</code>每次數字猜完後，都會重新開始語音識別，直到猜中。</li>
+<li>在數字猜中後，會出現<code>play again</code>按鈕，所以要設定此按鈕，按下後能夠重新開始遊戲 =&gt;<code>window.location.reload()</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//https://stackoverflow.com/questions/51080738/how-to-make-speech-recognition-continous-for-a-fix-time-period</span></span><br><span class="line">recognition.onend = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  recognition.start();</span><br><span class="line">  <span class="comment">//點擊按鈕，重啟遊戲畫面</span></span><br><span class="line">  $(<span class="string">'body'</span>).find(<span class="string">'#play-again'</span>).click(</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">window</span>.location.reload();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://ithelp.ithome.com.tw/articles/10187827" target="_blank" rel="noopener">實戰智慧插座 14 - 我說開燈就開燈 ( 語音辨識 )</a></p>
+<hr>
+<p>其他參考資料:<br><a href="https://tutorialzine.com/2017/08/converting-from-speech-to-text-with-javascript" target="_blank" rel="noopener">Converting from Speech to Text with JavaScript</a><br><a href="https://davidwalsh.name/speech-recognition" target="_blank" rel="noopener">JavaScript Speech Recognition</a><br><a href="https://ithelp.ithome.com.tw/articles/10248999" target="_blank" rel="noopener">Day21 – Speech Recognition (lukechu)</a><br><a href="https://ithelp.ithome.com.tw/articles/10196577" target="_blank" rel="noopener">Day 21 - Speech Detection (Arel)</a><br><a href="https://ithelp.ithome.com.tw/articles/10224891?sc=rss.qu" target="_blank" rel="noopener">DAY20 : Speech Detection (BROWN)</a></p>
+</p>
+      <div class="post-button"><a class="btn" href="/2021/01/22/js-guessNumber/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+    </div>
+  </div>
+  <div class="lx-entry padding">
+    <div>
       <h2 class="title"><a href="/2021/01/16/js-countDown/">JS實作- 新年倒數</a></h2>
       <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2021-01-16</span>
       <p><p><a href="https://eva813.github.io/Eva_portfolio/countDown/countDown.html" target="_blank" rel="noopener">成品</a></p>
@@ -887,281 +1239,6 @@ justify-content: center;</code>使水平、垂直置中<figure class="highlight 
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//刪除鈕 要交易交出後再綁事件</span></span><br><span class="line">  $(<span class="string">'.delete-btn'</span>).last().click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="keyword">this</span>).parent().remove();</span><br><span class="line">    <span class="keyword">let</span> id = $(<span class="keyword">this</span>).data(<span class="string">'id'</span>);</span><br><span class="line">    <span class="comment">//console.log(id);</span></span><br><span class="line">    deleteFromLocalstorage(transactions, id); <span class="comment">//要記得傳入id</span></span><br><span class="line">    updateValue(transactions);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
 </p>
       <div class="post-button"><a class="btn" href="/2021/01/10/js-expenseTracker/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
-    </div>
-  </div>
-  <div class="lx-entry padding">
-    <div>
-      <h2 class="title"><a href="/2021/01/10/js-exchangeRate/">JS實作- exchangeRate匯率轉換器</a></h2>
-      <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2021-01-10</span>
-      <p><h2 id="實作需求分析"><a href="#實作需求分析" class="headerlink" title="實作需求分析"></a>實作需求分析</h2><p><img src="https://i.imgur.com/cu80NjP.png" alt=""></p>
-<ul>
-<li>抓取api提供的匯率資料：使用jQuery,ajax</li>
-<li>選擇不同幣別，進行匯率換算</li>
-<li>swap按鈕，使幣別交換</li>
-</ul>
-<h4 id="完成後的成品"><a href="#完成後的成品" class="headerlink" title="完成後的成品"></a>完成後的<a href="https://eva813.github.io/Eva_portfolio/exchangeRate/exchangeRate.html" target="_blank" rel="noopener">成品</a></h4><h2 id="jQuery-ajax-使用"><a href="#jQuery-ajax-使用" class="headerlink" title="jQuery.ajax 使用"></a>jQuery.ajax 使用</h2><ul>
-<li>參考資料：<a href="https://api.jquery.com/jquery.ajax/" target="_blank" rel="noopener">jQuery.ajax()
-</a></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">  method: <span class="string">"get"</span>,</span><br><span class="line">  url: <span class="string">"https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD"</span>,</span><br><span class="line"> </span><br><span class="line">&#125;)</span><br><span class="line">  .done(<span class="function"><span class="keyword">function</span>(<span class="params"> some_data </span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">    <span class="comment">//成功抓到值的話，就會印出抓取到的資料</span></span><br><span class="line">  &#125;).fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  </span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/S1kOYmH.png" alt=""></p>
-<ul>
-<li>應用於exchangeRate:<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url: <span class="string">`https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/<span class="subst">$&#123;currency_one&#125;</span>`</span>,  <span class="comment">//注意符號</span></span><br><span class="line">    method: <span class="string">'get'</span>,<span class="comment">//get,post,put</span></span><br><span class="line">    dataType: <span class="string">'json'</span>,</span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//console.log(data);</span></span><br><span class="line">      <span class="keyword">const</span> rate = data.conversion_rates[currency_two];</span><br><span class="line">      <span class="comment">//console.log(rate);</span></span><br><span class="line">      $(<span class="string">'#rate'</span>).text(<span class="string">`1 <span class="subst">$&#123;currency_one&#125;</span> = <span class="subst">$&#123;rate&#125;</span> <span class="subst">$&#123;currency_two&#125;</span>`</span>);</span><br><span class="line">      $(<span class="string">'#amount-two'</span>).val((amountOne * rate).toFixed(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure></li>
-<li><h4 id="詳細說明可以參照內文：計算匯率calculate函式"><a href="#詳細說明可以參照內文：計算匯率calculate函式" class="headerlink" title="詳細說明可以參照內文：計算匯率calculate函式"></a>詳細說明可以參照內文：<a href="#計算匯率calculate-函式">計算匯率calculate函式</a></h4></li>
-</ul>
-<h4 id="其他參考資料："><a href="#其他參考資料：" class="headerlink" title="其他參考資料："></a>其他參考資料：</h4><p><a href="https://www.youtube.com/watch?v=z-hN7GY5K7g" target="_blank" rel="noopener">[ Alex 宅開發 ] 👨‍💻從 jQuery 入門到認識 JavaScript #5 Ajax 與非同步功能操作與原始碼探索</a></p>
-<div class="note warning">
-            <ul><li><code>url</code>:來源，api的位置在哪裏</li><li><code>type</code>:api的呼叫方式</li><li><code>dataType</code>:它回給你的資料類型</li><li><code>data</code>:你要傳給它什麼</li></ul>
-          </div>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">$.ajax(&#123;</span><br><span class="line">  url: data.json,</span><br><span class="line">  type: <span class="string">'get'</span>,<span class="comment">//get,post,put,path,delete</span></span><br><span class="line">  dataType: <span class="string">'json'</span>, <span class="comment">//html,xml,text,jsonp</span></span><br><span class="line">  data: &#123;&#125;</span><br><span class="line"></span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//response &lt;-&gt; request</span></span><br><span class="line">  <span class="built_in">console</span>.log(res);</span><br><span class="line">  <span class="keyword">return</span> def.resolve();</span><br><span class="line">&#125;), <span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(err);</span><br><span class="line">  <span class="keyword">return</span> def.reject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="計算匯率calculate-函式"><a href="#計算匯率calculate-函式" class="headerlink" title="計算匯率calculate 函式"></a>計算匯率calculate 函式</h2><ul>
-<li>此函式為抓取匯率api的資料並帶入計算匯率</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculate</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> currency_one = $(<span class="string">"#currency-one"</span>).val();</span><br><span class="line">  <span class="keyword">var</span> currency_two = $(<span class="string">'#currency-two'</span>).val();</span><br><span class="line">  <span class="keyword">var</span> amountOne = $(<span class="string">'#amount-one'</span>).val();</span><br><span class="line">  <span class="keyword">var</span> amountTwo = $(<span class="string">'#amount-two'</span>).val();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//https://app.exchangerate-api.com/dashboard/confirmed</span></span><br><span class="line"></span><br><span class="line">  $.ajax(&#123;</span><br><span class="line">    url: <span class="string">`https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/<span class="subst">$&#123;currency_one&#125;</span>`</span>,<span class="comment">//注意符號</span></span><br><span class="line">    method: <span class="string">'get'</span>,<span class="comment">//抓取值</span></span><br><span class="line">    dataType: <span class="string">'json'</span>,</span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">      <span class="comment">//console.log(data);  //查看抓到的物件</span></span><br><span class="line">      </span><br><span class="line">      <span class="keyword">const</span> rate = data.conversion_rates[currency_two];</span><br><span class="line">      <span class="comment">//console.log(rate);</span></span><br><span class="line">      </span><br><span class="line">      $(<span class="string">'#rate'</span>).text(<span class="string">`1 <span class="subst">$&#123;currency_one&#125;</span> = <span class="subst">$&#123;rate&#125;</span> <span class="subst">$&#123;currency_two&#125;</span>`</span>);</span><br><span class="line">      </span><br><span class="line">      <span class="comment">//將值帶入</span></span><br><span class="line">      $(<span class="string">'#amount-two'</span>).val((amountOne * rate).toFixed(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="函式說明"><a href="#函式說明" class="headerlink" title="函式說明:"></a>函式說明:</h3><h4 id="1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量"><a href="#1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量" class="headerlink" title="1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量"></a>1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量</h4><h4 id="2-串接資料"><a href="#2-串接資料" class="headerlink" title="2.串接資料"></a>2.串接資料</h4><p> (1). 抓取資料的位置<br><code>url: https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/${currency_one}</code></p>
-<div class="note warning">
-            <p><code>&quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&quot;</code><br>注意網址後面有修改，要抓取會變動的變數： ${currency_one}</p>
-          </div>
-
-<p> (2) 檢查是否有抓到要的資料：</p>
-<ul>
-<li>宣告：<code>const rate = data.conversion_rates[currency_two];</code></li>
-<li>console.log(rate); </li>
-</ul>
-<p><img src="https://i.imgur.com/LKGiCmN.png" alt=""></p>
-<ul>
-<li>確定抓取的值是否正確：<code>console.log($(&#39;#amount-two&#39;).val());</code></li>
-</ul>
-<p><img src="https://i.imgur.com/r9Nx25o.png" alt=""></p>
-<ul>
-<li>將計算匯率帶入<br><code>$(&#39;#amount-two&#39;).val((amountOne * rate).toFixed(2));</code></li>
-</ul>
-<p><img src="https://i.imgur.com/oMBuNFV.png" alt=""></p>
-<h2 id="其他輸入值的抓取與連動"><a href="#其他輸入值的抓取與連動" class="headerlink" title="其他輸入值的抓取與連動"></a>其他輸入值的抓取與連動</h2><ul>
-<li><h4 id="currency-one的改變，會連動上面的函式計算結果"><a href="#currency-one的改變，會連動上面的函式計算結果" class="headerlink" title="#currency-one的改變，會連動上面的函式計算結果"></a><code>#currency-one的改變</code>，會連動上面的函式計算結果</h4></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"#currency-one"</span>).change(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">"#rate"</span>).html(<span class="string">""</span>); </span><br><span class="line">  calculate();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//抓取amountone</span></span><br><span class="line">$(<span class="string">"#amount-one"</span>).on(<span class="string">"input"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">"#rate"</span>).html(<span class="string">""</span>);</span><br><span class="line">  calculate();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">$(<span class="string">"#currency-two"</span>).change(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">"#rate"</span>).html(<span class="string">""</span>);</span><br><span class="line">  calculate();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//抓取amountTwo</span></span><br><span class="line">$(<span class="string">"#amount-two"</span>).on(<span class="string">"input"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">"#rate"</span>).html(<span class="string">""</span>);</span><br><span class="line">  calculate();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><h4 id="發現使用-append-，會出現累積div文字的問題"><a href="#發現使用-append-，會出現累積div文字的問題" class="headerlink" title="發現使用.append()，會出現累積div文字的問題"></a>發現使用<code>.append()</code>，會出現累積div文字的問題</h4></li>
-<li><p>(1) 清除函式<code>.append()</code>，累積div文字呈現的問題<br><code>$(&quot;#rate&quot;).html(&quot;&quot;);</code></p>
-</li>
-<li><p>(2) 將原本使用<code>.append()</code>的地方，修改為<code>.text()</code>, <code>$(&#39;#rate&#39;).text(`1 ${currency_one} = ${rate} ${currency_two}`);</code></p>
-<ul>
-<li>位置：<a href="#計算匯率calculate-函式">計算匯率calculate函式</a></li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/GTMuXY0.png" alt=""></p>
-<p><img src="https://i.imgur.com/TvspVAq.png" alt=""></p>
-<h2 id="swap按鈕-（使幣別交換）"><a href="#swap按鈕-（使幣別交換）" class="headerlink" title="swap按鈕 （使幣別交換）"></a>swap按鈕 （使幣別交換）</h2><ul>
-<li>宣告一個變數，紀錄交換前的幣別<code>let temp = $(&quot;#currency-one&quot;).val();</code></li>
-<li>確認是否宣告正確：<code>console.log(temp);</code></li>
-</ul>
-<p><img src="https://i.imgur.com/gkYsHxQ.png" alt=""></p>
-<p><img src="https://i.imgur.com/fAZmC0Q.png" alt=""></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//swap按鈕</span></span><br><span class="line">$(<span class="string">'#swap'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> temp = $(<span class="string">"#currency-one"</span>).val();<span class="comment">//設一個變數來存放currency-one</span></span><br><span class="line">  $(<span class="string">"#currency-one"</span>).val($(<span class="string">"#currency-two"</span>).val());</span><br><span class="line">  $(<span class="string">"#currency-two"</span>).val(temp);</span><br><span class="line">  calculate();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">calculate(); <span class="comment">//放於最後</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>console.log($(&quot;#currency-one&quot;).val());</code></li>
-<li><code>console.log($(&quot;#currency-two&quot;).val());</code></li>
-</ul>
-<p><img src="https://i.imgur.com/o4JLcIF.png" alt=""></p>
-<hr>
-<p>參考資料：<br><a href="https://ithelp.ithome.com.tw/articles/10192175" target="_blank" rel="noopener">重新認識 JavaScript: Day 16 那些你知道與不知道的事件們</a></p>
-</p>
-      <div class="post-button"><a class="btn" href="/2021/01/10/js-exchangeRate/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
-    </div>
-  </div>
-  <div class="lx-entry padding">
-    <div>
-      <h2 class="title"><a href="/2020/12/28/js-browser/">JS-browser</a></h2>
-      <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-12-28</span>
-      <p><h2 id="1-DOM-與樹狀結構"><a href="#1-DOM-與樹狀結構" class="headerlink" title="1. DOM 與樹狀結構"></a>1. DOM 與樹狀結構</h2><p><img src="https://i.imgur.com/uZDTql8.png" alt=""></p>
-<ul>
-<li>DOM: document:網頁內部<blockquote>
-<p>KURO 老師:<br>DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。</p>
-</blockquote>
-</li>
-</ul>
-<blockquote>
-<p>Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西<br> <img src="https://i.imgur.com/tPHGSL4.png" alt=""></p>
-</blockquote>
-<h3 id="API-Application-Programming-Interface"><a href="#API-Application-Programming-Interface" class="headerlink" title="API (Application Programming Interface)"></a>API (Application Programming Interface)</h3><ul>
-<li>應用程式 編程 介面<h2 id="document-物件-API-文件"><a href="#document-物件-API-文件" class="headerlink" title="document 物件 API 文件"></a>document 物件 API 文件</h2></li>
-<li><h4 id="getElementsByTagName-抓取html中某tag的元素"><a href="#getElementsByTagName-抓取html中某tag的元素" class="headerlink" title="getElementsByTagName : 抓取html中某tag的元素"></a><code>getElementsByTagName</code> : 抓取html中某tag的元素</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">    <span class="keyword">const</span> elements = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'div'</span>);</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(elements);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/hSmfZ9u.png" alt=""></li>
-</ul>
-<p><img src="https://i.imgur.com/yNOOK2m.png" alt=""></p>
-<ul>
-<li><h4 id="getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取"><a href="#getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取" class="headerlink" title="getElementsByClassName: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)"></a><code>getElementsByClassName</code>: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)</h4></li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block1"</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">    <span class="keyword">const</span> elements = <span class="built_in">document</span>.getElementsByClassName(<span class="string">'block1'</span>);</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(elements);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/d7ZlZnr.png" alt=""></p>
-<ul>
-<li><h4 id="getElementById-注意：getElement-沒有加s！這是用來抓取指定ID"><a href="#getElementById-注意：getElement-沒有加s！這是用來抓取指定ID" class="headerlink" title="getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID"></a><code>getElementById</code> : 注意：getElement 沒有加s！這是用來抓取指定ID</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block1"</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"myyo"</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">const</span> elements = <span class="built_in">document</span>.getElementById(<span class="string">'myyo'</span>);</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(elements);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/1ouq4WA.png" alt=""></p>
-</li>
-<li><h4 id="querySelector-後面接的是css選擇器"><a href="#querySelector-後面接的是css選擇器" class="headerlink" title="querySelector: 後面接的是css選擇器"></a><code>querySelector</code>: 後面接的是css選擇器</h4></li>
-<li><p>只會針對元素的第一筆資料，其他並不會被選入這時候可以使用</p>
-<ul>
-<li>選擇tag標籤：(‘div’)：注意：使用此方式當html有多個div，他只會選擇到第一個符合的</li>
-<li>選擇cass : (‘.calssName’)</li>
-<li>選擇id : (‘#idName’)</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/QzoOo6r.png" alt=""></p>
-<p><img src="https://i.imgur.com/pSMPFCJ.png" alt=""></p>
-<ul>
-<li><p>也可以選區某一tag下的tag</p>
-<ul>
-<li><code>querySelector(&#39;div &gt; a&#39;)</code><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block1"</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"myyo"</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">    <span class="keyword">const</span> elements = <span class="built_in">document</span>.querySelector(<span class="string">'div &gt; a'</span>);</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(elements);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/I9qr8LD.png" alt=""></li>
-</ul>
-</li>
-<li><h4 id="querySelectorAll-可以選取多個元素"><a href="#querySelectorAll-可以選取多個元素" class="headerlink" title="querySelectorAll: 可以選取多個元素"></a><code>querySelectorAll</code>: 可以選取多個元素</h4></li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block1"</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"myyo"</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">    <span class="keyword">const</span> elements = <span class="built_in">document</span>.querySelectorAll(<span class="string">'div'</span>);</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(elements);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/jFPYIO0.png" alt="Eloquent JavaScript, 3rd Edition"></p>
-<h3 id="順利選則元素之後，嘗試做些改變"><a href="#順利選則元素之後，嘗試做些改變" class="headerlink" title="順利選則元素之後，嘗試做些改變"></a>順利選則元素之後，嘗試做些改變</h3><p>可以看看，js如何與瀏覽器互動 -&gt;<a href="https://hackmd.io/yGiTI8qVRLWmDCpD1w7HcA?view" target="_blank" rel="noopener">JavaScript 與瀏覽器的溝通</a></p>
-<h3 id="BOM-與-window-物件"><a href="#BOM-與-window-物件" class="headerlink" title="BOM 與 window 物件"></a>BOM 與 window 物件</h3><ul>
-<li>BOM (Browser Object Model，瀏覽器物件模型)，是瀏覽器所有功能的核心，與網頁的內容無關。<ul>
-<li>window是瀏覽器的根物件，也是BOM的瀏覽器模型</li>
-</ul>
-</li>
-<li>window.location.hrrf =&gt; 可以知道現在網址<br><img src="https://i.imgur.com/8EeLLGQ.png" alt=""></li>
-<li>window.history.back(); =&gt; 回到網頁瀏覽的上一頁<br><img src="https://i.imgur.com/kBtDslP.png" alt=""></li>
-</ul>
-<p><img src="https://i.imgur.com/jyPOjvH.png" alt=""></p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a href="https://ithelp.ithome.com.tw/articles/10202689" target="_blank" rel="noopener">Day03-深入理解網頁架構：DOM</a><br><a href="https://hsuchihting.github.io/javascript/20200615/1316819935/" target="_blank" rel="noopener">JS 筆記 - 認識 DOM 文件物件模型</a><br><a href="https://developer.mozilla.org/zh-TW/docs/Web/API/Document" target="_blank" rel="noopener">MDN-Document</a><br><a href="https://www.w3schools.com/jsref/dom_obj_document.asp" target="_blank" rel="noopener">The HTML DOM Document Object</a><br><a href="https://ithelp.ithome.com.tw/articles/10211614" target="_blank" rel="noopener">JavaScript 基礎知識-querySelectorAll</a><br><a href="https://eloquentjavascript.net/14_dom.html" target="_blank" rel="noopener">The Document Object Model</a><br><a href="https://www.happycoding.today/posts/43" target="_blank" rel="noopener">JavaScript入門系列：BOM和DOM筆記</a></p>
-</p>
-      <div class="post-button"><a class="btn" href="/2020/12/28/js-browser/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
-    </div>
-  </div>
-  <div class="lx-entry padding">
-    <div>
-      <h2 class="title"><a href="/2020/12/27/js-array/">JS基本功- 物件與陣列</a></h2>
-      <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2020-12-27</span>
-      <p><blockquote>
-<p>程式柴<br><img src="https://i.imgur.com/44kqCRM.png" alt=""></p>
-<h3 id="Function、array都屬於物件"><a href="#Function、array都屬於物件" class="headerlink" title="Function、array都屬於物件"></a>Function、array都屬於物件</h3><p><img src="https://i.imgur.com/1bYo7eM.png" alt=""></p>
-</blockquote>
-<h2 id="物件的例子"><a href="#物件的例子" class="headerlink" title="物件的例子"></a>物件的例子</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">      name: [<span class="string">'Bob'</span>, <span class="string">'Smith'</span>],</span><br><span class="line">      age: <span class="number">32</span>,</span><br><span class="line">      gender: <span class="string">'male'</span>,</span><br><span class="line">      interest: [<span class="string">'music'</span>, <span class="string">'movie'</span>],</span><br><span class="line">      greeting: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'hi I\'m'</span> + <span class="keyword">this</span>.name[<span class="number">0</span>] + <span class="string">'.'</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="物件的創建"><a href="#物件的創建" class="headerlink" title="物件的創建"></a>物件的創建</h2><p><code>var x={}</code></p>
-<ul>
-<li>有一隻狗,其名字、年齡，函式<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dog = &#123;</span><br><span class="line">      name: <span class="string">'tracy'</span>,</span><br><span class="line">      age: <span class="number">20</span>,</span><br><span class="line"></span><br><span class="line">      bow: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'bow!bow!'</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-<li>用.呼叫屬性，或是dog[‘key’] :point_down:<br><img src="https://i.imgur.com/OgrYwjF.png" alt=""></li>
-<li>物件內的函式<br><img src="https://i.imgur.com/jOWuwxQ.png" alt=""></li>
-</ul>
-<h2 id="添加屬性至物件上"><a href="#添加屬性至物件上" class="headerlink" title="添加屬性至物件上"></a>添加屬性至物件上</h2><ul>
-<li><h4 id="增加值的方式"><a href="#增加值的方式" class="headerlink" title="增加值的方式"></a>增加值的方式</h4><ul>
-<li><code>dog.color = &#39;white&#39;;</code></li>
-<li><code>dog[&#39;size&#39;] = &#39;small&#39;;</code> =&gt;較常用</li>
-</ul>
-</li>
-<li><h4 id="增加函式-gt-一樣用-的方式"><a href="#增加函式-gt-一樣用-的方式" class="headerlink" title="增加函式 =&gt; 一樣用.的方式"></a>增加函式 =&gt; 一樣用.的方式</h4><ul>
-<li><code>dog.bowbow = function () {
-console.log(&#39;bow!bow!～～&#39;) }</code></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dog = &#123;</span><br><span class="line">     name: <span class="string">'tracy'</span>,</span><br><span class="line">     age: <span class="number">7</span>,</span><br><span class="line">     bow: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">'bow!'</span>);</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//增加值的方式</span></span><br><span class="line">   <span class="comment">//1</span></span><br><span class="line">   dog.color = <span class="string">'white'</span>;</span><br><span class="line">   dog.eyes = <span class="string">'big'</span>;</span><br><span class="line">   <span class="comment">//2</span></span><br><span class="line">   dog[<span class="string">'size'</span>] = <span class="string">'small'</span>;</span><br><span class="line">   <span class="comment">//增加函式</span></span><br><span class="line">   dog.bowbow = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">'bow!bow!～～'</span>)</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/4qqgZRy.png" alt=""></p>
-<h2 id="陣列"><a href="#陣列" class="headerlink" title="陣列"></a>陣列</h2><blockquote>
-<p>程式柴<br><img src="https://i.imgur.com/FdH3fty.png" alt=""></p>
-</blockquote>
-<ul>
-<li><p>陣列用 中括號<code>[ ]</code></p>
-</li>
-<li><p>陣列的計算是從零開始（取陣列的索引）</p>
-<ul>
-<li>呼應for 迴圈，從0開始，從索引第一個<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">arr = [<span class="number">111</span>, <span class="number">222</span>, <span class="number">333</span>]</span><br><span class="line">    <span class="built_in">console</span>.log(arr);</span><br><span class="line">    <span class="built_in">console</span>.log(arr[<span class="number">1</span>]); <span class="comment">//222</span></span><br><span class="line">    <span class="comment">//呼應for 迴圈，從0開始，從索引第一個</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>陣列中的東西都是相同屬性，比較好操作</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr2 = [<span class="string">'dog'</span>, <span class="string">'cat'</span>, <span class="string">'sth'</span>]</span><br><span class="line">    <span class="built_in">console</span>.log(arr.length); <span class="comment">//3</span></span><br><span class="line">  arr3 = [<span class="number">111</span>, <span class="string">'cat'</span>, <span class="string">'sth'</span>]</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/2WztSsO.png" alt=""></p>
-</li>
-<li><p>練習：要紀錄10位學生的分數，並加總</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> score = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">100</span>];</span><br><span class="line">    <span class="built_in">console</span>.log(score);</span><br></pre></td></tr></table></figure>
-<h3 id="陣列基本操作-gt-pop-與push-較常用"><a href="#陣列基本操作-gt-pop-與push-較常用" class="headerlink" title="陣列基本操作 -&gt; pop 與push 較常用"></a>陣列基本操作 -&gt; <code>pop</code> 與<code>push</code> 較常用</h3></li>
-<li><p><code>score.push(1000)</code> -&gt; 新增元素到現有陣列中，加入尾端</p>
-</li>
-<li><p><code>score.unshift(888)</code> -&gt; 加入陣列最前面</p>
-</li>
-<li><p>pop:從最末端抽走元素<br><img src="https://i.imgur.com/e55Oxbz.png" alt=""></p>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myHeros=[<span class="string">'孫悟空'</span>, <span class="string">'佐助'</span>, <span class="string">'女超人'</span>, <span class="string">'美國隊長'</span>];</span><br><span class="line"><span class="comment">//從最末端抽走元素</span></span><br><span class="line">myHeros.pop();</span><br><span class="line"></span><br><span class="line"><span class="comment">//從頭抽走元素</span></span><br><span class="line">myHeros.shift();</span><br><span class="line"><span class="built_in">console</span>.log(myHeros);</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="陣列替換元素"><a href="#陣列替換元素" class="headerlink" title="陣列替換元素"></a>陣列替換元素</h3><ul>
-<li>在原本陣列中，選取要取代的該元素，後面加=，並輸入內容</li>
-</ul>
-<p><img src="https://i.imgur.com/gnVybmt.png" alt=""></p>
-<h2 id="陣列取得最後一個元素"><a href="#陣列取得最後一個元素" class="headerlink" title="陣列取得最後一個元素"></a>陣列取得最後一個元素</h2><ul>
-<li>該陣列長度-1，就可以取得最後一個元素<ul>
-<li>長度為七，最後一個的索引是6 :point_down:<br><img src="https://i.imgur.com/Ytlzihy.png" alt=""></li>
-</ul>
-</li>
-</ul>
-<h2 id="用-indexOf-取得元素的索引"><a href="#用-indexOf-取得元素的索引" class="headerlink" title="用 indexOf 取得元素的索引"></a>用 indexOf 取得元素的索引</h2><ul>
-<li>Of的o要大寫</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myHeros=[<span class="string">'孫悟空'</span>, <span class="string">'佐助'</span>, <span class="string">'女超人'</span>, <span class="string">'美國隊長'</span>];</span><br><span class="line"><span class="comment">//檢查誰誰誰有在陣列中嗎</span></span><br><span class="line"><span class="built_in">console</span>.log(myHeros.indexOf(<span class="string">'達爾'</span>)); <span class="comment">//印出-1，意指此元素不存在陣列中</span></span><br><span class="line"><span class="built_in">console</span>.log(myHeros.indexOf(<span class="string">'美國隊長'</span>)); <span class="comment">//印出3（在陣列中第幾個索引</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="切片-slice-與方法"><a href="#切片-slice-與方法" class="headerlink" title="切片 slice 與方法"></a>切片 slice 與方法</h3><p><img src="https://i.imgur.com/h3ltQ3Q.png" alt=""></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span>, <span class="string">'g'</span>];</span><br><span class="line">   <span class="comment">//用索引</span></span><br><span class="line">   <span class="built_in">console</span>.log(arr.slice(<span class="number">2</span>, <span class="number">4</span>));<span class="comment">//不包含最後一個</span></span><br><span class="line">   <span class="built_in">console</span>.log(arr.slice(<span class="number">2</span>, <span class="number">5</span>));</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/bzKmwQi.png" alt=""></p>
-<ul>
-<li>複製陣列<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> shallowCopy = fruits.slice(); <span class="comment">// 這就是複製陣列的方式</span></span><br><span class="line"><span class="comment">// ["Strawberry", "Mango"]</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank" rel="noopener">MDN slice</a><br><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">MDN array</a><br><a href="https://www.oxxostudio.tw/articles/201908/js-array.html" target="_blank" rel="noopener">JavaScript Array 陣列操作方法大全 ( 含 ES6 )</a></p>
-<h2 id="陣列與物件"><a href="#陣列與物件" class="headerlink" title="陣列與物件"></a>陣列與物件</h2><ul>
-<li><p>例子：被老師要求要記錄，學生的名字,分數,地址…</p>
-</li>
-<li><p>以陣列的想法，會將各類別分類，放入同屬性的結果</p>
-<ul>
-<li>學生的分數,名字個一個陣列<br><img src="https://i.imgur.com/6DP47iL.png" alt=""></li>
-<li>要取得同一位學生的所有資料，要個別從矩陣中拿取<br><img src="https://i.imgur.com/5q4VitE.png" alt=""></li>
-</ul>
-</li>
-<li><p>一個資料集合，就能代表一個學生 –&gt;物件</p>
-<ul>
-<li>以下面的資料結構來代表學生的一些屬性<br><img src="https://i.imgur.com/Gk5T01w.png" alt=""></li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h3><ul>
-<li>物件與陣列，與等號的關係,理解<ul>
-<li>下方的結果都是false<br><img src="https://i.imgur.com/6L0AI2n.png" alt=""></li>
-</ul>
-</li>
-</ul>
-<p>因為：</p>
-<ul>
-<li><code>var obj=[a:1]</code>，會將它放在某一個記憶體位置</li>
-<li><code>var obj2=[a:1]</code>，會將它放在另一個記憶體位置<div class="note info">
-            <p>即便內容,數值一樣，但js判斷的是記憶體位置不一樣</p>
-          </div>
-</li>
-</ul>
-</p>
-      <div class="post-button"><a class="btn" href="/2020/12/27/js-array/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
     </div>
   </div>
 
