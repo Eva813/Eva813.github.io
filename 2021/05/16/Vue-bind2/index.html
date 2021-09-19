@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>Vue.js 3 - 綁定方式多變化 | Let&#39;s Code</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-05-16</span>
+    <h2>Vue.js 3 - 綁...</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/Vue-js/" rel="tag">Vue.js</a></div>
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <h2 id="動態屬性綁定-注意大小寫"><a href="#動態屬性綁定-注意大小寫" class="headerlink" title="動態屬性綁定(注意大小寫)"></a>動態屬性綁定(注意大小寫)</h2><ul>
+<li>宣告變數dynamic，將 dynamic 綁定於點擊事件上 <code>:click=&quot;dynamic = dynamic === &#39;disabled&#39; ? &#39;readonly&#39;:&#39;disabled&#39;&quot;</code><ul>
+<li>如果變數結果是 disable 的話就會切換成 readonly，反之，就會切換為 disabled</li>
+</ul>
+</li>
+<li>接著可以將值動態地加入 HTML 屬性上 <code>:[dynamic]</code><ul>
+<li>綁定後，就會發現輸入框隨著切換，有不同效果<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>動態屬性綁定(注意大小寫)<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">v-on:click</span>=<span class="string">"dynamic = dynamic === 'disabled' ? 'readonly':'disabled'"</span>&gt;</span>切換為 &#123;&#123; dynamic &#125;&#125;<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">:</span>[<span class="attr">dynamic</span>] <span class="attr">:value</span>=<span class="string">"name"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JS</span></span><br><span class="line"></span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      dynamic: <span class="string">'disabled'</span>,</span><br><span class="line">      breakfastShop: &#123;</span><br><span class="line">      name: <span class="string">'奇蹟早餐'</span>, </span><br><span class="line">        imgUrl: <span class="string">'https://images.unsplash.com/photo-1600182610361-4b4d664e07b9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=200&amp;q=80'</span>,</span><br><span class="line">        resizeImg: <span class="string">'https://images.unsplash.com/photo-1600182610361-4b4d664e07b9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;q=80'</span></span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<p><code>readony</code>:可以選擇輸入框，但無法輸入值<br><code>disabled</code>:無法點選輸入框<br><img src="https://i.imgur.com/GfAhQJk.png" alt=""></p>
+<p><img src="https://i.imgur.com/YUf3XZk.png" alt=""></p>
+<div class="note info">
+            <p>再次補充說明：<br>    1. dynamic = 【這邊是最前面的變數，用來存放後面回傳回來的值】<br>    2. dynamic === ‘disabled’ ? 【這邊就是中間判斷式的部分，判斷 dynamic 變數是否為 ‘disabled’】<br>    3. ‘readonly’:’disabled’ 【這邊就是最後面的值，會依照前方的判斷式來決定回傳 ‘readonly’ 還是 ‘disabled’，如果判斷式結果為 True 則回傳 ‘readonly’ ，反之回傳 ‘disabled’】</p>
+          </div>
+
+
+<h2 id="HTML-樣式綁定"><a href="#HTML-樣式綁定" class="headerlink" title="HTML 樣式綁定"></a>HTML 樣式綁定</h2><p>樣式綁定是時常使用到的效果，能透過此方式，使顏色改變、增加一點簡易動畫的效果。</p>
+<h2 id="範例解說"><a href="#範例解說" class="headerlink" title="範例解說"></a>範例解說</h2><ul>
+<li>替 box 增加旋轉效果</li>
+<li>綁定class可以用陣列方式、或物件方式來添加，以下範例為物件方式<ul>
+<li>物件key值對應 className，物件的值是對應 true\false(判斷式)</li>
+<li>若className 有 <code>-</code> ， 注意要 “bg-danger”</li>
+</ul>
+</li>
+<li>事件的綁定 <code>change()</code> 透過函式來切換 true\false<code>this[key] = !this[key];</code></li>
+<li>切換是否旋轉、切換背景色 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.box</span> &#123;</span></span><br><span class="line">  background-color: var(--bs-light);</span><br><span class="line">  border: 1px solid var(--bs-gray);</span><br><span class="line">  width: 80px;</span><br><span class="line">  height: 80px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="css">  <span class="selector-tag">transition</span>: <span class="selector-tag">all</span> <span class="selector-class">.5s</span>;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.box</span><span class="selector-class">.rotate</span> &#123;</span></span><br><span class="line">  transform: rotate(45deg)</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">h2</span>&gt;</span>切換 Class<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">h3</span>&gt;</span>物件寫法<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">          <span class="comment">&lt;!-- 物件key值對應 className，物件的值是對應 true\false --&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span> <span class="attr">:class</span>=<span class="string">"&#123; rotate: isTransform ,'bg-danger':boxColor&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"btn btn-outline-primary"</span> <span class="attr">v-on:click</span>=<span class="string">"change('isTransform')"</span>&gt;</span>選轉物件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"btn btn-outline-primary ms-1"</span> <span class="attr">v-on:click</span>=<span class="string">"change('boxColor')"</span>&gt;</span>切換色彩<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      isTransform: <span class="literal">true</span>,</span><br><span class="line">      boxColor: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line">     </span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    change: <span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>[key] = !<span class="keyword">this</span>[key];</span><br><span class="line">    &#125;,</span><br><span class="line">    addClass(arr) &#123;</span><br><span class="line">      <span class="keyword">this</span>.arrayClass.push(...arr);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Vue.createApp(App).mount(<span class="string">'#app'</span>);</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/KFqN9hz.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/b9OCub3.gif" alt=""></p>
+<h3 id="整合為一個物件"><a href="#整合為一個物件" class="headerlink" title="整合為一個物件"></a>整合為一個物件</h3><p>將上個範例的兩個class樣式，整合成一個物件</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">hr</span> <span class="attr">class</span>=<span class="string">"mt-4"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h3</span>&gt;</span>物件寫法 2<span class="tag">&lt;/<span class="name">h5</span>&gt;</span>     </span><br><span class="line">   <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span> <span class="attr">:class</span>=<span class="string">'classObj'</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      isTransform: <span class="literal">true</span>,</span><br><span class="line">      boxColor: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line">      classObj:&#123;</span><br><span class="line">        rotata: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">"bg-danger"</span>: <span class="literal">true</span>,</span><br><span class="line">      &#125;</span><br><span class="line">     </span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    change: <span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>[key] = !<span class="keyword">this</span>[key];</span><br><span class="line">    &#125;,</span><br><span class="line">    addClass(arr) &#123;</span><br><span class="line">      <span class="keyword">this</span>.arrayClass.push(...arr);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Vue.createApp(App).mount(<span class="string">'#app'</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://i.imgur.com/41AKFc8.png" alt=""></p>
+<p><img src="https://i.imgur.com/StALtsi.png" alt=""></p>
+<h2 id="綁定樣式，陣列寫法"><a href="#綁定樣式，陣列寫法" class="headerlink" title="綁定樣式，陣列寫法"></a>綁定樣式，陣列寫法</h2><ul>
+<li>針對單一元素，加入多個class<ul>
+<li>此方式就不用 true\false 的判斷動作，只要綁定在陣列之中的樣式，就會套入效果</li>
+<li>像是範例，就是使按鈕背景色彩為紅色(‘btn-danger’)、無法點擊(‘disabled’)<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>陣列寫法<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"btn"</span> <span class="attr">:class</span>=<span class="string">"['disabled','btn-danger']"</span>&gt;</span>請操作本元件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"btn btn-outline-primary"</span> <span class="attr">v-on:click</span>=<span class="string">"addClass(['btn-primary', 'active'])"</span>&gt;</span>為陣列加入</span><br><span class="line">             Class<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/RZFOrdK.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>另一種，製作陣列，並將陣列放入<ul>
+<li>將arrayClass，綁定在標籤的class上</li>
+<li>在點擊按鈕，綁定點擊事件，<code>addClass(arr)</code>，在該函式傳入參數，將陣列內容加入arrayClass，並套入綁定的標籤上</li>
+<li>相對應的方法：<br><img src="https://i.imgur.com/VFfDXPY.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>陣列寫法<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"btn"</span> <span class="attr">:class</span>=<span class="string">"arrayClass"</span>  &gt;</span>請操作本元件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">class</span>=<span class="string">"btn btn-outline-primary"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">v-on:click</span>=<span class="string">"addClass(['btn-primary', 'active'])"</span>&gt;</span>為陣列加入 Class<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">       <span class="comment">// Array 操作</span></span><br><span class="line">      arrayClass: [<span class="string">''</span>],</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">   </span><br><span class="line">    addClass(arr) &#123;</span><br><span class="line">      <span class="keyword">this</span>.arrayClass.push(...arr);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Vue.createApp(App).mount(<span class="string">'#app'</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://i.imgur.com/PZd0sKO.png" alt=""></p>
+<ul>
+<li><code>btn-primary</code>:背景色為綠色<br><img src="https://i.imgur.com/S0zLJKb.png" alt=""></li>
+</ul>
+<h4 id="補充：混合寫法"><a href="#補充：混合寫法" class="headerlink" title="補充：混合寫法"></a>補充：混合寫法</h4><ul>
+<li>將bootstrap的class放入，且加入arrayClass<ul>
+<li><code>:class=&quot;[arrayClass,&#39;text-danger&#39;]</code>，也就是除了放入 arrayClass 這個變數之外，我們還可以放入新的class給予不同樣式<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>陣列寫法<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"btn"</span> <span class="attr">:class</span>=<span class="string">"[arrayClass,'text-danger']"</span>&gt;</span>請操作本元件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"btn btn-outline-primary"</span> <span class="attr">v-on:click</span>=<span class="string">"addClass(['btn-primary', 'active'])"</span>&gt;</span>為陣列加入</span><br><span class="line">              Class<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/d3dqSTj.png" alt=""></p>
+<h2 id="行內樣式style"><a href="#行內樣式style" class="headerlink" title="行內樣式style"></a>行內樣式style</h2><h4 id="要綁定style的時候"><a href="#要綁定style的時候" class="headerlink" title="要綁定style的時候"></a>要綁定style的時候</h4><ul>
+<li>key會帶入style的屬性(注意要以駝峰式)，如background-color，要改為backgroundColor</li>
+<li>值則是帶入style相對應的值</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>行內樣式<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h4</span>&gt;</span>綁定行內樣式<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span> <span class="attr">:style</span>=<span class="string">"&#123;backgroundColor:'red'&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="加入準備好的資料格式"><a href="#加入準備好的資料格式" class="headerlink" title="加入準備好的資料格式"></a>加入準備好的資料格式</h3><ul>
+<li><p>將設定好的物件，裡面有包含數個樣式，直接綁定至style<br><img src="https://i.imgur.com/z93Jmam.png" alt=""></p>
+</li>
+<li><p>背景色彩，紅色，邊框5px<br><img src="https://i.imgur.com/lWYdxIi.png" alt=""></p>
+</li>
+</ul>
+<h3 id="同時多個樣式"><a href="#同時多個樣式" class="headerlink" title="同時多個樣式"></a>同時多個樣式</h3><ul>
+<li>以陣列裡面包多個物件<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span> <span class="attr">:style</span>=<span class="string">"[styleObject,styleObject2]"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/11h8F7J.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/62sDl0J.png" alt=""></p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/05/17/Vue-v-model/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>Vue.js ...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/05/16/Vue-v-on/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>Vue.js ...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Code</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>

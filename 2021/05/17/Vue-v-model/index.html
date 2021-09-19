@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>Vue.js 3 -  資料雙向綁定 v-model | Let&#39;s Code</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-05-17</span>
+    <h2>Vue.js 3 -  ...</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/Vue-js/" rel="tag">Vue.js</a></div>
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <p>使用<code>v-model</code>來進行資料的「雙向」綁定， v-model 會根據不同的表單類別來更新元素的內容。<br>主要應用在表單類型進行綁定，常見的表單元素像是 <code>&lt;input&gt;</code>、<code>&lt;textarea&gt;</code> 以及 <code>&lt;select&gt;</code> 等。</p>
+<h2 id="v-model-可以與-input-、textarea-綁定"><a href="#v-model-可以與-input-、textarea-綁定" class="headerlink" title="v-model 可以與 input 、textarea 綁定"></a>v-model 可以與 input 、textarea 綁定</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>input<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model</span>=<span class="string">"name"</span>&gt;</span></span><br><span class="line">        &#123;&#123; name &#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      name: <span class="string">"小明"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/fuPfWXo.png" alt=""></p>
+<p><img src="https://i.imgur.com/Vyon4w6.png" alt=""></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>textarea<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">cols</span>=<span class="string">"30"</span> <span class="attr">rows</span>=<span class="string">"3"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model</span>=<span class="string">"text"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">          &#123;&#123; text &#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      text: <span class="string">"一段文字敘述"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/T7AMqwY.png" alt=""></p>
+<p><img src="https://i.imgur.com/fxYLTcU.png" alt=""></p>
+<h2 id="checkbox-單選框"><a href="#checkbox-單選框" class="headerlink" title="checkbox 單選框"></a>checkbox 單選框</h2><ol>
+<li>checkbox與p段落連動</li>
+</ol>
+<ul>
+<li>在input加入<code>v-model=&quot;checkAnswer&quot;</code></li>
+<li>P段洛，放入三元運算：用來判斷當checkAnswer為true，顯示’吃飽了’;反之，’還沒’<ul>
+<li>透過選單的勾選，來顯示 checkAnswer 是 true \ false</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">h3</span>&gt;</span>checkbox 單選框<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">p</span>&gt;</span>小明，你是吃飽沒？<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; checkAnswer ? '吃飽了' : '還沒'&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span> <span class="attr">id</span>=<span class="string">"check1"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check1"</span>&gt;</span>小明回覆<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      checkAnswer: <span class="literal">false</span>,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/wBR8ESD.png" alt=""></p>
+<p><img src="https://i.imgur.com/cRDgctR.gif" alt=""></p>
+<ol start="2">
+<li>checkbox 單選延伸</li>
+</ol>
+<ul>
+<li>回傳單一的值，相對使用三元運算比較直觀</li>
+<li><code>checkAnswer2</code> 是空字串，在 input 綁定後，設定false-value、true-value</li>
+<li>將文字綁入：<code>true-value=&quot;吃飽了&quot; false-value=&quot;還沒&quot;</code>，就可以放入資料欄位上</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>checkbox 單選延伸<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>小明，你是吃飽沒？<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; checkAnswer2 &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer2"</span> <span class="attr">true-value</span>=<span class="string">"吃飽了"</span> <span class="attr">false-value</span>=<span class="string">"還沒"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">id</span>=<span class="string">"check2"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check2"</span>&gt;</span>小明回覆<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      checkAnswer2: <span class="string">''</span>,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/x4aeut8.png" alt=""></p>
+<p><img src="https://i.imgur.com/qvyj7dH.png" alt=""></p>
+<h2 id="checkbox-複選框"><a href="#checkbox-複選框" class="headerlink" title="checkbox 複選框"></a>checkbox 複選框</h2><ul>
+<li>資料格式為陣列</li>
+<li>覆選框的input裡面要有value</li>
+<li>當綁定v-model，於畫面點選該項目時，會將 input 中的 value，放入的陣列中<ul>
+<li>最後將資料渲染於畫面<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>checkbox 複選框<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>你還要吃什麼？<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; checkAnswer3.join('') &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span> <span class="attr">id</span>=<span class="string">"check3"</span> <span class="attr">value</span>=<span class="string">"蛋餅"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer3"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check3"</span>&gt;</span>蛋餅<span class="tag">&lt;/<span class="name">label</span>&gt;</span>         <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span> <span class="attr">id</span>=<span class="string">"check4"</span> <span class="attr">value</span>=<span class="string">"蘿蔔糕"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer3"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check4"</span>&gt;</span>蘿蔔糕<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span> <span class="attr">id</span>=<span class="string">"check5"</span> <span class="attr">value</span>=<span class="string">"豆漿"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer3"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check5"</span>&gt;</span>豆漿<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      checkAnswer3: [],</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/V6RUoEF.png" alt=""></p>
+<h2 id="v-model-修飾符"><a href="#v-model-修飾符" class="headerlink" title="v-model 修飾符"></a>v-model 修飾符</h2><p>修飾符為畫面上，v-model的資料和實際data中的資料在綁定之間，額外處理的小方法。</p>
+<ol>
+<li>延遲 Lazy</li>
+</ol>
+<ul>
+<li>輸入文字後，要點擊外面或是按下enter，才會出現</li>
+<li>綁定到html的change事件：當完成輸入框的事件之後，才會綁定到資料集<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>修飾符<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>延遲 Lazy<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">  &#123;&#123; lazyMsg &#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model.lazy</span>=<span class="string">"lazyMsg"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/1Jp0XWl.png" alt=""></li>
+</ul>
+<h2 id="純數值-Number"><a href="#純數值-Number" class="headerlink" title="純數值 Number"></a>純數值 Number</h2><p>需要用戶輸入數值，可先將type改為number,並加入修飾符</p>
+<ul>
+<li><code>&lt;input type=&quot;number&quot;&gt;</code>:輸入框無法輸入文字，只能輸入數字，但型別依然是string</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>純數值 Number<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">  &#123;&#123; numberMsg &#125;&#125;&#123;&#123; typeof numberMsg &#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"number"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model</span>=<span class="string">"numberMsg"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/48WNFq2.png" alt=""></p>
+<ul>
+<li>要確保輸入的內容為純數字型別：要加修飾符</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>純數值 Number<span class="tag">&lt;/<span class="name">h4</span>&gt;</span> </span><br><span class="line">   &#123;&#123; numberMsg &#125;&#125;&#123;&#123; typeof numberMsg &#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"number"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model.number</span>=<span class="string">"numberMsg"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/ANESock.png" alt=""></p>
+<h2 id="trim"><a href="#trim" class="headerlink" title="trim"></a>trim</h2><p>將資料內容的前後空白鍵，刪除</p>
+<ul>
+<li>應用於要輸入e-mail帳號，避免用戶不小心在前後加入空白，而造成資料錯誤<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>修剪 Trim<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">       這是一段&#123;&#123; trimMsg &#125;&#125;緊黏的文字</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model.trim</span>=<span class="string">"trimMsg"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/SCJddsn.png" alt=""></li>
+</ul>
+<p>參考資料：<br><a href="https://book.vue.tw/CH1/1-4-directive.html" target="_blank" rel="noopener">重新認識 Vue.js | Kuro Hsu</a></p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>No newer post</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/05/16/Vue-bind2/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>Vue.js ...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Code</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>
