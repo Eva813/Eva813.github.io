@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>Vue.js 3 - v-on 修飾符 | Let&#39;s Code</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-09-20</span>
+    <h2>Vue.js 3 - v...</h2>
+    
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <p>修飾符有分為：<br>1.按件修飾符<br>2.滑鼠修飾符<br>3.事件修飾符</p>
+<p><a href="https://codepen.io/Eva-go/pen/RwgMXGN" target="_blank" rel="noopener">codepen</a></p>
+<h2 id="按鍵修飾符"><a href="#按鍵修飾符" class="headerlink" title="按鍵修飾符"></a>按鍵修飾符</h2><h3 id="1-1-別名修飾"><a href="#1-1-別名修飾" class="headerlink" title="1-1. 別名修飾"></a>1-1. 別名修飾</h3><ul>
+<li>在特定按鍵，按下去的時候觸發<ul>
+<li><code>.enter</code>, <code>.tab</code>, <code>.delete</code>, <code>.esc</code>, <code>.space</code>, <code>.up</code>, <code>.down</code>, <code>.left</code>, <code>.righ</code></li>
+</ul>
+</li>
+<li>使用<code>.enter</code>只有再按下 enter 鍵才會觸發</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">h6</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>別名修飾<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model</span>=<span class="string">"text"</span> @<span class="attr">keyup.enter</span>=<span class="string">"trigger('enter')"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">     </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">   trigger: <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(name, <span class="string">'此事件被觸發了'</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-相應按鍵時才觸發的監聽器"><a href="#1-2-相應按鍵時才觸發的監聽器" class="headerlink" title="1-2. 相應按鍵時才觸發的監聽器"></a>1-2. 相應按鍵時才觸發的監聽器</h3><ul>
+<li>僅在按下相應按鍵時才觸發鼠標或鍵盤事件的監聽器</li>
+<li><code>.ctrl</code>, <code>.alt</code>, <code>.shift</code>, <code>.meta</code></li>
+<li>此範例為 <code>@keyup.shift.enter</code><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h6</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>相應按鍵時才觸發的監聽器<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model</span>=<span class="string">"text"</span> @<span class="attr">keyup.shift.enter</span>=<span class="string">"trigger('shift + Enter')"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/gQjWYVy.png" alt=""></li>
+</ul>
+<ol start="2">
+<li>滑鼠修飾符<br><code>.left</code> 只當點擊鼠標左鍵時觸發。<br><code>.right</code> 只當點擊鼠標右鍵時觸發。<br><code>.middle</code> 只當點擊鼠標中鍵時觸發。</li>
+</ol>
+<ul>
+<li>按下滑鼠右鍵<br><code>&lt;span class=&quot;box&quot; @click.right=&quot;trigger(&#39;right button&#39;)&quot;&gt;</code></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>滑鼠修飾符<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h6</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>滑鼠修飾符<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"p-3 bg-primary"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"box"</span> @<span class="attr">click.right</span>=<span class="string">"trigger('right button')"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/lddG6zT.png" alt=""></p>
+<ol start="3">
+<li>事件修飾符</li>
+</ol>
+<ul>
+<li>不會限定，是使用滑鼠還是鍵盤，是針對事件本身來進行修飾<br><code>.stop</code> - 調用 <code>event.stopPropagation()</code>。<br><code>.prevent</code> - 調用 <code>event.preventDefault()</code>。<br><code>.capture</code> - 添加事件偵聽器時使用 capture 模式。<br><code>.self</code> - 只當事件是從偵聽器綁定的元素本身觸發時才觸發回調。<br><code>.once</code> - 只觸發一次回調。</li>
+<li>常用的是 <code>&lt;a&gt;</code>外部連結：移除預設事件<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>事件修飾符<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.stop - 調用 event.stopPropagation()。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>.prevent - 調用 event.preventDefault()。<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.capture - 添加事件偵聽器時使用 capture 模式。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.self - 只當事件是從偵聽器綁定的元素本身觸發時才觸發回調。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.once - 只觸發一次回調。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"https://www.google.com/"</span> @<span class="attr">click.prevent</span>=<span class="string">"trigger('prevent')"</span>&gt;</span>加入 Prevent<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>資料來源：<br>六角學院 - Vue 3.js</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>No newer post</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/05/17/Vue-v-for/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>Vue.js ...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Code</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>

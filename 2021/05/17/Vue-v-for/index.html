@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>Vue.js 3 -  多筆資料渲染 v-for | Let&#39;s Code</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Eva Chan">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'null'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div class="single">
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-05-17</span>
+    <h2>Vue.js 3 -  ...</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/Vue-js/" rel="tag">Vue.js</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/v-for/" rel="tag">v-for</a></div>
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <h2 id="v-for-呈現多筆陣列"><a href="#v-for-呈現多筆陣列" class="headerlink" title="v-for 呈現多筆陣列"></a><code>v-for</code> 呈現多筆陣列</h2><ul>
+<li><code>v-for= item in peopleArr</code> ， item 為 自定義名稱，後面(peopleArr)填入要迴圈的資料<ul>
+<li>item是表示 peopleArr 陣列中每個單一物件</li>
+</ul>
+</li>
+<li>key ：為帶入陣列的 key 值</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">h3</span>&gt;</span>v-for 與 key<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span> 人員介紹<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"(item, key) in peopleArr"</span>&gt;</span></span><br><span class="line">    &#123;&#123; key &#125;&#125; - &#123;&#123; item.name&#125;&#125; / &#123;&#123; item.age &#125;&#125; 歲</span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  </span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">     peopleArr: [</span><br><span class="line">        &#123;</span><br><span class="line">          name: <span class="string">'Ken'</span>,</span><br><span class="line">          age: <span class="number">30</span>,</span><br><span class="line">          vegan: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          name: <span class="string">'Wong'</span>,</span><br><span class="line">          page: <span class="number">35</span>,</span><br><span class="line">          vegan: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          name: <span class="string">'Merry'</span>,</span><br><span class="line">          age: <span class="number">60</span>,</span><br><span class="line">          vegan: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          name: <span class="string">'Tom'</span>,</span><br><span class="line">          age: <span class="number">30</span>,</span><br><span class="line">          vegan: <span class="literal">true</span></span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<p><a href="https://codepen.io/Eva-go/pen/powVYmN" target="_blank" rel="noopener">codepen</a><br><img src="https://i.imgur.com/TebHrmC.png" alt=""></p>
+<h2 id="物件迴圈"><a href="#物件迴圈" class="headerlink" title="物件迴圈"></a>物件迴圈</h2><ul>
+<li>每個item 就是每個物件的資料</li>
+<li>key值為物件的屬性名稱</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">h3</span>&gt;</span>v-for 與 key<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span> 人員介紹<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"(item, key) in peopleObj"</span>&gt;</span></span><br><span class="line">    &#123;&#123; key &#125;&#125; - &#123;&#123; item.name&#125;&#125; / &#123;&#123; item.age &#125;&#125; 歲</span><br><span class="line">  </span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  </span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">     peopleObj:&#123;</span><br><span class="line">        Salse: &#123;</span><br><span class="line">           name: <span class="string">'Ken'</span>,</span><br><span class="line">          age: <span class="number">30</span>,</span><br><span class="line">          vegan: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        Manager: &#123;</span><br><span class="line">          name: <span class="string">'Wong'</span>,</span><br><span class="line">          page: <span class="number">35</span>,</span><br><span class="line">          vegan: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        HumanResource: &#123;</span><br><span class="line">          name: <span class="string">'Merry'</span>,</span><br><span class="line">          age: <span class="number">60</span>,</span><br><span class="line">          vegan: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        Crew: &#123;</span><br><span class="line">           name: <span class="string">'Tom'</span>,</span><br><span class="line">          age: <span class="number">30</span>,</span><br><span class="line">          vegan: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/tzjh6Ah.png" alt=""></p>
+<h2 id="v-for-與-key"><a href="#v-for-與-key" class="headerlink" title="v-for 與 key"></a>v-for 與 key</h2><h3 id="v-for-可以使用-index-當作-key-嗎？"><a href="#v-for-可以使用-index-當作-key-嗎？" class="headerlink" title="v-for 可以使用 index 當作 key 嗎？"></a>v-for 可以使用 index 當作 key 嗎？</h3><p>以六角課程為範例說明</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>v-for 與 key <span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>菜單<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"(item, key) in products"</span>&gt;</span></span><br><span class="line">      &#123;&#123; key &#125;&#125; - &#123;&#123; item.name&#125;&#125; / &#123;&#123; item.price &#125;&#125; 元</span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">     products: [</span><br><span class="line">        &#123;</span><br><span class="line">          name: <span class="string">'蛋餅'</span>,</span><br><span class="line">          price: <span class="number">30</span>,</span><br><span class="line">          vegan: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          name: <span class="string">'飯糰'</span>,</span><br><span class="line">          price: <span class="number">35</span>,</span><br><span class="line">          vegan: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          name: <span class="string">'小籠包'</span>,</span><br><span class="line">          price: <span class="number">60</span>,</span><br><span class="line">          vegan: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          name: <span class="string">'蘿蔔糕'</span>,</span><br><span class="line">          price: <span class="number">30</span>,</span><br><span class="line">          vegan: <span class="literal">true</span></span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">    &#125;,</span><br><span class="line">  method:&#123;</span><br><span class="line">    reverseArray: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>.products.reverse();</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/GKjdBGd.png" alt=""></p>
+<ul>
+<li><p>反轉之後，並沒有跟著<br><img src="https://i.imgur.com/ALe8vst.png" alt=""></p>
+</li>
+<li><p>綁定key之後</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"(item, key) in products"</span> <span class="attr">v-bind:key</span>=<span class="string">'item.name'</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/kbtUwy1.png" alt=""></p>
+<h3 id="v-for-可以使用-index-當作-key-嗎？-1"><a href="#v-for-可以使用-index-當作-key-嗎？-1" class="headerlink" title="v-for 可以使用 index 當作 key 嗎？"></a><code>v-for</code> 可以使用 index 當作 key 嗎？</h3><p>索引是依照位置來判定，所以當資料的位置修改，索引值也會跟著變動，導致後續的渲染錯誤。<br>如果key是會變動的話，可能會導致資料的渲染錯誤</p>
+<h3 id="如果後端提供的資料，沒有唯一索引要如何處理？"><a href="#如果後端提供的資料，沒有唯一索引要如何處理？" class="headerlink" title="如果後端提供的資料，沒有唯一索引要如何處理？"></a>如果後端提供的資料，沒有唯一索引要如何處理？</h3><p>  1.與後端溝通，為何前端要用到key的值<br>  2.拿到資料後，自己產生key，並放入該物件資料中</p>
+<div class="note info">
+            <p>使用v-for時，一定要用key<br>使用v-for時，不要拿索引當作key<br>請使用唯一的值當作key的值</p>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/09/20/Vue-modify/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>Vue.js ...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/05/17/Vue-v-model/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>Vue.js ...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2021.<a href="/">Let's Code</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Eva Chan</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+
+
+</body>
+</html>
