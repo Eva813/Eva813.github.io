@@ -1,86 +1,391 @@
+
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="theme-color" content=#58b77a>
-  <title>CSS練習- omnifood 餐廳網頁 | Let&#39;s Code</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Eva Chan">
-  <meta name="keywords" content="">
-  <meta name="description" content="">
-  <script id="hexo-configurations">
-  var CONFIG = {
-    root: '/',
-    theme: 'lx',
-    version: '0.3.9',
-    localsearch:{
-      "enable": false,
-      "trigger": "auto",
-      "top_n_per_article": 1,
-      "unescape": false,
-      "preload": false
-      },
-    path: 'null'
-  };
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Let&#39;s Code">
+    <title>CSS練習- omnifood 餐廳網頁 - Let&#39;s Code</title>
+    <meta name="author" content="Eva Chan">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"介紹成品使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。\n\n首先，文字字型的選擇先用Normalize.css，下載並連結字型：使用google font &gt; lato\ntext-rendering告訴渲染引擎工作時如何優化顯示文字\n1234567891011121314151617181920212223*&#123;  margin: 0;  padding: 0;  box-sizing: border-box;&#125;html&#123;  background-color: #fff;  color: #555;  font-family: 'Lato', 'Arial',sans-serif;  font-weight: 300;  font-size: 20px;  text-rendering: optimizeLegibility;  /* 繪制文本時易讀性優先，會啟用字距調整和連字 */&#125;/* content will be in rows */.row&#123;  /* 只有這邊是用px，之後的margin等設定都會用% */ max-width: 1140px;  margin:0 auto;/* 讓左右的距離能夠平均分散，使其置中 */&#125;\nhead區塊\n表頭的製作1234567&lt;div class&#x3D;&quot;hero-text-box&quot;&gt;     &lt;h1&gt;Goodbye junk food. Hello super healthy meals.     &lt;&#x2F;h1&gt;     &lt;a href&#x3D;&quot;#&quot;&gt;I’m hungry&lt;&#x2F;a&gt;     &lt;a href&#x3D;&quot;#&quot;&gt;Show me more&lt;&#x2F;a&gt;   &lt;&#x2F;div&gt;\n\n\n\n利用background-image插入圖片後，往上滑會出現上方的空白處\n是因為h1的margin（因設置normalize.css）\n\n\n此時照片也還沒有填滿、置中\n\n\n調整背景圖位置\n讓h1文字置中透過使用絕對定位，讓文字可以置中\n123456.hero-text-box&#123;  position: absolute;   width: 1140px;  top: 50%;  left:&#125;\n\n\ntransform: translate(-50%,-50%);\n\n\n文字放在圖片上使得看不清楚\n將背景圖調成深色12background:linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,.5)) center center,   url(./Omnifood\\ Contents/hero.jpg) no-repeat center center/cover ;\n\n\nh1文字區的細節調整\n調整字的顏色、大小\n字母、單字之間的間距12345678910.hero-text-box h1&#123;margin: 0;color: #fff;/* 這裏的字體大小用百分比，是為了相對於一開始設定font-size: 20px;，以他的百分比來計算 */font-size: 240%;font-weight: 400;letter-spacing: 1px; text-transform: uppercase; /*將字母改為大寫 */ word-spacing: 3px;&#125;\n\n\n\n文字區下面的按鈕html結構是使用&lt;a&gt;來製作連結的點選將型態改為inline-block\n12&lt;a class=\"btn btn-full\" href=\"#\"&gt;I’m hungry&lt;/a&gt;&lt;a class=\"btn btn-ghost \" href=\"#\"&gt;Show me more&lt;/a&gt;\n\n希望連結與被點選的樣式都是一樣\n顏色是到：UI flat color tool ; 要找尋顏色深淺 0 to 255\n\n1234567891011121314151617181920.btn:link,.btn:visited&#123;  display: inline-block;  text-decoration: none;padding: 10px 15px;border-radius: 200px;&#125;.btn-full:link,.btn-full:visited&#123;  /* UI flat color tool */  background-color: #e67e22;  /* border: 1px solid #e67e22 ; */  color: #fff;&#125;.btn-ghost:link,.btn-ghost:visited&#123;  border: 1px solid #e67e22 ;  color:#e67e22;&#125;\n\n按鈕的觸碰與點選:active 滑鼠按下的樣式; :focus 鍵盤聚焦的樣式 ;:hover 滑鼠滑過\n\n注意transition此屬性是放在要被摸的元素裡面，不是hover那裡How TO - Transition on Hover\n\n.btn:link,.btn:visited{}\n12345678910111213141516171819  /* transition 放在這裡！ */ transition: background-color 0.5s,border 0.5s,color 0.5s;&#125;.btn:hover,.btn:active&#123; background-color: #cf6d17;&#125;.btn-full:hover,.btn-full:active&#123;   border: 1px solid #cf6d17 ;  color: #fff;&#125;.btn-ghost:hover,.btn-ghost:active&#123;  border: 1px solid #cf6d17 ;  color:#fff;&#125;\n\n表頭導覽列的製作金魚都能懂的這個網頁畫面怎麼切 : 導覽列\n\nheader裡面的nav，html架構：\n1234567891011121314&lt;nav&gt;  &lt;div class&#x3D;&quot;row&quot;&gt;    &lt;img src&#x3D;&quot;.&#x2F;Omnifood Contents&#x2F;logo-white.png&quot; alt&#x3D;&quot;Omnifood logo&quot; class&#x3D;&quot;logo&quot;&gt;    &lt;ul class&#x3D;&quot;main-nav&quot;&gt;      &lt;li&gt; &lt;a href&#x3D;&quot;#&quot;&gt;Food delivery&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;      &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;How it works&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;      &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;Our cities&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;      &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;Sign up&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;    &lt;&#x2F;ul&gt;  &lt;&#x2F;div&gt;&lt;&#x2F;nav&gt;\n\n\nlogo\n12345header .logo&#123;height: 100px;width: auto;float: left;  &#125;\n\n\n\nnav\n讓nav區靠右\n為了讓四個連結區塊可以橫向排列，設定inline-box\n針對字型、顏色等做調整\n並於連結下方增加線的動畫效果123456789101112131415161718192021222324252627282930313233343536373839.main-nav&#123;float: right;margin-top: 55px;&#125;.main-nav li&#123;display: inline-block;margin-left: 20px;&#125;.main-nav li a:link,.main-nav li a:visited&#123;text-decoration: none;font-weight: 400;font-size: 90%; /*想要18px，18px / 20px=0.9*/color: #fff;text-transform: uppercase;position: relative;padding-bottom: 5px;&#125;.main-nav a::after&#123;  content: '';  width: 100%;  position: absolute;  border: solid .5px rgba(230, 126, 34,.6);  left: 0;  bottom:0 ;  margin-top: 5px;  transform: scale(0);  transition: 0.5s;  &#125;.main-nav li:hover a::after,.main-nav li:active a::after&#123;transform: scale(1);&#125;\n\n\n\n特色區塊\n\n— 用html符號 –&gt; &amp;mdash;      更多…HTML Entity List\nfeatures這部分，使用section標籤來包覆，而其中的不同區塊則使用.row來包覆內容(並用來固定寬度)\n這裏的html運用grid來配置欄位\n\n123456789101112131415161718192021222324252627&lt;section class=\"section-features\"&gt;    &lt;div class=\"row\"&gt;      &lt;h2&gt;Get food fast &amp;mdash; not fast food&lt;/h2&gt;      &lt;p class=\"long-copy\"&gt;Hello, we’re Omnifood, your new premium food delivery service. We know you’re always busy. we promise!&lt;/p&gt;    &lt;/div&gt;&lt;div class=\"row\"&gt;      &lt;!-- 第二區塊：features，這裏要開始應用grid --&gt;      &lt;div class=\"col span-1-of-4\"&gt;        &lt;h3&gt;Up to 365 days/year&lt;/h3&gt;        &lt;p&gt;Never cook again! We really mean that. Our subscript &lt;/p&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-4\"&gt;        &lt;h3&gt;Ready in 20 minutes&lt;/h3&gt;        &lt;p&gt;You're only twenty minutes away from your delicious ant chefs in each town to ensure that you're 100% happy.        &lt;/p&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-4\"&gt;        &lt;h3&gt;100% organic&lt;/h3&gt;        &lt;p&gt;All our vegetables are fresh, organic and local. Animals are raised without added hormones or antibiotbetter!&lt;/p&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-4\"&gt;        &lt;h3&gt;Order anything&lt;/h3&gt;        &lt;p&gt;We don't limit your creativity, which means you cacious meals. It's up to you!&lt;/p&gt;      &lt;/div&gt;    &lt;/div&gt;  &lt;/section&gt;\n\n\n\nicon使用ionicon:ionicon\n1&lt;script src=\"https://unpkg.com/ionicons@5.2.3/dist/ionicons.js\"&gt;&lt;/script&gt;`\n\n讓他斷行排列使用block\n字的大小適用比例設置\n\n12345678.section-features .icon-big&#123;display: block;  font-size: 350%;  color: #e67e22;  margin-bottom: 10px;  font-weight: 100;&#125;\n\n\nh2的文字與p123456789.section-features .long-copy&#123;width: 70%;/* 總寬100%,左邊設置15%，就會平均 */margin-left: 15%;/* line-height: 1.3; */line-height: 145%; /*120-145%最合適 *//* word-spacing: 1px; */&#125;\n\n\n欄位col的處理（class=”items”）12345678910111213141516.section-features h3&#123;  font-weight: 300;  font-size: 110%;  text-transform: uppercase;    margin-bottom: 15px;&#125;.section-features .items &#123;  padding:1% ;&#125;.section-features .items p&#123;  line-height: 145%;  font-size:90% ;&#125;\n\n\n\n食物照片區\n\n這裏的內容不適用.row來包覆，因為我們希望它的寬度可以站滿橫向的視窗\n\nhtml結構123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354&lt;section class=\"section-maels\"&gt;  &lt;!-- 要製作2列各4格的食物照片，這裏使用ul,li的方式排列 --&gt;  &lt;ul class=\"meals-showcase\"&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/1.jpg\" alt=\"Korean bibimbap with egg and vegetables\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/2.jpg\" alt=\"Simple italian pizza with cherry tomatoes\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/3.jpg\" alt=\"Chicken breast steak with vegetables\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/4.jpg\" alt=\"Autumn pumpkin soup\"&gt;      &lt;/figure&gt;    &lt;/li&gt;  &lt;/ul&gt;  &lt;ul class=\"meals-showcase\"&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/5.jpg\" alt=\"Paleo beef steak with vegetables\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/6.jpg\" alt=\"Healthy baguette with egg and vegetables\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/7.jpg\" alt=\"Burger with cheddar and bacon\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/8.jpg\" alt=\"Granola with cherries and strawberries\"&gt;      &lt;/figure&gt;    &lt;/li&gt;  &lt;/ul&gt;&lt;/section&gt;\n\n\n設定此區塊滿版，並讓他們設定為區塊\n讓li，每個設定寬度為25%(4個共100％)，並利用float使他們比鄰排列\n\n12345678910.meals-showcase&#123;  list-style: none; /* 去除ul的預設樣式*/  display: block;  width: 100%;&#125;.meals-showcase li&#123;  float: left;  width: 25%;&#125;\n\n\n\n上面的照片並未合乎大小，以及置中\n\n123456789.meals-showcase figure&#123;  width: 100%;&#125;.meals-showcase figure img&#123;  width: 100%;  &#125;\n\n\n\n去除上圖的空隙vertical-align: middle;\n\n123.meals-showcase figure img&#123;  width: 100%;  vertical-align: middle;&#125;\n\n\n加入文字區在圖片上方製作圖片被摸到，有圖片縮放的動畫\n12345678910.meals-showcase figure img&#123;  width: 100%;  vertical-align: middle;transform: scale(1.15);transition: transform .5s;&#125;.meals-showcase figure:hover img&#123;  transform: scale(1);&#125;\n\n\n\n當圖片的scale被放大，會超出原有容器\n處理方式：在所在的容器，設定overflow: hidden; \nCSS深入理解：overflow:hidden——溢出,坍塌,清除浮动,overflow：hidden 失效\n\n\n\n\n讓圖片有黑色透明效果\n在圖片本身img設定透明度，在figure放圖標籤裡設定背景為黑色\n\n\n\n\n1234567891011121314151617.meals-showcase figure&#123;  width: 100%;  overflow: hidden;  background-color:#000;&#125;.meals-showcase figure img&#123;  width: 100%;  vertical-align: middle;transform: scale(1.15);transition: transform .5s ,opicity .5s;opacity: 0.7;&#125;.meals-showcase figure:hover img&#123;  transform: scale(1);  opacity: 1;&#125;\n\n\n\n訂餐方法介紹 的介面\n\nhtml的結構\n\n1234567891011121314151617181920212223242526272829303132333435&lt;section class=\"meal-steps\"&gt;    &lt;!-- 在row裡面，放一個h2標題，在增加一個row的div，使用grid兩欄的class --&gt;    &lt;div class=\"row\"&gt;      &lt;h2&gt;How it works - Simple as 1, 2, 3&lt;/h2&gt;    &lt;/div&gt;    &lt;div class=\"row\"&gt;      &lt;!-- 左欄 --&gt;      &lt;div class=\"col span-2-of-4\"&gt;        &lt;img src=\"./Omnifood Contents/app-iPhone.png\" alt=\"Omnifood-app\" class=\"app-screen\"&gt;      &lt;/div&gt;      &lt;!-------- 右欄 ------&gt;      &lt;div class=\"col span-2-of-4\"&gt;        &lt;div class=\"work-step\"&gt;          &lt;div&gt;1&lt;/div&gt;          &lt;p&gt;Choose the subscription plan that best fits your needs and sign up today.&lt;/p&gt;        &lt;/div&gt;        &lt;div class=\"work-step\"&gt;          &lt;div&gt;2&lt;/div&gt;          &lt;p&gt;Order your delicious meal using our mobile app or website. Or you can even call us!&lt;/p&gt;        &lt;/div&gt;        &lt;div class=\"work-step\"&gt;          &lt;div&gt;3&lt;/div&gt;          &lt;p&gt;Enjoy your meal after less than 20 minutes. See you the next time!&lt;/p&gt;        &lt;/div&gt;&lt;!------- 與步驟同一欄，下載的按鈕使用&lt;a&gt; ------&gt;        &lt;a href=\"#\"&gt;&lt;img src=\"./Omnifood Contents/download-app.svg\" alt=\"apple store button\"&gt;&lt;/a&gt;        &lt;a href=\"#\"&gt;&lt;img src=\"./Omnifood Contents/download-app-android.png\" alt=\"play store button\"&gt;&lt;/a&gt;      &lt;/div&gt;    &lt;/div&gt;  &lt;/section&gt;\n\n\n\n\n標題調整\n\n:first-child\n圖片靠右：text-align: right;\n右欄文字區在數字部分：要讓他與文字區能夠排列，使用inline-block,float    數字的外圈：參考以下css\n123456789101112.work-step&#123;  display: inline-block;  margin-bottom: 50px;&#125;  .work-step div&#123;   float: left;  color:#e67e22 ;  border: 2px solid #e67e22;  border-radius: 50%;  &#125;\n\n讓圓形變圓，增加寬高123456.work-step div&#123;height: 55px;  width: 55px;  text-align: center;  padding: 5px;  font-size: 150%;&#125;\n\n\n\n\nmargin-right: 25px;\n\n\n按鈕的處理\n12345.btn-app img&#123;  height: 50px;  width: auto;  margin-right: 10px;&#125;\n\n\n地點資訊\n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576&lt;section class=\"section-cities\"&gt;    &lt;div class=\"row\"&gt;      &lt;h2&gt;We're currently in these cities&lt;/h2&gt;    &lt;/div&gt;    &lt;div class=\"row\"&gt;      &lt;!-- 第一個地點 --&gt;      &lt;div class=\"col span-1-of-4 items\"&gt;        &lt;img src=\"./Omnifood Contents/lisbon-3.jpg\" alt=\"\"&gt;        &lt;h3&gt;Lisbon&lt;/h3&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"person\" class=\"person\"&gt;&lt;/ion-icon&gt;          1600+ happy eaters        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"star\" class=\"star\"&gt;&lt;/ion-icon&gt;          60+ top chefs        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitter\"&gt;&lt;/ion-icon&gt;          @omnifood_lx        &lt;/div&gt;      &lt;/div&gt;      &lt;!-- 第二個地點 --&gt;      &lt;div class=\"col span-1-of-4 items\"&gt;        &lt;img src=\"./Omnifood Contents/san-francisco.jpg\" alt=\"\"&gt;        &lt;h3&gt;San Francisco&lt;/h3&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"person\" class=\"person\"&gt;&lt;/ion-icon&gt;          3700+ happy eaters        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"star\" class=\"star\"&gt;&lt;/ion-icon&gt;          160+ top chefs        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitter\"&gt;&lt;/ion-icon&gt;          @omnifood_sf        &lt;/div&gt;      &lt;/div&gt;      &lt;!-- 第三個地點 --&gt;      &lt;div class=\"col span-1-of-4 items\"&gt;        &lt;img src=\"./Omnifood Contents/berlin.jpg\" alt=\"\"&gt;        &lt;h3&gt;Berlin&lt;/h3&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"person\" class=\"person\"&gt;&lt;/ion-icon&gt;          2300+ happy eaters        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"star\" class=\"star\"&gt;&lt;/ion-icon&gt;          110+ top chefs        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitter\"&gt;&lt;/ion-icon&gt;          @omnifood_berlin        &lt;/div&gt;      &lt;/div&gt;      &lt;!-- 第四個地點 --&gt;      &lt;div class=\"col span-1-of-4 items\"&gt;        &lt;img src=\"./Omnifood Contents/london.jpg\" alt=\"\"&gt;        &lt;h3&gt;London&lt;/h3&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"person\" class=\"person\"&gt;&lt;/ion-icon&gt;          1200+ happy eaters        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"star\" class=\"star\"&gt;&lt;/ion-icon&gt;          50+ top chefs        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitter\"&gt;&lt;/ion-icon&gt;          @omnifood_london        &lt;/div&gt;      &lt;/div&gt;  &lt;/section&gt;\n\n\n\n\n\n12345.section-cities img&#123;  width: 100%;  vertical-align: middle;  margin-bottom: 15px;&#125;\n\n12345678910111213.section-cities .icon-small&#123;  color: #e67e22; display: inline-block; text-align: center; font-size: 120%; margin-right: 10px; /*讓icon與文字，置中、對其*/ line-height: 120%; vertical-align: middle; margin-top: -5px;  &#125;\n\n\n顧客回饋區\n\n區分為三個區塊，一列三欄的方式劃分\n用&lt;blockquote&gt;來包顧客的回饋文字\n並加入顧客的頭像以及姓名\n\n1234567891011121314151617181920212223242526272829303132333435363738394041&lt;section class=\"section-testimonials\"&gt;    &lt;div class=\"row\"&gt;      &lt;h2&gt;Our customers can't live without us&lt;/h2&gt;    &lt;/div&gt;    &lt;div class=\"row\"&gt;      &lt;div class=\"col span-1-of-3\"&gt;        &lt;blockquote&gt;          Omnifood is just awesome! I just launched a startup which leaves me with no time for cooking, so Omnifood is a          life-saver. Now that I got used to it, I couldn't live without my daily meals!          &lt;cite&gt;&lt;img src=\"./Omnifood Contents/customer-1.jpg\" alt=\"\"&gt;Alberto Duncan&lt;/cite&gt;        &lt;/blockquote&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-3\"&gt;        &lt;blockquote&gt;          Inexpensive, healthy and great-tasting meals, delivered right to my home. We have lots of food delivery here          in Lisbon,          but no one comes even close to Omifood. Me and my family are so in love!          &lt;cite&gt;&lt;img src=\"./Omnifood Contents/customer-2.jpg\" alt=\"\"&gt;Joana Silva&lt;/cite&gt;        &lt;/blockquote&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-3\"&gt;        &lt;blockquote&gt;          I was looking for a quick and easy food delivery service in San Franciso. I tried a lot of them and ended up          with          Omnifood. Best food delivery service in the Bay Area. Keep up the great work!          &lt;cite&gt;&lt;img src=\"./Omnifood Contents/customer-3.jpg\" alt=\"\"&gt;Milton Chapman&lt;/cite&gt;        &lt;/blockquote&gt;      &lt;/div&gt;    &lt;/div&gt;  &lt;/section&gt;\n\n\n\n先做背景的處理\n\n12345.section-testimonials &#123;  background:linear-gradient(0deg,rgba(0,0,0,.7),rgba(0,0,0,.7)) center center, url(./Omnifood\\ Contents/back-customers.jpg)no-repeat center center/cover ;  color: #fff;  background-attachment: fixed;&#125;\n\n\n\n\n增加相片背景\n可以看到文字與，照片相\n\n\n\n\n\n在.section-testimonials img 增加vertical-align: middle;\n\n\n增加上面逗點符號符號表\n1234567891011.section-testimonials blockquote:before&#123; content:\"\\201C\"; font-size:500%; display: block;position: absolute;top: -5px;left: -5px;&#125;&#125;\n\n\n\n訂購方案介紹區\n\n\nspan標籤的應用\n當全部設定寬度100%，會出現問題\n要利用篩選器，來選擇指定框\n\n\n\n\n\n\n解決方式，在html的標籤增加空行\n\n\n\n頁尾表單的建構\n\nfooter\n\n放入相關連結的icon\n\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950&lt;footer&gt;    &lt;div class=\"row\"&gt;      &lt;div class=\"col span-1-of-2\"&gt;        &lt;ul class=\"footer-nav\"&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;About us&lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;Blog&lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;Press&lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;Android App&lt;/a&gt;&lt;/li&gt;        &lt;/ul&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-2 \"&gt;        &lt;ul class=\"socilmedia-link\"&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;              &lt;ion-icon name=\"logo-facebook\" class=\"logo-facebook\"&gt;&lt;/ion-icon&gt;            &lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;              &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitte\"&gt;&lt;/ion-icon&gt;            &lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;              &lt;ion-icon name=\"logo-google\" class=\"logo-google\"&gt;&lt;/ion-icon&gt;            &lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;              &lt;ion-icon name=\"logo-instagram\" class=\"logo-instagram\"&gt;&lt;/ion-icon&gt;            &lt;/a&gt;&lt;/li&gt;        &lt;/ul&gt;      &lt;/div&gt;      &lt;div class=\"row\"&gt;        &lt;p&gt;          copyright &amp;copy; 2020 by Omnifood. All right reserved.        &lt;/p&gt;      &lt;/div&gt;    &lt;/div&gt;  &lt;/footer&gt;\n\n\n\n\n\n使用float來使物件放置左右側\nfooter-nav li使用inline-block\n\n1234567891011121314151617 footer&#123;  background-color: #333;  padding: 50px;  font-size: 80%;&#125;footer .footer-nav&#123;  list-style: none;  float: left;&#125;.socilmedia-link&#123;  list-style: none;  float: right;&#125;.footer-nav li,.socilmedia-link li&#123;  display: inline-block;  margin-right: 20px;&#125;\n\n\n連結顏色調整123456789101112131415161718192021.footer-nav li:last-child,.socilmedia-link li:last-child&#123;  margin-right: 0px;&#125;.footer-nav li a:link ,.footer-nav li a:visited, .socilmedia-link li a:link ,.socilmedia-link li a:visited&#123; text-decoration: none; border: none; color: #888; transition: color .3s;&#125;.footer-nav li a:hover ,.footer-nav li a:active&#123;  color: #ddd;&#125;.socilmedia-link li a:link,.socilmedia-link  li a:visited&#123; font-size: 160%; &#125;\n\n\n\n1234567891011121314151617181920212223242526footer p&#123;  color:#888;  text-align: center;    margin-top: 20px;&#125;.logo-instagram,.logo-google,.logo-twitte,.logo-facebook&#123;transition: color .3s;&#125;.logo-instagram:hover&#123;  color: #517fa4;&#125;.logo-google:hover&#123;  color: #dd4b39;&#125;.logo-twitte:hover&#123;  color: #00aced;&#125;.logo-facebook:hover&#123;  color: #3b5998;&#125;\n\n\n補充background與background-imge之差別background属性是整體設置的，background image是background的属性之一，background的屬性包括background-colorbackground-imagebackground-repeatbackground-attachmentbackground-position，你看不到圖片是因为設置錯，不能加no-repeat屬性，應改為：background-image:url(“some.jpg”); background-repeat:no-repeat;分開寫\nbackground和background-image什么区别\n\n\n12345678910.header&#123;background-image:url(./Omnifood\\ Contents/hero.jpg) ;background-size: cover;background-position: center;&#125;/********我改為下面這樣*******/.header&#123;background: url(./Omnifood\\ Contents/hero.jpg) no-repeat center center/cover;&#125;\n\n文字框置中（區塊（div）的垂直置中）\npjchender\n\nPosition + Transform（常用）:先利用 position: absolute 把 top: 50% 設在 50%；接著再透過 transform: translateY(-50%) 把超過的部分修正回來，達到垂直置中。\n\n\n123456789.hero-text-box&#123;  display: flex;  width: 1140px;  height: 100%;  flex-direction: column;      align-items: center;   justify-content: center;&#125;\n\n參考：pjchender\n使用button vs linkButton versus Link\nFrom a semantics and accessibility viewpoint:Links (&lt;a&gt;)are for “going someplace” such as “jumping to a different section of a page, going to another URL, etc.WhereasButtons &lt;button&gt;are for “doing something” such as a function on the page to expand/collapse a menu, submit a form or etc.\n\ngrid參考資料Spectacularly Easy Responsive Design關於 Grid Layout 的使用姿勢六角學院 - Bootstrap Grid System 原理介紹\nmargin 與 paggimg製作steps區塊時，因設定section的margin距離使得想在此區塊多加上背景色彩，有了中間的空白處\n123.meal-steps&#123;  background: #f4f4f4;&#125;\n\n這裏應該改為padding1234section&#123;  padding: 80px 0;   /*margin: 80px 0;*/&#125;\n\n\n\n\n練習後的小心得：1.在html建構會使用.row2.應用grid,css3.內部，字的大小用百分比4.有一些可以共用的區塊，可以放在reuse區塊，並設一樣的class名稱，在建構時，可以更快速\n","dateCreated":"2020-12-13T13:05:53+08:00","dateModified":"2021-10-02T13:42:45+08:00","datePublished":"2020-12-13T13:05:53+08:00","description":"","headline":"CSS練習- omnifood 餐廳網頁","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/","keywords":"udemy, CSS, icon, grid, 多重背景, opacity"}</script>
+    <meta name="description" content="介紹成品使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。  首先，文字字型的選擇先用Normalize.css，下載並連結字型：使用google font &gt; lato text-rendering告訴渲染引擎工作時如何優化顯示文字 1234567891011121314151617181920212223">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="CSS練習- omnifood 餐廳網頁">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:description" content="介紹成品使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。  首先，文字字型的選擇先用Normalize.css，下載並連結字型：使用google font &gt; lato text-rendering告訴渲染引擎工作時如何優化顯示文字 1234567891011121314151617181920212223">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/OwpZq8P.png">
+<meta property="og:image" content="https://i.imgur.com/4VSiIEZ.png">
+<meta property="og:image" content="https://i.imgur.com/pc0jiX3.png">
+<meta property="og:image" content="https://i.imgur.com/ioW5W5p.png">
+<meta property="og:image" content="https://i.imgur.com/dZzd6V7.png">
+<meta property="og:image" content="https://i.imgur.com/pe6AUaN.png">
+<meta property="og:image" content="https://i.imgur.com/zoaaQoB.jpg">
+<meta property="og:image" content="https://i.imgur.com/r4IryMQ.jpg">
+<meta property="og:image" content="https://i.imgur.com/QcgKtPg.jpg">
+<meta property="og:image" content="https://i.imgur.com/NmUA3qy.jpg">
+<meta property="og:image" content="https://i.imgur.com/MuiBMCl.png">
+<meta property="og:image" content="https://i.imgur.com/3UM8SpB.png">
+<meta property="og:image" content="https://i.imgur.com/jOySkuH.png">
+<meta property="og:image" content="https://i.imgur.com/KMLsFMM.png">
+<meta property="og:image" content="https://i.imgur.com/1su6NCZ.png">
+<meta property="og:image" content="https://i.imgur.com/nl0Z3uS.png">
+<meta property="og:image" content="https://i.imgur.com/kl8kJq1.png">
+<meta property="og:image" content="https://i.imgur.com/sg0YUDI.png">
+<meta property="og:image" content="https://i.imgur.com/Sr0NhBr.png">
+<meta property="og:image" content="https://i.imgur.com/BzV03pk.png">
+<meta property="og:image" content="https://i.imgur.com/zBU6WCx.png">
+<meta property="og:image" content="https://i.imgur.com/jaYired.jpg">
+<meta property="og:image" content="https://i.imgur.com/XNsC9JM.jpg">
+<meta property="og:image" content="https://i.imgur.com/QsAwjZx.jpg">
+<meta property="og:image" content="https://i.imgur.com/zBiOKSv.jpg">
+<meta property="og:image" content="https://i.imgur.com/ADUUni8.jpg">
+<meta property="og:image" content="https://i.imgur.com/okb9F66.jpg">
+<meta property="og:image" content="https://i.imgur.com/HxrpNQG.png">
+<meta property="og:image" content="https://i.imgur.com/F9MrnmA.png">
+<meta property="og:image" content="https://i.imgur.com/cPpSW9S.png">
+<meta property="og:image" content="https://i.imgur.com/odR0Tm5.png">
+<meta property="og:image" content="https://i.imgur.com/OHIFt8g.png">
+<meta property="og:image" content="https://i.imgur.com/NOTJn47.png">
+<meta property="og:image" content="https://i.imgur.com/zvBsOgb.png">
+<meta property="og:image" content="https://i.imgur.com/gC2Om3f.png">
+<meta property="og:image" content="https://i.imgur.com/YzSZlES.jpg">
+<meta property="og:image" content="https://i.imgur.com/1s1kBSH.png">
+<meta property="og:image" content="https://i.imgur.com/621x3W2.png">
+<meta property="og:image" content="https://i.imgur.com/LMPlqlx.png">
+<meta property="og:image" content="https://i.imgur.com/ofR8ghb.png">
+<meta property="og:image" content="https://i.imgur.com/deniLe4.jpg">
+<meta property="og:image" content="https://i.imgur.com/lO5KPTq.jpg">
+<meta property="og:image" content="https://i.imgur.com/VBEGepa.png">
+<meta property="og:image" content="https://i.imgur.com/bifGooB.png">
+<meta property="og:image" content="https://i.imgur.com/MJpSGz0.png">
+<meta property="og:image" content="https://i.imgur.com/6tr0o3E.png">
+<meta property="og:image" content="https://i.imgur.com/8lTrnUY.png">
+<meta property="og:image" content="https://i.imgur.com/1XlErXn.png">
+<meta property="og:image" content="https://i.imgur.com/YnpnJBc.png">
+<meta property="og:image" content="https://i.imgur.com/Dke7ilN.png">
+<meta property="og:image" content="https://i.imgur.com/oC2aMcy.png">
+<meta property="og:image" content="https://i.imgur.com/y9sxEXR.png">
+<meta property="og:image" content="https://i.imgur.com/VQ5YHHR.png">
+<meta property="og:image" content="https://i.imgur.com/E4C4qY3.png">
+<meta property="og:image" content="https://i.imgur.com/X2b2hfu.png">
+<meta property="og:image" content="https://i.imgur.com/Uph2clO.png">
+<meta property="og:image" content="https://i.imgur.com/A2Z6Meh.png">
+<meta property="og:image" content="https://i.imgur.com/bLtpdK7.png">
+<meta property="og:image" content="https://i.imgur.com/ss2XfZd.png">
+<meta property="article:published_time" content="2020-12-13T05:05:53.000Z">
+<meta property="article:modified_time" content="2021-10-02T05:42:45.478Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="udemy">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="icon">
+<meta property="article:tag" content="grid">
+<meta property="article:tag" content="多重背景">
+<meta property="article:tag" content="opacity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/OwpZq8P.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
 
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
-  <style type="text/css">
-    pre,
-    code {
-      font-family: 'Fira Code', monospace;
-    }
-    html {
-      font-family: sans-serif;
-    }
-    body {
-      font-family: sans-serif;
-    }
-    h1, h2, h3, h4, h5, figure {
-      font-family: sans-serif;
-    }
-    .menu-container{
-      font-family: sans-serif;
-    }
-  </style>
+    <!--STYLES END-->
+    
 
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
-	<script>
-	$(document).ready(function(){
-	$(".menu-container").jSideMenu({
-	    jSidePosition: "position-right",
-	    jSideSticky: true,
-	    jSideSkin: "greenish",
-	     });
-	}); 
-	</script>
-  
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
-<meta name="generator" content="Hexo 4.2.0"></head>
-<body>
-<div class="single">
+    
 
-<div id="page">
-<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
-  <div class="overlay">
-  <div class="page-title">
-    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
-    <span>2020-12-13</span>
-    <h2>CSS練習- omnif...</h2>
-    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/CSS/" rel="tag">CSS</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/grid/" rel="tag">grid</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/icon/" rel="tag">icon</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/opacity/" rel="tag">opacity</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/udemy/" rel="tag">udemy</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/%E5%A4%9A%E9%87%8D%E8%83%8C%E6%99%AF/" rel="tag">多重背景</a></div>
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Let&#39;s Code
+        </a>
     </div>
-</div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Eva Chan</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Eva813"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google +"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google +</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://eva813.github.io/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            CSS練習- omnifood 餐廳網頁
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-12-13T13:05:53+08:00">
+	
+		    Dec 13, 2020
+    	
+    </time>
+    
 </div>
 
-<div id="lx-main-content">
-  <div class="lx-post">
-    <div class="lx-entry padding">
-      <div>
-        <h2 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h2><p><a href="https://eva813.github.io/Eva_portfolio/Omnifood/omnifood.html" target="_blank" rel="noopener">成品</a><br>使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。</p>
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h2><p><a href="https://eva813.github.io/Eva_portfolio/Omnifood/omnifood.html" target="_blank" rel="noopener">成品</a><br>使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。</p>
 <p><img src="https://i.imgur.com/OwpZq8P.png" alt=""></p>
 <h2 id="首先，文字字型的選擇"><a href="#首先，文字字型的選擇" class="headerlink" title="首先，文字字型的選擇"></a>首先，文字字型的選擇</h2><p>先用Normalize.css，下載並連結<br>字型：使用google font &gt; lato<br><img src="https://i.imgur.com/4VSiIEZ.png" alt=""></p>
 <p>text-rendering告訴渲染引擎工作時如何優化顯示文字</p>
@@ -335,9 +640,9 @@
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">footer</span> <span class="selector-tag">p</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>:<span class="number">#888</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  </span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.logo-instagram</span>,</span><br><span class="line"><span class="selector-class">.logo-google</span>,</span><br><span class="line"><span class="selector-class">.logo-twitte</span>,</span><br><span class="line"><span class="selector-class">.logo-facebook</span>&#123;</span><br><span class="line"><span class="attribute">transition</span>: color .<span class="number">3s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.logo-instagram</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#517fa4</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.logo-google</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#dd4b39</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.logo-twitte</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#00aced</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.logo-facebook</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#3b5998</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/bLtpdK7.png" alt=""></p>
 <hr>
-<h1 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h1><h2 id="background與background-imge之差別"><a href="#background與background-imge之差別" class="headerlink" title="background與background-imge之差別"></a><code>background</code>與<code>background-imge</code>之差別</h2><div class="note info">
-            <p>background属性是整體設置的，background image是background的属性之一，background的屬性包括<br>background-color<br>background-image<br>background-repeat<br>background-attachment<br>background-position，<br>你看不到圖片是因为設置錯，不能加no-repeat屬性，應改為：<br>background-image:url(“some.jpg”); background-repeat:no-repeat;分開寫</p><p><a href="https://bbs.csdn.net/topics/310167508" target="_blank" rel="noopener">background和background-image什么区别</a></p>
-          </div>
+<h1 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h1><h2 id="background與background-imge之差別"><a href="#background與background-imge之差別" class="headerlink" title="background與background-imge之差別"></a><code>background</code>與<code>background-imge</code>之差別</h2><div class="alert info no-icon"><p>background属性是整體設置的，background image是background的属性之一，background的屬性包括<br>background-color<br>background-image<br>background-repeat<br>background-attachment<br>background-position，<br>你看不到圖片是因为設置錯，不能加no-repeat屬性，應改為：<br>background-image:url(“some.jpg”); background-repeat:no-repeat;分開寫</p>
+<p><a href="https://bbs.csdn.net/topics/310167508" target="_blank" rel="noopener">background和background-image什么区别</a></p>
+</div>
 
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line"><span class="attribute">background-image</span>:<span class="built_in">url</span>(./Omnifood\ Contents/hero.jpg) ;</span><br><span class="line"></span><br><span class="line"><span class="attribute">background-size</span>: cover;</span><br><span class="line"><span class="attribute">background-position</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/********我改為下面這樣*******/</span></span><br><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line"><span class="attribute">background</span>: <span class="built_in">url</span>(./Omnifood\ Contents/hero.jpg) no-repeat</span><br><span class="line"> center center/cover;&#125;</span><br></pre></td></tr></table></figure>
 
@@ -351,9 +656,8 @@
 
 <p>參考：<br><a href="https://pjchender.blogspot.com/2015/04/css_15.html" target="_blank" rel="noopener">pjchender</a></p>
 <h2 id="使用button-vs-link"><a href="#使用button-vs-link" class="headerlink" title="使用button vs link"></a>使用<code>button</code> vs <code>link</code></h2><p><a href="https://a11y-101.com/design/button-vs-link" target="_blank" rel="noopener">Button versus Link</a></p>
-<div class="note info">
-            <p>From a semantics and accessibility viewpoint:<br>Links <code>(&lt;a&gt;)</code>are for “going someplace” such as “jumping to a different section of a page, going to another URL, etc.<br>Whereas<br>Buttons <code>&lt;button&gt;</code>are for “doing something” such as a function on the page to expand/collapse a menu, submit a form or etc.</p>
-          </div>
+<div class="alert info no-icon"><p>From a semantics and accessibility viewpoint:<br>Links <code>(&lt;a&gt;)</code>are for “going someplace” such as “jumping to a different section of a page, going to another URL, etc.<br>Whereas<br>Buttons <code>&lt;button&gt;</code>are for “doing something” such as a function on the page to expand/collapse a menu, submit a form or etc.</p>
+</div>
 <h2 id="grid參考資料"><a href="#grid參考資料" class="headerlink" title="grid參考資料"></a><code>grid</code>參考資料</h2><p><a href="http://www.responsivegridsystem.com/" target="_blank" rel="noopener">Spectacularly Easy Responsive Design</a><br><a href="https://blog.hinablue.me/css-grid-layout/" target="_blank" rel="noopener">關於 Grid Layout 的使用姿勢</a><br><a href="https://www.youtube.com/watch?v=uZRkVOeRHws" target="_blank" rel="noopener">六角學院 - Bootstrap Grid System 原理介紹</a></p>
 <h3 id="margin-與-paggimg"><a href="#margin-與-paggimg" class="headerlink" title="margin 與 paggimg"></a><code>margin</code> 與 <code>paggimg</code></h3><p>製作steps區塊時，因設定section的margin距離<br>使得想在此區塊多加上背景色彩，有了中間的空白處</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.meal-steps</span>&#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#f4f4f4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -363,127 +667,332 @@
 </li>
 </ul>
 <p><img src="https://i.imgur.com/ss2XfZd.png" alt=""></p>
-<div class="note info">
-            <h3 id="練習後的小心得："><a href="#練習後的小心得：" class="headerlink" title="練習後的小心得："></a>練習後的小心得：</h3><p>1.在html建構會使用<code>.row</code><br>2.應用grid,css<br>3.內部，字的大小用百分比<br>4.有一些可以共用的區塊，可以放在reuse區塊，並設一樣的class名稱，在建構時，可以更快速</p>
-          </div>
+<h3 id="練習後的小心得："><a href="#練習後的小心得：" class="headerlink" title="練習後的小心得："></a>練習後的小心得：</h3><p>1.在html建構會使用<code>.row</code><br>2.應用grid,css<br>3.內部，字的大小用百分比<br>4.有一些可以共用的區塊，可以放在reuse區塊，並設一樣的class名稱，在建構時，可以更快速</p>
+
+            
 
 
-      </div>
+        </div>
     </div>
-  </div>
-</div>
-<div class="lx-navigation">
-	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2020/12/13/portfolio-web-page/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Next</span>
-						<h3>CSS練習- ...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2020/11/28/csscoke-NO013/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Prev</span>
-						<h3>Amos金魚都...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/CSS/" rel="tag">CSS</a> <a class="tag tag--primary tag--small t-link" href="/tags/grid/" rel="tag">grid</a> <a class="tag tag--primary tag--small t-link" href="/tags/icon/" rel="tag">icon</a> <a class="tag tag--primary tag--small t-link" href="/tags/opacity/" rel="tag">opacity</a> <a class="tag tag--primary tag--small t-link" href="/tags/udemy/" rel="tag">udemy</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E5%A4%9A%E9%87%8D%E8%83%8C%E6%99%AF/" rel="tag">多重背景</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/13/portfolio-web-page/"
+                    data-tooltip="CSS練習- portfolio web page 作品集網頁"
+                    aria-label="PREVIOUS: CSS練習- portfolio web page 作品集網頁"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/11/28/csscoke-NO013/"
+                    data-tooltip="Amos金魚都能懂的切版教學影片- csscoke NO013"
+                    aria-label="NEXT: Amos金魚都能懂的切版教學影片- csscoke NO013"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-</div>
 
-<footer>
-  <div>
-  Copyright &copy; 2021.<a href="/">Let's Code</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
-  </div>
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
+    </span>
 </footer>
 
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/12/13/portfolio-web-page/"
+                    data-tooltip="CSS練習- portfolio web page 作品集網頁"
+                    aria-label="PREVIOUS: CSS練習- portfolio web page 作品集網頁"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/11/28/csscoke-NO013/"
+                    data-tooltip="Amos金魚都能懂的切版教學影片- csscoke NO013"
+                    aria-label="NEXT: Amos金魚都能懂的切版教學影片- csscoke NO013"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-<button class="hamburger hamburger--arrow-r" type="button">
-    <div class="hamburger-box">
-      <div class="hamburger-inner"></div>
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
     </div>
-</button> 
-<div class="menu visibility">
-  <div class="menu-head">
-    <span class="layer">
-      <div class="col">
-        <div class="row for-pic">
-          <div class="profile-pic">
-            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
-          </div>
+
+
+            
         </div>
-        <div class="row for-name">
-          <p>Eva Chan</p>
-          <span class="tagline">Hello, World!</span>
-        </div>
-      </div>
-    </span>
-  </div>
-  <nav class="menu-container">
-  <ul class="menu-items">
-    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
-    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        
+
+
     
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
-        <ul>
-          <li><a href="/guestbook/">Guestbook</a></li>
-        <li><a href="/about/">About</a></li>
-        </ul>
-    </li>
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-link fa-fw"></i>Friends</span>
-        <ul>
-          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
-        </ul>
-    </li>
-  </ul>
-  </nav>
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Eva Chan</h4>
+        
+            <div id="about-card-bio"><p>Front-End Engineer</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
 </div>
 
-<div class="gototop js-top">
-  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
-</div>
-<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
-<script>
-(function () {
-	"use strict";
-	var goToTop = function() {
-		$(".js-gotop").on("click", function(event){
-			event.preventDefault();
-			$("html, body").animate({
-				scrollTop: $("html").offset().top
-			}, 500, "easeInOutExpo");
-			return false;
-		});
-		$(window).scroll(function(){
-			var $win = $(window);
-			if ($win.scrollTop() > 200) {
-				$(".js-top").addClass("active");
-			} else {
-				$(".js-top").removeClass("active");
-			}
-		});
-	};
-	$(function(){
-		goToTop();
-	});
-}());
-</script>
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
+
+<!--SCRIPTS END-->
 
 
-</body>
+    
+
+
+
+
+    </body>
 </html>

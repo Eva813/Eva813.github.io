@@ -1,86 +1,332 @@
+
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="theme-color" content=#58b77a>
-  <title>JS實作- 新年倒數 | Let&#39;s Code</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Eva Chan">
-  <meta name="keywords" content="">
-  <meta name="description" content="">
-  <script id="hexo-configurations">
-  var CONFIG = {
-    root: '/',
-    theme: 'lx',
-    version: '0.3.9',
-    localsearch:{
-      "enable": false,
-      "trigger": "auto",
-      "top_n_per_article": 1,
-      "unescape": false,
-      "preload": false
-      },
-    path: 'null'
-  };
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Let&#39;s Code">
+    <title>JS實作- 新年倒數 - Let&#39;s Code</title>
+    <meta name="author" content="Eva Chan">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"成品\n\n觀察功能需求\n計算天、小時、分鐘、秒數的倒數\n最下面顯示倒數年份\npage load的圖示(會旋轉1秒鐘)之後顯示倒數\n\nCSS部分1234567891011121314151617181920/*增加讓螢幕寬度變化時，字的大小隨之改變如果螢幕寬度為 500px 以下*/@media (max-width: 500px) &#123;  h1 &#123;    font-size: 45px;  &#125;  .time &#123;    margin: 5px;  &#125;  .time h2 &#123;    font-size: 12px;    margin: 0;  &#125;  .time small &#123;    font-size: 10px;  &#125;&#125;\n\nDay22：小事之 Media Query\nCSS設定響應式(RWD)有幾種方法\nJS部分1. 宣告最終日期(新的一年1/1的日期)\n要先宣告取得目前的年份\n再利用此變數帶入，要倒數的最終日期\n\n123//getFullYear(),用來取得日期物件當中本地時間的年份const currentYear = new Date().getFullYear();const newYearTime = new Date(`January 01 $&#123;currentYear + 1&#125; 00:00:00`);\n\n時間日期JavaScript Date 時間和日期getFullYear() Method\n2. 倒數計時的日、時、分、秒\ncurrentTime 取得目前時間\n\ndiff = newYearTime - currentTime;:計算出目前與未來最終日期的時間差異(此相減得出的是毫秒)\n\n計算天數、小時、秒數\n\nconst d1天等於24小時，1小時等於60分鐘，1分鐘等於60秒，1秒等於1000毫秒。所以，msec / 1000 / 60 / 60 / 24 保留整數就是天數。\nh = Math.floor(diff / 1000 / 60 / 60) % 24:計算小時，並以除以24之後的餘數，來得到剩餘的小時。\n分鐘、以及秒數也是用同樣方式計算取得。\n\n\n將取得的日期帶入畫面\n\n使用.html()：$(&#39;#days&#39;).html(d);\n在小時、分鐘、秒，是以兩位數呈現，需要當數字少於10，要呈現01,02…，所以使用三元運算子$(&#39;#hours&#39;).html(h &lt; 10 ? &#39;0&#39; + h : h);，當數字小於10，要0+h;反之就只要呈現h。\n\n\n最後要設定setInterval(updateCountdown, 1000); ，使其每秒倒數。\n\n\n123456789101112131415161718192021function updateCountdown() &#123;  const currentTime = new Date();  //console.log(currentTime);  const diff = newYearTime - currentTime;  //diff計算出來是毫秒  //days  const d = Math.floor(diff / 1000 / 60 / 60 / 24);  //取得除以24之後的餘數  const h = Math.floor(diff / 1000 / 60 / 60) % 24;  const m = Math.floor(diff / 1000 / 60) % 60;  const s = Math.floor(diff / 1000) % 60;  $('#days').html(d);  //當數字少於10，要呈現01,02...  $('#hours').html(h &lt; 10 ? '0' + h : h);  $('#minutes').html(m &lt; 10 ? '0' + m : m);  $('#seconds').html(s &lt; 10 ? '0' + s : s);&#125;//設定每一秒都會循環倒數setInterval(updateCountdown, 1000);\n參考資料：【JS】javascript時間Date()介紹與補零應用的技巧!!!js和vue實現時分秒倒計時的方法三元運算子：Day19【ES6 小筆記】三元運算子-以哥哥的擇偶條件為例\n\n3.載入圖示\n設定在載入之後，要隔多久執行功能\n在此設定載入1秒之後，要移除loading畫面，呈現出倒數的時間\n\n12345setTimeout(function () &#123;  $('#loading').remove();  //要在css檔案的countdown，先設置display：none  $('#countdown').css('display', 'flex');&#125;, 1000);\n\n4.放入要倒數的年份1$('#year').html(currentYear + 1)\n\n\n\n\n\n\n\n\n\n網頁練習 -倒數計時器實作(上)5 Best Countdown Timer JavaScript Libraries (2020 Update)網頁練習 -倒數計時器實作(下)\n","dateCreated":"2021-01-16T09:17:11+08:00","dateModified":"2021-09-18T13:48:14+08:00","datePublished":"2021-01-16T09:17:11+08:00","description":"","headline":"JS實作- 新年倒數","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/","keywords":"JS, jQuery, setInterval"}</script>
+    <meta name="description" content="成品  觀察功能需求 計算天、小時、分鐘、秒數的倒數 最下面顯示倒數年份 page load的圖示(會旋轉1秒鐘)之後顯示倒數  CSS部分1234567891011121314151617181920&#x2F;*增加讓螢幕寬度變化時，字的大小隨之改變如果螢幕寬度為 500px 以下*&#x2F;@media (max-width: 500px) &amp;#123;  h1 &amp;#123;    font-size: 45">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="JS實作- 新年倒數">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:description" content="成品  觀察功能需求 計算天、小時、分鐘、秒數的倒數 最下面顯示倒數年份 page load的圖示(會旋轉1秒鐘)之後顯示倒數  CSS部分1234567891011121314151617181920&#x2F;*增加讓螢幕寬度變化時，字的大小隨之改變如果螢幕寬度為 500px 以下*&#x2F;@media (max-width: 500px) &amp;#123;  h1 &amp;#123;    font-size: 45">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/et0bQ96.png">
+<meta property="og:image" content="https://i.imgur.com/b3sgw3L.png">
+<meta property="og:image" content="https://i.imgur.com/ly5elua.png">
+<meta property="article:published_time" content="2021-01-16T01:17:11.000Z">
+<meta property="article:modified_time" content="2021-09-18T05:48:14.895Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="setInterval">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/et0bQ96.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
 
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
-  <style type="text/css">
-    pre,
-    code {
-      font-family: 'Fira Code', monospace;
-    }
-    html {
-      font-family: sans-serif;
-    }
-    body {
-      font-family: sans-serif;
-    }
-    h1, h2, h3, h4, h5, figure {
-      font-family: sans-serif;
-    }
-    .menu-container{
-      font-family: sans-serif;
-    }
-  </style>
+    <!--STYLES END-->
+    
 
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
-	<script>
-	$(document).ready(function(){
-	$(".menu-container").jSideMenu({
-	    jSidePosition: "position-right",
-	    jSideSticky: true,
-	    jSideSkin: "greenish",
-	     });
-	}); 
-	</script>
-  
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
-<meta name="generator" content="Hexo 4.2.0"></head>
-<body>
-<div class="single">
+    
 
-<div id="page">
-<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
-  <div class="overlay">
-  <div class="page-title">
-    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
-    <span>2021-01-16</span>
-    <h2>JS實作- 新年倒數</h2>
-    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/JS/" rel="tag">JS</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/jQuery/" rel="tag">jQuery</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/setInterval/" rel="tag">setInterval</a></div>
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Let&#39;s Code
+        </a>
     </div>
-</div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Eva Chan</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Eva813"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google +"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google +</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://eva813.github.io/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            JS實作- 新年倒數
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-01-16T09:17:11+08:00">
+	
+		    Jan 16, 2021
+    	
+    </time>
+    
 </div>
 
-<div id="lx-main-content">
-  <div class="lx-post">
-    <div class="lx-entry padding">
-      <div>
-        <p><a href="https://eva813.github.io/Eva_portfolio/countDown/countDown.html" target="_blank" rel="noopener">成品</a></p>
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p><a href="https://eva813.github.io/Eva_portfolio/countDown/countDown.html" target="_blank" rel="noopener">成品</a></p>
 <p><img src="https://i.imgur.com/et0bQ96.png" alt=""></p>
 <h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><ul>
 <li>計算天、小時、分鐘、秒數的倒數</li>
@@ -140,122 +386,330 @@
 <hr>
 <p><a href="https://ithelp.ithome.com.tw/articles/10238189" target="_blank" rel="noopener">網頁練習 -倒數計時器實作(上)</a><br><a href="https://www.cssscript.com/best-countdown-timer/" target="_blank" rel="noopener">5 Best Countdown Timer JavaScript Libraries (2020 Update)</a><br><a href="https://ithelp.ithome.com.tw/articles/10238547" target="_blank" rel="noopener">網頁練習 -倒數計時器實作(下)</a></p>
 
-      </div>
+            
+
+
+        </div>
     </div>
-  </div>
-</div>
-<div class="lx-navigation">
-	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2021/01/22/js-guessNumber/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Next</span>
-						<h3>JS實作- 猜...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2021/01/16/js-scrollBlog/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Prev</span>
-						<h3>JS實作- s...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/JS/" rel="tag">JS</a> <a class="tag tag--primary tag--small t-link" href="/tags/jQuery/" rel="tag">jQuery</a> <a class="tag tag--primary tag--small t-link" href="/tags/setInterval/" rel="tag">setInterval</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/22/js-guessNumber/"
+                    data-tooltip="JS實作- 猜數字遊戲"
+                    aria-label="PREVIOUS: JS實作- 猜數字遊戲"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/16/js-scrollBlog/"
+                    data-tooltip="JS實作- scrollBlog"
+                    aria-label="NEXT: JS實作- scrollBlog"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-</div>
 
-<footer>
-  <div>
-  Copyright &copy; 2021.<a href="/">Let's Code</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
-  </div>
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
+    </span>
 </footer>
 
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/22/js-guessNumber/"
+                    data-tooltip="JS實作- 猜數字遊戲"
+                    aria-label="PREVIOUS: JS實作- 猜數字遊戲"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/16/js-scrollBlog/"
+                    data-tooltip="JS實作- scrollBlog"
+                    aria-label="NEXT: JS實作- scrollBlog"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-<button class="hamburger hamburger--arrow-r" type="button">
-    <div class="hamburger-box">
-      <div class="hamburger-inner"></div>
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
     </div>
-</button> 
-<div class="menu visibility">
-  <div class="menu-head">
-    <span class="layer">
-      <div class="col">
-        <div class="row for-pic">
-          <div class="profile-pic">
-            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
-          </div>
+
+
+            
         </div>
-        <div class="row for-name">
-          <p>Eva Chan</p>
-          <span class="tagline">Hello, World!</span>
-        </div>
-      </div>
-    </span>
-  </div>
-  <nav class="menu-container">
-  <ul class="menu-items">
-    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
-    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        
+
+
     
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
-        <ul>
-          <li><a href="/guestbook/">Guestbook</a></li>
-        <li><a href="/about/">About</a></li>
-        </ul>
-    </li>
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-link fa-fw"></i>Friends</span>
-        <ul>
-          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
-        </ul>
-    </li>
-  </ul>
-  </nav>
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Eva Chan</h4>
+        
+            <div id="about-card-bio"><p>Front-End Engineer</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
 </div>
 
-<div class="gototop js-top">
-  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
-</div>
-<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
-<script>
-(function () {
-	"use strict";
-	var goToTop = function() {
-		$(".js-gotop").on("click", function(event){
-			event.preventDefault();
-			$("html, body").animate({
-				scrollTop: $("html").offset().top
-			}, 500, "easeInOutExpo");
-			return false;
-		});
-		$(window).scroll(function(){
-			var $win = $(window);
-			if ($win.scrollTop() > 200) {
-				$(".js-top").addClass("active");
-			} else {
-				$(".js-top").removeClass("active");
-			}
-		});
-	};
-	$(function(){
-		goToTop();
-	});
-}());
-</script>
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
+
+<!--SCRIPTS END-->
 
 
-</body>
+    
+
+
+
+
+    </body>
 </html>

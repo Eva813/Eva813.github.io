@@ -1,86 +1,344 @@
+
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="theme-color" content=#58b77a>
-  <title>JS實作- musicPlayer | Let&#39;s Code</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Eva Chan">
-  <meta name="keywords" content="">
-  <meta name="description" content="">
-  <script id="hexo-configurations">
-  var CONFIG = {
-    root: '/',
-    theme: 'lx',
-    version: '0.3.9',
-    localsearch:{
-      "enable": false,
-      "trigger": "auto",
-      "top_n_per_article": 1,
-      "unescape": false,
-      "preload": false
-      },
-    path: 'null'
-  };
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Let&#39;s Code">
+    <title>JS實作- musicPlayer - Let&#39;s Code</title>
+    <meta name="author" content="Eva Chan">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"觀察須製作的功能成品\n\n播放器API的樣式\n\n&lt;audio&gt;: The Embed Audio element\n\n播放時，左方的圓型圖示會旋轉。\n\n\n先於css檔案製作符合動畫的class\n在js時，依照符合的情況加入該class\n\n\n\n播放時，上方會跳出播放歌曲的名稱。\n\n\n先於css檔案製作符合動畫的class，設定opacity1或0，translateY位置的移動\n在js時，依照符合的情況加入該class\n\n\n\n左右按鍵可以更換曲目，同時圖片會更換\n\n\n設定陣列，使歌曲與圖片相符\n並讓前後的跳轉鍵，依照順序或條件來變化\n\n\n\nhtml部分跳轉按鍵\n播放鍵、前/後跳轉的按鈕 \n\n12345678910111213&lt;div class=\"nav\"&gt;        &lt;button id=\"prev\" class=\"action-btn\"&gt;          &lt;i class=\"fas fa-backward\"&gt;&lt;/i&gt;        &lt;/button&gt;        &lt;button id=\"play\" class=\"action-btn  action-btn-big\"&gt;          &lt;i class=\"fas fa-play\"&gt;&lt;/i&gt;        &lt;/button&gt;        &lt;button id=\"next\" class=\"action-btn\"&gt;          &lt;i class=\"fas fa-forward\"&gt;&lt;/i&gt;        &lt;/button&gt;&lt;/div&gt;\n\n\ncss部分背景顏色linear-gradient()\n1234/* 傾斜度\\顏色、從哪個位置開始 */  background-image:linear-gradient(0deg  ,rgb(247, 247, 247,1) 23.8%,  rgba(252,221,221,1) 92% );\n\n\n圖片圓形以及旋轉1234567891011121314151617181920212223242526272829303132.img-container&#123;  position: relative;  width: 110px;&#125;/*圖片圓形*/.img-container img&#123;  border-radius: 50%;  object-fit: cover;/*填滿元素的寬度及高度(維持原比例)，通常會剪掉部分的物件*/ height: 110px; width: inherit; /*繼承自父層的寬度屬性值。*/ position:absolute; bottom: 0; left: 0; animation: rotate 3s linear infinite; animation-play-state: paused;&#125;/* 播放class的製作 */.music-container.play .img-container img&#123; animation-play-state:running;&#125;@keyframes rotate&#123;  from&#123;    transform: rotate(0deg);  &#125;  to &#123;    transform: rotate(360deg);  &#125;&#125;\n\n使用animation@keyframe新手前端也不該犯的錯：圖片變形\n\n\n\n在圖片中間加入圓形點，以看起來像光碟樣式\n\n1234567891011.img-container::after&#123;  content: '';  border-radius: 50%;  background-color: #fff;  position: absolute;  left: 50%;  bottom: 100%;  width: 25px;  height: 25px;  transform: translate(-50%,50%);&#125;\n\n\n播放進度條的製作\n標題12345678910111213141516.music-info&#123;  background-color: rgba(255,255,255,.5);  border-radius:15px 15px 0 0 ;  position: absolute;  top: 0;  left: 20px;  opacity: 0;  transform: translateY(0%);  transition: transform 0.3s ease-in,opacity 0.3s ease-in;  z-index: 0;&#125;.music-container.play .music-info&#123;  opacity: 1;   transform: translateY(-100%);&#125;\n\n\n將曲目標題設置背景、圓角\n利用 transfor、opacity來呈現位置的變化\n\n\n\n修改標題位置\n\n123/*放入.music-info之中*/width: calc(100% - 40px); padding: 10px 10px 10px 150px;\ncalc()calc() 的運算式一樣是按照先乘除後加減進行計算 width: calc(100% - 40px);/* 意思是 100% 的寬度 - 去 40px */CSS： calc() 數值運算\n\n123.music-info h4&#123;margin: 0;&#125;\n\n2.進度條（progress）\n12345678910111213141516.progress-container&#123;  background-color: #fff;  border-radius: 5px;  height: 4px;  width: 100%;  margin: 10px 0;  cursor: pointer;&#125;.progress&#123;  background-color: #fe8daa; border-radius: 5px;  height: 4px;  width: 0%;  transition: width .1s linear ;&#125;\n\njs部分1.音樂播放鍵(播放與停止)\n分別有兩個函式：playMusic() 、pauseMusic()\n在css設定.play的css，並於js綁定事件，加入css的效果(使圖片如同轉盤，會旋轉)\n在icon的部分：在播放時：為暫停鍵圖示;在暫停時：為播放鍵的圖示\n透過play()、pause()，讓音源播放與暫停\n\nplay()、pause()因為play()、pause()是DOM元素，不是jQuery的function，而要用jQuery取得DOM元素$(&#39;#audio&#39;).get(0).play() =&gt;$(&#39;#audio&#39;)[0].play()$(&#39;#audio&#39;).get(0).pause() =&gt;$(&#39;#audio&#39;)[0].pause()\n參考資料：How do I pull a native DOM element from a jQuery object?Play/pause HTML 5 video using JQuery\n123456789//播放音樂function playMusic() &#123;  $('.music-container').addClass('play');  $('#play').find('i').removeClass('fa-play');  $('#play').find('i').addClass('fa-pause');  $('#audio').get(0).play();&#125;;\n1234567//停止音樂function pauseMusic() &#123;  $('.music-container').removeClass('play');  $('#play').find('i').addClass('fa-play');  $('#play').find('i').removeClass('fa-pause');  $('#audio').get(0).pause();&#125;\n\n綁定事件：如果音樂是播放狀態的話，就執行pauseMusic()，反之，音樂不處於波方時，執行playMusic()123456789$('#play').click(function (e) &#123;   var hasPlay = $('#music-container').hasClass('play');   //var a = $('#audio').paused;   if (hasPlay) &#123;     pauseMusic();   &#125; else &#123;     playMusic();   &#125; &#125;);\n\n\n\n\n\n\n2.載入音樂\n將歌曲名稱建立陣列，並將此回傳到建立的函式中\n設定預設的索引let songIndex = 1\n使用 attr( 屬性名, 屬性值 )，獲取屬性的值，在這部分，透過歌曲名稱來取得歌曲與照片\n\n12345678910111213var songs_name = ['hey', 'summer', 'ukulele'];let songIndex = 1;function loadSongs(song) &#123;  //console.log(song);  $('#title').text(song);    $('#audio').attr('src', `music/$&#123;song&#125;.mp3`);  $('#cover').attr('src', `img/$&#123;song&#125;.jpg`);&#125;// Initially load song details into DOMloadSongs(songs_name[songIndex]);\n綁定於下一首、前一首的圖示被點擊時123$('#next').click(nextSong)  $('#prev').click(function () &#123; prevSong();  &#125;);\n\n\n\n查看函式回傳\n1loadSongs(songs_name);\n\n\n要抓取到該索引\n1loadSongs(songs_name[songIndex]);\n此段落執行時，出現問題：\n\n搜尋到的處理方式：在html的headI’m getting favicon.ico error\n\n\n\n參考資料：jquery prop和attr的區別jQuery .attr() vs .prop()\n3.左右鍵的跳轉\n下一首歌曲，與跳至前一首歌曲，兩個函式的撰寫有異曲同工之妙，只有在設條條件上的差異。\nnextSong():設定條件為歌曲索引songIndex比 歌曲陣列長度-1songs_name.length - 1還要小，我們就要將索引+1。\n例如這裏預設的索引為1，所以在點擊當下，判斷&lt;songs_name.length - 1，所以需加1，索引變成2，跳至下一首 ‘ukulele’\n\n\nprevSong()：設定條件為歌曲索引songIndex比0大，就要索引-1，跳轉至上一首歌曲。若沒符合的話，索引就等於songs_name.length - 1\n\n12345678910111213141516171819202122//歌曲的索引，如果比歌曲總數-1還小，就將索引加1，跳轉下一首function nextSong() &#123;  if (songIndex &lt; songs_name.length - 1) &#123; songIndex += 1; &#125; else &#123;    songIndex = 0  &#125;;  loadSongs(songs_name[songIndex]);  playMusic();&#125;//跳轉前一首function prevSong() &#123;  //如果索引沒有大於0。就會播索引[2]  if (songIndex &gt; 0) &#123; songIndex -= 1; &#125; else &#123;    songIndex = songs_name.length - 1;  &#125;;  loadSongs(songs_name[songIndex]);  playMusic();&#125;\n\n參考資料：Create a Music Player using JavaScript\n4.點擊進度條，可以跳轉音樂位置(1).顯示粉色進度條\nduration：音源的時間(一樣是使用get方式取得)\ncurrentTime：音樂播放的當前位置（以秒計）\nprogressBar：進度條\n計算百分比：(currentTime / duration) * 100\n\n1234567891011121314//顯示進度條//為何取[0]function handleProgress() &#123;  var duration = $('#audio').get(0).duration;  //console.log(duration)  var currentTime = $('#audio')[0].currentTime;  //console.log(currentTime)  const progressBar = $('#progress');  const progressPercent = (currentTime / duration) * 100;  //currentTime目前播放時間去與影片長度duration轉換成百分比，即可得到目前播放時間的百分比  progressBar.css('width', `$&#123;progressPercent&#125;%`);&#125;;\n\n(2).點擊進度條，會跳轉到該位置播放\nwidth:獲取該進度條容器的寬度\n抓取點擊位置：\ne.pageX:取得滑鼠在頁面裡的位置\nelm.offset().left:絕對座標X軸\n\n\n將（點擊位置除以進度條的總長）乘以 音樂的時間長度，就可以取得點擊的時間位置theTime = ((xPos / width))* duration;\n最後現在時間設為，計算好的點擊時間\n\n123456789101112131415161718192021//點擊進度條//https://ithelp.ithome.com.tw/articles/10194871//https://tools.wingzero.tw/article/sn/102$('#progress-container').click(function (e) &#123;  const width = $('#progress-container').width(); //216.25  //console.log(width);  //取得點擊位置  var elm = $(this);  var xPos = e.pageX - elm.offset().left;  //console.log(xPos);  var duration = $('#audio')[0].duration;  var theTime = ((xPos / width))    * duration;  //console.log(theTime);  $('#audio')[0].currentTime = theTime;&#125;);\n執行過程，利用console來查看\n123console.log(e.pageX);console.log(elm.offset().left);console.log(xPos)\n參考資料：取得滑鼠位置、元素位置與區塊內的相對位置\n5.歌曲播完後，換下一首1$('#audio').on('ended',nextSong);\n參考資料：audio auto play next song when previous is finished\n6.增加隨機的變換背景色彩\n色彩為0-256;而因為想取的較亮的色系，所以取64-256\nMath.random() 會回傳一個偽隨機小數 (pseudo-random) 介於0到1之間(包含 0，不包含1) \nMath.floor()會將所有的小數無條件捨去到比自身小的最大整數\nMath.floor(Math.random() * 255) + 64就會取得64 to 256\n\n\n宣告變數bgColor為rdba(red,green,blue,a)\n最後將此函式，放入loadSongs()函式當中，每次播放、跳轉歌曲，同時背景顏色也會改變\n\n123456789101112131415161718function random_bg_color() &#123;  // Get a random number between 64 to 256   // (for getting lighter colors)   let red = Math.floor(Math.random() * 255) + 64;  let green = Math.floor(Math.random() * 255) + 64;  let blue = Math.floor(Math.random() * 255) + 64;  let a = 0.5  // Construct a color withe the given values   let bgColor = \"rgba(\" + red + \", \" + green + \", \" + blue + \", \" + a + \")\";  var bg = $(document.body).css('background', `$&#123;bgColor&#125;`);  // Set the background to the new color   bg = bgColor;  console.log(bg)&#125;\n參考資料：Create a Music Player using JavaScriptWon’t Math.floor(Math.random() * 255) generate uneven probabilities?\n[筆記][JavaScript]用Math.random()取得亂數的技巧\n","dateCreated":"2021-01-15T21:51:43+08:00","dateModified":"2021-10-02T13:49:09+08:00","datePublished":"2021-01-15T21:51:43+08:00","description":"","headline":"JS實作- musicPlayer","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/","keywords":"JS, append, jQuery "}</script>
+    <meta name="description" content="觀察須製作的功能成品  播放器API的樣式  &lt;audio&gt;: The Embed Audio element  播放時，左方的圓型圖示會旋轉。   先於css檔案製作符合動畫的class 在js時，依照符合的情況加入該class    播放時，上方會跳出播放歌曲的名稱。   先於css檔案製作符合動畫的class，設定opacity1或0，translateY位置的移動 在js時，依">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="JS實作- musicPlayer">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:description" content="觀察須製作的功能成品  播放器API的樣式  &lt;audio&gt;: The Embed Audio element  播放時，左方的圓型圖示會旋轉。   先於css檔案製作符合動畫的class 在js時，依照符合的情況加入該class    播放時，上方會跳出播放歌曲的名稱。   先於css檔案製作符合動畫的class，設定opacity1或0，translateY位置的移動 在js時，依">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/3LBdMiU.png">
+<meta property="og:image" content="https://i.imgur.com/U3dx7yG.png">
+<meta property="og:image" content="https://i.imgur.com/NuxfsOb.png">
+<meta property="og:image" content="https://i.imgur.com/w1bpDjr.png">
+<meta property="og:image" content="https://i.imgur.com/Xb5PpmY.png">
+<meta property="og:image" content="https://i.imgur.com/RfUz8Pk.png">
+<meta property="og:image" content="https://i.imgur.com/HlnWKJb.png">
+<meta property="og:image" content="https://i.imgur.com/icBK0qt.png">
+<meta property="og:image" content="https://i.imgur.com/er3G6Wd.png">
+<meta property="og:image" content="https://i.imgur.com/qiWmxmu.png">
+<meta property="og:image" content="https://i.imgur.com/uPUHWcM.png">
+<meta property="og:image" content="https://i.imgur.com/je9hXJY.png">
+<meta property="og:image" content="https://i.imgur.com/5not1Ji.png">
+<meta property="og:image" content="https://i.imgur.com/dj4H5hb.png">
+<meta property="og:image" content="https://i.imgur.com/piYCbc5.png">
+<meta property="article:published_time" content="2021-01-15T13:51:43.000Z">
+<meta property="article:modified_time" content="2021-10-02T05:49:09.721Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="append">
+<meta property="article:tag" content="jQuery ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/3LBdMiU.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
 
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
-  <style type="text/css">
-    pre,
-    code {
-      font-family: 'Fira Code', monospace;
-    }
-    html {
-      font-family: sans-serif;
-    }
-    body {
-      font-family: sans-serif;
-    }
-    h1, h2, h3, h4, h5, figure {
-      font-family: sans-serif;
-    }
-    .menu-container{
-      font-family: sans-serif;
-    }
-  </style>
+    <!--STYLES END-->
+    
 
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
-	<script>
-	$(document).ready(function(){
-	$(".menu-container").jSideMenu({
-	    jSidePosition: "position-right",
-	    jSideSticky: true,
-	    jSideSkin: "greenish",
-	     });
-	}); 
-	</script>
-  
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
-<meta name="generator" content="Hexo 4.2.0"></head>
-<body>
-<div class="single">
+    
 
-<div id="page">
-<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
-  <div class="overlay">
-  <div class="page-title">
-    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
-    <span>2021-01-15</span>
-    <h2>JS實作- musicP...</h2>
-    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/JS/" rel="tag">JS</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/append/" rel="tag">append</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/jQuery/" rel="tag">jQuery </a></div>
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Let&#39;s Code
+        </a>
     </div>
-</div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Eva Chan</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Eva813"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google +"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google +</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://eva813.github.io/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            JS實作- musicPlayer
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-01-15T21:51:43+08:00">
+	
+		    Jan 15, 2021
+    	
+    </time>
+    
 </div>
 
-<div id="lx-main-content">
-  <div class="lx-post">
-    <div class="lx-entry padding">
-      <div>
-        <h2 id="觀察須製作的功能"><a href="#觀察須製作的功能" class="headerlink" title="觀察須製作的功能"></a>觀察須製作的功能</h2><p><a href="https://eva813.github.io/Eva_portfolio/musicPlayer/musicPlayer.html" target="_blank" rel="noopener">成品</a></p>
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="觀察須製作的功能"><a href="#觀察須製作的功能" class="headerlink" title="觀察須製作的功能"></a>觀察須製作的功能</h2><p><a href="https://eva813.github.io/Eva_portfolio/musicPlayer/musicPlayer.html" target="_blank" rel="noopener">成品</a></p>
 <ol>
 <li>播放器API的樣式</li>
 </ol>
@@ -143,11 +401,7 @@
 <li>修改標題位置</li>
 </ul>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*放入.music-info之中*/</span></span><br><span class="line"><span class="selector-tag">width</span>: <span class="selector-tag">calc</span>(100% <span class="selector-tag">-</span> 40<span class="selector-tag">px</span>);</span><br><span class="line"> <span class="selector-tag">padding</span>: 10<span class="selector-tag">px</span> 10<span class="selector-tag">px</span> 10<span class="selector-tag">px</span> 150<span class="selector-tag">px</span>;</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>calc() 的運算式一樣是按照先乘除後加減進行計算<br> width: calc(100% - 40px);<br>/* 意思是 100% 的寬度 - 去 40px */<br><a href="https://5xruby.tw/posts/css-calc/" target="_blank" rel="noopener">CSS： calc() 數值運算</a></p>
-          </div>
-
-
+<h4 id="calc"><a href="#calc" class="headerlink" title="calc()"></a><code>calc()</code></h4><p>calc() 的運算式一樣是按照先乘除後加減進行計算<br> width: calc(100% - 40px);<br>/* 意思是 100% 的寬度 - 去 40px */<br><a href="https://5xruby.tw/posts/css-calc/" target="_blank" rel="noopener">CSS： calc() 數值運算</a></p>
 <p><img src="https://i.imgur.com/er3G6Wd.png" alt=""></p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.music-info</span> <span class="selector-tag">h4</span>&#123;</span><br><span class="line"><span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/qiWmxmu.png" alt=""></p>
@@ -160,10 +414,7 @@
 <li>在icon的部分：在播放時：為暫停鍵圖示;在暫停時：為播放鍵的圖示</li>
 <li>透過play()、pause()，讓音源播放與暫停</li>
 </ul>
-<div class="note info">
-            <p>因為play()、pause()是DOM元素，不是jQuery的function，而要用jQuery取得DOM元素<br><code>$(&#39;#audio&#39;).get(0).play()</code> =&gt;<code>$(&#39;#audio&#39;)[0].play()</code><br><code>$(&#39;#audio&#39;).get(0).pause()</code> =&gt;<code>$(&#39;#audio&#39;)[0].pause()</code></p>
-          </div>
-
+<h3 id="play-、pause"><a href="#play-、pause" class="headerlink" title="play()、pause()"></a><code>play()</code>、<code>pause()</code></h3><p>因為play()、pause()是DOM元素，不是jQuery的function，而要用jQuery取得DOM元素<br><code>$(&#39;#audio&#39;).get(0).play()</code> =&gt;<code>$(&#39;#audio&#39;)[0].play()</code><br><code>$(&#39;#audio&#39;).get(0).pause()</code> =&gt;<code>$(&#39;#audio&#39;)[0].pause()</code></p>
 <p>參考資料：<br><a href="https://learn.jquery.com/using-jquery-core/faq/how-do-i-pull-a-native-dom-element-from-a-jquery-object/" target="_blank" rel="noopener">How do I pull a native DOM element from a jQuery object?</a><br><a href="https://stackoverflow.com/questions/4646998/play-pause-html-5-video-using-jquery" target="_blank" rel="noopener">Play/pause HTML 5 video using JQuery</a></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//播放音樂</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">playMusic</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  $(<span class="string">'.music-container'</span>).addClass(<span class="string">'play'</span>);</span><br><span class="line">  $(<span class="string">'#play'</span>).find(<span class="string">'i'</span>).removeClass(<span class="string">'fa-play'</span>);</span><br><span class="line">  $(<span class="string">'#play'</span>).find(<span class="string">'i'</span>).addClass(<span class="string">'fa-pause'</span>);</span><br><span class="line">  $(<span class="string">'#audio'</span>).get(<span class="number">0</span>).play();</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//停止音樂</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pauseMusic</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">'.music-container'</span>).removeClass(<span class="string">'play'</span>);</span><br><span class="line">  $(<span class="string">'#play'</span>).find(<span class="string">'i'</span>).addClass(<span class="string">'fa-play'</span>);</span><br><span class="line">  $(<span class="string">'#play'</span>).find(<span class="string">'i'</span>).removeClass(<span class="string">'fa-pause'</span>);</span><br><span class="line">  $(<span class="string">'#audio'</span>).get(<span class="number">0</span>).pause();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -247,122 +498,330 @@
 <p>參考資料：<br><a href="https://www.geeksforgeeks.org/create-a-music-player-using-javascript/" target="_blank" rel="noopener">Create a Music Player using JavaScript</a><br><a href="https://stackoverflow.com/questions/20790579/wont-math-floormath-random-255-generate-uneven-probabilities" target="_blank" rel="noopener">Won’t Math.floor(Math.random() * 255) generate uneven probabilities?
 </a><a href="https://ithelp.ithome.com.tw/articles/10197904" target="_blank" rel="noopener">[筆記][JavaScript]用Math.random()取得亂數的技巧</a></p>
 
-      </div>
+            
+
+
+        </div>
     </div>
-  </div>
-</div>
-<div class="lx-navigation">
-	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2021/01/15/js-SortableList/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Next</span>
-						<h3>JS實作- S...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2021/01/10/localstorage/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Prev</span>
-						<h3>認識什麼是Lo...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/JS/" rel="tag">JS</a> <a class="tag tag--primary tag--small t-link" href="/tags/append/" rel="tag">append</a> <a class="tag tag--primary tag--small t-link" href="/tags/jQuery/" rel="tag">jQuery </a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/15/js-SortableList/"
+                    data-tooltip="JS實作- SortableList"
+                    aria-label="PREVIOUS: JS實作- SortableList"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/10/localstorage/"
+                    data-tooltip="認識什麼是LocalStorage"
+                    aria-label="NEXT: 認識什麼是LocalStorage"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-</div>
 
-<footer>
-  <div>
-  Copyright &copy; 2021.<a href="/">Let's Code</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
-  </div>
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
+    </span>
 </footer>
 
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/15/js-SortableList/"
+                    data-tooltip="JS實作- SortableList"
+                    aria-label="PREVIOUS: JS實作- SortableList"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/10/localstorage/"
+                    data-tooltip="認識什麼是LocalStorage"
+                    aria-label="NEXT: 認識什麼是LocalStorage"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-<button class="hamburger hamburger--arrow-r" type="button">
-    <div class="hamburger-box">
-      <div class="hamburger-inner"></div>
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
     </div>
-</button> 
-<div class="menu visibility">
-  <div class="menu-head">
-    <span class="layer">
-      <div class="col">
-        <div class="row for-pic">
-          <div class="profile-pic">
-            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
-          </div>
+
+
+            
         </div>
-        <div class="row for-name">
-          <p>Eva Chan</p>
-          <span class="tagline">Hello, World!</span>
-        </div>
-      </div>
-    </span>
-  </div>
-  <nav class="menu-container">
-  <ul class="menu-items">
-    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
-    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        
+
+
     
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
-        <ul>
-          <li><a href="/guestbook/">Guestbook</a></li>
-        <li><a href="/about/">About</a></li>
-        </ul>
-    </li>
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-link fa-fw"></i>Friends</span>
-        <ul>
-          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
-        </ul>
-    </li>
-  </ul>
-  </nav>
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Eva Chan</h4>
+        
+            <div id="about-card-bio"><p>Front-End Engineer</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
 </div>
 
-<div class="gototop js-top">
-  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
-</div>
-<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
-<script>
-(function () {
-	"use strict";
-	var goToTop = function() {
-		$(".js-gotop").on("click", function(event){
-			event.preventDefault();
-			$("html, body").animate({
-				scrollTop: $("html").offset().top
-			}, 500, "easeInOutExpo");
-			return false;
-		});
-		$(window).scroll(function(){
-			var $win = $(window);
-			if ($win.scrollTop() > 200) {
-				$(".js-top").addClass("active");
-			} else {
-				$(".js-top").removeClass("active");
-			}
-		});
-	};
-	$(function(){
-		goToTop();
-	});
-}());
-</script>
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
+
+<!--SCRIPTS END-->
 
 
-</body>
+    
+
+
+
+
+    </body>
 </html>

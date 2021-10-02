@@ -1,86 +1,354 @@
+
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="theme-color" content=#58b77a>
-  <title>SCSS- ClothesStore | Let&#39;s Code</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Eva Chan">
-  <meta name="keywords" content="">
-  <meta name="description" content="">
-  <script id="hexo-configurations">
-  var CONFIG = {
-    root: '/',
-    theme: 'lx',
-    version: '0.3.9',
-    localsearch:{
-      "enable": false,
-      "trigger": "auto",
-      "top_n_per_article": 1,
-      "unescape": false,
-      "preload": false
-      },
-    path: 'null'
-  };
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Let&#39;s Code">
+    <title>SCSS- ClothesStore - Let&#39;s Code</title>
+    <meta name="author" content="Eva Chan">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"成品\nscss 檔案的建立所建立的各分檔，個別會負責不同的區塊，並透過@import放入主要的sass檔\n\nmain.scss 引入其他分檔\nabstracts\n/_variables.scss：設定常用的變數，如：顏色、字體大小\n/_mixin.scss：設定某些區段中，重複用到的樣式，並於該區段要使用的時候引用\n\n\nbase\n/_base.scss：為設定大框架，如html、body、container，等主幹的大小、字型的設定\n\n\ncomponents:放置部分功能元件\n/_button.scss：按鈕的設定\n/_heading.scss：標題\n/_logo.scss\n/_dropdown.scss\n\n\nlayout （設計網頁版面配置(Layout)）\n/_header.scss\n/_navigation.scss\n/_products.scss\n/_slidshow.scss\n/_footer.scss\n\n\npages 通常是用來放置其他分頁（網頁內會連結到其他相關分頁）\nvenders 放置外部套件\n\n\n(1)基礎設置(1.1)Grid 練習_base.scss\n\n總共要設置10欄\n列的則是設置4區塊\n並設置每個區塊都有1.6rem的gap1234567.container&#123;    display: grid;    grid-template-columns:minmax(6rem,1fr) repeat(8,minmax(min-content,16 rem))   minmax(6rem,1fr);//10欄    grid-template-rows: repeat(4,min-content);    grid-row-gap:1.6rem ;   &#125;\n\n\n\n\n\nminmax(min, max)minmax(6rem,1fr):設定格線最小6rem，最大1frfr 單位就是為了格線布局而生，fraction，中文意思是分數，當使用在網格軌道上時，可以直接想像成 “我的這個空位要佔有總 fr 數量的幾等份”\nrepeat(8,minmax(min-content,16rem)):重複8個，最小：min-content;最大16rem\nrepeat() 重複網格線及間距\nmax-content/min-content 最小內容尺寸/最大內容尺寸\nmax-content：給予網格區域所需的最大尺寸空間，內容盡可能避免折行。\nmin-content：給予網格區域所需的最小尺寸空間，內容盡可能的折行，但不會溢出邊界。\n\n\n\n\n\n\n\n[Day19] grid-template 屬性之 rows/columnsMin &amp; Max Content Sizing in CSS Grid — 1/3 FlexibilityCSS Layout很難？用這招30秒就讓你輕鬆生出網頁版面！\n\n(1.2)常用變數\n_variable.scssmap與function的搭配使用\n設定不同的顏色，並設置函式，以利後續使用\n\n1234567891011121314151617181920212223$colors:(  primary:#333,  secondary:#ffe,  tertiary:#f2f0f1,  quaternary:#f5b149);//創造函式//函式名稱為color代入參數為$color-name，使用map代入物件，最為回傳的結果@function color($color-name)&#123;  @return map-get($map: $colors, $key:$color-name )&#125;$font-size:(  xl:3rem,  lg:2.5rem,  md:2rem,  sm:1.8rem,  xs:1.6rem);@function size($size)&#123;  @return map-get($map: $font-size, $key:$size )&#125;\n\n(2)layout/_header.scssheader的版面\n\ngrid-column: 1/-1; (1/11) grid-row: 1/2;表示所佔的區隔\n而在header這區，在設置grid劃分區塊\n有9欄\n列設置3區塊12345678.header&#123;  grid-column: 1/-1; //1/11  grid-row: 1/2;  display: grid;  grid-template-columns: 1fr repeat(7,minmax(min-content,16rem)) 1fr;  grid-template-rows: repeat(3,min-content); grid-gap: 2rem;&#125;\n\n\ngrid-column: 1/-1; //1/11  ; grid-row: 1/2; What’s the difference between grid-column value 1/1 and 1/2?\n\n\n(3)logo的大小設置_logo.scss\n\n注意：設立所設定的欄和列的區塊，是在header設置的grid底下\n\n12345678910.logo&#123;  grid-column: 1/2;  grid-row: 1/2;  padding: 1rem;  //class=\"logo-img\"  &amp;-img&#123;      width: 10rem;    height: 100%;  &#125;&#125;\n(4)heading\n標題的位置一樣利用grid來設定\n在文字的字體、大小、間距進行調整_heading.scss1234567891011.heading&#123;  grid-column: 4/7;  grid-row: 2/3;  text-align: center;  &amp;-text&#123;    font-family: 'Great Vibes',cursive;    font-size: size(xl)*2; //結果為6rem    font-weight: lighter;    letter-spacing: 0.5rem;  &#125;&#125;\n\n\n(5)heading中的navigation layout/_navigation.scss\n\n.first-nav為放置右上角\n.second-nav為放置下方，中間的位置123456789101112131415.first-nav&#123;   //放在最後三欄  grid-column: 7/10;  grid-row: 1/2;  @include navigation;&#125;.second-nav&#123;  grid-column: 3/8;  grid-row: 3/4;  @include navigation;&#125;.dropdown&#123;  display: none;&#125;\n\n\n\n\n\n@mixin，創造navigstion共用樣式\n使navigation的li-list可以橫向分散排列\n設定hover效果，使游標摸到顏色變淺lighten()1234567891011121314151617181920212223//.first-nav-list@mixin navigation&#123;  &amp;-list&#123;      display: flex;    justify-content: space-around;    align-items: center;    height: 100%;  &#125;  &amp;-item&#123;    list-style: none;  &#125;  &amp;-link&#123;    color: color(primary);    text-decoration: none;    font-size: size(sm);    transition: all .3s;    &amp;:hover&#123;      color: lighten(color(primary),40%);    &#125;  &#125;&#125;\n\n\n\n\n(6)下拉選項：dropdown list的箭頭符號components/_dropdown.scss\n\nfont-family: &#39;Font Awesome 5 Free&#39;：把icon當作字體使用使用 fontAwesome 動態加入連結 icon\n\n12345678910.dropdown-li&#123;  position: relative; //創造下拉選單的箭頭符號 &amp;::after&#123;   font-family: 'Font Awesome 5 Free';   content: '\\f078';   font-weight:bold ; &#125;&#125;\n\n\n製作下拉式選單的三角形\n\n先利用border製作出上、下、左、右的三角1234567891011121314.dropdown&#123; &amp;::before&#123;    content: '';    display: block;    position: absolute;    top: -1.5rem;    left: 7.3rem;    border-top: 15px solid red;    border-right: 15px solid green;    border-bottom: 15px solid orange;    border-left: 15px solid blue;  &#125; &#125;\n\n\n\n調整上方各色的三角形，並留下要保留的一個三角形\n\n\n123456789101112&amp;::before&#123;  content: '';  display: block;  position: absolute;  top: -1.5rem;  left: 7.3rem;  // border-top: 15px solid red;  border-right: 15px solid transparent;  border-bottom: 15px solid orange;  border-left: 15px solid transparent;&#125;\n\n\nright: -2.8rem;:條整位置對齊正方形list\nborder-bottom: 15px solid darken(color(tertiary),5%);：修改三角形的顏色，使整體為灰色\n\n1234567891011121314151617181920212223.dropdown&#123;  position: absolute;  top: 3rem;  right: -2.8rem; //使整個往右移動  width: 10rem;  background-color:darken(color(tertiary),5%);  @include navigation;  padding: 1rem;  text-align: center;  border-radius: 0.2rem;  &amp;::before&#123;    content: '';    display: block;    position: absolute;    top: -1.5rem;    left: 7.3rem;    // border-top: 15px solid red;    border-right: 15px solid transparent;    border-bottom: 15px solid darken(color(tertiary),5%);    border-left: 15px solid transparent;  &#125;\n\n\n\nhover使下拉選單消失\\出現\n建立游標摸到.dropdown-li，會顯示下拉選單\nvisibility、opacity12345678910111213.dropdown-li&#123;  &amp;:hover .dropdown&#123;  visibility: visible;   opacity: 1;&#125;&#125;.dropdown&#123;visibility: hidden;   opacity: 0;  transition: opicity .3s;&#125;\n\n\n\n\n\n\n\n使slideshow可以跳轉(如幻燈片效果)\n使用@keyframes做出動畫位置\n\nAnimation Duration(動畫整個完成一次的時間): (fade-in + visible) × images = duration.\n\n假設你要讓圖片花1秒fade-in，再讓他顯示1秒。而你共有3張圖片，所以總共所需時間為6秒。\n\n\nAnimation Delay:(fade-in + visible) × (ordinal position − 1) = delay.\n\nKeyframes: 100 ÷ animation duration = percentage for 1 second.(100/20=5%)，5％為1秒，所以4秒大約是20％的位置\n12345678910111213141516171819202122232425262728293031323334353637383940414243444546.slideshow&#123; &amp;-slide&#123;    //使圖片、文字都放在同一個位置  position: absolute;   top: 0;   left: 0;   width: inherit;   height: inherit;//預設先讓slide消失   visibility: hidden;    opacity: 0;   animation: slideshow 20s linear infinite ;   &#125;&#125;@keyframes slideshow&#123;   //主要是0~20時圖片顯示，之後都消失，讓其他圖片得宜顯示  //0~2%創造fade的效果  0%&#123;    visibility: hidden;    opacity: 0;  &#125;;  2%&#123;    visibility: visible;    opacity: 1;  &#125;  //2%~18% slide要顯示  18%&#123;    visibility: visible;    opacity: 1;  &#125;  //18~20要消失  20%&#123;    visibility: hidden;    opacity: 0;  &#125;  100%&#123;    visibility: hidden;    opacity: 0;  &#125;&#125;\nSimplest CSS SlideshowCSS3 Keyframes Animation[筆記] CSS動畫Animation — @keyframes完整解析 CSS 動畫 ( CSS Animation )\n\n設置延遲時間(4秒)，使每張圖片呈現(css的撰寫方式)\n\n:nth-child()選擇第幾張圖片12345678910111213141516/*設置延遲時間，讓每張slide呈現4秒替換*/ .slideshow-slide:nth-child(1)&#123;   animation-delay: 0s; &#125; .slideshow-slide:nth-child(2)&#123;   animation-delay: 4s; &#125; .slideshow-slide:nth-child(3)&#123;   animation-delay: 8s; &#125; .slideshow-slide:nth-child(4)&#123;   animation-delay: 12s; &#125; .slideshow-slide:nth-child(5)&#123;   animation-delay: 16s; &#125;\n\n\n\n\n\n\n\n將上方轉化為@each的寫法\n先創造一個列表$animlist，在each迴圈時要但進去的項目\n在each迴圈中.slideshow-slide:nth-child放入slide of number(取得列表中第一個值)，後面接著寫下要執行的動作animation-delay: nth($item,2);\n\n\n\n123456789///改寫為=&gt;$animlist:第幾個 延遲秒數,//#&#123;nth($item,1)&#125;: 1表示(2 4s)，第一個值=2$animList:1 0s,2 4s,3 8s,4 12s, 5 16s;@each $item in $animList &#123;   .slideshow-slide:nth-child(#&#123;nth($item,1)&#125;)&#123;     animation-delay: nth($item,2);     //2就是指秒數   &#125;&#125;\nSass Tutorials #9 - Nth Function In Lists\n產品區下方see more按鈕\nhtml part\n有三個arrow-line，於後續在scss中會運用此三個div製作箭頭符號1234567891011121314&lt;div class=\"products-btn\"&gt;       &lt;a href=\"#\" class=\"btn\"&gt;         &lt;div class=\"btn-bg\"&gt;           &lt;div class=\"arrow\"&gt;             &lt;div class=\"arrow-line arrow-line-1\"&gt;&lt;/div&gt;             &lt;div class=\"arrow-line arrow-line-2\"&gt;&lt;/div&gt;             &lt;div class=\"arrow-line arrow-line-3\"&gt;&lt;/div&gt;           &lt;/div&gt;         &lt;/div&gt;         &lt;span class=\"btn-text\"&gt;           See More         &lt;/span&gt;       &lt;/a&gt;     &lt;/div&gt;\n\n\n\n\n\n\n\n創造arrowtransform: rotateZ :Z軸 (使其斜向旋轉45度)123456789101112131415161718&amp;-line &#123;     height: .2rem;     background-color: color(secondary);     position: absolute; &#125;   &amp;-line-2 &#123;         width: 1rem;     //透過旋轉線2,線3使其成為交叉     transform: rotateZ(45deg);   &#125;   &amp;-line-3 &#123;         width: 1rem;     transform: rotateZ(-45deg);   &#125;\n\n\ntransform-origin去設定物件變形的起始點\n1234567&amp;-line &#123;      height: .2rem;      background-color: color(secondary);      position: absolute;      //將x變成arrow &gt; ;因預設原點是在center，所以須將原點拉到右邊，形成箭頭      transform-origin:right ;  &#125;\n\n\nCSS 属性篇(三)：transform-origin属性\n\n\n增加橫向直線\n\n1234&amp;-line-1&#123;      width: 2rem;      transform: translateX(-0.7rem);    &#125;\n\n\n設置動畫，透過摸到箭頭，會延展\nbg的的寬度進行延展\n\n\n\n12345678910111213141516171819202122232425.btn&#123;&amp;:hover .btn-bg&#123;    width: 18rem;  &#125;    &amp;-bg&#123;     width: 4rem;     height: 4rem;    background-color: color(primary) ;    //使其變圓形     border-radius: 5rem ;    position: absolute;    left: 0;    transition: width .2s ;  &#125;   &amp;-line-1&#123;        width: 0;      transform: translateX(-0.7rem);    &#125;    //* line-1預設看不到，透過hover出現  &#125;\n\n\n\n使see more 出現\n\n先修改see more的顏色\n即便改變顏色，還是會被bg覆蓋，所以要調整z-index1234567891011121314151617.btn&#123;  &amp;:hover .btn-text&#123;    color: color(secondary);   &#125;     &amp;-text&#123;    font-size: size(xs);    text-transform: uppercase;    color: color(primary);    z-index: 10;  &#125;&#125;\n\n\n\n將箭頭向右移動，並呈現完整箭頭符號\n\n設定.arrow右移，並讓line-1得宜呈現並延展123456789101112131415161718192021222324.btn&#123;   &amp;:hover .arrow&#123;    transform: translateX(1rem);  &#125;   &amp;:hover .arrow-line-1&#123;    width: 2rem;  &#125; .arrow&#123;    @include flexPosition;    transition: transform .2s ;        &amp;-line-1&#123;      width: 0;      transform: translateX(-0.7rem);      transition: width .2s ;      &#125;       &#125;&#125;\n\n\n\n\n表尾區塊\n(1)footer區塊的樣式 layout/_footer.scss\n\nfooter有三區，中間是表單，左右邊分別為資訊連結123456789.footer&#123;  grid-column: 1/-1;  grid-row: 4/5;  @include flexPosition(space-around);  padding:5rem 0 ;  border-top: .1rem solid color(primary);&#125;\n\n\n\n\n\n透過＠mixin一次修改2區的條例項目（mixin_scss）\n其中包含文字大小、樣式、hover效果1234567891011121314151617181920@mixin footerList &#123;  &amp;-heading&#123;    font-size: size(lg);    color:color(primary);  &#125;  &amp;-item&#123;    list-style: none;    margin: 1rem 0;  &#125;  &amp;-link&#123;    font-size: size(xs);    text-decoration: none;    color: lighten(color(primary),15%);    transition: color .2s ;    &amp;:hover&#123;      color:lighten(color(primary),35%)    &#125;  &#125;&#125;\n\n\n\n\n(2)社群icon1234567891011121314151617.social-icons&#123;    display: flex;    justify-content: space-between;    padding: 1rem;    box-sizing: border-box;    &amp;-item&#123;      list-style: none;    &#125;    &amp;-link&#123;      text-decoration: none;      width: 4rem;      height: 4rem;      border:.1rem solid color(primary);         &#125;\n\n\nborder-radius: 100%;調整為圓形外框\na標籤的前放為i的圖示，所以flex的設置，是針對social-icons-lik\n利用@each來套入icon的顏色\n\n12345678910111213141516171819202122232425&amp;-link&#123;      text-decoration: none;      width: 4rem;      height: 4rem;      border:.1rem solid color(primary);      //修改icon成圓形      // display: block;      border-radius: 100%;      @include flexPosition;      i&#123;        font-size: size(md);      &#125;    &#125;        $socialMediaColors: 1 #3b5998, 2 #b31217, 3 #dc4e41, 4 #55acee, 5 #517fa4, 6 #0077b5;@each $color in $socialMediaColors &#123;  .social-icons-item:nth-child(#&#123;nth(($color),1)&#125;) .social-icons-link&#123;    color:nth($color,2);    border:.1rem solid nth($color,2);  &#125;&#125;\n\n轉為css1234567891011121314151617181920212223.social-icons-item:nth-child(1) .social-icons-link &#123;  color: #3b5998;  border: 0.1rem solid #3b5998; &#125;.social-icons-item:nth-child(2) .social-icons-link &#123;  color: #b31217;  border: 0.1rem solid #b31217; &#125;.social-icons-item:nth-child(3) .social-icons-link &#123;  color: #dc4e41;  border: 0.1rem solid #dc4e41; &#125;.social-icons-item:nth-child(4) .social-icons-link &#123;  color: #55acee;  border: 0.1rem solid #55acee; &#125;.social-icons-item:nth-child(5) .social-icons-link &#123;  color: #517fa4;  border: 0.1rem solid #517fa4; &#125;.social-icons-item:nth-child(6) .social-icons-link &#123;  color: #0077b5;  border: 0.1rem solid #0077b5; &#125;\n\n\n\n\n","dateCreated":"2021-03-05T14:26:19+08:00","dateModified":"2021-06-26T14:39:19+08:00","datePublished":"2021-03-05T14:26:19+08:00","description":"","headline":"SCSS- ClothesStore","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/","keywords":"SCSS, grid"}</script>
+    <meta name="description" content="成品 scss 檔案的建立所建立的各分檔，個別會負責不同的區塊，並透過@import放入主要的sass檔  main.scss 引入其他分檔 abstracts &#x2F;_variables.scss：設定常用的變數，如：顏色、字體大小 &#x2F;_mixin.scss：設定某些區段中，重複用到的樣式，並於該區段要使用的時候引用   base &#x2F;_base.scss：為設定大框架，如html、body、cont">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="SCSS- ClothesStore">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:description" content="成品 scss 檔案的建立所建立的各分檔，個別會負責不同的區塊，並透過@import放入主要的sass檔  main.scss 引入其他分檔 abstracts &#x2F;_variables.scss：設定常用的變數，如：顏色、字體大小 &#x2F;_mixin.scss：設定某些區段中，重複用到的樣式，並於該區段要使用的時候引用   base &#x2F;_base.scss：為設定大框架，如html、body、cont">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/PLNNF5k.png">
+<meta property="og:image" content="https://i.imgur.com/GmeHZ7w.png">
+<meta property="og:image" content="https://i.imgur.com/QA3NLgt.png">
+<meta property="og:image" content="https://i.imgur.com/C1W2Urq.png">
+<meta property="og:image" content="https://i.imgur.com/OEkTxyS.png">
+<meta property="og:image" content="https://i.imgur.com/JfkrqEb.png">
+<meta property="og:image" content="https://i.imgur.com/PWJoEoH.png">
+<meta property="og:image" content="https://i.imgur.com/t6KdpJ9.png">
+<meta property="og:image" content="https://i.imgur.com/4pg8oNR.png">
+<meta property="og:image" content="https://i.imgur.com/chq5TM1.png">
+<meta property="og:image" content="https://i.imgur.com/YhxKI4C.png">
+<meta property="og:image" content="https://i.imgur.com/JMI2Zgc.png">
+<meta property="og:image" content="https://i.imgur.com/vY3cbuj.gif">
+<meta property="og:image" content="https://i.imgur.com/0zOvMTI.png">
+<meta property="og:image" content="https://i.imgur.com/s62AXMY.png">
+<meta property="og:image" content="https://i.imgur.com/wbRTSeb.png">
+<meta property="og:image" content="https://i.imgur.com/sdIdcZI.png">
+<meta property="og:image" content="https://i.imgur.com/vQjUp05.gif">
+<meta property="og:image" content="https://i.imgur.com/bo8TJLy.gif">
+<meta property="og:image" content="https://i.imgur.com/9pptj0t.gif">
+<meta property="og:image" content="https://i.imgur.com/yHeHkU8.png">
+<meta property="og:image" content="https://i.imgur.com/tSWtPTW.png">
+<meta property="og:image" content="https://i.imgur.com/X9BA5K0.gif">
+<meta property="og:image" content="https://i.imgur.com/IZzM7eK.png">
+<meta property="og:image" content="https://i.imgur.com/kd6jbyV.png">
+<meta property="og:image" content="https://i.imgur.com/8aWeLiw.png">
+<meta property="article:published_time" content="2021-03-05T06:26:19.000Z">
+<meta property="article:modified_time" content="2021-06-26T06:39:19.313Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="SCSS">
+<meta property="article:tag" content="grid">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/PLNNF5k.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
 
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
-  <style type="text/css">
-    pre,
-    code {
-      font-family: 'Fira Code', monospace;
-    }
-    html {
-      font-family: sans-serif;
-    }
-    body {
-      font-family: sans-serif;
-    }
-    h1, h2, h3, h4, h5, figure {
-      font-family: sans-serif;
-    }
-    .menu-container{
-      font-family: sans-serif;
-    }
-  </style>
+    <!--STYLES END-->
+    
 
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
-	<script>
-	$(document).ready(function(){
-	$(".menu-container").jSideMenu({
-	    jSidePosition: "position-right",
-	    jSideSticky: true,
-	    jSideSkin: "greenish",
-	     });
-	}); 
-	</script>
-  
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
-<meta name="generator" content="Hexo 4.2.0"></head>
-<body>
-<div class="single">
+    
 
-<div id="page">
-<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
-  <div class="overlay">
-  <div class="page-title">
-    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
-    <span>2021-03-05</span>
-    <h2>SCSS- Clothe...</h2>
-    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/SCSS/" rel="tag">SCSS</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/grid/" rel="tag">grid</a></div>
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Let&#39;s Code
+        </a>
     </div>
-</div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Eva Chan</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Eva813"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google +"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google +</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://eva813.github.io/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            SCSS- ClothesStore
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-05T14:26:19+08:00">
+	
+		    Mar 05, 2021
+    	
+    </time>
+    
 </div>
 
-<div id="lx-main-content">
-  <div class="lx-post">
-    <div class="lx-entry padding">
-      <div>
-        <p><a href="https://eva813.github.io/Eva_portfolio/sass-ClothesStore/ClothesStore.html" target="_blank" rel="noopener">成品</a></p>
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p><a href="https://eva813.github.io/Eva_portfolio/sass-ClothesStore/ClothesStore.html" target="_blank" rel="noopener">成品</a></p>
 <h2 id="scss-檔案的建立"><a href="#scss-檔案的建立" class="headerlink" title="scss 檔案的建立"></a>scss 檔案的建立</h2><p>所建立的各分檔，個別會負責不同的區塊，並透過<code>@import</code>放入主要的sass檔</p>
 <ul>
 <li>main.scss 引入其他分檔<br><img src="https://i.imgur.com/PLNNF5k.png" alt=""></li>
@@ -326,122 +594,330 @@
 </ul>
 <p><img src="https://i.imgur.com/8aWeLiw.png" alt=""></p>
 
-      </div>
+            
+
+
+        </div>
     </div>
-  </div>
-</div>
-<div class="lx-navigation">
-	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2021/05/16/Vue-basic/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Next</span>
-						<h3>Vue.js ...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2021/03/05/sass-1/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Prev</span>
-						<h3>CSS 預處理...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/SCSS/" rel="tag">SCSS</a> <a class="tag tag--primary tag--small t-link" href="/tags/grid/" rel="tag">grid</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/05/16/Vue-basic/"
+                    data-tooltip="Vue.js 3 - 起手式"
+                    aria-label="PREVIOUS: Vue.js 3 - 起手式"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/05/sass-1/"
+                    data-tooltip="CSS 預處理器- Sass/SCSS 基本介紹"
+                    aria-label="NEXT: CSS 預處理器- Sass/SCSS 基本介紹"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-</div>
 
-<footer>
-  <div>
-  Copyright &copy; 2021.<a href="/">Let's Code</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
-  </div>
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
+    </span>
 </footer>
 
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/05/16/Vue-basic/"
+                    data-tooltip="Vue.js 3 - 起手式"
+                    aria-label="PREVIOUS: Vue.js 3 - 起手式"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/05/sass-1/"
+                    data-tooltip="CSS 預處理器- Sass/SCSS 基本介紹"
+                    aria-label="NEXT: CSS 預處理器- Sass/SCSS 基本介紹"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-<button class="hamburger hamburger--arrow-r" type="button">
-    <div class="hamburger-box">
-      <div class="hamburger-inner"></div>
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/scss-ClothesStore/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
     </div>
-</button> 
-<div class="menu visibility">
-  <div class="menu-head">
-    <span class="layer">
-      <div class="col">
-        <div class="row for-pic">
-          <div class="profile-pic">
-            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
-          </div>
+
+
+            
         </div>
-        <div class="row for-name">
-          <p>Eva Chan</p>
-          <span class="tagline">Hello, World!</span>
-        </div>
-      </div>
-    </span>
-  </div>
-  <nav class="menu-container">
-  <ul class="menu-items">
-    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
-    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        
+
+
     
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
-        <ul>
-          <li><a href="/guestbook/">Guestbook</a></li>
-        <li><a href="/about/">About</a></li>
-        </ul>
-    </li>
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-link fa-fw"></i>Friends</span>
-        <ul>
-          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
-        </ul>
-    </li>
-  </ul>
-  </nav>
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Eva Chan</h4>
+        
+            <div id="about-card-bio"><p>Front-End Engineer</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
 </div>
 
-<div class="gototop js-top">
-  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
-</div>
-<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
-<script>
-(function () {
-	"use strict";
-	var goToTop = function() {
-		$(".js-gotop").on("click", function(event){
-			event.preventDefault();
-			$("html, body").animate({
-				scrollTop: $("html").offset().top
-			}, 500, "easeInOutExpo");
-			return false;
-		});
-		$(window).scroll(function(){
-			var $win = $(window);
-			if ($win.scrollTop() > 200) {
-				$(".js-top").addClass("active");
-			} else {
-				$(".js-top").removeClass("active");
-			}
-		});
-	};
-	$(function(){
-		goToTop();
-	});
-}());
-</script>
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
+
+<!--SCRIPTS END-->
 
 
-</body>
+    
+
+
+
+
+    </body>
 </html>

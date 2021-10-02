@@ -1,86 +1,339 @@
+
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="theme-color" content=#58b77a>
-  <title>串接API- 天氣預報 | Let&#39;s Code</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Eva Chan">
-  <meta name="keywords" content="">
-  <meta name="description" content="">
-  <script id="hexo-configurations">
-  var CONFIG = {
-    root: '/',
-    theme: 'lx',
-    version: '0.3.9',
-    localsearch:{
-      "enable": false,
-      "trigger": "auto",
-      "top_n_per_article": 1,
-      "unescape": false,
-      "preload": false
-      },
-    path: 'null'
-  };
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Let&#39;s Code">
+    <title>串接API- 天氣預報 - Let&#39;s Code</title>
+    <meta name="author" content="Eva Chan">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"成品\n\n觀察功能需求\n從公開的氣象資料平台取得氣象資料\n建立下拉式選單，選擇地區，並按下按鈕取得氣象資料\n呈現當日天氣狀況(包含氣溫、圖示、描述)\n呈現未來一週的天氣預報(包含日期、星期;氣溫、圖示、描述)\n\n了解要串接的資料open data至中央氣象局-氣象開放資料平台的網站，註冊會員註冊並登入之後，要取得授權碼到中央氣象局開放資料平臺之資料擷取API，查看要取用的資料我的授權碼：CWB-F0145DA5-2539-4333-BAFD-466910C1EECC\n參考資料：https://www.youtube.com/watch?v=QDdn3yrsyCQ[Day 13 - 即時天氣] 建立一個即時天氣 App - 前置準備\n尋找要參考實現畫面呈現的資料畫面主要樣式是參考：Build a Simple Weather App With Vanilla JavaScript\nJS部分1.利用Ajax串接資料\n根據平台提供的url作為取得資料的地方\n利用sucess/error，來查看是否有成功取得資料\n依據console.log()出要串接的資料\n\n\n\n123456789101112131415161718function getCity() &#123;  let url = \"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-F0145DA5-2539-4333-BAFD-466910C1EECC&amp;format=JSON\";  $.ajax(&#123;    type: \"get\",    url: url,    dataType: \"json\",    success: function (data) &#123;      console.log(data);         &#125;)    &#125;,    error: function (err) &#123;      console.log('oh no')    &#125;  &#125;);\n\n2.製作下拉式選單\n當串到想要的資料後，希望能在下拉選單，呈現出各個地區，以供選擇\n因為地區有很多，以迴圈方式來填入資料\ni的長度 data.records.locations[0].location.length\nopt = $(&#39;&lt;option&gt;&lt;/option&gt;&#39;)創立選項標籤\n利用attr,html填入該地區的index，以及地區名稱\n\n\n\n123456789101112131415161718192021222324252627function getCity() &#123;  let url = \"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-F0145DA5-2539-4333-BAFD-466910C1EECC&amp;format=JSON\";  $.ajax(&#123;    type: \"get\",    url: url,    dataType: \"json\",    success: function (data) &#123;      //console.log(data);      let selectCity = $('#selector-list');      for (let i = 0; i &lt; data.records.locations[0].location.length; i++) &#123;        let opt = $('&lt;option&gt;&lt;/option&gt;');        opt.attr(\"data-index\", i);        opt.html(data.records.locations[0].location[i].locationName);        selectCity.append(opt);      &#125;         &#125;,    error: function (err) &#123;      console.log('oh no')    &#125;  &#125;);&#125;;\n\n3.點選(submit)按鈕時要跳出取得今日天氣以及未來一週的天氣\n在sucess:中放入取得今日天氣、週天氣的函式\n在此要宣告selectedCityIndex變數，並取得被選取的city index$(&#39;#selector-list&#39;).get(0).selectedIndex123456789101112131415161718192021222324252627282930313233function getCity() &#123;  let url = \"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-F0145DA5-2539-4333-BAFD-466910C1EECC&amp;format=JSON\";  $.ajax(&#123;    type: \"get\",    url: url,    dataType: \"json\",    success: function (data) &#123;      console.log(data);      let selectCity = $('#selector-list');      for (let i = 0; i &lt; data.records.locations[0].location.length; i++) &#123;        let opt = $('&lt;option&gt;&lt;/option&gt;');        opt.attr(\"data-index\", i);        opt.html(data.records.locations[0].location[i].locationName);        selectCity.append(opt);      &#125;      $('button').click(function (e) &#123;        e.preventDefault();        clear();        let selectedCityIndex = $('#selector-list').get(0).selectedIndex;        getWeather(data, selectedCityIndex);        weekWeather(data, selectedCityIndex);      &#125;)    &#125;,    error: function (err) &#123;      console.log('oh no')    &#125;  &#125;);&#125;;\njQuery獲取Select選擇的Text和Value：\n\n\n\n4.取得今日天氣(getWeather();)\n傳入參數分別為data\\locationIndex:data為串接到的天氣資料,locationIndex，為放入要取的資料中的index\n我們想要取得的氣象資料，分別有地區、溫度(最低溫、最高溫)、天氣描述、icon圖示\nname變數就是要取得資料內的地區名稱\nweather變數就是取得氣象資料\nweatherDescription以及weatherCode分別就是氣象描述以及給予氣象描述的編號\n\n\nlet weatherImg = checkImg(weatherCode);依據天氣描述的分類放入對應圖示\n抓取到所需要的變數資料後，就是將要填入呈現畫面的html標籤以及變數放入\nafter()在該區塊後面在插入想要呈現的其他標籤內容\n\n123456789101112131415161718192021222324252627282930313233343536function getWeather(data, locationIndex) &#123;  //console.log(data, locationIndex)  let name = data.records.locations[0].location[locationIndex].locationName;  let weather = data.records.locations[0].location[locationIndex].weatherElement;  //console.log(name);  //console.log(weather);  // 天氣描述  let weatherDescription = weather[6].time[0].elementValue[0].value;  let weatherCode = weather[6].time[0].elementValue[1].value;  let minTemp = weather[8].time[0].elementValue[0].value;  let maxTemp = weather[12].time[0].elementValue[0].value;  let weatherImg = checkImg(weatherCode);  // 今天日期  // let date = getDate().toUTCString();  console.log(weatherCode);  let li = $('&lt;li&gt;&lt;/li&gt;').appendTo('.cities');  li.addClass(\"city\");  li.html(`  &lt;h2 class=\"city-name\" data-name=\"$&#123;name&#125;,\"&gt;    &lt;span&gt;$&#123;name&#125;&lt;/span&gt;    &lt;sup&gt;Today&lt;/sup&gt;  &lt;/h2&gt;  &lt;div class=\"city-temp\"&gt;$&#123;Math.round(minTemp)&#125;&lt;sup&gt;°C&lt;/sup&gt; ~ $&#123;Math.round(maxTemp)&#125;&lt;sup&gt;°C&lt;/sup&gt;  &lt;/div&gt;  &lt;figure class='weather-icon'&gt;    $&#123;weatherImg&#125;    &lt;figcaption&gt;$&#123;weatherDescription&#125;&lt;/figcaption&gt;  &lt;/figure&gt;`);  $('.cities').after(`&lt;h2 class=\"sec-h2\"&gt;未來一週預報&lt;/h2&gt;`)  $('.cities').append(li);&#125;;\n\n5.根據weather code分類，分配的圖示(checkImg())\n將分類的代碼區分到各個天氣狀況\n依分類代碼下判斷，並回傳要放入的圖示\nweatherTypes.isThunderstorm.includes(weatherData)\n利用includes()取得 weatherTypes中各天氣情形陣列中，是否有符合參數的數值1234567891011121314151617181920212223242526272829303132333435363738function checkImg(code) &#123;  let weatherData = +code;  const weatherTypes = &#123;    isThunderstorm: [15, 16, 17, 18, 21, 22, 33, 34, 35, 36, 41],    isClear: [1],    isCloudyFog: [25, 26, 27, 28],    isCloudy: [2, 3, 4, 5, 6, 7],    isFog: [24],    isPartiallyClearWithRain: [      8, 9, 10, 11, 12,      13, 14, 19, 20, 29, 30,      31, 32, 38, 39,    ],    isSnowing: [23, 37, 42],  &#125;;  // console.log(data)  // console.log(weatherTypes.isPartiallyClearWithRain)  // let s = weatherTypes.isThunderstorm.includes(weatherData);  // console.log(s);  if (weatherTypes.isThunderstorm.includes(weatherData)) &#123;    return `&lt;img class=\"city-icon\" src=\"./img/thunderstorm.png\" alt=\"weather-img\"&gt;`;  &#125; else if (weatherTypes.isClear.includes(weatherData)) &#123;    return `&lt;img class=\"city-icon\" src=\"./img/clear.png\" alt=\"weather-img\"&gt;`;  &#125; else if (weatherTypes.isCloudyFog.includes(weatherData)) &#123;    return `&lt;img class=\"city-icon\" src=\"./img/cloudyfog.png\" alt=\"weather-img\"&gt;`;  &#125; else if (weatherTypes.isCloudy.includes(weatherData)) &#123;    return `&lt;img class=\"city-icon\" src=\"./img/cloud-and-sun.png\" alt=\"weather-img\"&gt;`;  &#125; else if (weatherTypes.isFog.includes(weatherData)) &#123;    return `&lt;img class=\"city-icon\" src=\"./img/fog.png\" alt=\"weather-img\"&gt;`;  &#125; else if (weatherTypes.isPartiallyClearWithRain.includes(weatherData)) &#123;    return `&lt;img class=\"city-icon\" src=\"./img/clearwithrainy.png\" alt=\"weather-img\"&gt;`;  &#125; else &#123; return `&lt;img class=\"city-icon\" src=\"./img/snow.png\" alt=\"weather-img\"&gt;`; &#125;&#125;\n[Day 21 - 即時天氣] 處理天氣圖示以及 useMemo 的使用JavaScript Array 陣列操作方法大全 ( 含 ES6 )includes(weatherData):JavaScript 陣列處理：找東西 - indexOf、$.inArray 與 filter預報因子欄位中文說明表\n\n\n\n\n6.取得未來一週的天氣\n此作法與取的當日天氣有些類似，不過因為要取得未來一週6天的資料，所以須以迴圈的方式來取的並填入資料\nlet i = 1; i &lt; 7; i++從1開始，6天\ntimeIndex= 2 * i是為了抓取一週時間所設置的index\n日期、星期的取得\n以算出tomorrow為目標，並帶入i，就會執行出往後六天的日期\n並從上圖，分別擷取出月份、日期、星期的資料\n\n\n\n\n\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748function weekWeather(data, locationIndex) &#123;  // $('.week-ul').html('');  var weather = data.records.locations[0].location[locationIndex].weatherElement;  for (let i = 1; i &lt; 7; i++) &#123;    let timeIndex = 2 * i;    let weekday = $('&lt;li&gt;&lt;/li&gt;').appendTo('.week-ul');    weekday.addClass('day').attr('id', `day-$&#123;i&#125;`);    let weatherDescription = weather[6].time[timeIndex].elementValue[0].value;    let weatherCode = weather[6].time[timeIndex].elementValue[1].value;    let minTemp = weather[8].time[timeIndex].elementValue[0].value;    let maxTemp = weather[12].time[timeIndex].elementValue[0].value;    let weatherImg = checkImg(weatherCode);    //console.log(weatherDescription);    //////日期、星期的擷取//////    let today = new Date();    let tomorrow = new Date(today);    tomorrow.setDate(tomorrow.getDate() + i);    let weekDay = tomorrow.getDay();    let weekMonth = tomorrow.getMonth()    let date = tomorrow.getDate();    const dayNamesEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];    const monthNamesEn = [      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'    ]    let inweekDay = dayNamesEn[weekDay]    let inweekMonth = monthNamesEn[weekMonth];    let indate = date;    ///////////    weekday.html(`&lt;li class=\"day\"&gt;          &lt;h2 class=\"whichDay\" data-name=\"\"&gt;            &lt;span&gt;$&#123;indate&#125; $&#123;inweekMonth&#125;&lt;/span&gt;            &lt;sup&gt;$&#123;inweekDay&#125;&lt;/sup&gt;          &lt;/h2&gt;          &lt;div class=\"week-temp\"&gt;$&#123;minTemp&#125;&lt;sup&gt;°C&lt;/sup&gt; ~ $&#123;maxTemp&#125;&lt;sup&gt;°C&lt;/sup&gt;          &lt;/div&gt;          &lt;figure class='weather-icon'&gt;            $&#123;weatherImg&#125;            &lt;figcaption&gt;$&#123;weatherDescription&#125;&lt;/figcaption&gt;          &lt;/figure&gt;        &lt;/li&gt;`)    $('.week-ul').append(weekday);  &#125;&#125;\n\n抓取明天日期:How to get tomorrow’s date using JavaScript日期與時間\n7.當文件準備好\n先執行要串接的資料\n於選擇地區時，跳出提醒文字\n\n123456789$(document).ready(function (e) &#123;  getCity();  $('#selector-list').change(function () &#123;    $('.msg').text('別忘了按下SUBMIT');  &#125;)&#125;);\n8.清除資料\n建立在點選submit後，要先執行的步驟，為清除原本頁面的資料12345function clear() &#123;$('.cities').html('');  $('.sec-h2').empty('');  $('.week-ul').html('');  $('.msg').text('');\nJQuery中html、append、appendTo、after、insertAfter\n\n","dateCreated":"2021-02-23T14:42:02+08:00","dateModified":"2021-09-18T13:41:46+08:00","datePublished":"2021-02-23T14:42:02+08:00","description":"","headline":"串接API- 天氣預報","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/","keywords":"Ajax, API"}</script>
+    <meta name="description" content="成品  觀察功能需求 從公開的氣象資料平台取得氣象資料 建立下拉式選單，選擇地區，並按下按鈕取得氣象資料 呈現當日天氣狀況(包含氣溫、圖示、描述) 呈現未來一週的天氣預報(包含日期、星期;氣溫、圖示、描述)  了解要串接的資料open data至中央氣象局-氣象開放資料平台的網站，註冊會員註冊並登入之後，要取得授權碼到中央氣象局開放資料平臺之資料擷取API，查看要取用的資料我的授權碼：CWB-F0">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="串接API- 天氣預報">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:description" content="成品  觀察功能需求 從公開的氣象資料平台取得氣象資料 建立下拉式選單，選擇地區，並按下按鈕取得氣象資料 呈現當日天氣狀況(包含氣溫、圖示、描述) 呈現未來一週的天氣預報(包含日期、星期;氣溫、圖示、描述)  了解要串接的資料open data至中央氣象局-氣象開放資料平台的網站，註冊會員註冊並登入之後，要取得授權碼到中央氣象局開放資料平臺之資料擷取API，查看要取用的資料我的授權碼：CWB-F0">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/odl0KcP.png">
+<meta property="og:image" content="https://i.imgur.com/KoRQyNL.png">
+<meta property="og:image" content="https://i.imgur.com/Kdm159o.png">
+<meta property="og:image" content="https://i.imgur.com/I2QTip1.png">
+<meta property="og:image" content="https://i.imgur.com/QaNMU8d.png">
+<meta property="og:image" content="https://i.imgur.com/xc7bwaP.png">
+<meta property="og:image" content="https://i.imgur.com/SZZSUnh.png">
+<meta property="og:image" content="https://i.imgur.com/pVwq3xe.png">
+<meta property="og:image" content="https://i.imgur.com/qeUH1iw.png">
+<meta property="og:image" content="https://i.imgur.com/xSanS8F.png">
+<meta property="og:image" content="https://i.imgur.com/ZqSmPOy.png">
+<meta property="article:published_time" content="2021-02-23T06:42:02.000Z">
+<meta property="article:modified_time" content="2021-09-18T05:41:46.328Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="Ajax">
+<meta property="article:tag" content="API">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/odl0KcP.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
 
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
-  <style type="text/css">
-    pre,
-    code {
-      font-family: 'Fira Code', monospace;
-    }
-    html {
-      font-family: sans-serif;
-    }
-    body {
-      font-family: sans-serif;
-    }
-    h1, h2, h3, h4, h5, figure {
-      font-family: sans-serif;
-    }
-    .menu-container{
-      font-family: sans-serif;
-    }
-  </style>
+    <!--STYLES END-->
+    
 
-  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
-	<script>
-	$(document).ready(function(){
-	$(".menu-container").jSideMenu({
-	    jSidePosition: "position-right",
-	    jSideSticky: true,
-	    jSideSkin: "greenish",
-	     });
-	}); 
-	</script>
-  
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
-<meta name="generator" content="Hexo 4.2.0"></head>
-<body>
-<div class="single">
+    
 
-<div id="page">
-<div id="lx-aside" style="background-image: url(/images/mountain.jpg)" data-stellar-background-ratio="0.5">
-  <div class="overlay">
-  <div class="page-title">
-    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
-    <span>2021-02-23</span>
-    <h2>串接API- 天氣預報</h2>
-    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/API/" rel="tag">API</a> <i class="fa fa-tag"></i><a class="tag-link" href="/tags/Ajax/" rel="tag">Ajax</a></div>
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Let&#39;s Code
+        </a>
     </div>
-</div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Eva Chan</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/Eva813"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google +"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google +</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://eva813.github.io/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            串接API- 天氣預報
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-02-23T14:42:02+08:00">
+	
+		    Feb 23, 2021
+    	
+    </time>
+    
 </div>
 
-<div id="lx-main-content">
-  <div class="lx-post">
-    <div class="lx-entry padding">
-      <div>
-        <p><a href="https://eva813.github.io/Eva_portfolio/weatherAPI/weatherAPI.html" target="_blank" rel="noopener">成品</a></p>
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p><a href="https://eva813.github.io/Eva_portfolio/weatherAPI/weatherAPI.html" target="_blank" rel="noopener">成品</a></p>
 <p><img src="https://i.imgur.com/odl0KcP.png" alt=""></p>
 <h1 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h1><ul>
 <li>從公開的氣象資料平台取得氣象資料</li>
@@ -167,122 +420,330 @@
 <a href="https://blog.csdn.net/sunpeiyumail/article/details/7665668" target="_blank" rel="noopener">JQuery中html、append、appendTo、after、insertAfter</a></li>
 </ul>
 
-      </div>
+            
+
+
+        </div>
     </div>
-  </div>
-</div>
-<div class="lx-navigation">
-	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2021/02/23/API-youtube/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Next</span>
-						<h3>API-you...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/yellow%E6%8B%B7%E8%B2%9D.jpg)">
-		<div class="overlay"></div>
-		<a class="copy" href="/2021/01/22/js-typingGame/">
-			<div class="display-t">
-				<div class="display-tc">
-					<div>
-						<span>Prev</span>
-						<h3>JS實作- t...</h3>
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/API/" rel="tag">API</a> <a class="tag tag--primary tag--small t-link" href="/tags/Ajax/" rel="tag">Ajax</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/23/API-youtube/"
+                    data-tooltip="API-youtube"
+                    aria-label="PREVIOUS: API-youtube"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/22/js-typingGame/"
+                    data-tooltip="JS實作- typingGame"
+                    aria-label="NEXT: JS實作- typingGame"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-</div>
 
-<footer>
-  <div>
-  Copyright &copy; 2021.<a href="/">Let's Code</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
-  </div>
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
+    </span>
 </footer>
 
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/23/API-youtube/"
+                    data-tooltip="API-youtube"
+                    aria-label="PREVIOUS: API-youtube"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/01/22/js-typingGame/"
+                    data-tooltip="JS實作- typingGame"
+                    aria-label="NEXT: JS實作- typingGame"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
-<button class="hamburger hamburger--arrow-r" type="button">
-    <div class="hamburger-box">
-      <div class="hamburger-inner"></div>
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/02/23/API-weather/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
     </div>
-</button> 
-<div class="menu visibility">
-  <div class="menu-head">
-    <span class="layer">
-      <div class="col">
-        <div class="row for-pic">
-          <div class="profile-pic">
-            <a href="/"><img src="/images/avatar.jpeg" alt="Eva Chan"/></a>
-          </div>
+
+
+            
         </div>
-        <div class="row for-name">
-          <p>Eva Chan</p>
-          <span class="tagline">Hello, World!</span>
-        </div>
-      </div>
-    </span>
-  </div>
-  <nav class="menu-container">
-  <ul class="menu-items">
-    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
-    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        
+
+
     
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
-        <ul>
-          <li><a href="/guestbook/">Guestbook</a></li>
-        <li><a href="/about/">About</a></li>
-        </ul>
-    </li>
-    <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-link fa-fw"></i>Friends</span>
-        <ul>
-          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
-        </ul>
-    </li>
-  </ul>
-  </nav>
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Eva Chan</h4>
+        
+            <div id="about-card-bio"><p>Front-End Engineer</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
 </div>
 
-<div class="gototop js-top">
-  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
-</div>
-<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
-<script>
-(function () {
-	"use strict";
-	var goToTop = function() {
-		$(".js-gotop").on("click", function(event){
-			event.preventDefault();
-			$("html, body").animate({
-				scrollTop: $("html").offset().top
-			}, 500, "easeInOutExpo");
-			return false;
-		});
-		$(window).scroll(function(){
-			var $win = $(window);
-			if ($win.scrollTop() > 200) {
-				$(".js-top").addClass("active");
-			} else {
-				$(".js-top").removeClass("active");
-			}
-		});
-	};
-	$(function(){
-		goToTop();
-	});
-}());
-</script>
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
+
+<!--SCRIPTS END-->
 
 
-</body>
+    
+
+
+
+
+    </body>
 </html>
