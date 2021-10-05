@@ -1,347 +1,44 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Vue.js 3 -  資料雙向綁定 v-model</title><meta name="description" content="Front-end Engineer"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="
+使用v-model來進行資料的「雙向」綁定， v-model 會根據不同的表單類別來更新元素的內容。主要應用在表單類型進行綁定，常見的表單元素像是 &amp;lt;input&amp;gt;、&amp;lt;textarea&amp;gt; 以及 &amp;lt;select&amp;gt; 等。
+v-model 可以與 input 、textarea 綁定  &amp;lt;h3&amp;gt;input&amp;lt;/h3&amp;gt;
+     &amp;lt;input type=&amp;quot;text&amp;quot; class=&amp;quot;form-control&amp;quot; v-model=&amp;quot;name&amp;quot;&amp;gt;
+          {{ name }}
 
-<!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Let&#39;s Code">
-    <title>Vue.js 3 -  資料雙向綁定 v-model - Let&#39;s Code</title>
-    <meta name="author" content="Eva Chan">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"使用v-model來進行資料的「雙向」綁定， v-model 會根據不同的表單類別來更新元素的內容。主要應用在表單類型進行綁定，常見的表單元素像是 &lt;input&gt;、&lt;textarea&gt; 以及 &lt;select&gt; 等。\nv-model 可以與 input 、textarea 綁定123&lt;h3&gt;input&lt;/h3&gt;   &lt;input type=\"text\" class=\"form-control\" v-model=\"name\"&gt;        &#123;&#123; name &#125;&#125;\n123456789Vue.createApp(&#123;  data()&#123;     return &#123;      name: \"小明\"    &#125;  &#125;,  &#125;).mount('#app')\n\n\n\n123&lt;h3&gt;textarea&lt;/h3&gt;          &lt;textarea cols=\"30\" rows=\"3\" class=\"form-control\" v-model=\"text\"&gt;&lt;/textarea&gt;          &#123;&#123; text &#125;&#125;\n123456789Vue.createApp(&#123;  data()&#123;     return &#123;      text: \"一段文字敘述\"    &#125;  &#125;,  &#125;).mount('#app')\n\n\ncheckbox 單選框\ncheckbox與p段落連動\n\n\n在input加入v-model=&quot;checkAnswer&quot;\nP段洛，放入三元運算：用來判斷當checkAnswer為true，顯示’吃飽了’;反之，’還沒’\n透過選單的勾選，來顯示 checkAnswer 是 true \\ false\n\n\n\n1234567 &lt;h3&gt;checkbox 單選框&lt;/h3&gt; &lt;p&gt;小明，你是吃飽沒？&lt;/p&gt; &lt;p&gt;&#123;&#123; checkAnswer ? '吃飽了' : '還沒'&#125;&#125;&lt;/p&gt; &lt;div class=\"form-check\"&gt; &lt;input type=\"checkbox\" class=\"form-check-input\" id=\"check1\" v-model=\"checkAnswer\"&gt;&lt;label class=\"form-check-label\" for=\"check1\"&gt;小明回覆&lt;/label&gt;      &lt;/div&gt;\n\n123456789Vue.createApp(&#123;  data()&#123;     return &#123;      checkAnswer: false,    &#125;  &#125;,  &#125;).mount('#app')\n\n\n\ncheckbox 單選延伸\n\n\n回傳單一的值，相對使用三元運算比較直觀\ncheckAnswer2 是空字串，在 input 綁定後，設定false-value、true-value\n將文字綁入：true-value=&quot;吃飽了&quot; false-value=&quot;還沒&quot;，就可以放入資料欄位上\n\n12345678&lt;h3&gt;checkbox 單選延伸&lt;/h3&gt;    &lt;p&gt;小明，你是吃飽沒？&lt;/p&gt;    &lt;p&gt;&#123;&#123; checkAnswer2 &#125;&#125;&lt;/p&gt;    &lt;div class=\"form-check\"&gt;    &lt;input type=\"checkbox\" v-model=\"checkAnswer2\" true-value=\"吃飽了\" false-value=\"還沒\" class=\"form-check-input\"             id=\"check2\"&gt;    &lt;label class=\"form-check-label\" for=\"check2\"&gt;小明回覆&lt;/label&gt;    &lt;/div&gt;\n123456789Vue.createApp(&#123;  data()&#123;     return &#123;      checkAnswer2: '',    &#125;  &#125;,  &#125;).mount('#app')\n\n\n\ncheckbox 複選框\n資料格式為陣列\n覆選框的input裡面要有value\n當綁定v-model，於畫面點選該項目時，會將 input 中的 value，放入的陣列中\n最後將資料渲染於畫面1234567891011121314&lt;h3&gt;checkbox 複選框&lt;/h3&gt;&lt;p&gt;你還要吃什麼？&lt;/p&gt;&lt;p&gt;&#123;&#123; checkAnswer3.join('') &#125;&#125;&lt;/p&gt;&lt;div class=\"form-check\"&gt;    &lt;input type=\"checkbox\" class=\"form-check-input\" id=\"check3\" value=\"蛋餅\" v-model=\"checkAnswer3\"&gt;    &lt;label class=\"form-check-label\" for=\"check3\"&gt;蛋餅&lt;/label&gt;         &lt;/div&gt;&lt;div class=\"form-check\"&gt;     &lt;input type=\"checkbox\" class=\"form-check-input\" id=\"check4\" value=\"蘿蔔糕\" v-model=\"checkAnswer3\"&gt;     &lt;label class=\"form-check-label\" for=\"check4\"&gt;蘿蔔糕&lt;/label&gt;&lt;/div&gt; &lt;div class=\"form-check\"&gt;   &lt;input type=\"checkbox\" class=\"form-check-input\" id=\"check5\" value=\"豆漿\" v-model=\"checkAnswer3\"&gt;   &lt;label class=\"form-check-label\" for=\"check5\"&gt;豆漿&lt;/label&gt;  &lt;/div&gt;\n123456789Vue.createApp(&#123;  data()&#123;     return &#123;      checkAnswer3: [],    &#125;  &#125;,  &#125;).mount('#app')\n\n\n\n\n\n\nv-model 修飾符修飾符為畫面上，v-model的資料和實際data中的資料在綁定之間，額外處理的小方法。\n\n延遲 Lazy\n\n\n輸入文字後，要點擊外面或是按下enter，才會出現\n綁定到html的change事件：當完成輸入框的事件之後，才會綁定到資料集1234&lt;h3&gt;修飾符&lt;/h3&gt;&lt;h4 class=\"mt-3\"&gt;延遲 Lazy&lt;/h4&gt;  &#123;&#123; lazyMsg &#125;&#125;&lt;input type=\"text\" class=\"form-control\" v-model.lazy=\"lazyMsg\"&gt;\n\n\n純數值 Number需要用戶輸入數值，可先將type改為number,並加入修飾符\n\n&lt;input type=&quot;number&quot;&gt;:輸入框無法輸入文字，只能輸入數字，但型別依然是string\n\n123&lt;h4 class=\"mt-3\"&gt;純數值 Number&lt;/h4&gt;  &#123;&#123; numberMsg &#125;&#125;&#123;&#123; typeof numberMsg &#125;&#125;&lt;input type=\"number\" class=\"form-control\" v-model=\"numberMsg\"&gt;\n\n\n\n要確保輸入的內容為純數字型別：要加修飾符\n\n123&lt;h4 class=\"mt-3\"&gt;純數值 Number&lt;/h4&gt;    &#123;&#123; numberMsg &#125;&#125;&#123;&#123; typeof numberMsg &#125;&#125;&lt;input type=\"number\" class=\"form-control\" v-model.number=\"numberMsg\"&gt;\n\ntrim將資料內容的前後空白鍵，刪除\n\n應用於要輸入e-mail帳號，避免用戶不小心在前後加入空白，而造成資料錯誤123&lt;h4 class=\"mt-3\"&gt;修剪 Trim&lt;/h4&gt;       這是一段&#123;&#123; trimMsg &#125;&#125;緊黏的文字&lt;input type=\"text\" class=\"form-control\" v-model.trim=\"trimMsg\"&gt;\n\n\n參考資料：重新認識 Vue.js | Kuro Hsu\n","dateCreated":"2021-05-17T16:16:22+08:00","dateModified":"2021-09-19T14:56:29+08:00","datePublished":"2021-05-17T16:16:22+08:00","description":"","headline":"Vue.js 3 -  資料雙向綁定 v-model","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/","keywords":"Vue.js"}</script>
-    <meta name="description" content="使用v-model來進行資料的「雙向」綁定， v-model 會根據不同的表單類別來更新元素的內容。主要應用在表單類型進行綁定，常見的表單元素像是 &lt;input&gt;、&lt;textarea&gt; 以及 &lt;select&gt; 等。 v-model 可以與 input 、textarea 綁定123&lt;h3&gt;input&lt;&#x2F;h3&gt;   &lt;input ty">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="Vue.js 3 -  資料雙向綁定 v-model">
-<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/index.html">
-<meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="使用v-model來進行資料的「雙向」綁定， v-model 會根據不同的表單類別來更新元素的內容。主要應用在表單類型進行綁定，常見的表單元素像是 &lt;input&gt;、&lt;textarea&gt; 以及 &lt;select&gt; 等。 v-model 可以與 input 、textarea 綁定123&lt;h3&gt;input&lt;&#x2F;h3&gt;   &lt;input ty">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/fuPfWXo.png">
-<meta property="og:image" content="https://i.imgur.com/Vyon4w6.png">
-<meta property="og:image" content="https://i.imgur.com/T7AMqwY.png">
-<meta property="og:image" content="https://i.imgur.com/fxYLTcU.png">
-<meta property="og:image" content="https://i.imgur.com/wBR8ESD.png">
-<meta property="og:image" content="https://i.imgur.com/cRDgctR.gif">
-<meta property="og:image" content="https://i.imgur.com/x4aeut8.png">
-<meta property="og:image" content="https://i.imgur.com/qvyj7dH.png">
-<meta property="og:image" content="https://i.imgur.com/V6RUoEF.png">
-<meta property="og:image" content="https://i.imgur.com/1Jp0XWl.png">
-<meta property="og:image" content="https://i.imgur.com/48WNFq2.png">
-<meta property="og:image" content="https://i.imgur.com/ANESock.png">
-<meta property="og:image" content="https://i.imgur.com/SCJddsn.png">
-<meta property="article:published_time" content="2021-05-17T08:16:22.000Z">
-<meta property="article:modified_time" content="2021-09-19T06:56:29.230Z">
-<meta property="article:author" content="Eva Chan">
-<meta property="article:tag" content="Vue.js">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/fuPfWXo.png">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
+Vue.createApp({
 
-    <!--STYLES END-->
-    
+  data(){
+     return {
+      name: .."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Vue.js 3 -  資料雙向綁定 v-model</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#v-model-可以與-input-、textarea-綁定"><span class="toc-text">v-model 可以與 input 、textarea 綁定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#checkbox-單選框"><span class="toc-text">checkbox 單選框</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#checkbox-複選框"><span class="toc-text">checkbox 複選框</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#純數值-Number"><span class="toc-text">純數值 Number</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#trim"><span class="toc-text">trim</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Vue"><i class="tag post-item-tag">Vue</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Vue.js 3 -  資料雙向綁定 v-model</h1><time class="has-text-grey" datetime="2021-05-17T08:16:22.000Z">2021-05-17</time><article class="mt-2 post-content"><p><img src="https://i.imgur.com/NBBY8vo.png" alt=""></p>
+<p>使用<code>v-model</code>來進行資料的「雙向」綁定， v-model 會根據不同的表單類別來更新元素的內容。<br>主要應用在表單類型進行綁定，常見的表單元素像是 <code>&lt;input&gt;</code>、<code>&lt;textarea&gt;</code> 以及 <code>&lt;select&gt;</code> 等。</p>
+<h2 id="v-model-可以與-input-、textarea-綁定"><a href="#v-model-可以與-input-、textarea-綁定" class="headerlink" title="v-model 可以與 input 、textarea 綁定"></a>v-model 可以與 input 、textarea 綁定</h2><pre><code class="html">  &lt;h3&gt;input&lt;/h3&gt;
+     &lt;input type=&quot;text&quot; class=&quot;form-control&quot; v-model=&quot;name&quot;&gt;
+          {{ name }}
+</code></pre>
+<pre><code class="javascript">Vue.createApp({
 
-    
+  data(){
+     return {
+      name: &quot;小明&quot;
+    }
+  },
 
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
-
-
-    
-        
-            
-        
-    
-
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/"
-            aria-label=""
-        >
-            Let&#39;s Code
-        </a>
-    </div>
-    
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Open the link: /#about"
-            >
-        
-        
-            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-        </a>
-    
-</header>
-
-            <!-- Define author's picture -->
-
-
-
-        
-    
-
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a
-                    href="/#about"
-                    aria-label="Read more about the author"
-                >
-                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">Eva Chan</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/"
-                            
-                            rel="noopener"
-                            title="Home"
-                        >
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-categories"
-                            
-                            rel="noopener"
-                            title="Categories"
-                        >
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-tags"
-                            
-                            rel="noopener"
-                            title="Tags"
-                        >
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-archives"
-                            
-                            rel="noopener"
-                            title="Archives"
-                        >
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link open-algolia-search"
-                            href="#search"
-                            
-                            rel="noopener"
-                            title="Search"
-                        >
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="#about"
-                            
-                            rel="noopener"
-                            title="About"
-                        >
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/Eva813"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://facebook.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Facebook"
-                        >
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://plus.google.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Google +"
-                        >
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google +</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://www.linkedin.com/profile/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="LinkedIn"
-                        >
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://eva813.github.io/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="RSS"
-                        >
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
-
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            Vue.js 3 -  資料雙向綁定 v-model
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2021-05-17T16:16:22+08:00">
-	
-		    May 17, 2021
-    	
-    </time>
-    
-</div>
-
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <p>使用<code>v-model</code>來進行資料的「雙向」綁定， v-model 會根據不同的表單類別來更新元素的內容。<br>主要應用在表單類型進行綁定，常見的表單元素像是 <code>&lt;input&gt;</code>、<code>&lt;textarea&gt;</code> 以及 <code>&lt;select&gt;</code> 等。</p>
-<h2 id="v-model-可以與-input-、textarea-綁定"><a href="#v-model-可以與-input-、textarea-綁定" class="headerlink" title="v-model 可以與 input 、textarea 綁定"></a>v-model 可以與 input 、textarea 綁定</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>input<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model</span>=<span class="string">"name"</span>&gt;</span></span><br><span class="line">        &#123;&#123; name &#125;&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      name: <span class="string">"小明"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
-
+}).mount(&#39;#app&#39;)</code></pre>
 <p><img src="https://i.imgur.com/fuPfWXo.png" alt=""></p>
 <p><img src="https://i.imgur.com/Vyon4w6.png" alt=""></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>textarea<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">cols</span>=<span class="string">"30"</span> <span class="attr">rows</span>=<span class="string">"3"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model</span>=<span class="string">"text"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">          &#123;&#123; text &#125;&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      text: <span class="string">"一段文字敘述"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<pre><code class="html">&lt;h3&gt;textarea&lt;/h3&gt;
+          &lt;textarea cols=&quot;30&quot; rows=&quot;3&quot; class=&quot;form-control&quot; v-model=&quot;text&quot;&gt;&lt;/textarea&gt;
+          {{ text }}</code></pre>
+<pre><code class="javascript">Vue.createApp({
+
+  data(){
+     return {
+      text: &quot;一段文字敘述&quot;
+    }
+  },
+
+}).mount(&#39;#app&#39;)</code></pre>
 <p><img src="https://i.imgur.com/T7AMqwY.png" alt=""></p>
 <p><img src="https://i.imgur.com/fxYLTcU.png" alt=""></p>
 <h2 id="checkbox-單選框"><a href="#checkbox-單選框" class="headerlink" title="checkbox 單選框"></a>checkbox 單選框</h2><ol>
@@ -354,9 +51,22 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">h3</span>&gt;</span>checkbox 單選框<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">p</span>&gt;</span>小明，你是吃飽沒？<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; checkAnswer ? '吃飽了' : '還沒'&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span> <span class="attr">id</span>=<span class="string">"check1"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check1"</span>&gt;</span>小明回覆<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">     &lt;h3&gt;checkbox 單選框&lt;/h3&gt;
+     &lt;p&gt;小明，你是吃飽沒？&lt;/p&gt;
+     &lt;p&gt;{{ checkAnswer ? '吃飽了' : '還沒'}}&lt;/p&gt;
+     &lt;div class=&quot;form-check&quot;&gt;
+     &lt;input type=&quot;checkbox&quot; class=&quot;form-check-input&quot; id=&quot;check1&quot; v-model=&quot;checkAnswer&quot;&gt;
+    &lt;label class=&quot;form-check-label&quot; for=&quot;check1&quot;&gt;小明回覆&lt;/label&gt;
+          &lt;/div&gt;</code></pre>
+<pre><code class="javascript">Vue.createApp({
 
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      checkAnswer: <span class="literal">false</span>,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+  data(){
+     return {
+      checkAnswer: false,
+    }
+  },
+
+}).mount(&#39;#app&#39;)</code></pre>
 <p><img src="https://i.imgur.com/wBR8ESD.png" alt=""></p>
 <p><img src="https://i.imgur.com/cRDgctR.gif" alt=""></p>
 <ol start="2">
@@ -367,375 +77,90 @@
 <li><code>checkAnswer2</code> 是空字串，在 input 綁定後，設定false-value、true-value</li>
 <li>將文字綁入：<code>true-value=&quot;吃飽了&quot; false-value=&quot;還沒&quot;</code>，就可以放入資料欄位上</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>checkbox 單選延伸<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>小明，你是吃飽沒？<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; checkAnswer2 &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer2"</span> <span class="attr">true-value</span>=<span class="string">"吃飽了"</span> <span class="attr">false-value</span>=<span class="string">"還沒"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">id</span>=<span class="string">"check2"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check2"</span>&gt;</span>小明回覆<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      checkAnswer2: <span class="string">''</span>,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<pre><code class="html"> &lt;h3&gt;checkbox 單選延伸&lt;/h3&gt;
+     &lt;p&gt;小明，你是吃飽沒？&lt;/p&gt;
+     &lt;p&gt;{{ checkAnswer2 }}&lt;/p&gt;
+     &lt;div class=&quot;form-check&quot;&gt;
+     &lt;input type=&quot;checkbox&quot; v-model=&quot;checkAnswer2&quot; true-value=&quot;吃飽了&quot; false-value=&quot;還沒&quot; class=&quot;form-check-input&quot;
+              id=&quot;check2&quot;&gt;
+     &lt;label class=&quot;form-check-label&quot; for=&quot;check2&quot;&gt;小明回覆&lt;/label&gt;
+     &lt;/div&gt;</code></pre>
+<pre><code class="javascript">Vue.createApp({
 
+  data(){
+     return {
+      checkAnswer2: &#39;&#39;,
+    }
+  },
+
+}).mount(&#39;#app&#39;)</code></pre>
 <p><img src="https://i.imgur.com/x4aeut8.png" alt=""></p>
 <p><img src="https://i.imgur.com/qvyj7dH.png" alt=""></p>
 <h2 id="checkbox-複選框"><a href="#checkbox-複選框" class="headerlink" title="checkbox 複選框"></a>checkbox 複選框</h2><ul>
-<li>資料格式為陣列</li>
-<li>覆選框的input裡面要有value</li>
-<li>當綁定v-model，於畫面點選該項目時，會將 input 中的 value，放入的陣列中<ul>
-<li>最後將資料渲染於畫面<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>checkbox 複選框<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>你還要吃什麼？<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; checkAnswer3.join('') &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span> <span class="attr">id</span>=<span class="string">"check3"</span> <span class="attr">value</span>=<span class="string">"蛋餅"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer3"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check3"</span>&gt;</span>蛋餅<span class="tag">&lt;/<span class="name">label</span>&gt;</span>         <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span> <span class="attr">id</span>=<span class="string">"check4"</span> <span class="attr">value</span>=<span class="string">"蘿蔔糕"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer3"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check4"</span>&gt;</span>蘿蔔糕<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-check"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">class</span>=<span class="string">"form-check-input"</span> <span class="attr">id</span>=<span class="string">"check5"</span> <span class="attr">value</span>=<span class="string">"豆漿"</span> <span class="attr">v-model</span>=<span class="string">"checkAnswer3"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-check-label"</span> <span class="attr">for</span>=<span class="string">"check5"</span>&gt;</span>豆漿<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line"></span><br><span class="line">  data()&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      checkAnswer3: [],</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
-
+<li><p>資料格式為陣列</p>
 </li>
-</ul>
+<li><p>覆選框的input裡面要有value</p>
 </li>
-</ul>
-<p><img src="https://i.imgur.com/V6RUoEF.png" alt=""></p>
-<h2 id="v-model-修飾符"><a href="#v-model-修飾符" class="headerlink" title="v-model 修飾符"></a>v-model 修飾符</h2><p>修飾符為畫面上，v-model的資料和實際data中的資料在綁定之間，額外處理的小方法。</p>
-<ol>
-<li>延遲 Lazy</li>
-</ol>
+<li><p>當綁定v-model，於畫面點選該項目時，會將 input 中的 value，放入的陣列中</p>
 <ul>
-<li>輸入文字後，要點擊外面或是按下enter，才會出現</li>
-<li>綁定到html的change事件：當完成輸入框的事件之後，才會綁定到資料集<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>修飾符<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>延遲 Lazy<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">  &#123;&#123; lazyMsg &#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model.lazy</span>=<span class="string">"lazyMsg"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/1Jp0XWl.png" alt=""></li>
+<li>最後將資料渲染於畫面<pre><code class="html">&lt;h3&gt;checkbox 複選框&lt;/h3&gt;
+&lt;p&gt;你還要吃什麼？&lt;/p&gt;
+&lt;p&gt;{{ checkAnswer3.join('') }}&lt;/p&gt;
+&lt;div class=&quot;form-check&quot;&gt;
+   &lt;input type=&quot;checkbox&quot; class=&quot;form-check-input&quot; id=&quot;check3&quot; value=&quot;蛋餅&quot; v-model=&quot;checkAnswer3&quot;&gt;
+   &lt;label class=&quot;form-check-label&quot; for=&quot;check3&quot;&gt;蛋餅&lt;/label&gt;         &lt;/div&gt;
+&lt;div class=&quot;form-check&quot;&gt;
+    &lt;input type=&quot;checkbox&quot; class=&quot;form-check-input&quot; id=&quot;check4&quot; value=&quot;蘿蔔糕&quot; v-model=&quot;checkAnswer3&quot;&gt;
+    &lt;label class=&quot;form-check-label&quot; for=&quot;check4&quot;&gt;蘿蔔糕&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class=&quot;form-check&quot;&gt;
+  &lt;input type=&quot;checkbox&quot; class=&quot;form-check-input&quot; id=&quot;check5&quot; value=&quot;豆漿&quot; v-model=&quot;checkAnswer3&quot;&gt;
+  &lt;label class=&quot;form-check-label&quot; for=&quot;check5&quot;&gt;豆漿&lt;/label&gt;
+ &lt;/div&gt;</code></pre>
+<pre><code class="javascript">Vue.createApp({
+</code></pre>
+</li>
 </ul>
+<p>data(){<br>   return {</p>
+<pre><code>checkAnswer3: [],</code></pre><p>  }<br>},</p>
+</li>
+</ul>
+<p>}).mount(‘#app’)</p>
+<pre><code>
+![](https://i.imgur.com/V6RUoEF.png)
+
+
+## v-model 修飾符
+修飾符為畫面上，v-model的資料和實際data中的資料在綁定之間，額外處理的小方法。
+1. 延遲 Lazy
+* 輸入文字後，要點擊外面或是按下enter，才會出現
+* 綁定到html的change事件：當完成輸入框的事件之後，才會綁定到資料集
+```html
+   &lt;h3&gt;修飾符&lt;/h3&gt;
+   &lt;h4 class=&quot;mt-3&quot;&gt;延遲 Lazy&lt;/h4&gt;
+     {{ lazyMsg }}
+   &lt;input type=&quot;text&quot; class=&quot;form-control&quot; v-model.lazy=&quot;lazyMsg&quot;&gt;</code></pre><p><img src="https://i.imgur.com/1Jp0XWl.png" alt=""></p>
 <h2 id="純數值-Number"><a href="#純數值-Number" class="headerlink" title="純數值 Number"></a>純數值 Number</h2><p>需要用戶輸入數值，可先將type改為number,並加入修飾符</p>
 <ul>
 <li><code>&lt;input type=&quot;number&quot;&gt;</code>:輸入框無法輸入文字，只能輸入數字，但型別依然是string</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>純數值 Number<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">  &#123;&#123; numberMsg &#125;&#125;&#123;&#123; typeof numberMsg &#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"number"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model</span>=<span class="string">"numberMsg"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="html">   &lt;h4 class=&quot;mt-3&quot;&gt;純數值 Number&lt;/h4&gt;
+     {{ numberMsg }}{{ typeof numberMsg }}
+   &lt;input type=&quot;number&quot; class=&quot;form-control&quot; v-model=&quot;numberMsg&quot;&gt;</code></pre>
 <p><img src="https://i.imgur.com/48WNFq2.png" alt=""></p>
 <ul>
 <li>要確保輸入的內容為純數字型別：要加修飾符</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>純數值 Number<span class="tag">&lt;/<span class="name">h4</span>&gt;</span> </span><br><span class="line">   &#123;&#123; numberMsg &#125;&#125;&#123;&#123; typeof numberMsg &#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"number"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model.number</span>=<span class="string">"numberMsg"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">   &lt;h4 class=&quot;mt-3&quot;&gt;純數值 Number&lt;/h4&gt; 
+      {{ numberMsg }}{{ typeof numberMsg }}
+   &lt;input type=&quot;number&quot; class=&quot;form-control&quot; v-model.number=&quot;numberMsg&quot;&gt;</code></pre>
 <p><img src="https://i.imgur.com/ANESock.png" alt=""></p>
 <h2 id="trim"><a href="#trim" class="headerlink" title="trim"></a>trim</h2><p>將資料內容的前後空白鍵，刪除</p>
 <ul>
-<li>應用於要輸入e-mail帳號，避免用戶不小心在前後加入空白，而造成資料錯誤<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"mt-3"</span>&gt;</span>修剪 Trim<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">       這是一段&#123;&#123; trimMsg &#125;&#125;緊黏的文字</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">v-model.trim</span>=<span class="string">"trimMsg"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<li>應用於要輸入e-mail帳號，避免用戶不小心在前後加入空白，而造成資料錯誤<pre><code class="html"> &lt;h4 class=&quot;mt-3&quot;&gt;修剪 Trim&lt;/h4&gt;
+        這是一段{{ trimMsg }}緊黏的文字
+ &lt;input type=&quot;text&quot; class=&quot;form-control&quot; v-model.trim=&quot;trimMsg&quot;&gt;</code></pre>
 <img src="https://i.imgur.com/SCJddsn.png" alt=""></li>
 </ul>
 <p>參考資料：<br><a href="https://book.vue.tw/CH1/1-4-directive.html" target="_blank" rel="noopener">重新認識 Vue.js | Kuro Hsu</a></p>
-
-            
-
-
-        </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/Vue-js/" rel="tag">Vue.js</a>
-
-            </div>
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/05/17/Vue-v-for/"
-                    data-tooltip="Vue.js 3 -  多筆資料渲染 v-for"
-                    aria-label="PREVIOUS: Vue.js 3 -  多筆資料渲染 v-for"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/05/16/Vue-bind2/"
-                    data-tooltip="Vue.js 3 - 綁定方式多變化"
-                    aria-label="NEXT: Vue.js 3 - 綁定方式多變化"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-        
-        
-            
-        
-    </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
-    </span>
-</footer>
-
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/05/17/Vue-v-for/"
-                    data-tooltip="Vue.js 3 -  多筆資料渲染 v-for"
-                    aria-label="PREVIOUS: Vue.js 3 -  多筆資料渲染 v-for"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/05/16/Vue-bind2/"
-                    data-tooltip="Vue.js 3 - 綁定方式多變化"
-                    aria-label="NEXT: Vue.js 3 - 綁定方式多變化"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"
-                        aria-label="Share on Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"
-                        aria-label="Share on Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/05/17/Vue-v-model/"
-                        aria-label="Share on Google+"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
-
-
-            
-        </div>
-        
-
-
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">Eva Chan</h4>
-        
-            <div id="about-card-bio"><p>Front-End Engineer</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
-
-<!--SCRIPTS END-->
-
-
-    
-
-
-
-
-    </body>
-</html>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2021/05/17/Vue-v-for/" title="Vue.js 3 -  多筆資料渲染 v-for"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">Previous: Vue.js 3 -  多筆資料渲染 v-for</span></a><a class="button is-default" href="/2021/05/16/Vue-bind2/" title="Vue.js 3 - 綁定方式多變化"><span class="has-text-weight-semibold">Next: Vue.js 3 - 綁定方式多變化</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

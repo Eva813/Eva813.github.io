@@ -1,398 +1,60 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>CSS練習- omnifood 餐廳網頁</title><meta name="description" content="Front-end Engineer"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="
+介紹成品使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。
 
-<!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Let&#39;s Code">
-    <title>CSS練習- omnifood 餐廳網頁 - Let&#39;s Code</title>
-    <meta name="author" content="Eva Chan">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"介紹成品使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。\n\n首先，文字字型的選擇先用Normalize.css，下載並連結字型：使用google font &gt; lato\ntext-rendering告訴渲染引擎工作時如何優化顯示文字\n1234567891011121314151617181920212223*&#123;  margin: 0;  padding: 0;  box-sizing: border-box;&#125;html&#123;  background-color: #fff;  color: #555;  font-family: 'Lato', 'Arial',sans-serif;  font-weight: 300;  font-size: 20px;  text-rendering: optimizeLegibility;  /* 繪制文本時易讀性優先，會啟用字距調整和連字 */&#125;/* content will be in rows */.row&#123;  /* 只有這邊是用px，之後的margin等設定都會用% */ max-width: 1140px;  margin:0 auto;/* 讓左右的距離能夠平均分散，使其置中 */&#125;\nhead區塊\n表頭的製作1234567&lt;div class&#x3D;&quot;hero-text-box&quot;&gt;     &lt;h1&gt;Goodbye junk food. Hello super healthy meals.     &lt;&#x2F;h1&gt;     &lt;a href&#x3D;&quot;#&quot;&gt;I’m hungry&lt;&#x2F;a&gt;     &lt;a href&#x3D;&quot;#&quot;&gt;Show me more&lt;&#x2F;a&gt;   &lt;&#x2F;div&gt;\n\n\n\n利用background-image插入圖片後，往上滑會出現上方的空白處\n是因為h1的margin（因設置normalize.css）\n\n\n此時照片也還沒有填滿、置中\n\n\n調整背景圖位置\n讓h1文字置中透過使用絕對定位，讓文字可以置中\n123456.hero-text-box&#123;  position: absolute;   width: 1140px;  top: 50%;  left:&#125;\n\n\ntransform: translate(-50%,-50%);\n\n\n文字放在圖片上使得看不清楚\n將背景圖調成深色12background:linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,.5)) center center,   url(./Omnifood\\ Contents/hero.jpg) no-repeat center center/cover ;\n\n\nh1文字區的細節調整\n調整字的顏色、大小\n字母、單字之間的間距12345678910.hero-text-box h1&#123;margin: 0;color: #fff;/* 這裏的字體大小用百分比，是為了相對於一開始設定font-size: 20px;，以他的百分比來計算 */font-size: 240%;font-weight: 400;letter-spacing: 1px; text-transform: uppercase; /*將字母改為大寫 */ word-spacing: 3px;&#125;\n\n\n\n文字區下面的按鈕html結構是使用&lt;a&gt;來製作連結的點選將型態改為inline-block\n12&lt;a class=\"btn btn-full\" href=\"#\"&gt;I’m hungry&lt;/a&gt;&lt;a class=\"btn btn-ghost \" href=\"#\"&gt;Show me more&lt;/a&gt;\n\n希望連結與被點選的樣式都是一樣\n顏色是到：UI flat color tool ; 要找尋顏色深淺 0 to 255\n\n1234567891011121314151617181920.btn:link,.btn:visited&#123;  display: inline-block;  text-decoration: none;padding: 10px 15px;border-radius: 200px;&#125;.btn-full:link,.btn-full:visited&#123;  /* UI flat color tool */  background-color: #e67e22;  /* border: 1px solid #e67e22 ; */  color: #fff;&#125;.btn-ghost:link,.btn-ghost:visited&#123;  border: 1px solid #e67e22 ;  color:#e67e22;&#125;\n\n按鈕的觸碰與點選:active 滑鼠按下的樣式; :focus 鍵盤聚焦的樣式 ;:hover 滑鼠滑過\n\n注意transition此屬性是放在要被摸的元素裡面，不是hover那裡How TO - Transition on Hover\n\n.btn:link,.btn:visited{}\n12345678910111213141516171819  /* transition 放在這裡！ */ transition: background-color 0.5s,border 0.5s,color 0.5s;&#125;.btn:hover,.btn:active&#123; background-color: #cf6d17;&#125;.btn-full:hover,.btn-full:active&#123;   border: 1px solid #cf6d17 ;  color: #fff;&#125;.btn-ghost:hover,.btn-ghost:active&#123;  border: 1px solid #cf6d17 ;  color:#fff;&#125;\n\n表頭導覽列的製作金魚都能懂的這個網頁畫面怎麼切 : 導覽列\n\nheader裡面的nav，html架構：\n1234567891011121314&lt;nav&gt;  &lt;div class&#x3D;&quot;row&quot;&gt;    &lt;img src&#x3D;&quot;.&#x2F;Omnifood Contents&#x2F;logo-white.png&quot; alt&#x3D;&quot;Omnifood logo&quot; class&#x3D;&quot;logo&quot;&gt;    &lt;ul class&#x3D;&quot;main-nav&quot;&gt;      &lt;li&gt; &lt;a href&#x3D;&quot;#&quot;&gt;Food delivery&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;      &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;How it works&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;      &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;Our cities&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;      &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;Sign up&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;    &lt;&#x2F;ul&gt;  &lt;&#x2F;div&gt;&lt;&#x2F;nav&gt;\n\n\nlogo\n12345header .logo&#123;height: 100px;width: auto;float: left;  &#125;\n\n\n\nnav\n讓nav區靠右\n為了讓四個連結區塊可以橫向排列，設定inline-box\n針對字型、顏色等做調整\n並於連結下方增加線的動畫效果123456789101112131415161718192021222324252627282930313233343536373839.main-nav&#123;float: right;margin-top: 55px;&#125;.main-nav li&#123;display: inline-block;margin-left: 20px;&#125;.main-nav li a:link,.main-nav li a:visited&#123;text-decoration: none;font-weight: 400;font-size: 90%; /*想要18px，18px / 20px=0.9*/color: #fff;text-transform: uppercase;position: relative;padding-bottom: 5px;&#125;.main-nav a::after&#123;  content: '';  width: 100%;  position: absolute;  border: solid .5px rgba(230, 126, 34,.6);  left: 0;  bottom:0 ;  margin-top: 5px;  transform: scale(0);  transition: 0.5s;  &#125;.main-nav li:hover a::after,.main-nav li:active a::after&#123;transform: scale(1);&#125;\n\n\n\n特色區塊\n\n— 用html符號 –&gt; &amp;mdash;      更多…HTML Entity List\nfeatures這部分，使用section標籤來包覆，而其中的不同區塊則使用.row來包覆內容(並用來固定寬度)\n這裏的html運用grid來配置欄位\n\n123456789101112131415161718192021222324252627&lt;section class=\"section-features\"&gt;    &lt;div class=\"row\"&gt;      &lt;h2&gt;Get food fast &amp;mdash; not fast food&lt;/h2&gt;      &lt;p class=\"long-copy\"&gt;Hello, we’re Omnifood, your new premium food delivery service. We know you’re always busy. we promise!&lt;/p&gt;    &lt;/div&gt;&lt;div class=\"row\"&gt;      &lt;!-- 第二區塊：features，這裏要開始應用grid --&gt;      &lt;div class=\"col span-1-of-4\"&gt;        &lt;h3&gt;Up to 365 days/year&lt;/h3&gt;        &lt;p&gt;Never cook again! We really mean that. Our subscript &lt;/p&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-4\"&gt;        &lt;h3&gt;Ready in 20 minutes&lt;/h3&gt;        &lt;p&gt;You're only twenty minutes away from your delicious ant chefs in each town to ensure that you're 100% happy.        &lt;/p&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-4\"&gt;        &lt;h3&gt;100% organic&lt;/h3&gt;        &lt;p&gt;All our vegetables are fresh, organic and local. Animals are raised without added hormones or antibiotbetter!&lt;/p&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-4\"&gt;        &lt;h3&gt;Order anything&lt;/h3&gt;        &lt;p&gt;We don't limit your creativity, which means you cacious meals. It's up to you!&lt;/p&gt;      &lt;/div&gt;    &lt;/div&gt;  &lt;/section&gt;\n\n\n\nicon使用ionicon:ionicon\n1&lt;script src=\"https://unpkg.com/ionicons@5.2.3/dist/ionicons.js\"&gt;&lt;/script&gt;`\n\n讓他斷行排列使用block\n字的大小適用比例設置\n\n12345678.section-features .icon-big&#123;display: block;  font-size: 350%;  color: #e67e22;  margin-bottom: 10px;  font-weight: 100;&#125;\n\n\nh2的文字與p123456789.section-features .long-copy&#123;width: 70%;/* 總寬100%,左邊設置15%，就會平均 */margin-left: 15%;/* line-height: 1.3; */line-height: 145%; /*120-145%最合適 *//* word-spacing: 1px; */&#125;\n\n\n欄位col的處理（class=”items”）12345678910111213141516.section-features h3&#123;  font-weight: 300;  font-size: 110%;  text-transform: uppercase;    margin-bottom: 15px;&#125;.section-features .items &#123;  padding:1% ;&#125;.section-features .items p&#123;  line-height: 145%;  font-size:90% ;&#125;\n\n\n\n食物照片區\n\n這裏的內容不適用.row來包覆，因為我們希望它的寬度可以站滿橫向的視窗\n\nhtml結構123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354&lt;section class=\"section-maels\"&gt;  &lt;!-- 要製作2列各4格的食物照片，這裏使用ul,li的方式排列 --&gt;  &lt;ul class=\"meals-showcase\"&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/1.jpg\" alt=\"Korean bibimbap with egg and vegetables\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/2.jpg\" alt=\"Simple italian pizza with cherry tomatoes\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/3.jpg\" alt=\"Chicken breast steak with vegetables\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/4.jpg\" alt=\"Autumn pumpkin soup\"&gt;      &lt;/figure&gt;    &lt;/li&gt;  &lt;/ul&gt;  &lt;ul class=\"meals-showcase\"&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/5.jpg\" alt=\"Paleo beef steak with vegetables\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/6.jpg\" alt=\"Healthy baguette with egg and vegetables\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/7.jpg\" alt=\"Burger with cheddar and bacon\"&gt;      &lt;/figure&gt;    &lt;/li&gt;    &lt;li&gt;      &lt;figure&gt;        &lt;img src=\"./Omnifood Contents/8.jpg\" alt=\"Granola with cherries and strawberries\"&gt;      &lt;/figure&gt;    &lt;/li&gt;  &lt;/ul&gt;&lt;/section&gt;\n\n\n設定此區塊滿版，並讓他們設定為區塊\n讓li，每個設定寬度為25%(4個共100％)，並利用float使他們比鄰排列\n\n12345678910.meals-showcase&#123;  list-style: none; /* 去除ul的預設樣式*/  display: block;  width: 100%;&#125;.meals-showcase li&#123;  float: left;  width: 25%;&#125;\n\n\n\n上面的照片並未合乎大小，以及置中\n\n123456789.meals-showcase figure&#123;  width: 100%;&#125;.meals-showcase figure img&#123;  width: 100%;  &#125;\n\n\n\n去除上圖的空隙vertical-align: middle;\n\n123.meals-showcase figure img&#123;  width: 100%;  vertical-align: middle;&#125;\n\n\n加入文字區在圖片上方製作圖片被摸到，有圖片縮放的動畫\n12345678910.meals-showcase figure img&#123;  width: 100%;  vertical-align: middle;transform: scale(1.15);transition: transform .5s;&#125;.meals-showcase figure:hover img&#123;  transform: scale(1);&#125;\n\n\n\n當圖片的scale被放大，會超出原有容器\n處理方式：在所在的容器，設定overflow: hidden; \nCSS深入理解：overflow:hidden——溢出,坍塌,清除浮动,overflow：hidden 失效\n\n\n\n\n讓圖片有黑色透明效果\n在圖片本身img設定透明度，在figure放圖標籤裡設定背景為黑色\n\n\n\n\n1234567891011121314151617.meals-showcase figure&#123;  width: 100%;  overflow: hidden;  background-color:#000;&#125;.meals-showcase figure img&#123;  width: 100%;  vertical-align: middle;transform: scale(1.15);transition: transform .5s ,opicity .5s;opacity: 0.7;&#125;.meals-showcase figure:hover img&#123;  transform: scale(1);  opacity: 1;&#125;\n\n\n\n訂餐方法介紹 的介面\n\nhtml的結構\n\n1234567891011121314151617181920212223242526272829303132333435&lt;section class=\"meal-steps\"&gt;    &lt;!-- 在row裡面，放一個h2標題，在增加一個row的div，使用grid兩欄的class --&gt;    &lt;div class=\"row\"&gt;      &lt;h2&gt;How it works - Simple as 1, 2, 3&lt;/h2&gt;    &lt;/div&gt;    &lt;div class=\"row\"&gt;      &lt;!-- 左欄 --&gt;      &lt;div class=\"col span-2-of-4\"&gt;        &lt;img src=\"./Omnifood Contents/app-iPhone.png\" alt=\"Omnifood-app\" class=\"app-screen\"&gt;      &lt;/div&gt;      &lt;!-------- 右欄 ------&gt;      &lt;div class=\"col span-2-of-4\"&gt;        &lt;div class=\"work-step\"&gt;          &lt;div&gt;1&lt;/div&gt;          &lt;p&gt;Choose the subscription plan that best fits your needs and sign up today.&lt;/p&gt;        &lt;/div&gt;        &lt;div class=\"work-step\"&gt;          &lt;div&gt;2&lt;/div&gt;          &lt;p&gt;Order your delicious meal using our mobile app or website. Or you can even call us!&lt;/p&gt;        &lt;/div&gt;        &lt;div class=\"work-step\"&gt;          &lt;div&gt;3&lt;/div&gt;          &lt;p&gt;Enjoy your meal after less than 20 minutes. See you the next time!&lt;/p&gt;        &lt;/div&gt;&lt;!------- 與步驟同一欄，下載的按鈕使用&lt;a&gt; ------&gt;        &lt;a href=\"#\"&gt;&lt;img src=\"./Omnifood Contents/download-app.svg\" alt=\"apple store button\"&gt;&lt;/a&gt;        &lt;a href=\"#\"&gt;&lt;img src=\"./Omnifood Contents/download-app-android.png\" alt=\"play store button\"&gt;&lt;/a&gt;      &lt;/div&gt;    &lt;/div&gt;  &lt;/section&gt;\n\n\n\n\n標題調整\n\n:first-child\n圖片靠右：text-align: right;\n右欄文字區在數字部分：要讓他與文字區能夠排列，使用inline-block,float    數字的外圈：參考以下css\n123456789101112.work-step&#123;  display: inline-block;  margin-bottom: 50px;&#125;  .work-step div&#123;   float: left;  color:#e67e22 ;  border: 2px solid #e67e22;  border-radius: 50%;  &#125;\n\n讓圓形變圓，增加寬高123456.work-step div&#123;height: 55px;  width: 55px;  text-align: center;  padding: 5px;  font-size: 150%;&#125;\n\n\n\n\nmargin-right: 25px;\n\n\n按鈕的處理\n12345.btn-app img&#123;  height: 50px;  width: auto;  margin-right: 10px;&#125;\n\n\n地點資訊\n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576&lt;section class=\"section-cities\"&gt;    &lt;div class=\"row\"&gt;      &lt;h2&gt;We're currently in these cities&lt;/h2&gt;    &lt;/div&gt;    &lt;div class=\"row\"&gt;      &lt;!-- 第一個地點 --&gt;      &lt;div class=\"col span-1-of-4 items\"&gt;        &lt;img src=\"./Omnifood Contents/lisbon-3.jpg\" alt=\"\"&gt;        &lt;h3&gt;Lisbon&lt;/h3&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"person\" class=\"person\"&gt;&lt;/ion-icon&gt;          1600+ happy eaters        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"star\" class=\"star\"&gt;&lt;/ion-icon&gt;          60+ top chefs        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitter\"&gt;&lt;/ion-icon&gt;          @omnifood_lx        &lt;/div&gt;      &lt;/div&gt;      &lt;!-- 第二個地點 --&gt;      &lt;div class=\"col span-1-of-4 items\"&gt;        &lt;img src=\"./Omnifood Contents/san-francisco.jpg\" alt=\"\"&gt;        &lt;h3&gt;San Francisco&lt;/h3&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"person\" class=\"person\"&gt;&lt;/ion-icon&gt;          3700+ happy eaters        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"star\" class=\"star\"&gt;&lt;/ion-icon&gt;          160+ top chefs        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitter\"&gt;&lt;/ion-icon&gt;          @omnifood_sf        &lt;/div&gt;      &lt;/div&gt;      &lt;!-- 第三個地點 --&gt;      &lt;div class=\"col span-1-of-4 items\"&gt;        &lt;img src=\"./Omnifood Contents/berlin.jpg\" alt=\"\"&gt;        &lt;h3&gt;Berlin&lt;/h3&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"person\" class=\"person\"&gt;&lt;/ion-icon&gt;          2300+ happy eaters        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"star\" class=\"star\"&gt;&lt;/ion-icon&gt;          110+ top chefs        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitter\"&gt;&lt;/ion-icon&gt;          @omnifood_berlin        &lt;/div&gt;      &lt;/div&gt;      &lt;!-- 第四個地點 --&gt;      &lt;div class=\"col span-1-of-4 items\"&gt;        &lt;img src=\"./Omnifood Contents/london.jpg\" alt=\"\"&gt;        &lt;h3&gt;London&lt;/h3&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"person\" class=\"person\"&gt;&lt;/ion-icon&gt;          1200+ happy eaters        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"star\" class=\"star\"&gt;&lt;/ion-icon&gt;          50+ top chefs        &lt;/div&gt;        &lt;div class=\"city-features\"&gt;          &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitter\"&gt;&lt;/ion-icon&gt;          @omnifood_london        &lt;/div&gt;      &lt;/div&gt;  &lt;/section&gt;\n\n\n\n\n\n12345.section-cities img&#123;  width: 100%;  vertical-align: middle;  margin-bottom: 15px;&#125;\n\n12345678910111213.section-cities .icon-small&#123;  color: #e67e22; display: inline-block; text-align: center; font-size: 120%; margin-right: 10px; /*讓icon與文字，置中、對其*/ line-height: 120%; vertical-align: middle; margin-top: -5px;  &#125;\n\n\n顧客回饋區\n\n區分為三個區塊，一列三欄的方式劃分\n用&lt;blockquote&gt;來包顧客的回饋文字\n並加入顧客的頭像以及姓名\n\n1234567891011121314151617181920212223242526272829303132333435363738394041&lt;section class=\"section-testimonials\"&gt;    &lt;div class=\"row\"&gt;      &lt;h2&gt;Our customers can't live without us&lt;/h2&gt;    &lt;/div&gt;    &lt;div class=\"row\"&gt;      &lt;div class=\"col span-1-of-3\"&gt;        &lt;blockquote&gt;          Omnifood is just awesome! I just launched a startup which leaves me with no time for cooking, so Omnifood is a          life-saver. Now that I got used to it, I couldn't live without my daily meals!          &lt;cite&gt;&lt;img src=\"./Omnifood Contents/customer-1.jpg\" alt=\"\"&gt;Alberto Duncan&lt;/cite&gt;        &lt;/blockquote&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-3\"&gt;        &lt;blockquote&gt;          Inexpensive, healthy and great-tasting meals, delivered right to my home. We have lots of food delivery here          in Lisbon,          but no one comes even close to Omifood. Me and my family are so in love!          &lt;cite&gt;&lt;img src=\"./Omnifood Contents/customer-2.jpg\" alt=\"\"&gt;Joana Silva&lt;/cite&gt;        &lt;/blockquote&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-3\"&gt;        &lt;blockquote&gt;          I was looking for a quick and easy food delivery service in San Franciso. I tried a lot of them and ended up          with          Omnifood. Best food delivery service in the Bay Area. Keep up the great work!          &lt;cite&gt;&lt;img src=\"./Omnifood Contents/customer-3.jpg\" alt=\"\"&gt;Milton Chapman&lt;/cite&gt;        &lt;/blockquote&gt;      &lt;/div&gt;    &lt;/div&gt;  &lt;/section&gt;\n\n\n\n先做背景的處理\n\n12345.section-testimonials &#123;  background:linear-gradient(0deg,rgba(0,0,0,.7),rgba(0,0,0,.7)) center center, url(./Omnifood\\ Contents/back-customers.jpg)no-repeat center center/cover ;  color: #fff;  background-attachment: fixed;&#125;\n\n\n\n\n增加相片背景\n可以看到文字與，照片相\n\n\n\n\n\n在.section-testimonials img 增加vertical-align: middle;\n\n\n增加上面逗點符號符號表\n1234567891011.section-testimonials blockquote:before&#123; content:\"\\201C\"; font-size:500%; display: block;position: absolute;top: -5px;left: -5px;&#125;&#125;\n\n\n\n訂購方案介紹區\n\n\nspan標籤的應用\n當全部設定寬度100%，會出現問題\n要利用篩選器，來選擇指定框\n\n\n\n\n\n\n解決方式，在html的標籤增加空行\n\n\n\n頁尾表單的建構\n\nfooter\n\n放入相關連結的icon\n\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950&lt;footer&gt;    &lt;div class=\"row\"&gt;      &lt;div class=\"col span-1-of-2\"&gt;        &lt;ul class=\"footer-nav\"&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;About us&lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;Blog&lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;Press&lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;Android App&lt;/a&gt;&lt;/li&gt;        &lt;/ul&gt;      &lt;/div&gt;      &lt;div class=\"col span-1-of-2 \"&gt;        &lt;ul class=\"socilmedia-link\"&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;              &lt;ion-icon name=\"logo-facebook\" class=\"logo-facebook\"&gt;&lt;/ion-icon&gt;            &lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;              &lt;ion-icon name=\"logo-twitter\" class=\"logo-twitte\"&gt;&lt;/ion-icon&gt;            &lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;              &lt;ion-icon name=\"logo-google\" class=\"logo-google\"&gt;&lt;/ion-icon&gt;            &lt;/a&gt;&lt;/li&gt;          &lt;li&gt;&lt;a href=\"#\"&gt;              &lt;ion-icon name=\"logo-instagram\" class=\"logo-instagram\"&gt;&lt;/ion-icon&gt;            &lt;/a&gt;&lt;/li&gt;        &lt;/ul&gt;      &lt;/div&gt;      &lt;div class=\"row\"&gt;        &lt;p&gt;          copyright &amp;copy; 2020 by Omnifood. All right reserved.        &lt;/p&gt;      &lt;/div&gt;    &lt;/div&gt;  &lt;/footer&gt;\n\n\n\n\n\n使用float來使物件放置左右側\nfooter-nav li使用inline-block\n\n1234567891011121314151617 footer&#123;  background-color: #333;  padding: 50px;  font-size: 80%;&#125;footer .footer-nav&#123;  list-style: none;  float: left;&#125;.socilmedia-link&#123;  list-style: none;  float: right;&#125;.footer-nav li,.socilmedia-link li&#123;  display: inline-block;  margin-right: 20px;&#125;\n\n\n連結顏色調整123456789101112131415161718192021.footer-nav li:last-child,.socilmedia-link li:last-child&#123;  margin-right: 0px;&#125;.footer-nav li a:link ,.footer-nav li a:visited, .socilmedia-link li a:link ,.socilmedia-link li a:visited&#123; text-decoration: none; border: none; color: #888; transition: color .3s;&#125;.footer-nav li a:hover ,.footer-nav li a:active&#123;  color: #ddd;&#125;.socilmedia-link li a:link,.socilmedia-link  li a:visited&#123; font-size: 160%; &#125;\n\n\n\n1234567891011121314151617181920212223242526footer p&#123;  color:#888;  text-align: center;    margin-top: 20px;&#125;.logo-instagram,.logo-google,.logo-twitte,.logo-facebook&#123;transition: color .3s;&#125;.logo-instagram:hover&#123;  color: #517fa4;&#125;.logo-google:hover&#123;  color: #dd4b39;&#125;.logo-twitte:hover&#123;  color: #00aced;&#125;.logo-facebook:hover&#123;  color: #3b5998;&#125;\n\n\n補充background與background-imge之差別background属性是整體設置的，background image是background的属性之一，background的屬性包括background-colorbackground-imagebackground-repeatbackground-attachmentbackground-position，你看不到圖片是因为設置錯，不能加no-repeat屬性，應改為：background-image:url(“some.jpg”); background-repeat:no-repeat;分開寫\nbackground和background-image什么区别\n\n\n12345678910.header&#123;background-image:url(./Omnifood\\ Contents/hero.jpg) ;background-size: cover;background-position: center;&#125;/********我改為下面這樣*******/.header&#123;background: url(./Omnifood\\ Contents/hero.jpg) no-repeat center center/cover;&#125;\n\n文字框置中（區塊（div）的垂直置中）\npjchender\n\nPosition + Transform（常用）:先利用 position: absolute 把 top: 50% 設在 50%；接著再透過 transform: translateY(-50%) 把超過的部分修正回來，達到垂直置中。\n\n\n123456789.hero-text-box&#123;  display: flex;  width: 1140px;  height: 100%;  flex-direction: column;      align-items: center;   justify-content: center;&#125;\n\n參考：pjchender\n使用button vs linkButton versus Link\nFrom a semantics and accessibility viewpoint:Links (&lt;a&gt;)are for “going someplace” such as “jumping to a different section of a page, going to another URL, etc.WhereasButtons &lt;button&gt;are for “doing something” such as a function on the page to expand/collapse a menu, submit a form or etc.\n\ngrid參考資料Spectacularly Easy Responsive Design關於 Grid Layout 的使用姿勢六角學院 - Bootstrap Grid System 原理介紹\nmargin 與 paggimg製作steps區塊時，因設定section的margin距離使得想在此區塊多加上背景色彩，有了中間的空白處\n123.meal-steps&#123;  background: #f4f4f4;&#125;\n\n這裏應該改為padding1234section&#123;  padding: 80px 0;   /*margin: 80px 0;*/&#125;\n\n\n\n\n練習後的小心得：1.在html建構會使用.row2.應用grid,css3.內部，字的大小用百分比4.有一些可以共用的區塊，可以放在reuse區塊，並設一樣的class名稱，在建構時，可以更快速\n","dateCreated":"2020-12-13T13:05:53+08:00","dateModified":"2021-10-02T13:42:45+08:00","datePublished":"2020-12-13T13:05:53+08:00","description":"","headline":"CSS練習- omnifood 餐廳網頁","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/","keywords":"udemy, CSS, icon, grid, 多重背景, opacity"}</script>
-    <meta name="description" content="介紹成品使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。  首先，文字字型的選擇先用Normalize.css，下載並連結字型：使用google font &gt; lato text-rendering告訴渲染引擎工作時如何優化顯示文字 1234567891011121314151617181920212223">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="CSS練習- omnifood 餐廳網頁">
-<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/index.html">
-<meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="介紹成品使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。  首先，文字字型的選擇先用Normalize.css，下載並連結字型：使用google font &gt; lato text-rendering告訴渲染引擎工作時如何優化顯示文字 1234567891011121314151617181920212223">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/OwpZq8P.png">
-<meta property="og:image" content="https://i.imgur.com/4VSiIEZ.png">
-<meta property="og:image" content="https://i.imgur.com/pc0jiX3.png">
-<meta property="og:image" content="https://i.imgur.com/ioW5W5p.png">
-<meta property="og:image" content="https://i.imgur.com/dZzd6V7.png">
-<meta property="og:image" content="https://i.imgur.com/pe6AUaN.png">
-<meta property="og:image" content="https://i.imgur.com/zoaaQoB.jpg">
-<meta property="og:image" content="https://i.imgur.com/r4IryMQ.jpg">
-<meta property="og:image" content="https://i.imgur.com/QcgKtPg.jpg">
-<meta property="og:image" content="https://i.imgur.com/NmUA3qy.jpg">
-<meta property="og:image" content="https://i.imgur.com/MuiBMCl.png">
-<meta property="og:image" content="https://i.imgur.com/3UM8SpB.png">
-<meta property="og:image" content="https://i.imgur.com/jOySkuH.png">
-<meta property="og:image" content="https://i.imgur.com/KMLsFMM.png">
-<meta property="og:image" content="https://i.imgur.com/1su6NCZ.png">
-<meta property="og:image" content="https://i.imgur.com/nl0Z3uS.png">
-<meta property="og:image" content="https://i.imgur.com/kl8kJq1.png">
-<meta property="og:image" content="https://i.imgur.com/sg0YUDI.png">
-<meta property="og:image" content="https://i.imgur.com/Sr0NhBr.png">
-<meta property="og:image" content="https://i.imgur.com/BzV03pk.png">
-<meta property="og:image" content="https://i.imgur.com/zBU6WCx.png">
-<meta property="og:image" content="https://i.imgur.com/jaYired.jpg">
-<meta property="og:image" content="https://i.imgur.com/XNsC9JM.jpg">
-<meta property="og:image" content="https://i.imgur.com/QsAwjZx.jpg">
-<meta property="og:image" content="https://i.imgur.com/zBiOKSv.jpg">
-<meta property="og:image" content="https://i.imgur.com/ADUUni8.jpg">
-<meta property="og:image" content="https://i.imgur.com/okb9F66.jpg">
-<meta property="og:image" content="https://i.imgur.com/HxrpNQG.png">
-<meta property="og:image" content="https://i.imgur.com/F9MrnmA.png">
-<meta property="og:image" content="https://i.imgur.com/cPpSW9S.png">
-<meta property="og:image" content="https://i.imgur.com/odR0Tm5.png">
-<meta property="og:image" content="https://i.imgur.com/OHIFt8g.png">
-<meta property="og:image" content="https://i.imgur.com/NOTJn47.png">
-<meta property="og:image" content="https://i.imgur.com/zvBsOgb.png">
-<meta property="og:image" content="https://i.imgur.com/gC2Om3f.png">
-<meta property="og:image" content="https://i.imgur.com/YzSZlES.jpg">
-<meta property="og:image" content="https://i.imgur.com/1s1kBSH.png">
-<meta property="og:image" content="https://i.imgur.com/621x3W2.png">
-<meta property="og:image" content="https://i.imgur.com/LMPlqlx.png">
-<meta property="og:image" content="https://i.imgur.com/ofR8ghb.png">
-<meta property="og:image" content="https://i.imgur.com/deniLe4.jpg">
-<meta property="og:image" content="https://i.imgur.com/lO5KPTq.jpg">
-<meta property="og:image" content="https://i.imgur.com/VBEGepa.png">
-<meta property="og:image" content="https://i.imgur.com/bifGooB.png">
-<meta property="og:image" content="https://i.imgur.com/MJpSGz0.png">
-<meta property="og:image" content="https://i.imgur.com/6tr0o3E.png">
-<meta property="og:image" content="https://i.imgur.com/8lTrnUY.png">
-<meta property="og:image" content="https://i.imgur.com/1XlErXn.png">
-<meta property="og:image" content="https://i.imgur.com/YnpnJBc.png">
-<meta property="og:image" content="https://i.imgur.com/Dke7ilN.png">
-<meta property="og:image" content="https://i.imgur.com/oC2aMcy.png">
-<meta property="og:image" content="https://i.imgur.com/y9sxEXR.png">
-<meta property="og:image" content="https://i.imgur.com/VQ5YHHR.png">
-<meta property="og:image" content="https://i.imgur.com/E4C4qY3.png">
-<meta property="og:image" content="https://i.imgur.com/X2b2hfu.png">
-<meta property="og:image" content="https://i.imgur.com/Uph2clO.png">
-<meta property="og:image" content="https://i.imgur.com/A2Z6Meh.png">
-<meta property="og:image" content="https://i.imgur.com/bLtpdK7.png">
-<meta property="og:image" content="https://i.imgur.com/ss2XfZd.png">
-<meta property="article:published_time" content="2020-12-13T05:05:53.000Z">
-<meta property="article:modified_time" content="2021-10-02T05:42:45.478Z">
-<meta property="article:author" content="Eva Chan">
-<meta property="article:tag" content="udemy">
-<meta property="article:tag" content="CSS">
-<meta property="article:tag" content="icon">
-<meta property="article:tag" content="grid">
-<meta property="article:tag" content="多重背景">
-<meta property="article:tag" content="opacity">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/OwpZq8P.png">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
-
-
-    
-        
-            
-        
-    
-
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/"
-            aria-label=""
-        >
-            Let&#39;s Code
-        </a>
-    </div>
-    
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Open the link: /#about"
-            >
-        
-        
-            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-        </a>
-    
-</header>
-
-            <!-- Define author's picture -->
-
-
-
-        
-    
-
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a
-                    href="/#about"
-                    aria-label="Read more about the author"
-                >
-                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">Eva Chan</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/"
-                            
-                            rel="noopener"
-                            title="Home"
-                        >
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-categories"
-                            
-                            rel="noopener"
-                            title="Categories"
-                        >
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-tags"
-                            
-                            rel="noopener"
-                            title="Tags"
-                        >
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-archives"
-                            
-                            rel="noopener"
-                            title="Archives"
-                        >
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link open-algolia-search"
-                            href="#search"
-                            
-                            rel="noopener"
-                            title="Search"
-                        >
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="#about"
-                            
-                            rel="noopener"
-                            title="About"
-                        >
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/Eva813"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://facebook.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Facebook"
-                        >
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://plus.google.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Google +"
-                        >
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google +</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://www.linkedin.com/profile/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="LinkedIn"
-                        >
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://eva813.github.io/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="RSS"
-                        >
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
-
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            CSS練習- omnifood 餐廳網頁
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2020-12-13T13:05:53+08:00">
-	
-		    Dec 13, 2020
-    	
-    </time>
-    
-</div>
-
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <h2 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h2><p><a href="https://eva813.github.io/Eva_portfolio/Omnifood/omnifood.html" target="_blank" rel="noopener">成品</a><br>使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。</p>
+首先，文字字型的選擇先用Normalize.css，下載並連結字型：使用google font &amp;gt; lato
+text-rendering告訴渲染引擎工作時如何優化顯示文字
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+  background-color: #fff;
+  color: #555;
+  font-family: &amp;#39;Lato&amp;#39;, &amp;#39;Arial&amp;#39;,sans-serif;
+  font-weight: 300;
+  font-siz.."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">CSS練習- omnifood 餐廳網頁</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介紹"><span class="toc-text">介紹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#首先，文字字型的選擇"><span class="toc-text">首先，文字字型的選擇</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#head區塊"><span class="toc-text">head區塊</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#表頭的製作"><span class="toc-text">表頭的製作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#調整背景圖位置"><span class="toc-text">調整背景圖位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#讓h1文字置中"><span class="toc-text">讓h1文字置中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文字放在圖片上使得看不清楚"><span class="toc-text">文字放在圖片上使得看不清楚</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#h1文字區的細節調整"><span class="toc-text">h1文字區的細節調整</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文字區下面的按鈕"><span class="toc-text">文字區下面的按鈕</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#按鈕的觸碰與點選"><span class="toc-text">按鈕的觸碰與點選</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表頭導覽列的製作"><span class="toc-text">表頭導覽列的製作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nav"><span class="toc-text">nav</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#icon"><span class="toc-text">icon</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#h2的文字與p"><span class="toc-text">h2的文字與p</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#欄位col的處理（class-”items”）"><span class="toc-text">欄位col的處理（class&#x3D;”items”）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#食物照片區"><span class="toc-text">食物照片區</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#html結構"><span class="toc-text">html結構</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加入文字區在圖片上方"><span class="toc-text">加入文字區在圖片上方</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#當圖片的scale被放大，會超出原有容器"><span class="toc-text">當圖片的scale被放大，會超出原有容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#讓圖片有黑色透明效果"><span class="toc-text">讓圖片有黑色透明效果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#訂餐方法介紹-的介面"><span class="toc-text">訂餐方法介紹 的介面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#標題調整"><span class="toc-text">標題調整</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#右欄文字區"><span class="toc-text">右欄文字區</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#讓圓形變圓，增加寬高"><span class="toc-text">讓圓形變圓，增加寬高</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按鈕的處理"><span class="toc-text">按鈕的處理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#地點資訊"><span class="toc-text">地點資訊</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#顧客回饋區"><span class="toc-text">顧客回饋區</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增加上面逗點符號"><span class="toc-text">增加上面逗點符號</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#訂購方案介紹區"><span class="toc-text">訂購方案介紹區</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#頁尾表單的建構"><span class="toc-text">頁尾表單的建構</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#footer"><span class="toc-text">footer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#連結顏色調整"><span class="toc-text">連結顏色調整</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#補充"><span class="toc-text">補充</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#background與background-imge之差別"><span class="toc-text">background與background-imge之差別</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文字框置中（區塊（div）的垂直置中）"><span class="toc-text">文字框置中（區塊（div）的垂直置中）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用button-vs-link"><span class="toc-text">使用button vs link</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grid參考資料"><span class="toc-text">grid參考資料</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#margin-與-paggimg"><span class="toc-text">margin 與 paggimg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#練習後的小心得："><span class="toc-text">練習後的小心得：</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/udemy"><i class="tag post-item-tag">udemy</i></a><a href="/tags/CSS"><i class="tag post-item-tag">CSS</i></a><a href="/tags/icon"><i class="tag post-item-tag">icon</i></a><a href="/tags/grid"><i class="tag post-item-tag">grid</i></a><a href="/tags/%E5%A4%9A%E9%87%8D%E8%83%8C%E6%99%AF"><i class="tag post-item-tag">多重背景</i></a><a href="/tags/opacity"><i class="tag post-item-tag">opacity</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">CSS練習- omnifood 餐廳網頁</h1><time class="has-text-grey" datetime="2020-12-13T05:05:53.000Z">2020-12-13</time><article class="mt-2 post-content"><p><img src="https://i.imgur.com/JNV0OeO.png" alt=""></p>
+<h2 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h2><p><a href="https://eva813.github.io/Eva_portfolio/Omnifood/omnifood.html" target="_blank" rel="noopener">成品</a><br>使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。</p>
 <p><img src="https://i.imgur.com/OwpZq8P.png" alt=""></p>
 <h2 id="首先，文字字型的選擇"><a href="#首先，文字字型的選擇" class="headerlink" title="首先，文字字型的選擇"></a>首先，文字字型的選擇</h2><p>先用Normalize.css，下載並連結<br>字型：使用google font &gt; lato<br><img src="https://i.imgur.com/4VSiIEZ.png" alt=""></p>
 <p>text-rendering告訴渲染引擎工作時如何優化顯示文字</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">*&#123;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">html</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#555</span>;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">'Lato'</span>, <span class="string">'Arial'</span>,sans-serif;</span><br><span class="line">  <span class="attribute">font-weight</span>: <span class="number">300</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">text-rendering</span>: optimizeLegibility;</span><br><span class="line">  <span class="comment">/* 繪制文本時易讀性優先，會啟用字距調整和連字 */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* content will be in rows */</span></span><br><span class="line"><span class="selector-class">.row</span>&#123;</span><br><span class="line">  <span class="comment">/* 只有這邊是用px，之後的margin等設定都會用% */</span></span><br><span class="line"> <span class="attribute">max-width</span>: <span class="number">1140px</span>; </span><br><span class="line"> <span class="attribute">margin</span>:<span class="number">0</span> auto;</span><br><span class="line"><span class="comment">/* 讓左右的距離能夠平均分散，使其置中 */</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="head區塊"><a href="#head區塊" class="headerlink" title="head區塊"></a>head區塊</h1><p><img src="https://i.imgur.com/pc0jiX3.png" alt=""></p>
-<h2 id="表頭的製作"><a href="#表頭的製作" class="headerlink" title="表頭的製作"></a>表頭的製作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;hero-text-box&quot;&gt;</span><br><span class="line">     &lt;h1&gt;Goodbye junk food. Hello super healthy meals.</span><br><span class="line">     &lt;&#x2F;h1&gt;</span><br><span class="line">     &lt;a href&#x3D;&quot;#&quot;&gt;I’m hungry&lt;&#x2F;a&gt;</span><br><span class="line">     &lt;a href&#x3D;&quot;#&quot;&gt;Show me more&lt;&#x2F;a&gt;</span><br><span class="line"></span><br><span class="line">   &lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+  background-color: #fff;
+  color: #555;
+  font-family: &#39;Lato&#39;, &#39;Arial&#39;,sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  text-rendering: optimizeLegibility;
+  /* 繪制文本時易讀性優先，會啟用字距調整和連字 */
+}
 
+/* content will be in rows */
+.row{
+  /* 只有這邊是用px，之後的margin等設定都會用% */
+ max-width: 1140px; 
+ margin:0 auto;
+/* 讓左右的距離能夠平均分散，使其置中 */
+
+}
+
+
+</code></pre>
+<h1 id="head區塊"><a href="#head區塊" class="headerlink" title="head區塊"></a>head區塊</h1><p><img src="https://i.imgur.com/pc0jiX3.png" alt=""></p>
+<h2 id="表頭的製作"><a href="#表頭的製作" class="headerlink" title="表頭的製作"></a>表頭的製作</h2><pre><code class="htmlembedded="> &lt;div class=&quot;hero-text-box&quot;&gt;
+      &lt;h1&gt;Goodbye junk food. Hello super healthy meals.
+      &lt;/h1&gt;
+      &lt;a href=&quot;#&quot;&gt;I’m hungry&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Show me more&lt;/a&gt;
+
+    &lt;/div&gt;
+</code></pre>
 <p><img src="https://i.imgur.com/ioW5W5p.png" alt=""></p>
 <ul>
 <li>利用background-image插入圖片後，往上滑會出現上方的空白處<ul>
@@ -404,111 +66,326 @@
 <p><img src="https://i.imgur.com/dZzd6V7.png" alt=""><br><img src="https://i.imgur.com/pe6AUaN.png" alt=""></p>
 <h3 id="調整背景圖位置"><a href="#調整背景圖位置" class="headerlink" title="調整背景圖位置"></a>調整背景圖位置</h3><p><img src="https://i.imgur.com/zoaaQoB.jpg" alt=""></p>
 <h3 id="讓h1文字置中"><a href="#讓h1文字置中" class="headerlink" title="讓h1文字置中"></a>讓h1文字置中</h3><p>透過使用絕對定位，讓文字可以置中</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.hero-text-box</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line"> </span><br><span class="line">  <span class="attribute">width</span>: <span class="number">1140px</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">left</span>:&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css=">.hero-text-box{
+  position: absolute;
+
+  width: 1140px;
+  top: 50%;
+  left:}</code></pre>
 <p><img src="https://i.imgur.com/r4IryMQ.jpg" alt=""></p>
 <ul>
 <li>transform: translate(-50%,-50%);</li>
 </ul>
 <p><img src="https://i.imgur.com/QcgKtPg.jpg" alt=""></p>
 <h3 id="文字放在圖片上使得看不清楚"><a href="#文字放在圖片上使得看不清楚" class="headerlink" title="文字放在圖片上使得看不清楚"></a>文字放在圖片上使得看不清楚</h3><ul>
-<li>將背景圖調成深色<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">background</span><span class="selector-pseudo">:linear-gradient(0deg</span>,<span class="selector-tag">rgba</span>(0,0,0,<span class="selector-class">.6</span>),<span class="selector-tag">rgba</span>(0,0,0,<span class="selector-class">.5</span>)) <span class="selector-tag">center</span> <span class="selector-tag">center</span>,</span><br><span class="line">   url(./Omnifood\ Contents/hero.jpg) no-repeat center center/cover ;</span><br></pre></td></tr></table></figure>
+<li>將背景圖調成深色<pre><code class="css=">background:linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,.5)) center center,
+ url(./Omnifood\ Contents/hero.jpg) no-repeat center center/cover ;</code></pre>
 <img src="https://i.imgur.com/NmUA3qy.jpg" alt=""></li>
 </ul>
 <h2 id="h1文字區的細節調整"><a href="#h1文字區的細節調整" class="headerlink" title="h1文字區的細節調整"></a>h1文字區的細節調整</h2><ul>
 <li>調整字的顏色、大小</li>
-<li>字母、單字之間的間距<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.hero-text-box</span> <span class="selector-tag">h1</span>&#123;</span><br><span class="line"><span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line"><span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line"><span class="comment">/* 這裏的字體大小用百分比，是為了相對於一開始設定font-size: 20px;，以他的百分比來計算 */</span></span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">240%</span>;</span><br><span class="line"><span class="attribute">font-weight</span>: <span class="number">400</span>;</span><br><span class="line"><span class="attribute">letter-spacing</span>: <span class="number">1px</span>;</span><br><span class="line"> <span class="attribute">text-transform</span>: uppercase; <span class="comment">/*將字母改為大寫 */</span></span><br><span class="line"> <span class="attribute">word-spacing</span>: <span class="number">3px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<li>字母、單字之間的間距<pre><code class="css=">.hero-text-box h1{
+margin: 0;
+color: #fff;
+/* 這裏的字體大小用百分比，是為了相對於一開始設定font-size: 20px;，以他的百分比來計算 */
+font-size: 240%;
+font-weight: 400;
+letter-spacing: 1px;
+text-transform: uppercase; /*將字母改為大寫 */
+word-spacing: 3px;
+}</code></pre>
 </li>
 </ul>
 <h2 id="文字區下面的按鈕"><a href="#文字區下面的按鈕" class="headerlink" title="文字區下面的按鈕"></a>文字區下面的按鈕</h2><p>html結構是使用<code>&lt;a&gt;</code>來製作連結的點選<br>將型態改為inline-block</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"btn btn-full"</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>I’m hungry<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"btn btn-ghost "</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Show me more<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">      &lt;a class=&quot;btn btn-full&quot; href=&quot;#&quot;&gt;I’m hungry&lt;/a&gt;
+      &lt;a class=&quot;btn btn-ghost &quot; href=&quot;#&quot;&gt;Show me more&lt;/a&gt;</code></pre>
 <ul>
 <li>希望連結與被點選的樣式都是一樣</li>
 <li>顏色是到：UI flat color tool ; 要找尋顏色深淺 <a href="https://www.0to255.com/e67e22" target="_blank" rel="noopener">0 to 255</a></li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.btn</span><span class="selector-pseudo">:link</span>,<span class="selector-class">.btn</span><span class="selector-pseudo">:visited</span>&#123;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">text-decoration</span>: none;</span><br><span class="line"><span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">15px</span>;</span><br><span class="line"><span class="attribute">border-radius</span>: <span class="number">200px</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.btn-full</span><span class="selector-pseudo">:link</span>,<span class="selector-class">.btn-full</span><span class="selector-pseudo">:visited</span>&#123;</span><br><span class="line">  <span class="comment">/* UI flat color tool */</span></span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#e67e22</span>;</span><br><span class="line">  <span class="comment">/* border: 1px solid #e67e22 ; */</span></span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.btn-ghost</span><span class="selector-pseudo">:link</span>,<span class="selector-class">.btn-ghost</span><span class="selector-pseudo">:visited</span>&#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e67e22</span> ;</span><br><span class="line">  <span class="attribute">color</span>:<span class="number">#e67e22</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">.btn:link,.btn:visited{
+  display: inline-block;
+  text-decoration: none;
+padding: 10px 15px;
+border-radius: 200px;
+
+}
+
+.btn-full:link,.btn-full:visited{
+  /* UI flat color tool */
+  background-color: #e67e22;
+  /* border: 1px solid #e67e22 ; */
+  color: #fff;
+}
+
+.btn-ghost:link,.btn-ghost:visited{
+  border: 1px solid #e67e22 ;
+  color:#e67e22;
+
+}</code></pre>
 <p><img src="https://i.imgur.com/MuiBMCl.png" alt=""></p>
 <h3 id="按鈕的觸碰與點選"><a href="#按鈕的觸碰與點選" class="headerlink" title="按鈕的觸碰與點選"></a>按鈕的觸碰與點選</h3><p><code>:active</code> 滑鼠按下的樣式; <code>:focus</code> 鍵盤聚焦的樣式 ;<code>:hover</code> 滑鼠滑過</p>
 <ul>
 <li>注意transition此屬性是放在要被摸的元素裡面，不是hover那裡<br><a href="https://www.w3schools.com/howto/howto_css_transition_hover.asp" target="_blank" rel="noopener">How TO - Transition on Hover</a></li>
 </ul>
 <p><code>.btn:link,.btn:visited{}</code></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">/* transition 放在這裡！ */</span></span><br><span class="line"> <span class="selector-tag">transition</span>: <span class="selector-tag">background-color</span> 0<span class="selector-class">.5s</span>,<span class="selector-tag">border</span> 0<span class="selector-class">.5s</span>,<span class="selector-tag">color</span> 0<span class="selector-class">.5s</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.btn</span><span class="selector-pseudo">:hover</span>,<span class="selector-class">.btn</span><span class="selector-pseudo">:active</span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="attribute">background-color</span>: <span class="number">#cf6d17</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.btn-full</span><span class="selector-pseudo">:hover</span>,<span class="selector-class">.btn-full</span><span class="selector-pseudo">:active</span>&#123; </span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#cf6d17</span> ;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.btn-ghost</span><span class="selector-pseudo">:hover</span>,<span class="selector-class">.btn-ghost</span><span class="selector-pseudo">:active</span>&#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#cf6d17</span> ;</span><br><span class="line">  <span class="attribute">color</span>:<span class="number">#fff</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css=">  /* transition 放在這裡！ */
+ transition: background-color 0.5s,border 0.5s,color 0.5s;
+
+}
+
+.btn:hover,.btn:active{
+
+ background-color: #cf6d17;
+}
+.btn-full:hover,.btn-full:active{ 
+  border: 1px solid #cf6d17 ;
+  color: #fff;
+}
+
+.btn-ghost:hover,.btn-ghost:active{
+  border: 1px solid #cf6d17 ;
+  color:#fff;
+
+}
+</code></pre>
 <p><img src="https://i.imgur.com/3UM8SpB.png" alt=""></p>
 <h2 id="表頭導覽列的製作"><a href="#表頭導覽列的製作" class="headerlink" title="表頭導覽列的製作"></a>表頭導覽列的製作</h2><p><a href="https://ithelp.ithome.com.tw/articles/10219845" target="_blank" rel="noopener">金魚都能懂的這個網頁畫面怎麼切 : 導覽列</a></p>
 <ul>
 <li><p>header裡面的nav，html架構：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;nav&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;row&quot;&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;.&#x2F;Omnifood Contents&#x2F;logo-white.png&quot; alt&#x3D;&quot;Omnifood logo&quot; class&#x3D;&quot;logo&quot;&gt;</span><br><span class="line">    &lt;ul class&#x3D;&quot;main-nav&quot;&gt;</span><br><span class="line">      &lt;li&gt; &lt;a href&#x3D;&quot;#&quot;&gt;Food delivery&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;How it works&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;Our cities&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br><span class="line">      &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;Sign up&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br><span class="line"></span><br><span class="line">    &lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;nav&gt;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/jOySkuH.png" alt=""></p>
-</li>
-<li><p>logo</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">header</span> <span class="selector-class">.logo</span>&#123;</span><br><span class="line"><span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line"><span class="attribute">width</span>: auto;</span><br><span class="line"><span class="attribute">float</span>: left;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/KMLsFMM.png" alt=""></p>
+<pre><code class="htmlembedded">
+  &lt;nav&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;img src=&quot;./Omnifood Contents/logo-white.png&quot; alt=&quot;Omnifood logo&quot; class=&quot;logo&quot;&gt;
+      &lt;ul class=&quot;main-nav&quot;&gt;
+        &lt;li&gt; &lt;a href=&quot;#&quot;&gt;Food delivery&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;How it works&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Our cities&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Sign up&lt;/a&gt;&lt;/li&gt;
+
+      &lt;/ul&gt;
+
+    &lt;/div&gt;
+  &lt;/nav&gt;
+</code></pre>
 </li>
 </ul>
+<pre><code>![](https://i.imgur.com/jOySkuH.png)
+
+* logo
+```css=
+header .logo{
+height: 100px;
+width: auto;
+float: left;  
+}</code></pre><p><img src="https://i.imgur.com/KMLsFMM.png" alt=""></p>
 <h2 id="nav"><a href="#nav" class="headerlink" title="nav"></a>nav</h2><ul>
 <li>讓nav區靠右</li>
 <li>為了讓四個連結區塊可以橫向排列，設定inline-box</li>
 <li>針對字型、顏色等做調整</li>
-<li>並於連結下方增加線的動畫效果<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-class">.main-nav</span>&#123;</span><br><span class="line"><span class="attribute">float</span>: right;</span><br><span class="line"><span class="attribute">margin-top</span>: <span class="number">55px</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.main-nav</span> <span class="selector-tag">li</span>&#123;</span><br><span class="line"><span class="attribute">display</span>: inline-block;</span><br><span class="line"><span class="attribute">margin-left</span>: <span class="number">20px</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.main-nav</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:link</span>,<span class="selector-class">.main-nav</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:visited</span>&#123;</span><br><span class="line"><span class="attribute">text-decoration</span>: none;</span><br><span class="line"><span class="attribute">font-weight</span>: <span class="number">400</span>;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">90%</span>; <span class="comment">/*想要18px，18px / 20px=0.9*/</span></span><br><span class="line"><span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line"><span class="attribute">text-transform</span>: uppercase;</span><br><span class="line"><span class="attribute">position</span>: relative;</span><br><span class="line"><span class="attribute">padding-bottom</span>: <span class="number">5px</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.main-nav</span> <span class="selector-tag">a</span><span class="selector-pseudo">::after</span>&#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">border</span>: solid .<span class="number">5px</span> <span class="built_in">rgba</span>(<span class="number">230</span>, <span class="number">126</span>, <span class="number">34</span>,.<span class="number">6</span>);</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">bottom</span>:<span class="number">0</span> ;</span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">0</span>);</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">0.5s</span>;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.main-nav</span> <span class="selector-tag">li</span><span class="selector-pseudo">:hover</span> <span class="selector-tag">a</span><span class="selector-pseudo">::after</span>,<span class="selector-class">.main-nav</span> <span class="selector-tag">li</span><span class="selector-pseudo">:active</span> <span class="selector-tag">a</span><span class="selector-pseudo">::after</span>&#123;</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/1su6NCZ.png" alt=""></li>
+<li>並於連結下方增加線的動畫效果<pre><code class="css"></code></pre>
+</li>
 </ul>
-<hr>
-<h1 id="特色區塊"><a href="#特色區塊" class="headerlink" title="特色區塊"></a>特色區塊</h1><p><img src="https://i.imgur.com/nl0Z3uS.png" alt=""></p>
-<ul>
-<li><code>—</code> 用html符號 –&gt; <code>&amp;mdash;</code><br>   <img src="https://i.imgur.com/kl8kJq1.png" alt=""><br>   更多…<a href="https://www.freeformatter.com/html-entities.html" target="_blank" rel="noopener">HTML Entity List</a></li>
-<li>features這部分，使用section標籤來包覆，而其中的不同區塊則使用<code>.row</code>來包覆內容(並用來固定寬度)</li>
-<li>這裏的html運用grid來配置欄位</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"section-features"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Get food fast <span class="symbol">&amp;mdash;</span> not fast food<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"long-copy"</span>&gt;</span>Hello, we’re Omnifood, your new premium food delivery service. We know you’re always busy. we promise!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 第二區塊：features，這裏要開始應用grid --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-4"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>Up to 365 days/year<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>Never cook again! We really mean that. Our subscript <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-4"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>Ready in 20 minutes<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>You're only twenty minutes away from your delicious ant chefs in each town to ensure that you're 100% happy.</span><br><span class="line">        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-4"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>100% organic<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>All our vegetables are fresh, organic and local. Animals are raised without added hormones or antibiotbetter!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-4"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>Order anything<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>We don't limit your creativity, which means you cacious meals. It's up to you!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>.main-nav{<br>float: right;<br>margin-top: 55px;</p>
+<p>}<br>.main-nav li{<br>display: inline-block;<br>margin-left: 20px;</p>
+<p>}<br>.main-nav li a:link,.main-nav li a:visited{<br>text-decoration: none;<br>font-weight: 400;<br>font-size: 90%; /<em>想要18px，18px / 20px=0.9</em>/<br>color: #fff;<br>text-transform: uppercase;<br>position: relative;<br>padding-bottom: 5px;</p>
+<p>}</p>
+<p>.main-nav a::after{<br>  content: ‘’;<br>  width: 100%;<br>  position: absolute;<br>  border: solid .5px rgba(230, 126, 34,.6);<br>  left: 0;<br>  bottom:0 ;<br>  margin-top: 5px;<br>  transform: scale(0);<br>  transition: 0.5s;</p>
+<p>}</p>
+<p>.main-nav li:hover a::after,.main-nav li:active a::after{<br>transform: scale(1);</p>
+<p>}</p>
+<pre><code>![](https://i.imgur.com/1su6NCZ.png)
+
+---
+
+# 特色區塊
+
+![](https://i.imgur.com/nl0Z3uS.png)
 
 
-<p><img src="https://i.imgur.com/sg0YUDI.png" alt=""></p>
+
+* ``—`` 用html符號 --&gt; `&amp;mdash;`
+     ![](https://i.imgur.com/kl8kJq1.png)
+     更多...[HTML Entity List](https://www.freeformatter.com/html-entities.html)
+* features這部分，使用section標籤來包覆，而其中的不同區塊則使用`.row`來包覆內容(並用來固定寬度)
+* 這裏的html運用grid來配置欄位
+
+```html
+&lt;section class=&quot;section-features&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+
+      &lt;h2&gt;Get food fast &amp;mdash; not fast food&lt;/h2&gt;
+      &lt;p class=&quot;long-copy&quot;&gt;Hello, we’re Omnifood, your new premium food delivery service. We know you’re always busy. we promise!&lt;/p&gt;
+    &lt;/div&gt;
+&lt;div class=&quot;row&quot;&gt;
+      &lt;!-- 第二區塊：features，這裏要開始應用grid --&gt;
+      &lt;div class=&quot;col span-1-of-4&quot;&gt;
+        &lt;h3&gt;Up to 365 days/year&lt;/h3&gt;
+        &lt;p&gt;Never cook again! We really mean that. Our subscript &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col span-1-of-4&quot;&gt;
+        &lt;h3&gt;Ready in 20 minutes&lt;/h3&gt;
+        &lt;p&gt;You&#39;re only twenty minutes away from your delicious ant chefs in each town to ensure that you&#39;re 100% happy.
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col span-1-of-4&quot;&gt;
+        &lt;h3&gt;100% organic&lt;/h3&gt;
+        &lt;p&gt;All our vegetables are fresh, organic and local. Animals are raised without added hormones or antibiotbetter!&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col span-1-of-4&quot;&gt;
+        &lt;h3&gt;Order anything&lt;/h3&gt;
+        &lt;p&gt;We don&#39;t limit your creativity, which means you cacious meals. It&#39;s up to you!&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;</code></pre><p><img src="https://i.imgur.com/sg0YUDI.png" alt=""></p>
 <h3 id="icon"><a href="#icon" class="headerlink" title="icon"></a>icon</h3><p>使用ionicon:<a href="https://ionicons.com/" target="_blank" rel="noopener">ionicon</a></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"</span>&gt;&lt;<span class="regexp">/script&gt;`</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">&lt;script src=&quot;https://unpkg.com/ionicons@5.2.3/dist/ionicons.js&quot;&gt;&lt;/script&gt;`</code></pre>
 <ul>
 <li>讓他斷行排列使用block</li>
 <li>字的大小適用比例設置</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.section-features</span> <span class="selector-class">.icon-big</span>&#123;</span><br><span class="line"><span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">350%</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#e67e22</span>;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">  <span class="attribute">font-weight</span>: <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">.section-features .icon-big{
+display: block;
+  font-size: 350%;
+  color: #e67e22;
+  margin-bottom: 10px;
+  font-weight: 100;
 
+}</code></pre>
+<h2 id="h2的文字與p"><a href="#h2的文字與p" class="headerlink" title="h2的文字與p"></a>h2的文字與p</h2><pre><code class="css">.section-features .long-copy{
+width: 70%;
+/* 總寬100%,左邊設置15%，就會平均 */
+margin-left: 15%;
 
-<h2 id="h2的文字與p"><a href="#h2的文字與p" class="headerlink" title="h2的文字與p"></a>h2的文字與p</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.section-features</span> <span class="selector-class">.long-copy</span>&#123;</span><br><span class="line"><span class="attribute">width</span>: <span class="number">70%</span>;</span><br><span class="line"><span class="comment">/* 總寬100%,左邊設置15%，就會平均 */</span></span><br><span class="line"><span class="attribute">margin-left</span>: <span class="number">15%</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* line-height: 1.3; */</span></span><br><span class="line"><span class="attribute">line-height</span>: <span class="number">145%</span>; <span class="comment">/*120-145%最合適 */</span></span><br><span class="line"><span class="comment">/* word-spacing: 1px; */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+/* line-height: 1.3; */
+line-height: 145%; /*120-145%最合適 */
+/* word-spacing: 1px; */
+}</code></pre>
+<h2 id="欄位col的處理（class-”items”）"><a href="#欄位col的處理（class-”items”）" class="headerlink" title="欄位col的處理（class=”items”）"></a>欄位col的處理（class=”items”）</h2><pre><code class="css">.section-features h3{
+  font-weight: 300;
+  font-size: 110%;
+  text-transform: uppercase;
 
+  margin-bottom: 15px;
+}
+.section-features .items {
+  padding:1% ;
 
-<h2 id="欄位col的處理（class-”items”）"><a href="#欄位col的處理（class-”items”）" class="headerlink" title="欄位col的處理（class=”items”）"></a>欄位col的處理（class=”items”）</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.section-features</span> <span class="selector-tag">h3</span>&#123;</span><br><span class="line">  <span class="attribute">font-weight</span>: <span class="number">300</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">110%</span>;</span><br><span class="line">  <span class="attribute">text-transform</span>: uppercase;</span><br><span class="line">  </span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">15px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.section-features</span> <span class="selector-class">.items</span> &#123;</span><br><span class="line">  <span class="attribute">padding</span>:<span class="number">1%</span> ;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.section-features</span> <span class="selector-class">.items</span> <span class="selector-tag">p</span>&#123;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">145%</span>;</span><br><span class="line">  <span class="attribute">font-size</span>:<span class="number">90%</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+}
 
+.section-features .items p{
+  line-height: 145%;
+  font-size:90% ;
+}</code></pre>
 <p><img src="https://i.imgur.com/Sr0NhBr.png" alt=""></p>
 <hr>
 <h1 id="食物照片區"><a href="#食物照片區" class="headerlink" title="食物照片區"></a>食物照片區</h1><p><img src="https://i.imgur.com/BzV03pk.png" alt=""></p>
 <ul>
 <li>這裏的內容不適用<code>.row</code>來包覆，因為我們希望它的寬度可以站滿橫向的視窗</li>
 </ul>
-<h3 id="html結構"><a href="#html結構" class="headerlink" title="html結構"></a>html結構</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"section-maels"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 要製作2列各4格的食物照片，這裏使用ul,li的方式排列 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"meals-showcase"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/1.jpg"</span> <span class="attr">alt</span>=<span class="string">"Korean bibimbap with egg and vegetables"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/2.jpg"</span> <span class="attr">alt</span>=<span class="string">"Simple italian pizza with cherry tomatoes"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/3.jpg"</span> <span class="attr">alt</span>=<span class="string">"Chicken breast steak with vegetables"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/4.jpg"</span> <span class="attr">alt</span>=<span class="string">"Autumn pumpkin soup"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"meals-showcase"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/5.jpg"</span> <span class="attr">alt</span>=<span class="string">"Paleo beef steak with vegetables"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/6.jpg"</span> <span class="attr">alt</span>=<span class="string">"Healthy baguette with egg and vegetables"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/7.jpg"</span> <span class="attr">alt</span>=<span class="string">"Burger with cheddar and bacon"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/8.jpg"</span> <span class="attr">alt</span>=<span class="string">"Granola with cherries and strawberries"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="html結構"><a href="#html結構" class="headerlink" title="html結構"></a>html結構</h3><pre><code class="html">
+  &lt;section class=&quot;section-maels&quot;&gt;
+    &lt;!-- 要製作2列各4格的食物照片，這裏使用ul,li的方式排列 --&gt;
+    &lt;ul class=&quot;meals-showcase&quot;&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/1.jpg&quot; alt=&quot;Korean bibimbap with egg and vegetables&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/2.jpg&quot; alt=&quot;Simple italian pizza with cherry tomatoes&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/3.jpg&quot; alt=&quot;Chicken breast steak with vegetables&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/4.jpg&quot; alt=&quot;Autumn pumpkin soup&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+
+
+    &lt;/ul&gt;
+
+    &lt;ul class=&quot;meals-showcase&quot;&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/5.jpg&quot; alt=&quot;Paleo beef steak with vegetables&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/6.jpg&quot; alt=&quot;Healthy baguette with egg and vegetables&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/7.jpg&quot; alt=&quot;Burger with cheddar and bacon&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/8.jpg&quot; alt=&quot;Granola with cherries and strawberries&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+
+    &lt;/ul&gt;
+
+
+  &lt;/section&gt;</code></pre>
 <p><img src="https://i.imgur.com/zBU6WCx.png" alt=""></p>
 <ul>
 <li>設定此區塊滿版，並讓他們設定為區塊</li>
 <li>讓li，每個設定寬度為25%(4個共100％)，並利用float使他們比鄰排列</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.meals-showcase</span>&#123;</span><br><span class="line">  <span class="attribute">list-style</span>: none; <span class="comment">/* 去除ul的預設樣式*/</span></span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.meals-showcase</span> <span class="selector-tag">li</span>&#123;</span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">25%</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">.meals-showcase{
+  list-style: none; /* 去除ul的預設樣式*/
+  display: block;
+  width: 100%;
 
+}
+.meals-showcase li{
+  float: left;
+  width: 25%;
+}</code></pre>
 <p><img src="https://i.imgur.com/jaYired.jpg" alt=""></p>
 <ul>
 <li>上面的照片並未合乎大小，以及置中</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.meals-showcase</span> <span class="selector-tag">figure</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.meals-showcase</span> <span class="selector-tag">figure</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">.meals-showcase figure{
+  width: 100%;
 
+}
+.meals-showcase figure img{
+  width: 100%;
+
+
+}</code></pre>
 <p><img src="https://i.imgur.com/XNsC9JM.jpg" alt=""></p>
 <ul>
 <li>去除上圖的空隙vertical-align: middle;</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.meals-showcase</span> <span class="selector-tag">figure</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">vertical-align</span>: middle;&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">.meals-showcase figure img{
+  width: 100%;
+  vertical-align: middle;}
 
+</code></pre>
 <p><img src="https://i.imgur.com/QsAwjZx.jpg" alt=""></p>
 <h2 id="加入文字區在圖片上方"><a href="#加入文字區在圖片上方" class="headerlink" title="加入文字區在圖片上方"></a>加入文字區在圖片上方</h2><p>製作圖片被摸到，有圖片縮放的動畫</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.meals-showcase</span> <span class="selector-tag">figure</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">vertical-align</span>: middle;</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1.15</span>);</span><br><span class="line"><span class="attribute">transition</span>: transform .<span class="number">5s</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.meals-showcase</span> <span class="selector-tag">figure</span><span class="selector-pseudo">:hover</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css=">.meals-showcase figure img{
+  width: 100%;
+  vertical-align: middle;
+transform: scale(1.15);
+transition: transform .5s;
 
-
+}
+.meals-showcase figure:hover img{
+  transform: scale(1);
+}</code></pre>
 <ul>
 <li><h3 id="當圖片的scale被放大，會超出原有容器"><a href="#當圖片的scale被放大，會超出原有容器" class="headerlink" title="當圖片的scale被放大，會超出原有容器"></a>當圖片的scale被放大，會超出原有容器</h3><ul>
 <li>處理方式：在所在的容器，設定overflow: hidden; </li>
@@ -523,17 +400,68 @@
 </li>
 </ul>
 <p><img src="https://i.imgur.com/ADUUni8.jpg" alt=""></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.meals-showcase</span> <span class="selector-tag">figure</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">  <span class="attribute">background-color</span>:<span class="number">#000</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.meals-showcase</span> <span class="selector-tag">figure</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">vertical-align</span>: middle;</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1.15</span>);</span><br><span class="line"><span class="attribute">transition</span>: transform .<span class="number">5s</span> ,opicity .<span class="number">5s</span>;</span><br><span class="line"><span class="attribute">opacity</span>: <span class="number">0.7</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.meals-showcase</span> <span class="selector-tag">figure</span><span class="selector-pseudo">:hover</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1</span>);</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">.meals-showcase figure{
+  width: 100%;
+  overflow: hidden;
+  background-color:#000;
 
+}
+.meals-showcase figure img{
+  width: 100%;
+  vertical-align: middle;
+transform: scale(1.15);
+transition: transform .5s ,opicity .5s;
+opacity: 0.7;
+}
+.meals-showcase figure:hover img{
+  transform: scale(1);
+  opacity: 1;
+}
+</code></pre>
 <p><img src="https://i.imgur.com/okb9F66.jpg" alt=""></p>
 <hr>
 <h1 id="訂餐方法介紹-的介面"><a href="#訂餐方法介紹-的介面" class="headerlink" title="訂餐方法介紹 的介面"></a>訂餐方法介紹 的介面</h1><p><img src="https://i.imgur.com/HxrpNQG.png" alt=""></p>
 <ul>
 <li>html的結構</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"meal-steps"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 在row裡面，放一個h2標題，在增加一個row的div，使用grid兩欄的class --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span>How it works - Simple as 1, 2, 3<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 左欄 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-2-of-4"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/app-iPhone.png"</span> <span class="attr">alt</span>=<span class="string">"Omnifood-app"</span> <span class="attr">class</span>=<span class="string">"app-screen"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-------- 右欄 ------&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-2-of-4"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"work-step"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>Choose the subscription plan that best fits your needs and sign up today.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"work-step"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>Order your delicious meal using our mobile app or website. Or you can even call us!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"work-step"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>Enjoy your meal after less than 20 minutes. See you the next time!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!------- 與步驟同一欄，下載的按鈕使用&lt;a&gt; ------&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/download-app.svg"</span> <span class="attr">alt</span>=<span class="string">"apple store button"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/download-app-android.png"</span> <span class="attr">alt</span>=<span class="string">"play store button"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">&lt;section class=&quot;meal-steps&quot;&gt;
+    &lt;!-- 在row裡面，放一個h2標題，在增加一個row的div，使用grid兩欄的class --&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;h2&gt;How it works - Simple as 1, 2, 3&lt;/h2&gt;
+
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;!-- 左欄 --&gt;
+      &lt;div class=&quot;col span-2-of-4&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/app-iPhone.png&quot; alt=&quot;Omnifood-app&quot; class=&quot;app-screen&quot;&gt;
+      &lt;/div&gt;
+      &lt;!-------- 右欄 ------&gt;
+      &lt;div class=&quot;col span-2-of-4&quot;&gt;
+        &lt;div class=&quot;work-step&quot;&gt;
+          &lt;div&gt;1&lt;/div&gt;
+          &lt;p&gt;Choose the subscription plan that best fits your needs and sign up today.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;work-step&quot;&gt;
+          &lt;div&gt;2&lt;/div&gt;
+          &lt;p&gt;Order your delicious meal using our mobile app or website. Or you can even call us!&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;work-step&quot;&gt;
+          &lt;div&gt;3&lt;/div&gt;
+          &lt;p&gt;Enjoy your meal after less than 20 minutes. See you the next time!&lt;/p&gt;
+        &lt;/div&gt;
+&lt;!------- 與步驟同一欄，下載的按鈕使用&lt;a&gt; ------&gt;
+
+        &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;./Omnifood Contents/download-app.svg&quot; alt=&quot;apple store button&quot;&gt;&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;./Omnifood Contents/download-app-android.png&quot; alt=&quot;play store button&quot;&gt;&lt;/a&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
 
 
+  &lt;/section&gt;
+
+
+</code></pre>
 <p><img src="https://i.imgur.com/F9MrnmA.png" alt=""></p>
 <ul>
 <li><h3 id="標題調整"><a href="#標題調整" class="headerlink" title="標題調整"></a>標題調整</h3></li>
@@ -541,31 +469,133 @@
 <p>:first-child</p>
 <p>圖片靠右：text-align: right;</p>
 <h4 id="右欄文字區"><a href="#右欄文字區" class="headerlink" title="右欄文字區"></a>右欄文字區</h4><p>在數字部分：要讓他與文字區能夠排列，使用inline-block,float<br>    數字的外圈：參考以下css</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.work-step</span>&#123;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">50px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  <span class="selector-class">.work-step</span> <span class="selector-tag">div</span>&#123;</span><br><span class="line"> </span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">color</span>:<span class="number">#e67e22</span> ;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">2px</span> solid <span class="number">#e67e22</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css=">.work-step{
+  display: inline-block;
+  margin-bottom: 50px;
+}
+
+  .work-step div{
+
+  float: left;
+  color:#e67e22 ;
+  border: 2px solid #e67e22;
+  border-radius: 50%;
+  }</code></pre>
 <p><img src="https://i.imgur.com/cPpSW9S.png" alt=""></p>
-<h4 id="讓圓形變圓，增加寬高"><a href="#讓圓形變圓，增加寬高" class="headerlink" title="讓圓形變圓，增加寬高"></a>讓圓形變圓，增加寬高</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.work-step</span> <span class="selector-tag">div</span>&#123;</span><br><span class="line"><span class="attribute">height</span>: <span class="number">55px</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">55px</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">150%</span>;&#125;</span><br></pre></td></tr></table></figure>
-
-
+<h4 id="讓圓形變圓，增加寬高"><a href="#讓圓形變圓，增加寬高" class="headerlink" title="讓圓形變圓，增加寬高"></a>讓圓形變圓，增加寬高</h4><pre><code class="css=">.work-step div{
+height: 55px;
+  width: 55px;
+  text-align: center;
+  padding: 5px;
+  font-size: 150%;}</code></pre>
 <p><img src="https://i.imgur.com/odR0Tm5.png" alt=""></p>
 <ul>
 <li>margin-right: 25px;</li>
 </ul>
 <p><img src="https://i.imgur.com/OHIFt8g.png" alt=""></p>
 <h2 id="按鈕的處理"><a href="#按鈕的處理" class="headerlink" title="按鈕的處理"></a>按鈕的處理</h2><p><img src="https://i.imgur.com/NOTJn47.png" alt=""></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.btn-app</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">width</span>: auto;</span><br><span class="line">  <span class="attribute">margin-right</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<pre><code class="css=">.btn-app img{
+  height: 50px;
+  width: auto;
+  margin-right: 10px;
+}</code></pre>
 <h1 id="地點資訊"><a href="#地點資訊" class="headerlink" title="地點資訊"></a>地點資訊</h1><p><img src="https://i.imgur.com/zvBsOgb.png" alt=""></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"section-cities"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span>We're currently in these cities<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 第一個地點 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-4 items"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/lisbon-3.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>Lisbon<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"person"</span> <span class="attr">class</span>=<span class="string">"person"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          1600+ happy eaters</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"star"</span> <span class="attr">class</span>=<span class="string">"star"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          60+ top chefs</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"logo-twitter"</span> <span class="attr">class</span>=<span class="string">"logo-twitter"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          @omnifood_lx</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 第二個地點 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-4 items"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/san-francisco.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>San Francisco<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"person"</span> <span class="attr">class</span>=<span class="string">"person"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          3700+ happy eaters</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"star"</span> <span class="attr">class</span>=<span class="string">"star"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          160+ top chefs</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"logo-twitter"</span> <span class="attr">class</span>=<span class="string">"logo-twitter"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          @omnifood_sf</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 第三個地點 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-4 items"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/berlin.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>Berlin<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"person"</span> <span class="attr">class</span>=<span class="string">"person"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          2300+ happy eaters</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"star"</span> <span class="attr">class</span>=<span class="string">"star"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          110+ top chefs</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"logo-twitter"</span> <span class="attr">class</span>=<span class="string">"logo-twitter"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          @omnifood_berlin</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 第四個地點 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-4 items"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/london.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span>London<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"person"</span> <span class="attr">class</span>=<span class="string">"person"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          1200+ happy eaters</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"star"</span> <span class="attr">class</span>=<span class="string">"star"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          50+ top chefs</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"city-features"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"logo-twitter"</span> <span class="attr">class</span>=<span class="string">"logo-twitter"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">          @omnifood_london</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">&lt;section class=&quot;section-cities&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;h2&gt;We&#39;re currently in these cities&lt;/h2&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;!-- 第一個地點 --&gt;
+      &lt;div class=&quot;col span-1-of-4 items&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/lisbon-3.jpg&quot; alt=&quot;&quot;&gt;
+        &lt;h3&gt;Lisbon&lt;/h3&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;person&quot; class=&quot;person&quot;&gt;&lt;/ion-icon&gt;
+          1600+ happy eaters
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;star&quot; class=&quot;star&quot;&gt;&lt;/ion-icon&gt;
+          60+ top chefs
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitter&quot;&gt;&lt;/ion-icon&gt;
+          @omnifood_lx
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- 第二個地點 --&gt;
+      &lt;div class=&quot;col span-1-of-4 items&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/san-francisco.jpg&quot; alt=&quot;&quot;&gt;
+        &lt;h3&gt;San Francisco&lt;/h3&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;person&quot; class=&quot;person&quot;&gt;&lt;/ion-icon&gt;
+          3700+ happy eaters
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;star&quot; class=&quot;star&quot;&gt;&lt;/ion-icon&gt;
+          160+ top chefs
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitter&quot;&gt;&lt;/ion-icon&gt;
+          @omnifood_sf
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- 第三個地點 --&gt;
+      &lt;div class=&quot;col span-1-of-4 items&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/berlin.jpg&quot; alt=&quot;&quot;&gt;
+        &lt;h3&gt;Berlin&lt;/h3&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;person&quot; class=&quot;person&quot;&gt;&lt;/ion-icon&gt;
+          2300+ happy eaters
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;star&quot; class=&quot;star&quot;&gt;&lt;/ion-icon&gt;
+          110+ top chefs
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitter&quot;&gt;&lt;/ion-icon&gt;
+          @omnifood_berlin
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- 第四個地點 --&gt;
+      &lt;div class=&quot;col span-1-of-4 items&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/london.jpg&quot; alt=&quot;&quot;&gt;
+        &lt;h3&gt;London&lt;/h3&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;person&quot; class=&quot;person&quot;&gt;&lt;/ion-icon&gt;
+          1200+ happy eaters
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;star&quot; class=&quot;star&quot;&gt;&lt;/ion-icon&gt;
+          50+ top chefs
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitter&quot;&gt;&lt;/ion-icon&gt;
+          @omnifood_london
+        &lt;/div&gt;
 
+      &lt;/div&gt;
 
-
+  &lt;/section&gt;</code></pre>
 <p><img src="https://i.imgur.com/gC2Om3f.png" alt=""></p>
 <p><img src="https://i.imgur.com/YzSZlES.jpg" alt=""></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.section-cities</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">vertical-align</span>: middle;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">15px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css=">.section-cities img{
+  width: 100%;
+  vertical-align: middle;
+  margin-bottom: 15px;
+}</code></pre>
+<pre><code class="css=">.section-cities .icon-small{
+  color: #e67e22;
+ display: inline-block;
+ text-align: center;
+ font-size: 120%;
+ margin-right: 10px;
 
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.section-cities</span> <span class="selector-class">.icon-small</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#e67e22</span>;</span><br><span class="line"> <span class="attribute">display</span>: inline-block;</span><br><span class="line"> <span class="attribute">text-align</span>: center;</span><br><span class="line"> <span class="attribute">font-size</span>: <span class="number">120%</span>;</span><br><span class="line"> <span class="attribute">margin-right</span>: <span class="number">10px</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/*讓icon與文字，置中、對其*/</span></span><br><span class="line"> <span class="attribute">line-height</span>: <span class="number">120%</span>;</span><br><span class="line"> <span class="attribute">vertical-align</span>: middle;</span><br><span class="line"> <span class="attribute">margin-top</span>: -<span class="number">5px</span>;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+/*讓icon與文字，置中、對其*/
+ line-height: 120%;
+ vertical-align: middle;
+ margin-top: -5px;
 
+}</code></pre>
 <p><img src="https://i.imgur.com/1s1kBSH.png" alt=""></p>
 <h1 id="顧客回饋區"><a href="#顧客回饋區" class="headerlink" title="顧客回饋區"></a>顧客回饋區</h1><p><img src="https://i.imgur.com/621x3W2.png" alt=""></p>
 <ul>
@@ -573,15 +603,57 @@
 <li>用<code>&lt;blockquote&gt;</code>來包顧客的回饋文字</li>
 <li>並加入顧客的頭像以及姓名</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"section-testimonials"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Our customers can't live without us<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-3"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">blockquote</span>&gt;</span></span><br><span class="line">          Omnifood is just awesome! I just launched a startup which leaves me with no time for cooking, so Omnifood is a</span><br><span class="line">          life-saver. Now that I got used to it, I couldn't live without my daily meals!</span><br><span class="line">          <span class="tag">&lt;<span class="name">cite</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/customer-1.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span>Alberto Duncan<span class="tag">&lt;/<span class="name">cite</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">blockquote</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-3"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">blockquote</span>&gt;</span></span><br><span class="line">          Inexpensive, healthy and great-tasting meals, delivered right to my home. We have lots of food delivery here</span><br><span class="line">          in Lisbon,</span><br><span class="line">          but no one comes even close to Omifood. Me and my family are so in love!</span><br><span class="line">          <span class="tag">&lt;<span class="name">cite</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/customer-2.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span>Joana Silva<span class="tag">&lt;/<span class="name">cite</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">blockquote</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-3"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">blockquote</span>&gt;</span></span><br><span class="line">          I was looking for a quick and easy food delivery service in San Franciso. I tried a lot of them and ended up</span><br><span class="line">          with</span><br><span class="line">          Omnifood. Best food delivery service in the Bay Area. Keep up the great work!</span><br><span class="line">          <span class="tag">&lt;<span class="name">cite</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./Omnifood Contents/customer-3.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span>Milton Chapman<span class="tag">&lt;/<span class="name">cite</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">blockquote</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">&lt;section class=&quot;section-testimonials&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;h2&gt;Our customers can&#39;t live without us&lt;/h2&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;div class=&quot;col span-1-of-3&quot;&gt;
 
+        &lt;blockquote&gt;
+          Omnifood is just awesome! I just launched a startup which leaves me with no time for cooking, so Omnifood is a
+          life-saver. Now that I got used to it, I couldn&#39;t live without my daily meals!
+          &lt;cite&gt;&lt;img src=&quot;./Omnifood Contents/customer-1.jpg&quot; alt=&quot;&quot;&gt;Alberto Duncan&lt;/cite&gt;
+        &lt;/blockquote&gt;
+
+      &lt;/div&gt;
+      &lt;div class=&quot;col span-1-of-3&quot;&gt;
+
+        &lt;blockquote&gt;
+          Inexpensive, healthy and great-tasting meals, delivered right to my home. We have lots of food delivery here
+          in Lisbon,
+          but no one comes even close to Omifood. Me and my family are so in love!
+          &lt;cite&gt;&lt;img src=&quot;./Omnifood Contents/customer-2.jpg&quot; alt=&quot;&quot;&gt;Joana Silva&lt;/cite&gt;
+        &lt;/blockquote&gt;
+
+      &lt;/div&gt;
+
+      &lt;div class=&quot;col span-1-of-3&quot;&gt;
+
+        &lt;blockquote&gt;
+          I was looking for a quick and easy food delivery service in San Franciso. I tried a lot of them and ended up
+          with
+          Omnifood. Best food delivery service in the Bay Area. Keep up the great work!
+          &lt;cite&gt;&lt;img src=&quot;./Omnifood Contents/customer-3.jpg&quot; alt=&quot;&quot;&gt;Milton Chapman&lt;/cite&gt;
+        &lt;/blockquote&gt;
+
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+
+
+  &lt;/section&gt;
+</code></pre>
 <p><img src="https://i.imgur.com/LMPlqlx.png" alt=""></p>
 <ul>
 <li>先做背景的處理</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.section-testimonials</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>:<span class="built_in">linear-gradient</span>(<span class="number">0deg</span>,rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,.<span class="number">7</span>),<span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,.<span class="number">7</span>)) center center, <span class="built_in">url</span>(./Omnifood\ Contents/back-customers.jpg)<span class="built_in">no-repeat</span> center center/cover ;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">background-attachment</span>: fixed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<pre><code class="css=">.section-testimonials {
+  background:linear-gradient(0deg,rgba(0,0,0,.7),rgba(0,0,0,.7)) center center, url(./Omnifood\ Contents/back-customers.jpg)no-repeat center center/cover ;
+  color: #fff;
+  background-attachment: fixed;
+}</code></pre>
 <p><img src="https://i.imgur.com/ofR8ghb.png" alt=""></p>
 <ul>
 <li>增加相片背景</li>
@@ -595,9 +667,17 @@
 </ul>
 <p><img src="https://i.imgur.com/bifGooB.png" alt=""></p>
 <h3 id="增加上面逗點符號"><a href="#增加上面逗點符號" class="headerlink" title="增加上面逗點符號"></a>增加上面逗點符號</h3><p><a href="https://css-tricks.com/snippets/html/glyphs/" target="_blank" rel="noopener">符號表</a></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.section-testimonials</span> <span class="selector-tag">blockquote</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line"> <span class="attribute">content</span>:<span class="string">"\201C"</span>;</span><br><span class="line"> <span class="attribute">font-size</span>:<span class="number">500%</span>;</span><br><span class="line"> <span class="attribute">display</span>: block;</span><br><span class="line"></span><br><span class="line"><span class="attribute">position</span>: absolute;</span><br><span class="line"><span class="attribute">top</span>: -<span class="number">5px</span>;</span><br><span class="line"><span class="attribute">left</span>: -<span class="number">5px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css=">.section-testimonials blockquote:before{
+ content:&quot;\201C&quot;;
+ font-size:500%;
+ display: block;
 
+position: absolute;
+top: -5px;
+left: -5px;
+}
 
+}</code></pre>
 <p><img src="https://i.imgur.com/MJpSGz0.png" alt=""></p>
 <h1 id="訂購方案介紹區"><a href="#訂購方案介紹區" class="headerlink" title="訂購方案介紹區"></a>訂購方案介紹區</h1><p><img src="https://i.imgur.com/6tr0o3E.png" alt=""></p>
 <p><img src="https://i.imgur.com/8lTrnUY.png" alt=""></p>
@@ -621,378 +701,182 @@
 <ul>
 <li>放入相關連結的icon</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-2"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"footer-nav"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>About us<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Blog<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Press<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Android App<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col span-1-of-2 "</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"socilmedia-link"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"logo-facebook"</span> <span class="attr">class</span>=<span class="string">"logo-facebook"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"logo-twitter"</span> <span class="attr">class</span>=<span class="string">"logo-twitte"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"logo-google"</span> <span class="attr">class</span>=<span class="string">"logo-google"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"logo-instagram"</span> <span class="attr">class</span>=<span class="string">"logo-instagram"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">          copyright <span class="symbol">&amp;copy;</span> 2020 by Omnifood. All right reserved.</span><br><span class="line">        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">&lt;footer&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;div class=&quot;col span-1-of-2&quot;&gt;
+        &lt;ul class=&quot;footer-nav&quot;&gt;
+
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About us&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Blog&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Press&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Android App&lt;/a&gt;&lt;/li&gt;
+
+        &lt;/ul&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;col span-1-of-2 &quot;&gt;
+
+        &lt;ul class=&quot;socilmedia-link&quot;&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;
+              &lt;ion-icon name=&quot;logo-facebook&quot; class=&quot;logo-facebook&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;
+              &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitte&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;
+              &lt;ion-icon name=&quot;logo-google&quot; class=&quot;logo-google&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;
+              &lt;ion-icon name=&quot;logo-instagram&quot; class=&quot;logo-instagram&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/a&gt;&lt;/li&gt;
+
+        &lt;/ul&gt;
+
+
+      &lt;/div&gt;
+      &lt;div class=&quot;row&quot;&gt;
+
+        &lt;p&gt;
+          copyright &amp;copy; 2020 by Omnifood. All right reserved.
+        &lt;/p&gt;
+
+      &lt;/div&gt;
 
 
 
+    &lt;/div&gt;
+
+
+
+
+
+  &lt;/footer&gt;
+</code></pre>
 <p><img src="https://i.imgur.com/X2b2hfu.png" alt=""></p>
 <ul>
 <li>使用float來使物件放置左右側</li>
 <li>footer-nav li使用inline-block</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="selector-tag">footer</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#333</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">80%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">footer</span> <span class="selector-class">.footer-nav</span>&#123;</span><br><span class="line">  <span class="attribute">list-style</span>: none;</span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.socilmedia-link</span>&#123;</span><br><span class="line">  <span class="attribute">list-style</span>: none;</span><br><span class="line">  <span class="attribute">float</span>: right;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.footer-nav</span> <span class="selector-tag">li</span>,<span class="selector-class">.socilmedia-link</span> <span class="selector-tag">li</span>&#123;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">margin-right</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="css"> footer{
+  background-color: #333;
+  padding: 50px;
+  font-size: 80%;
+}
+footer .footer-nav{
+  list-style: none;
+  float: left;
+}
+.socilmedia-link{
+  list-style: none;
+  float: right;
+}
+.footer-nav li,.socilmedia-link li{
+  display: inline-block;
+  margin-right: 20px;
+} </code></pre>
 <p><img src="https://i.imgur.com/Uph2clO.png" alt=""></p>
-<h3 id="連結顏色調整"><a href="#連結顏色調整" class="headerlink" title="連結顏色調整"></a>連結顏色調整</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer-nav</span> <span class="selector-tag">li</span><span class="selector-pseudo">:last-child</span>,<span class="selector-class">.socilmedia-link</span> <span class="selector-tag">li</span><span class="selector-pseudo">:last-child</span>&#123;</span><br><span class="line">  <span class="attribute">margin-right</span>: <span class="number">0px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.footer-nav</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:link</span> ,<span class="selector-class">.footer-nav</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:visited</span>, <span class="selector-class">.socilmedia-link</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:link</span> ,<span class="selector-class">.socilmedia-link</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:visited</span>&#123;</span><br><span class="line"> <span class="attribute">text-decoration</span>: none;</span><br><span class="line"> <span class="attribute">border</span>: none;</span><br><span class="line"> <span class="attribute">color</span>: <span class="number">#888</span>;</span><br><span class="line"> <span class="attribute">transition</span>: color .<span class="number">3s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.footer-nav</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span> ,<span class="selector-class">.footer-nav</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:active</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#ddd</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.socilmedia-link</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:link</span>,<span class="selector-class">.socilmedia-link</span>  <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">:visited</span>&#123;</span><br><span class="line"> <span class="attribute">font-size</span>: <span class="number">160%</span>;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="連結顏色調整"><a href="#連結顏色調整" class="headerlink" title="連結顏色調整"></a>連結顏色調整</h3><pre><code class="css">.footer-nav li:last-child,.socilmedia-link li:last-child{
+  margin-right: 0px;
+}
+
+.footer-nav li a:link ,.footer-nav li a:visited, .socilmedia-link li a:link ,.socilmedia-link li a:visited{
+ text-decoration: none;
+ border: none;
+ color: #888;
+ transition: color .3s;
+}
 
 
+.footer-nav li a:hover ,.footer-nav li a:active{
+  color: #ddd;
+
+}
+
+.socilmedia-link li a:link,.socilmedia-link  li a:visited{
+ font-size: 160%;
+
+}
+</code></pre>
 <p><img src="https://i.imgur.com/A2Z6Meh.png" alt=""></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">footer</span> <span class="selector-tag">p</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>:<span class="number">#888</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  </span><br><span class="line">  <span class="attribute">margin-top</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.logo-instagram</span>,</span><br><span class="line"><span class="selector-class">.logo-google</span>,</span><br><span class="line"><span class="selector-class">.logo-twitte</span>,</span><br><span class="line"><span class="selector-class">.logo-facebook</span>&#123;</span><br><span class="line"><span class="attribute">transition</span>: color .<span class="number">3s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.logo-instagram</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#517fa4</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.logo-google</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#dd4b39</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.logo-twitte</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#00aced</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.logo-facebook</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#3b5998</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">footer p{
+  color:#888;
+  text-align: center;
+
+  margin-top: 20px;
+}
+
+.logo-instagram,
+.logo-google,
+.logo-twitte,
+.logo-facebook{
+transition: color .3s;
+}
+
+.logo-instagram:hover{
+  color: #517fa4;
+}
+.logo-google:hover{
+  color: #dd4b39;
+}
+.logo-twitte:hover{
+  color: #00aced;
+}
+.logo-facebook:hover{
+  color: #3b5998;
+} </code></pre>
 <p><img src="https://i.imgur.com/bLtpdK7.png" alt=""></p>
 <hr>
-<h1 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h1><h2 id="background與background-imge之差別"><a href="#background與background-imge之差別" class="headerlink" title="background與background-imge之差別"></a><code>background</code>與<code>background-imge</code>之差別</h2><div class="alert info no-icon"><p>background属性是整體設置的，background image是background的属性之一，background的屬性包括<br>background-color<br>background-image<br>background-repeat<br>background-attachment<br>background-position，<br>你看不到圖片是因为設置錯，不能加no-repeat屬性，應改為：<br>background-image:url(“some.jpg”); background-repeat:no-repeat;分開寫</p>
-<p><a href="https://bbs.csdn.net/topics/310167508" target="_blank" rel="noopener">background和background-image什么区别</a></p>
-</div>
+<h1 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h1><h2 id="background與background-imge之差別"><a href="#background與background-imge之差別" class="headerlink" title="background與background-imge之差別"></a><code>background</code>與<code>background-imge</code>之差別</h2><pre><code>background属性是整體設置的，background image是background的属性之一，background的屬性包括
+background-color
+background-image
+background-repeat
+background-attachment
+background-position，
+你看不到圖片是因为設置錯，不能加no-repeat屬性，應改為：
+background-image:url(&quot;some.jpg&quot;); background-repeat:no-repeat;分開寫
 
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line"><span class="attribute">background-image</span>:<span class="built_in">url</span>(./Omnifood\ Contents/hero.jpg) ;</span><br><span class="line"></span><br><span class="line"><span class="attribute">background-size</span>: cover;</span><br><span class="line"><span class="attribute">background-position</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/********我改為下面這樣*******/</span></span><br><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line"><span class="attribute">background</span>: <span class="built_in">url</span>(./Omnifood\ Contents/hero.jpg) no-repeat</span><br><span class="line"> center center/cover;&#125;</span><br></pre></td></tr></table></figure>
+[background和background-image什么区别](https://bbs.csdn.net/topics/310167508)</code></pre><pre><code class="css">.header{
+background-image:url(./Omnifood\ Contents/hero.jpg) ;
 
+background-size: cover;
+background-position: center;
+}
+/********我改為下面這樣*******/
+.header{
+background: url(./Omnifood\ Contents/hero.jpg) no-repeat
+ center center/cover;}</code></pre>
 <h2 id="文字框置中（區塊（div）的垂直置中）"><a href="#文字框置中（區塊（div）的垂直置中）" class="headerlink" title="文字框置中（區塊（div）的垂直置中）"></a>文字框置中（區塊（div）的垂直置中）</h2><blockquote>
 <p>pjchender</p>
 <blockquote>
 <p>Position + Transform（常用）:先利用 position: absolute 把 top: 50% 設在 50%；接著再透過 transform: translateY(-50%) 把超過的部分修正回來，達到垂直置中。</p>
 </blockquote>
 </blockquote>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.hero-text-box</span>&#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">1140px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">flex-direction</span>: column; </span><br><span class="line">  </span><br><span class="line">   <span class="attribute">align-items</span>: center; </span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css=">.hero-text-box{
+  display: flex;
+  width: 1140px;
+  height: 100%;
+  flex-direction: column; 
 
+   align-items: center; 
+  justify-content: center;
+} </code></pre>
 <p>參考：<br><a href="https://pjchender.blogspot.com/2015/04/css_15.html" target="_blank" rel="noopener">pjchender</a></p>
 <h2 id="使用button-vs-link"><a href="#使用button-vs-link" class="headerlink" title="使用button vs link"></a>使用<code>button</code> vs <code>link</code></h2><p><a href="https://a11y-101.com/design/button-vs-link" target="_blank" rel="noopener">Button versus Link</a></p>
-<div class="alert info no-icon"><p>From a semantics and accessibility viewpoint:<br>Links <code>(&lt;a&gt;)</code>are for “going someplace” such as “jumping to a different section of a page, going to another URL, etc.<br>Whereas<br>Buttons <code>&lt;button&gt;</code>are for “doing something” such as a function on the page to expand/collapse a menu, submit a form or etc.</p>
-</div>
-<h2 id="grid參考資料"><a href="#grid參考資料" class="headerlink" title="grid參考資料"></a><code>grid</code>參考資料</h2><p><a href="http://www.responsivegridsystem.com/" target="_blank" rel="noopener">Spectacularly Easy Responsive Design</a><br><a href="https://blog.hinablue.me/css-grid-layout/" target="_blank" rel="noopener">關於 Grid Layout 的使用姿勢</a><br><a href="https://www.youtube.com/watch?v=uZRkVOeRHws" target="_blank" rel="noopener">六角學院 - Bootstrap Grid System 原理介紹</a></p>
+<pre><code>From a semantics and accessibility viewpoint:
+Links ``(&lt;a&gt;) ``are for &quot;going someplace&quot; such as &quot;jumping to a different section of a page, going to another URL, etc.
+Whereas
+Buttons ``&lt;button&gt; ``are for &quot;doing something&quot; such as a function on the page to expand/collapse a menu, submit a form or etc.</code></pre><h2 id="grid參考資料"><a href="#grid參考資料" class="headerlink" title="grid參考資料"></a><code>grid</code>參考資料</h2><p><a href="http://www.responsivegridsystem.com/" target="_blank" rel="noopener">Spectacularly Easy Responsive Design</a><br><a href="https://blog.hinablue.me/css-grid-layout/" target="_blank" rel="noopener">關於 Grid Layout 的使用姿勢</a><br><a href="https://www.youtube.com/watch?v=uZRkVOeRHws" target="_blank" rel="noopener">六角學院 - Bootstrap Grid System 原理介紹</a></p>
 <h3 id="margin-與-paggimg"><a href="#margin-與-paggimg" class="headerlink" title="margin 與 paggimg"></a><code>margin</code> 與 <code>paggimg</code></h3><p>製作steps區塊時，因設定section的margin距離<br>使得想在此區塊多加上背景色彩，有了中間的空白處</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.meal-steps</span>&#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#f4f4f4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">.meal-steps{
+  background: #f4f4f4;
+}</code></pre>
 <ul>
-<li>這裏應該改為padding<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">section</span>&#123;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">80px</span> <span class="number">0</span>; </span><br><span class="line">  <span class="comment">/*margin: 80px 0;*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<li>這裏應該改為padding<pre><code class="css">section{
+padding: 80px 0; 
+/*margin: 80px 0;*/
+}</code></pre>
 </li>
 </ul>
 <p><img src="https://i.imgur.com/ss2XfZd.png" alt=""></p>
 <h3 id="練習後的小心得："><a href="#練習後的小心得：" class="headerlink" title="練習後的小心得："></a>練習後的小心得：</h3><p>1.在html建構會使用<code>.row</code><br>2.應用grid,css<br>3.內部，字的大小用百分比<br>4.有一些可以共用的區塊，可以放在reuse區塊，並設一樣的class名稱，在建構時，可以更快速</p>
-
-            
-
-
-        </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/CSS/" rel="tag">CSS</a> <a class="tag tag--primary tag--small t-link" href="/tags/grid/" rel="tag">grid</a> <a class="tag tag--primary tag--small t-link" href="/tags/icon/" rel="tag">icon</a> <a class="tag tag--primary tag--small t-link" href="/tags/opacity/" rel="tag">opacity</a> <a class="tag tag--primary tag--small t-link" href="/tags/udemy/" rel="tag">udemy</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E5%A4%9A%E9%87%8D%E8%83%8C%E6%99%AF/" rel="tag">多重背景</a>
-
-            </div>
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/12/13/portfolio-web-page/"
-                    data-tooltip="CSS練習- portfolio web page 作品集網頁"
-                    aria-label="PREVIOUS: CSS練習- portfolio web page 作品集網頁"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/28/csscoke-NO013/"
-                    data-tooltip="Amos金魚都能懂的切版教學影片- csscoke NO013"
-                    aria-label="NEXT: Amos金魚都能懂的切版教學影片- csscoke NO013"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-        
-        
-            
-        
-    </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
-    </span>
-</footer>
-
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/12/13/portfolio-web-page/"
-                    data-tooltip="CSS練習- portfolio web page 作品集網頁"
-                    aria-label="PREVIOUS: CSS練習- portfolio web page 作品集網頁"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/28/csscoke-NO013/"
-                    data-tooltip="Amos金魚都能懂的切版教學影片- csscoke NO013"
-                    aria-label="NEXT: Amos金魚都能懂的切版教學影片- csscoke NO013"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
-                        aria-label="Share on Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
-                        aria-label="Share on Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/12/13/omnifood/"
-                        aria-label="Share on Google+"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
-
-
-            
-        </div>
-        
-
-
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">Eva Chan</h4>
-        
-            <div id="about-card-bio"><p>Front-End Engineer</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
-
-<!--SCRIPTS END-->
-
-
-    
-
-
-
-
-    </body>
-</html>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2020/12/13/portfolio-web-page/" title="CSS練習- portfolio web page 作品集網頁"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">Previous: CSS練習- portfolio web page 作品集網頁</span></a><a class="button is-default" href="/2020/11/28/csscoke-NO013/" title="Amos金魚都能懂的切版教學影片- csscoke NO013"><span class="has-text-weight-semibold">Next: Amos金魚都能懂的切版教學影片- csscoke NO013</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

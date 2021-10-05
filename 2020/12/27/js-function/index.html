@@ -1,369 +1,34 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>JS基本功- function函式</title><meta name="description" content="Front-end Engineer"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="
+使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。//為什麼我們需要function
+    //DRY -&amp;gt; Don&amp;#39;t repeat yourself
+    function echoSheep(index) {
+      console.log(&amp;#39;第&amp;#39; + i + &amp;#39;隻綿羊&amp;#39;)
+    }
+    for (var i = 1; i &amp;lt; 11; i++) {
+      echoSheep(i)
+    }
 
-<!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Let&#39;s Code">
-    <title>JS基本功- function函式 - Let&#39;s Code</title>
-    <meta name="author" content="Eva Chan">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。12345678//為什麼我們需要function    //DRY -&gt; Don't repeat yourself    function echoSheep(index) &#123;      console.log('第' + i + '隻綿羊')    &#125;    for (var i = 1; i &lt; 11; i++) &#123;      echoSheep(i)    &#125;\n\n\n與過去所學結合\n\n\n\n也可以return後面接物件 \n回傳結果為20\n\n\n\n簡單練習題\n創建空陣列，並於陣列中放數1,2,3,…10\n\n要放入return，否則會出現undefined\n\n也可以將參數改成兩個數\n\n12345678function generateArray(a, b) &#123;  //a,b 可以改為 from,to      var result = [];      for (var i = a; i &lt;= b; i++) &#123;        result.push(i);      &#125;      return result;    &#125;    console.log(generateArray(3, 10))\n\n\nreturn\n函式中一放進return，在函式，return後面的部分就不會運行了\n\n不需要知道結果\n\n需要回傳值\n\n\n\n參數：函式後面要傳入的值\n引數：真正傳進去的東西\n\n\n\nArguments:為類陣列，屬於物件\n\n表達式(Expression)與陳述句(Statement)的差異\n表達式：會回傳值\n陳述句：不會回傳值 (if…else,switch，等控制流程)\n\n使用函式陳述式(Function Statement)與函式表達式(Function Expression)\n函式陳述式(Function Statement):在使用函式之前，放入helloFunctionStatement();是可以執行\n\n1234567//helloFunctionStatement();  放在前面沒關係function helloFunctionStatement() &#123;      console.log('this is Function Statement ');    &#125;    helloFunctionStatement();\n\n函式表達式(Function Expression):反之，要放在宣告之後123456//helloFunctionExpression(); 放前面，會出現錯誤var helloFunctionExpression = function () &#123;      console.log('this is Function Expression ');    &#125;    helloFunctionExpression();\n:::warning因為hoisting(變數提升)的關係:::\n\nJS 原力覺醒 Day07 - 陳述式 表達式\n變數能夠影響的範圍作用域( Scope 作用域：變數可以影響的範圍 )\n在function中，所宣告的 var a = 50;，範圍就只有涵蓋在函式中，不會影響到外面\n\n1234567var a = 100;   function helloWorld() &#123;     var a = 50;     console.log(a);   &#125;   helloWorld();   console.log(a);\n\n\n如果函式中，宣吿某變數，沒有加var/let，該變數就會影響外部1234567var a = 100;   function helloWorld() &#123;     a = 50;     console.log('function:', a);   &#125;   helloWorld();   console.log('外部:', a);\n\n\n全域變數與區域變數\n使用var,let,const，來宣告\n全域變數：在瀏覽器中，沒有在fuction裡，直接進行宣告\n也可以用window來存取\nwindow，是瀏覽器上的根物件\n\n\n\n12345var y = 1;  //在外面宣告為 全域變數   function abc() &#123;     //var,let,const     var x = 1   &#125;\n\n\n區域變數：在function中進行宣告1234function abc() &#123;      //var,let,const      var x = 1    &#125;\n不是變數 =&gt; 全域的屬性\nz=1;\n也可以用window來存取\n\n\n\n\n回呼函數 Callback Function\n把函數做為參數傳遞\n當檔案讀取完畢時，請來執行這個 function，並且把結果傳進來\nheyFunc(console.log)-&gt;console.log 可以替換別的\n\n12345function heyFunc(myFunction) &#123;     myFunction('hi');     myFunction('hi');   &#125;   heyFunc(console.log);\n\n\n\n非同步（Asynchronous）:回呼常用來延續非同步行動完成後的程式執行\n\n其他介紹 超入門 JavaScript 教學 13 - 回呼函式 callback\n以下範例：讓cb接到shout這個函式12345678910111213141516171819function shout() &#123;      console.log('hello,i am done')    &#125;    function countToSeven(cb) &#123;      for (var i = 1; i &lt;= 7; i++) &#123;        console.log(i);      &#125;      if (typeof cb === 'fuction')        cb(); //啟動shout函式    &#125;    countToSeven(); //會數1-7    //要數完七之後，說'hello,i am done    countToSeven(shout);    countToSeven(1);//1不是函式，所以在if判斷句終止        //每隔一段時間，幫我做一次    setInterval(shout, 2 * 1000);//每隔兩秒執行sout    //在多少時間之後，幫我執行    setTimeout(shout, 1 * 1000)\njs內建函式\n每隔一段時間，幫我做一次setInterval(shout, 2 * 1000);//每隔兩秒執行sout\n在多少時間之後，幫我執行setTimeout(shout, 1 * 1000)\n\n\n\n參考資料：重新認識 JavaScript: Day 18 Callback Function 與 IIFEJavaScript 中的同步與非同步（上）：先成為 callback 大師吧！JS20min Day — 18 關於回呼生活化 (Callback)\n匿名函式\nheyFunc裡面的function沒有名稱123456789function heyFunc(myFunction) &#123;      myFunction('hi');    &#125;    heyFunc(function (message) &#123;      console.log('message is:', message);    &#125;);//message is:hi  &lt;/script&gt;\n\n\n\n立即函式(IIFE)\nLuka\n\n\n它是沒有名字的函式，要立即調用\n不讓函式內的變數污染到外面的東係\n讓jquery的＄＄變成是jquery使用1234(function (name) &#123;        var str = 'Hi ' + name + '!';        console.log(str);      &#125;)('Sam');\n\n\n一般常見寫法12345var sayHi = function (name) &#123;  var str = 'Hi ' + name + '!';  console.log(str);&#125;('Peter')//在後面立即執行  // sayHi(\"Peter\");\n\n\n\n[筆記] 談談JavaScript中的IIFEs(Immediately Invoked Functions Expressions)[筆記] 為什麼我們要用IIFEs(Immediately Invoked Functions Expressions)\n\nhoisting 變數提升淺談\njs的變數與函式的宣告提升\n\n不管在哪一行使用了變數，都視為第一行宣告\n\n比較好的流程 By 彭彭\n\n\n\n但在js有hoisting 變數提升\n\n就算把變數宣告放在後面，依然可以運作(會將var x提升到最前面)\n\n\n\n\n進一步細節…\n\n電腦解讀如下 \n\n\nvar x會提升\n結果會印出undefined\n\n\n\n在函示fuction的變數提升\n先宣告函式，在能呼叫函式執行\n\n\n\n在js先呼叫，依然可以運作\n\n\n\n\n其他狀況…(把函式裝到變數中當作資料)\n\n在此情形，它會出現錯誤，回報test不是一個函式\n\n\n\n程式的解讀 :point_down: \n只有var test被提升\n\n\n\n\n\n程式柴\n\n\n\n沒有宣告\n\n\n\n常用的內建函式Number類型\n字串轉數字\n\n\n\nparseInt 是取整數，若遇到如20.35，就只會取到20\n\n\n\n遇到小數點且要保留的時候，使用parseFloat\n結果為30.35\n\n\n\n\n\n\nMath.ceil()=&gt; 無條件進位\nMath.floor()=&gt; 無條件捨去\nMath.round() =&gt; 四捨五入\nMath.sqrt() =&gt; 開根號\nMath.pow() =&gt; 次方\nMath.radom() =&gt; 產生隨機數(0-1，不包含1)\ntoString() =&gt; 數字轉字串\n或是加空字串\n\n\n\n\n\nString類型\ntoUpperCase=&gt; 轉大寫\n\ntoLowerCase =&gt; 轉小寫\n\nindexOf =&gt; 找出字串中，單字的索引（用於檢查某字是否存在字串中）\n\nreplace() =&gt; 取代\n\n用正規表達式來選擇 某些字\n\n\nsplit() =&gt; 切字串\n1234//split較常使用的情形  //當資料為一連串字串，利用逗號切割 變成陣列，比較好運用  var str = 'data1,data2,data3,data4';  console.log(str.split(','));\n\n\ntrim() =&gt;從一個字符串的两端刪除空白字符\n1234567const greeting = '   Hello world!   ';console.log(greeting);// expected output: \"   Hello world!   \";console.log(greeting.trim());// expected output: \"Hello world!\";\n\n\n\nArray 類型\nArray.prototype.join() \n方法會將陣列（或一個類陣列（array-like）物件）中所有的元素連接、合併成一個 ‘字串’，並回傳此字串(在陣列中每個元素間插入設定的東西)12345678910const elements = ['Fire', 'Air', 'Water'];console.log(elements.join());// expected output: \"Fire,Air,Water\" //會變成字串console.log(elements.join(''));// expected output: \"FireAirWater\"console.log(elements.join('-'));// expected output: \"Fire-Air-Water\"\nArray.prototype.map()\n建立一個新的陣列，其內容為原陣列的每一個元素經由回呼函式運算後所回傳的結果之集合。123456var arr = [1, 2, 3];   console.log(     arr.map(function (x) &#123;       return x * -1     &#125;)   )\n\n\n1234567891011//也可以接著寫下去    var arr = [1, 2, 3];    console.log(      arr        .map(function (x) &#123;          return x * -1        &#125;)        .map(function (x) &#123;          return x * 2        &#125;)    )\n\n\nArray.prototype.filter()\n\n過濾\n1234567891011var arr = [1, 2, 3, -5, 3, -2];    console.log(      arr        .map(function (x) &#123;          return x * 2        &#125;)        .filter(function (x) &#123;          return x &gt; 0        &#125;)        //把負數過濾掉，留下正數    )\n\n\nArray.prototype.slice()\n\nArray.prototype.splice()\n\nsplice 1.插入元素12345678910const months = ['Jan', 'March', 'April', 'June'];months.splice(1, 0, 'Feb');// inserts at index 1console.log(months);// expected output: Array [\"Jan\", \"Feb\", \"March\", \"April\", \"June\"]months.splice(4, 1, 'May');// replaces 1 element at index 4console.log(months);// expected output: Array [\"Jan\", \"Feb\", \"March\", \"April\", \"May\"]\n\n\nsplice 2.刪除元素\n12345var myFish = ['angel', 'clown', 'drum', 'mandarin', 'sturgeon'];var removed = myFish.splice(3, 1);// removed 為 [\"mandarin\"]// myFish 為 [\"angel\", \"clown\", \"drum\", \"sturgeon\"]\n\nArray.prototype.sort()\n123456789const months = ['March', 'Jan', 'Feb', 'Dec'];months.sort();console.log(months);// expected output: Array [\"Dec\", \"Feb\", \"Jan\", \"March\"] //按照第一個字母順序排列const array1 = [1, 30, 4, 21, 100000];array1.sort();console.log(array1);// expected output: Array [1, 100000, 21, 30, 4] //是一字串，以第一個數字來排列\n依照數字大小排列\n1234567var arr = [1, 30, 4, 2]; arr.sort(function (a, b) &#123;   if (a === b) return 0;   if (b &gt; a) return -1; //不換   return 1; //正數，換位置 &#125;) console.log(arr);\n\n\n\n「回傳」與「印出」的差異\n函式可以透過 return 回傳函式運算完的結果\n 述程式碼的執行：\n\n\n\n1.console.log(add(1, 2)) =&gt; 帶入functoin，console.log(a, b); =&gt; 印出1,22.往下，到return undefined; 然後進入add(1, 2)的回傳值，就會是undefined\n123456function add(a, b) &#123;      console.log(a, b);      return undefined;  //不加return，預設會是undefined    &#125;    console.log(add(1, 2))\n\n以為 add(1, 2) 的回傳值是 3，但不是，那是因為它在裡面 console.log() 所以把結果印出來了。  1234function add(a, b) &#123;   console.log(a + b) &#125; add(1, 2)\n如果真的要有回傳值的話要這樣寫：1234function add(a, b) &#123;   return a + b &#125; console.log(add(1, 2))\n\n\n\n參考資料： JavaScript 初心者筆記: 函式實際運作 - 回傳值與函式間互相傳遞,後設鐵人 Day4：請幫我簽個名好嗎？\nImmutable 觀念 (不可變)\n除了物件、陣列以外，其他都是不可變的\n沒辦法改它，就只能回傳新的1234var a = 'hello';   a.toUpperCase;   console.log(a);   //印出：hello，沒有改變原本變數的內容\n12345678var a = 'hello'; a = a.toUpperCase(); //要回傳給a，把原本的a值蓋掉 console.log(a);  //或是增設一個新變數 var a = 'hello'; var b = a.toUpperCase();  console.log(b);\n\n\n","dateCreated":"2020-12-27T18:55:19+08:00","dateModified":"2021-09-18T13:49:05+08:00","datePublished":"2020-12-27T18:55:19+08:00","description":"","headline":"JS基本功- function函式","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/","keywords":"JS, parseInt"}</script>
-    <meta name="description" content="使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。12345678&#x2F;&#x2F;為什麼我們需要function    &#x2F;&#x2F;DRY -&gt; Don&#39;t repeat yourself    function echoSheep(index) &amp;#123;      c">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="JS基本功- function函式">
-<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/index.html">
-<meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。12345678&#x2F;&#x2F;為什麼我們需要function    &#x2F;&#x2F;DRY -&gt; Don&#39;t repeat yourself    function echoSheep(index) &amp;#123;      c">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/O6BuNU9.png">
-<meta property="og:image" content="https://i.imgur.com/ln90sd9.png">
-<meta property="og:image" content="https://i.imgur.com/9tTJ3uL.png">
-<meta property="og:image" content="https://i.imgur.com/TGCWt71.png">
-<meta property="og:image" content="https://i.imgur.com/lRysWNO.png">
-<meta property="og:image" content="https://i.imgur.com/12sURMh.png">
-<meta property="og:image" content="https://i.imgur.com/4oPINY3.png">
-<meta property="og:image" content="https://i.imgur.com/yb0arjk.png">
-<meta property="og:image" content="https://i.imgur.com/n66mD1K.png">
-<meta property="og:image" content="https://i.imgur.com/16xE1No.png">
-<meta property="og:image" content="https://i.imgur.com/tJTnR9W.png">
-<meta property="og:image" content="https://i.imgur.com/TNAMSWA.png">
-<meta property="og:image" content="https://i.imgur.com/eMBkGKy.png">
-<meta property="og:image" content="https://i.imgur.com/imMi0vS.png">
-<meta property="og:image" content="https://i.imgur.com/zMT2p0j.png">
-<meta property="og:image" content="https://i.imgur.com/sriaR2r.png">
-<meta property="og:image" content="https://i.imgur.com/DcnsGsL.png">
-<meta property="og:image" content="https://i.imgur.com/VmUcFV3.png">
-<meta property="og:image" content="https://i.imgur.com/vBfQGUk.png">
-<meta property="og:image" content="https://i.imgur.com/0qjf9j8.png">
-<meta property="og:image" content="https://i.imgur.com/jSAAaWN.png">
-<meta property="og:image" content="https://i.imgur.com/vKZ9eXh.png">
-<meta property="og:image" content="https://i.imgur.com/k2ANLPn.png">
-<meta property="og:image" content="https://i.imgur.com/ZOasHkk.png">
-<meta property="og:image" content="https://i.imgur.com/WuqIKWR.png">
-<meta property="og:image" content="https://i.imgur.com/tlctwnQ.png">
-<meta property="og:image" content="https://i.imgur.com/SKn9IWm.png">
-<meta property="og:image" content="https://i.imgur.com/MwOQLxK.png">
-<meta property="og:image" content="https://i.imgur.com/fVqNBhR.png">
-<meta property="og:image" content="https://i.imgur.com/xct9oPf.png">
-<meta property="og:image" content="https://i.imgur.com/3TGrI7J.png">
-<meta property="og:image" content="https://i.imgur.com/u9axhKX.png">
-<meta property="og:image" content="https://i.imgur.com/u51AqqO.png">
-<meta property="og:image" content="https://i.imgur.com/AboC56u.png">
-<meta property="og:image" content="https://i.imgur.com/JQ5KHBI.png">
-<meta property="og:image" content="https://i.imgur.com/XA193Oc.png">
-<meta property="og:image" content="https://i.imgur.com/0FKeOro.png">
-<meta property="og:image" content="https://i.imgur.com/FrkeTMZ.png">
-<meta property="og:image" content="https://i.imgur.com/G8TKP1k.png">
-<meta property="og:image" content="https://i.imgur.com/dMAXe66.png">
-<meta property="article:published_time" content="2020-12-27T10:55:19.000Z">
-<meta property="article:modified_time" content="2021-09-18T05:49:05.362Z">
-<meta property="article:author" content="Eva Chan">
-<meta property="article:tag" content="JS">
-<meta property="article:tag" content="parseInt">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/O6BuNU9.png">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
-
-
-    
-        
-            
-        
-    
-
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/"
-            aria-label=""
-        >
-            Let&#39;s Code
-        </a>
-    </div>
-    
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Open the link: /#about"
-            >
-        
-        
-            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-        </a>
-    
-</header>
-
-            <!-- Define author's picture -->
+與過去所學結合
 
 
 
-        
-    
+也可以return後面接物件 
+回傳結果為20
 
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a
-                    href="/#about"
-                    aria-label="Read more about the author"
-                >
-                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">Eva Chan</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/"
-                            
-                            rel="noopener"
-                            title="Home"
-                        >
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-categories"
-                            
-                            rel="noopener"
-                            title="Categories"
-                        >
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-tags"
-                            
-                            rel="noopener"
-                            title="Tags"
-                        >
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-archives"
-                            
-                            rel="noopener"
-                            title="Archives"
-                        >
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link open-algolia-search"
-                            href="#search"
-                            
-                            rel="noopener"
-                            title="Search"
-                        >
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="#about"
-                            
-                            rel="noopener"
-                            title="About"
-                        >
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/Eva813"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://facebook.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Facebook"
-                        >
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://plus.google.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Google +"
-                        >
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google +</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://www.linkedin.com/profile/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="LinkedIn"
-                        >
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://eva813.github.io/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="RSS"
-                        >
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
 
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            JS基本功- function函式
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2020-12-27T18:55:19+08:00">
-	
-		    Dec 27, 2020
-    	
-    </time>
-    
-</div>
 
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <h3 id="使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。"><a href="#使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。" class="headerlink" title="使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。"></a>使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//為什麼我們需要function</span></span><br><span class="line">    <span class="comment">//DRY -&gt; Don't repeat yourself</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">echoSheep</span>(<span class="params">index</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'第'</span> + i + <span class="string">'隻綿羊'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="number">11</span>; i++) &#123;</span><br><span class="line">      echoSheep(i)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
+簡單練習題
+創建空陣列.."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">JS基本功- function函式</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。"><span class="toc-text">使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#與過去所學結合"><span class="toc-text">與過去所學結合</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#簡單練習題"><span class="toc-text">簡單練習題</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#return"><span class="toc-text">return</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表達式-Expression-與陳述句-Statement-的差異"><span class="toc-text">表達式(Expression)與陳述句(Statement)的差異</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用函式陳述式-Function-Statement-與函式表達式-Function-Expression"><span class="toc-text">使用函式陳述式(Function Statement)與函式表達式(Function Expression)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#變數能夠影響的範圍作用域-Scope-作用域：變數可以影響的範圍"><span class="toc-text">變數能夠影響的範圍作用域( Scope 作用域：變數可以影響的範圍 )</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全域變數與區域變數"><span class="toc-text">全域變數與區域變數</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用var-let-const，來宣告"><span class="toc-text">使用var,let,const，來宣告</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#全域變數：在瀏覽器中，沒有在fuction裡，直接進行宣告"><span class="toc-text">全域變數：在瀏覽器中，沒有在fuction裡，直接進行宣告</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#區域變數：在function中進行宣告"><span class="toc-text">區域變數：在function中進行宣告</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#不是變數-gt-全域的屬性"><span class="toc-text">不是變數 &#x3D;&gt; 全域的屬性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#回呼函數-Callback-Function"><span class="toc-text">回呼函數 Callback Function</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#其他介紹-超入門-JavaScript-教學-13-回呼函式-callback"><span class="toc-text">其他介紹 超入門 JavaScript 教學 13 - 回呼函式 callback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js內建函式"><span class="toc-text">js內建函式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#參考資料："><span class="toc-text">參考資料：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#匿名函式"><span class="toc-text">匿名函式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#立即函式-IIFE"><span class="toc-text">立即函式(IIFE)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hoisting-變數提升淺談"><span class="toc-text">hoisting 變數提升淺談</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在函示fuction的變數提升"><span class="toc-text">在函示fuction的變數提升</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用的內建函式"><span class="toc-text">常用的內建函式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Number類型"><span class="toc-text">Number類型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#字串轉數字"><span class="toc-text">字串轉數字</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String類型"><span class="toc-text">String類型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#「回傳」與「印出」的差異"><span class="toc-text">「回傳」與「印出」的差異</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Immutable-觀念-不可變"><span class="toc-text">Immutable 觀念 (不可變)</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/parseInt"><i class="tag post-item-tag">parseInt</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">JS基本功- function函式</h1><time class="has-text-grey" datetime="2020-12-27T10:55:19.000Z">2020-12-27</time><article class="mt-2 post-content"><p><img src="https://i.imgur.com/qRxqi5e.png" alt=""></p>
+<h3 id="使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。"><a href="#使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。" class="headerlink" title="使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。"></a>使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。</h3><pre><code class="javascript">//為什麼我們需要function
+    //DRY -&gt; Don&#39;t repeat yourself
+    function echoSheep(index) {
+      console.log(&#39;第&#39; + i + &#39;隻綿羊&#39;)
+    }
+    for (var i = 1; i &lt; 11; i++) {
+      echoSheep(i)
+    }</code></pre>
 <ul>
 <li><h4 id="與過去所學結合"><a href="#與過去所學結合" class="headerlink" title="與過去所學結合"></a>與過去所學結合</h4></li>
 </ul>
@@ -381,8 +46,14 @@
 <ul>
 <li>也可以將參數改成兩個數</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateArray</span>(<span class="params">a, b</span>) </span>&#123;  <span class="comment">//a,b 可以改為 from,to</span></span><br><span class="line">      <span class="keyword">var</span> result = [];</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = a; i &lt;= b; i++) &#123;</span><br><span class="line">        result.push(i);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(generateArray(<span class="number">3</span>, <span class="number">10</span>))</span><br></pre></td></tr></table></figure>
-
+<pre><code class="javascript">function generateArray(a, b) {  //a,b 可以改為 from,to
+      var result = [];
+      for (var i = a; i &lt;= b; i++) {
+        result.push(i);
+      }
+      return result;
+    }
+    console.log(generateArray(3, 10))</code></pre>
 <p><img src="https://i.imgur.com/12sURMh.png" alt=""></p>
 <h3 id="return"><a href="#return" class="headerlink" title="return"></a>return</h3><ul>
 <li><p>函式中一放進return，在函式，return後面的部分就不會運行了</p>
@@ -407,19 +78,44 @@
 <h2 id="使用函式陳述式-Function-Statement-與函式表達式-Function-Expression"><a href="#使用函式陳述式-Function-Statement-與函式表達式-Function-Expression" class="headerlink" title="使用函式陳述式(Function Statement)與函式表達式(Function Expression)"></a>使用函式陳述式(Function Statement)與函式表達式(Function Expression)</h2><ul>
 <li>函式陳述式(Function Statement):在使用函式之前，放入helloFunctionStatement();是可以執行</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//helloFunctionStatement();  放在前面沒關係</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">helloFunctionStatement</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'this is Function Statement '</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    helloFunctionStatement();</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">//helloFunctionStatement();  放在前面沒關係
+function helloFunctionStatement() {
+      console.log(&#39;this is Function Statement &#39;);
+
+    }
+
+    helloFunctionStatement();</code></pre>
 <ul>
-<li>函式表達式(Function Expression):反之，要放在宣告之後<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//helloFunctionExpression(); 放前面，會出現錯誤</span></span><br><span class="line"><span class="keyword">var</span> helloFunctionExpression = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'this is Function Expression '</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    helloFunctionExpression();</span><br></pre></td></tr></table></figure>
-:::warning<br>因為hoisting(變數提升)的關係<br>:::</li>
+<li><p>函式表達式(Function Expression):反之，要放在宣告之後</p>
+<pre><code class="javascript">//helloFunctionExpression(); 放前面，會出現錯誤
+var helloFunctionExpression = function () {
+    console.log(&#39;this is Function Expression &#39;);
+
+  }
+  helloFunctionExpression();</code></pre>
+<p>:::warning<br>因為hoisting(變數提升)的關係<br>:::</p>
+</li>
 </ul>
 <p><a href="https://ithelp.ithome.com.tw/articles/10218937" target="_blank" rel="noopener">JS 原力覺醒 Day07 - 陳述式 表達式</a></p>
 <h2 id="變數能夠影響的範圍作用域-Scope-作用域：變數可以影響的範圍"><a href="#變數能夠影響的範圍作用域-Scope-作用域：變數可以影響的範圍" class="headerlink" title="變數能夠影響的範圍作用域( Scope 作用域：變數可以影響的範圍 )"></a>變數能夠影響的範圍作用域( Scope 作用域：變數可以影響的範圍 )</h2><ul>
 <li>在function中，所宣告的 var a = 50;，範圍就只有涵蓋在函式中，不會影響到外面</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">100</span>;</span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">helloWorld</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="keyword">var</span> a = <span class="number">50</span>;</span><br><span class="line">     <span class="built_in">console</span>.log(a);</span><br><span class="line">   &#125;</span><br><span class="line">   helloWorld();</span><br><span class="line">   <span class="built_in">console</span>.log(a);</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript"> var a = 100;
+    function helloWorld() {
+      var a = 50;
+      console.log(a);
+    }
+    helloWorld();
+    console.log(a);</code></pre>
 <p><img src="https://i.imgur.com/16xE1No.png" alt=""></p>
 <ul>
-<li>如果函式中，宣吿某變數，沒有加var/let，該變數就會影響外部<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">100</span>;</span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">helloWorld</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     a = <span class="number">50</span>;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">'function:'</span>, a);</span><br><span class="line">   &#125;</span><br><span class="line">   helloWorld();</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'外部:'</span>, a);</span><br></pre></td></tr></table></figure>
+<li>如果函式中，宣吿某變數，沒有加var/let，該變數就會影響外部<pre><code class="javascript">var a = 100;
+  function helloWorld() {
+    a = 50;
+    console.log(&#39;function:&#39;, a);
+  }
+  helloWorld();
+  console.log(&#39;外部:&#39;, a);</code></pre>
 <img src="https://i.imgur.com/tJTnR9W.png" alt=""></li>
 </ul>
 <h3 id="全域變數與區域變數"><a href="#全域變數與區域變數" class="headerlink" title="全域變數與區域變數"></a>全域變數與區域變數</h3><ul>
@@ -430,10 +126,17 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> y = <span class="number">1</span>;  <span class="comment">//在外面宣告為 全域變數</span></span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">abc</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="comment">//var,let,const</span></span><br><span class="line">     <span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="javascript="> var y = 1;  //在外面宣告為 全域變數
+    function abc() {
+      //var,let,const
+      var x = 1
+    }</code></pre>
 <ul>
-<li><h4 id="區域變數：在function中進行宣告"><a href="#區域變數：在function中進行宣告" class="headerlink" title="區域變數：在function中進行宣告"></a>區域變數：在function中進行宣告</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">abc</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">//var,let,const</span></span><br><span class="line">      <span class="keyword">var</span> x = <span class="number">1</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+<li><h4 id="區域變數：在function中進行宣告"><a href="#區域變數：在function中進行宣告" class="headerlink" title="區域變數：在function中進行宣告"></a>區域變數：在function中進行宣告</h4><pre><code class="javascript=">function abc() {
+    //var,let,const
+    var x = 1
+  }</code></pre>
+</li>
 <li><h4 id="不是變數-gt-全域的屬性"><a href="#不是變數-gt-全域的屬性" class="headerlink" title="不是變數 =&gt; 全域的屬性"></a>不是變數 =&gt; 全域的屬性</h4><ul>
 <li>z=1;</li>
 <li>也可以用window來存取</li>
@@ -446,14 +149,36 @@
 <li>當檔案讀取完畢時，請來執行這個 function，並且把結果傳進來</li>
 <li>heyFunc(console.log)-&gt;console.log 可以替換別的</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">heyFunc</span>(<span class="params">myFunction</span>) </span>&#123;</span><br><span class="line">     myFunction(<span class="string">'hi'</span>);</span><br><span class="line">     myFunction(<span class="string">'hi'</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   heyFunc(<span class="built_in">console</span>.log);</span><br></pre></td></tr></table></figure>
-
+<pre><code class="javascript"> function heyFunc(myFunction) {
+      myFunction(&#39;hi&#39;);
+      myFunction(&#39;hi&#39;);
+    }
+    heyFunc(console.log);</code></pre>
 <p><img src="https://i.imgur.com/imMi0vS.png" alt=""></p>
 <ul>
 <li>非同步（Asynchronous）:回呼常用來延續非同步行動完成後的程式執行</li>
 </ul>
 <h3 id="其他介紹-超入門-JavaScript-教學-13-回呼函式-callback"><a href="#其他介紹-超入門-JavaScript-教學-13-回呼函式-callback" class="headerlink" title="其他介紹 超入門 JavaScript 教學 13 - 回呼函式 callback"></a>其他介紹 <a href="https://www.youtube.com/watch?v=U0YbyCaG93k" target="_blank" rel="noopener">超入門 JavaScript 教學 13 - 回呼函式 callback</a></h3><ul>
-<li>以下範例：讓cb接到shout這個函式<br><img src="https://i.imgur.com/zMT2p0j.png" alt=""><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shout</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'hello,i am done'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">countToSeven</span>(<span class="params">cb</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= <span class="number">7</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> cb === <span class="string">'fuction'</span>)</span><br><span class="line">        cb(); <span class="comment">//啟動shout函式</span></span><br><span class="line">    &#125;</span><br><span class="line">    countToSeven(); <span class="comment">//會數1-7</span></span><br><span class="line">    <span class="comment">//要數完七之後，說'hello,i am done</span></span><br><span class="line">    countToSeven(shout);</span><br><span class="line">    countToSeven(<span class="number">1</span>);<span class="comment">//1不是函式，所以在if判斷句終止</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//每隔一段時間，幫我做一次</span></span><br><span class="line">    setInterval(shout, <span class="number">2</span> * <span class="number">1000</span>);<span class="comment">//每隔兩秒執行sout</span></span><br><span class="line">    <span class="comment">//在多少時間之後，幫我執行</span></span><br><span class="line">    setTimeout(shout, <span class="number">1</span> * <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+<li><p>以下範例：讓cb接到shout這個函式<br><img src="https://i.imgur.com/zMT2p0j.png" alt=""></p>
+<pre><code class="javascript">function shout() {
+   console.log(&#39;hello,i am done&#39;)
+ }
+ function countToSeven(cb) {
+   for (var i = 1; i &lt;= 7; i++) {
+     console.log(i);
+   }
+   if (typeof cb === &#39;fuction&#39;)
+     cb(); //啟動shout函式
+ }
+ countToSeven(); //會數1-7
+ //要數完七之後，說&#39;hello,i am done
+ countToSeven(shout);
+ countToSeven(1);//1不是函式，所以在if判斷句終止
+
+ //每隔一段時間，幫我做一次
+ setInterval(shout, 2 * 1000);//每隔兩秒執行sout
+ //在多少時間之後，幫我執行
+ setTimeout(shout, 1 * 1000)</code></pre>
 <h3 id="js內建函式"><a href="#js內建函式" class="headerlink" title="js內建函式"></a>js內建函式</h3><ul>
 <li>每隔一段時間，幫我做一次<br><code>setInterval(shout, 2 * 1000);</code>//每隔兩秒執行sout</li>
 <li>在多少時間之後，幫我執行<br><code>setTimeout(shout, 1 * 1000)</code></li>
@@ -462,8 +187,16 @@
 </ul>
 <h3 id="參考資料："><a href="#參考資料：" class="headerlink" title="參考資料："></a>參考資料：</h3><p><a href="https://ithelp.ithome.com.tw/articles/10192739" target="_blank" rel="noopener">重新認識 JavaScript: Day 18 Callback Function 與 IIFE</a><br><a href="https://blog.techbridge.cc/2019/10/05/javascript-async-sync-and-callback/" target="_blank" rel="noopener">JavaScript 中的同步與非同步（上）：先成為 callback 大師吧！</a><br><a href="https://whien.medium.com/js20min-day-18-%E9%97%9C%E6%96%BC%E5%9B%9E%E5%91%BC%E7%94%9F%E6%B4%BB%E5%8C%96-callback-1a112db1a788" target="_blank" rel="noopener">JS20min Day — 18 關於回呼生活化 (Callback)</a></p>
 <h2 id="匿名函式"><a href="#匿名函式" class="headerlink" title="匿名函式"></a>匿名函式</h2><ul>
-<li>heyFunc裡面的function沒有名稱<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">heyFunc</span>(<span class="params">myFunction</span>) </span>&#123;</span><br><span class="line">      myFunction(<span class="string">'hi'</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    heyFunc(<span class="function"><span class="keyword">function</span> (<span class="params">message</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'message is:'</span>, message);</span><br><span class="line">    &#125;);</span><br><span class="line"><span class="comment">//message is:hi</span></span><br><span class="line">  &lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<li><p>heyFunc裡面的function沒有名稱</p>
+<pre><code class="javascript">function heyFunc(myFunction) {
+    myFunction(&#39;hi&#39;);
 
+  }
+  heyFunc(function (message) {
+    console.log(&#39;message is:&#39;, message);
+  });
+//message is:hi
+&lt;/script&gt;</code></pre>
 </li>
 </ul>
 <h2 id="立即函式-IIFE"><a href="#立即函式-IIFE" class="headerlink" title="立即函式(IIFE)"></a>立即函式(IIFE)</h2><blockquote>
@@ -472,14 +205,22 @@
 <ul>
 <li>它是沒有名字的函式，要立即調用<ul>
 <li>不讓函式內的變數污染到外面的東係</li>
-<li>讓jquery的＄＄變成是jquery使用<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> str = <span class="string">'Hi '</span> + name + <span class="string">'!'</span>;</span><br><span class="line">        <span class="built_in">console</span>.log(str);</span><br><span class="line">      &#125;)(<span class="string">'Sam'</span>);</span><br></pre></td></tr></table></figure></li>
+<li>讓jquery的＄＄變成是jquery使用<pre><code class="javascript">(function (name) {
+  var str = &#39;Hi &#39; + name + &#39;!&#39;;
+  console.log(str);
+})(&#39;Sam&#39;);
+</code></pre>
+</li>
 </ul>
 </li>
-<li>一般常見寫法<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sayHi = <span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> str = <span class="string">'Hi '</span> + name + <span class="string">'!'</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(str);</span><br><span class="line">&#125;(<span class="string">'Peter'</span>)<span class="comment">//在後面立即執行</span></span><br><span class="line">  <span class="comment">// sayHi("Peter");</span></span><br></pre></td></tr></table></figure>
-
-</li>
 </ul>
-<p><a href="https://pjchender.blogspot.com/2016/05/javascriptiifesimmediately-invoked.html" target="_blank" rel="noopener">[筆記] 談談JavaScript中的IIFEs(Immediately Invoked Functions Expressions)</a><br><a href="https://pjchender.blogspot.com/2016/05/iifesimmediately-invoked-functions.html" target="_blank" rel="noopener">[筆記] 為什麼我們要用IIFEs(Immediately Invoked Functions Expressions)
+<pre><code>* 一般常見寫法
+```javascript
+    var sayHi = function (name) {
+      var str = &#39;Hi &#39; + name + &#39;!&#39;;
+      console.log(str);
+    }(&#39;Peter&#39;)//在後面立即執行
+      // sayHi(&quot;Peter&quot;);</code></pre><p><a href="https://pjchender.blogspot.com/2016/05/javascriptiifesimmediately-invoked.html" target="_blank" rel="noopener">[筆記] 談談JavaScript中的IIFEs(Immediately Invoked Functions Expressions)</a><br><a href="https://pjchender.blogspot.com/2016/05/iifesimmediately-invoked-functions.html" target="_blank" rel="noopener">[筆記] 為什麼我們要用IIFEs(Immediately Invoked Functions Expressions)
 </a></p>
 <h2 id="hoisting-變數提升淺談"><a href="#hoisting-變數提升淺談" class="headerlink" title="hoisting 變數提升淺談"></a>hoisting 變數提升淺談</h2><ul>
 <li><p>js的變數與函式的宣告提升</p>
@@ -581,47 +322,111 @@
 </ul>
 </li>
 <li><p><code>split()</code> =&gt; 切字串</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//split較常使用的情形</span></span><br><span class="line">  <span class="comment">//當資料為一連串字串，利用逗號切割 變成陣列，比較好運用</span></span><br><span class="line">  <span class="keyword">var</span> str = <span class="string">'data1,data2,data3,data4'</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(str.split(<span class="string">','</span>));</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">//split較常使用的情形
+  //當資料為一連串字串，利用逗號切割 變成陣列，比較好運用
+  var str = &#39;data1,data2,data3,data4&#39;;
+  console.log(str.split(&#39;,&#39;));</code></pre>
 <p><img src="https://i.imgur.com/XA193Oc.png" alt=""></p>
 </li>
 <li><p><code>trim()</code> =&gt;從一個字符串的两端刪除空白字符</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> greeting = <span class="string">'   Hello world!   '</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(greeting);</span><br><span class="line"><span class="comment">// expected output: "   Hello world!   ";</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(greeting.trim());</span><br><span class="line"><span class="comment">// expected output: "Hello world!";</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="javascript">const greeting = &#39;   Hello world!   &#39;;
+</code></pre>
 </li>
 </ul>
-<h3 id="Array-類型"><a href="#Array-類型" class="headerlink" title="Array 類型"></a>Array 類型</h3><ul>
-<li><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/join" target="_blank" rel="noopener">Array.prototype.join()</a> </li>
-<li>方法會將陣列（或一個類陣列（array-like）物件）中所有的元素連接、合併成一個 ‘字串’，並回傳此字串(在陣列中每個元素間插入設定的東西)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> elements = [<span class="string">'Fire'</span>, <span class="string">'Air'</span>, <span class="string">'Water'</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(elements.join());</span><br><span class="line"><span class="comment">// expected output: "Fire,Air,Water" //會變成字串</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(elements.join(<span class="string">''</span>));</span><br><span class="line"><span class="comment">// expected output: "FireAirWater"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(elements.join(<span class="string">'-'</span>));</span><br><span class="line"><span class="comment">// expected output: "Fire-Air-Water"</span></span><br></pre></td></tr></table></figure></li>
+<p>console.log(greeting);<br>// expected output: “   Hello world!   “;</p>
+<p>console.log(greeting.trim());<br>// expected output: “Hello world!”;</p>
+<pre><code>
+### Array 類型
+* [Array.prototype.join()](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/join) 
+* 方法會將陣列（或一個類陣列（array-like）物件）中所有的元素連接、合併成一個 &#39;字串&#39;，並回傳此字串(在陣列中每個元素間插入設定的東西)
+```javascript
+const elements = [&#39;Fire&#39;, &#39;Air&#39;, &#39;Water&#39;];
+
+console.log(elements.join());
+// expected output: &quot;Fire,Air,Water&quot; //會變成字串
+
+console.log(elements.join(&#39;&#39;));
+// expected output: &quot;FireAirWater&quot;
+
+console.log(elements.join(&#39;-&#39;));
+// expected output: &quot;Fire-Air-Water&quot;</code></pre><ul>
 <li><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank" rel="noopener">Array.prototype.map()</a></li>
-<li>建立一個新的陣列，其內容為原陣列的每一個元素經由回呼函式運算後所回傳的結果之集合。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">   <span class="built_in">console</span>.log(</span><br><span class="line">     arr.map(<span class="function"><span class="keyword">function</span> (<span class="params">x</span>) </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> x * <span class="number">-1</span></span><br><span class="line">     &#125;)</span><br><span class="line">   )</span><br></pre></td></tr></table></figure>
+<li>建立一個新的陣列，其內容為原陣列的每一個元素經由回呼函式運算後所回傳的結果之集合。<pre><code class="javascript">var arr = [1, 2, 3];
+  console.log(
+    arr.map(function (x) {
+      return x * -1
+    })
+  )</code></pre>
 <img src="https://i.imgur.com/0FKeOro.png" alt=""></li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//也可以接著寫下去</span></span><br><span class="line">    <span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">    <span class="built_in">console</span>.log(</span><br><span class="line">      arr</span><br><span class="line">        .map(<span class="function"><span class="keyword">function</span> (<span class="params">x</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> x * <span class="number">-1</span></span><br><span class="line">        &#125;)</span><br><span class="line">        .map(<span class="function"><span class="keyword">function</span> (<span class="params">x</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> x * <span class="number">2</span></span><br><span class="line">        &#125;)</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript=">//也可以接著寫下去
+    var arr = [1, 2, 3];
+    console.log(
+      arr
+        .map(function (x) {
+          return x * -1
+        })
+        .map(function (x) {
+          return x * 2
+        })
+    )</code></pre>
 <p><img src="https://i.imgur.com/FrkeTMZ.png" alt=""></p>
 <ul>
 <li><p><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" target="_blank" rel="noopener">Array.prototype.filter()</a></p>
 </li>
 <li><p>過濾</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">-5</span>, <span class="number">3</span>, <span class="number">-2</span>];</span><br><span class="line">    <span class="built_in">console</span>.log(</span><br><span class="line">      arr</span><br><span class="line">        .map(<span class="function"><span class="keyword">function</span> (<span class="params">x</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> x * <span class="number">2</span></span><br><span class="line">        &#125;)</span><br><span class="line">        .filter(<span class="function"><span class="keyword">function</span> (<span class="params">x</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> x &gt; <span class="number">0</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="comment">//把負數過濾掉，留下正數</span></span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">var arr = [1, 2, 3, -5, 3, -2];
+  console.log(
+    arr
+      .map(function (x) {
+        return x * 2
+      })
+      .filter(function (x) {
+        return x &gt; 0
+      })
+      //把負數過濾掉，留下正數
+  )</code></pre>
 <p><img src="https://i.imgur.com/G8TKP1k.png" alt=""></p>
 </li>
 <li><p><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank" rel="noopener">Array.prototype.slice()</a></p>
 </li>
 <li><p><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank" rel="noopener">Array.prototype.splice()</a></p>
 <ul>
-<li>splice 1.插入元素<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> months = [<span class="string">'Jan'</span>, <span class="string">'March'</span>, <span class="string">'April'</span>, <span class="string">'June'</span>];</span><br><span class="line">months.splice(<span class="number">1</span>, <span class="number">0</span>, <span class="string">'Feb'</span>);</span><br><span class="line"><span class="comment">// inserts at index 1</span></span><br><span class="line"><span class="built_in">console</span>.log(months);</span><br><span class="line"><span class="comment">// expected output: Array ["Jan", "Feb", "March", "April", "June"]</span></span><br><span class="line"></span><br><span class="line">months.splice(<span class="number">4</span>, <span class="number">1</span>, <span class="string">'May'</span>);</span><br><span class="line"><span class="comment">// replaces 1 element at index 4</span></span><br><span class="line"><span class="built_in">console</span>.log(months);</span><br><span class="line"><span class="comment">// expected output: Array ["Jan", "Feb", "March", "April", "May"]</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>splice 2.刪除元素</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myFish = [<span class="string">'angel'</span>, <span class="string">'clown'</span>, <span class="string">'drum'</span>, <span class="string">'mandarin'</span>, <span class="string">'sturgeon'</span>];</span><br><span class="line"><span class="keyword">var</span> removed = myFish.splice(<span class="number">3</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// removed 為 ["mandarin"]</span></span><br><span class="line"><span class="comment">// myFish 為 ["angel", "clown", "drum", "sturgeon"]</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/sort" target="_blank" rel="noopener">Array.prototype.sort()</a></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> months = [<span class="string">'March'</span>, <span class="string">'Jan'</span>, <span class="string">'Feb'</span>, <span class="string">'Dec'</span>];</span><br><span class="line">months.sort();</span><br><span class="line"><span class="built_in">console</span>.log(months);</span><br><span class="line"><span class="comment">// expected output: Array ["Dec", "Feb", "Jan", "March"] //按照第一個字母順序排列</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> array1 = [<span class="number">1</span>, <span class="number">30</span>, <span class="number">4</span>, <span class="number">21</span>, <span class="number">100000</span>];</span><br><span class="line">array1.sort();</span><br><span class="line"><span class="built_in">console</span>.log(array1);</span><br><span class="line"><span class="comment">// expected output: Array [1, 100000, 21, 30, 4] //是一字串，以第一個數字來排列</span></span><br></pre></td></tr></table></figure></li>
-<li><p>依照數字大小排列</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">30</span>, <span class="number">4</span>, <span class="number">2</span>];</span><br><span class="line"> arr.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (a === b) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">if</span> (b &gt; a) <span class="keyword">return</span> <span class="number">-1</span>; <span class="comment">//不換</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">//正數，換位置</span></span><br><span class="line"> &#125;)</span><br><span class="line"> <span class="built_in">console</span>.log(arr);</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/dMAXe66.png" alt=""></p>
+<li>splice 1.插入元素<pre><code class="javascript">const months = [&#39;Jan&#39;, &#39;March&#39;, &#39;April&#39;, &#39;June&#39;];
+months.splice(1, 0, &#39;Feb&#39;);
+// inserts at index 1
+console.log(months);
+// expected output: Array [&quot;Jan&quot;, &quot;Feb&quot;, &quot;March&quot;, &quot;April&quot;, &quot;June&quot;]
+</code></pre>
 </li>
 </ul>
+</li>
+</ul>
+<p>months.splice(4, 1, ‘May’);<br>// replaces 1 element at index 4<br>console.log(months);<br>// expected output: Array [“Jan”, “Feb”, “March”, “April”, “May”]</p>
+<pre><code>* splice 2.刪除元素
+```javascript
+var myFish = [&#39;angel&#39;, &#39;clown&#39;, &#39;drum&#39;, &#39;mandarin&#39;, &#39;sturgeon&#39;];
+var removed = myFish.splice(3, 1);
+
+// removed 為 [&quot;mandarin&quot;]
+// myFish 為 [&quot;angel&quot;, &quot;clown&quot;, &quot;drum&quot;, &quot;sturgeon&quot;]</code></pre><ul>
+<li><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/sort" target="_blank" rel="noopener">Array.prototype.sort()</a><pre><code class="javascript">const months = [&#39;March&#39;, &#39;Jan&#39;, &#39;Feb&#39;, &#39;Dec&#39;];
+months.sort();
+console.log(months);
+// expected output: Array [&quot;Dec&quot;, &quot;Feb&quot;, &quot;Jan&quot;, &quot;March&quot;] //按照第一個字母順序排列
+</code></pre>
+</li>
+</ul>
+<p>const array1 = [1, 30, 4, 21, 100000];<br>array1.sort();<br>console.log(array1);<br>// expected output: Array [1, 100000, 21, 30, 4] //是一字串，以第一個數字來排列</p>
+<pre><code>* 依照數字大小排列
+```javascript
+   var arr = [1, 30, 4, 2];
+    arr.sort(function (a, b) {
+      if (a === b) return 0;
+      if (b &gt; a) return -1; //不換
+      return 1; //正數，換位置
+    })
+    console.log(arr);</code></pre><p><img src="https://i.imgur.com/dMAXe66.png" alt=""></p>
 <h4 id="「回傳」與「印出」的差異"><a href="#「回傳」與「印出」的差異" class="headerlink" title="「回傳」與「印出」的差異"></a>「回傳」與「印出」的差異</h4><ul>
 <li>函式可以透過 return 回傳函式運算完的結果<blockquote>
 <p> 述程式碼的執行：</p>
@@ -629,345 +434,44 @@
 </li>
 </ul>
 <p>1.<code>console.log(add(1, 2))</code> =&gt; 帶入functoin，<code>console.log(a, b);</code> =&gt; 印出1,2<br>2.往下，到return undefined; 然後進入add(1, 2)的回傳值，就會是undefined</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(a, b);</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">undefined</span>;  <span class="comment">//不加return，預設會是undefined</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(add(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-<ul>
-<li>以為 <code>add(1, 2)</code> 的回傳值是 3，但不是，那是因為它在裡面 console.log() 所以把結果印出來了。  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(a + b)</span><br><span class="line"> &#125;</span><br><span class="line"> add(<span class="number">1</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure></li>
-<li>如果真的要有回傳值的話要這樣寫：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> a + b</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="built_in">console</span>.log(add(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">function add(a, b) {
+      console.log(a, b);
+      return undefined;  //不加return，預設會是undefined
+    }
 
+    console.log(add(1, 2))
+
+</code></pre>
+<ul>
+<li>以為 <code>add(1, 2)</code> 的回傳值是 3，但不是，那是因為它在裡面 console.log() 所以把結果印出來了。  <pre><code class="javascript">function add(a, b) {
+ console.log(a + b)
+}
+add(1, 2)</code></pre>
+</li>
+<li>如果真的要有回傳值的話要這樣寫：<pre><code class="javascript">function add(a, b) {
+ return a + b
+}
+console.log(add(1, 2))</code></pre>
 </li>
 </ul>
 <p>參考資料： <a href="https://ithelp.ithome.com.tw/articles/10214256" target="_blank" rel="noopener">JavaScript 初心者筆記: 函式實際運作 - 回傳值與函式間互相傳遞</a><br>,<a href="https://ithelp.ithome.com.tw/articles/10214364" target="_blank" rel="noopener">後設鐵人 Day4：請幫我簽個名好嗎？</a></p>
 <h3 id="Immutable-觀念-不可變"><a href="#Immutable-觀念-不可變" class="headerlink" title="Immutable 觀念 (不可變)"></a>Immutable 觀念 (不可變)</h3><ul>
-<li>除了物件、陣列以外，其他都是不可變的</li>
-<li>沒辦法改它，就只能回傳新的<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'hello'</span>;</span><br><span class="line">   a.toUpperCase;</span><br><span class="line">   <span class="built_in">console</span>.log(a);</span><br><span class="line">   <span class="comment">//印出：hello，沒有改變原本變數的內容</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'hello'</span>;</span><br><span class="line"> a = a.toUpperCase(); <span class="comment">//要回傳給a，把原本的a值蓋掉</span></span><br><span class="line"> <span class="built_in">console</span>.log(a);</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//或是增設一個新變數</span></span><br><span class="line"> <span class="keyword">var</span> a = <span class="string">'hello'</span>;</span><br><span class="line"> <span class="keyword">var</span> b = a.toUpperCase(); </span><br><span class="line"> <span class="built_in">console</span>.log(b);</span><br></pre></td></tr></table></figure>
+<li><p>除了物件、陣列以外，其他都是不可變的</p>
+</li>
+<li><p>沒辦法改它，就只能回傳新的</p>
+<pre><code class="javascript">var a = &#39;hello&#39;;
+  a.toUpperCase;
+  console.log(a);
+  //印出：hello，沒有改變原本變數的內容</code></pre>
+<pre><code class="javascript"> var a = &#39;hello&#39;;
+  a = a.toUpperCase(); //要回傳給a，把原本的a值蓋掉
+  console.log(a);
+
+  //或是增設一個新變數
+  var a = &#39;hello&#39;;
+  var b = a.toUpperCase(); 
+  console.log(b);
+</code></pre>
 </li>
 </ul>
-
-            
-
-
-        </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/JS/" rel="tag">JS</a> <a class="tag tag--primary tag--small t-link" href="/tags/parseInt/" rel="tag">parseInt</a>
-
-            </div>
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/12/27/js-array/"
-                    data-tooltip="JS基本功- 物件與陣列"
-                    aria-label="PREVIOUS: JS基本功- 物件與陣列"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/12/26/js-Control-Flow/"
-                    data-tooltip="JS基本功- 控制流程 Control Flow"
-                    aria-label="NEXT: JS基本功- 控制流程 Control Flow"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-        
-        
-            
-        
-    </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
-    </span>
-</footer>
-
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/12/27/js-array/"
-                    data-tooltip="JS基本功- 物件與陣列"
-                    aria-label="PREVIOUS: JS基本功- 物件與陣列"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/12/26/js-Control-Flow/"
-                    data-tooltip="JS基本功- 控制流程 Control Flow"
-                    aria-label="NEXT: JS基本功- 控制流程 Control Flow"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"
-                        aria-label="Share on Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"
-                        aria-label="Share on Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/"
-                        aria-label="Share on Google+"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
-
-
-            
-        </div>
-        
-
-
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">Eva Chan</h4>
-        
-            <div id="about-card-bio"><p>Front-End Engineer</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
-
-<!--SCRIPTS END-->
-
-
-    
-
-
-
-
-    </body>
-</html>
+<pre><code></code></pre></article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2020/12/27/js-array/" title="JS基本功- 物件與陣列"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">Previous: JS基本功- 物件與陣列</span></a><a class="button is-default" href="/2020/12/26/js-Control-Flow/" title="JS基本功- 控制流程 Control Flow"><span class="has-text-weight-semibold">Next: JS基本功- 控制流程 Control Flow</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

@@ -1,334 +1,39 @@
-
-<!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Let&#39;s Code">
-    <title>JS實作- typingGame - Let&#39;s Code</title>
-    <meta name="author" content="Eva Chan">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"成品\n觀察功能需求\n在difficuly地方，有設置難易度，並於重新整理後，仍然儲存選擇的難易度\n使用到取表格中的值\nlocalstorage的方式，儲存設置的難易度\n\n\n創造出隨機的單字，並呈現於畫面\n輸入的值與隨機出現的值要核對\n\n\n左上方有倒數計時;右上方有分數的計算\nsetInterval設定倒數\n\n\n設置reload的按鈕\n在要加入文字內容的容器中，添加location.reload()\n\n\n\nHTML 部分1.icon來源font-awesome - cdnjs\n\nfa-cog\n\n1.設置難易度選單\n\ndifficulty為label\n\n下拉選單使用option\n\n\n\n123456789101112&lt;div id=\"settings\" class=\"settings\"&gt;    &lt;form id=\"settings-form\"&gt;      &lt;div&gt;        &lt;label for=\"difficulty\"&gt;Difficulty&lt;/label&gt;        &lt;select id=\"difficulty\"&gt;          &lt;option value=\"easy\"&gt;Easy&lt;/option&gt;          &lt;option value=\"medium\"&gt;Medium&lt;/option&gt;          &lt;option value=\"hard\"&gt;Hard&lt;/option&gt;        &lt;/select&gt;      &lt;/div&gt;    &lt;/form&gt;  &lt;/div&gt;\n\nJS 部分1.如何隨機取到已製作好的單字words[Math.floor(Math.random() * words.length)]\n\n$(&#39;#word&#39;).text(randomItem);讓文字呈現於畫面中\n\n12345678910111213141516171819202122const words = [  'sigh',  'tense',  'airplane',  'ball',  'pies',  'juice',  'warlike',  'bad',  'north',  'dependent',  'steer',  'silver',  'highfalutin',  'superficial',  'quince',  'eight',  'feeble',  'admit',  'drag',  'loving'];\n123456789function getRandomword() &#123;  //https://www.codegrepper.com/code-examples/javascript/get+random+word+from+array+javascript  randomItem = words[Math.floor(Math.random() * words.length)];    $('#word').text(randomItem);&#125;;getRandomword()\n\n\n2.單字的核對\n要確認抓到的單字是否一樣\nlet text = $(&#39;#text&#39;).val(); let Item = randomItem;\nconsole.log(Item);查看抓取到的單字\n設定文字核對一樣，就執行分數加一，以及創造另一組新單字  \n每次輸入完，並呈現新單字的同時，要清空輸入框的內容1234567891011//輸入單字核對function checkWord() &#123;  let text = $('#text').val();  let Item = randomItem;  //console.log(Item);  if (text === Item) &#123;    getRandomword();    updateScore();    $('#text').val(\"\");  &#125;&#125;\n\n\n\n3.倒數計時\n設置起始時間為10\nsetInterval()「不斷循環」地固定延遲了某段時間之後，才去執行對應的程式碼，使用 clearInterval()来終止\n在秒數倒計完之後，終止循環，並呈現結束畫面\n\n123456789101112131415161718// Init timelet time = 10;// 倒數計時//https://jsfiddle.net/satyasrinivaschekuri/y03m54Le/function countTime() &#123;  time--;  $('#time').text(`$&#123;time&#125;s`)  if (time &lt;= 0) &#123;    clearInterval(downloadTimer);    gameOver();  &#125;  //   &#125; else &#123;  //     time--;  //     $('#time').text(`$&#123;time&#125;s`)  //   &#125;&#125;var downloadTimer = setInterval(countTime, 1000);\n\n\n4.倒數計時結束，終止畫面\n\n在該div容器中，插入要顯示的標籤與內容\n利用display:flex呈現該內容\n\n12345678910//遊戲結束//location.reload()function gameOver() &#123;  $('#end-game-container').html(`&lt;h1&gt;Time ran out&lt;/h1&gt;  &lt;p&gt;Your final score is $&#123;score&#125;&lt;/p&gt;  &lt;button onclick=\"location.reload()\"&gt;Reload&lt;/button&gt;  `)  // 顯示指定的flex容器  $(\"#end-game-container\").css('display', 'flex');&#125;\n\n\n5.設置難易度\n設定在表格變動選項後的綁定事件\n抓取難易度選項的值，並以其值作為儲存local storage的內容\n接著將儲存的難易度，呈現於畫面$(&#39;#difficulty&#39;).val()\n\n123456789101112131415161718192021//如果儲存端不是空值(已有選擇)，就以此為主，否則的話就是mediumlet difficulty = localStorage.getItem('difficulty') !== null  ? localStorage.getItem('difficulty')  : 'medium';     //設置select的選擇  $('form').change(function () &#123;    difficulty = $('#difficulty').val();    localStorage.setItem('difficulty', difficulty);  &#125;);  //使畫面的難易度選擇，呈現儲存的選項  $('#difficulty').val(function () &#123;    let a = $('#difficulty').val()    if (localStorage.getItem('difficulty') !== null) &#123;      return a = localStorage.getItem('difficulty');    &#125; else &#123;      return a = 'medium';    &#125;  &#125;)\n\n\n6.調整難易度，每次打對題目可以增加秒數\n在checkWord()函式中，如過答對題目的條件下設置\n判斷如果難易度為高、中、低時，可以添加的秒數分別為多少\n\n1234567891011//time += 5;    if (difficulty === 'hard') &#123;      time += 2;    &#125; else if (difficulty === 'medium') &#123;      time += 3;    &#125; else &#123;      time += 5;    &#125;//判斷完之後，隨之繼續倒數時間    countTime();\n7.設定結束時，分數(&gt;=5)，會出現good job圖示\n\n在css檔案加入show的class，並插入該圖示的顯現方式\n於js部分，將判斷式，加入gameOver()\n\n1234567//增加判斷，分數達到一標準，會出現圖示  let s = score  console.log(s)  if (s &gt; = 5) &#123;    $(\"#end-game-container\").find('img').addClass('show');  &#125;;\n","dateCreated":"2021-01-22T09:31:35+08:00","dateModified":"2021-09-18T13:50:15+08:00","datePublished":"2021-01-22T09:31:35+08:00","description":"","headline":"JS實作- typingGame","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/","keywords":"JS, jQuery , toggleClass"}</script>
-    <meta name="description" content="成品 觀察功能需求 在difficuly地方，有設置難易度，並於重新整理後，仍然儲存選擇的難易度 使用到取表格中的值 localstorage的方式，儲存設置的難易度   創造出隨機的單字，並呈現於畫面 輸入的值與隨機出現的值要核對   左上方有倒數計時;右上方有分數的計算 setInterval設定倒數   設置reload的按鈕 在要加入文字內容的容器中，添加location.reload()">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="JS實作- typingGame">
-<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/index.html">
-<meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="成品 觀察功能需求 在difficuly地方，有設置難易度，並於重新整理後，仍然儲存選擇的難易度 使用到取表格中的值 localstorage的方式，儲存設置的難易度   創造出隨機的單字，並呈現於畫面 輸入的值與隨機出現的值要核對   左上方有倒數計時;右上方有分數的計算 setInterval設定倒數   設置reload的按鈕 在要加入文字內容的容器中，添加location.reload()">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/fC1gVUt.png">
-<meta property="og:image" content="https://i.imgur.com/uN4HVq7.png">
-<meta property="og:image" content="https://i.imgur.com/99JhtOs.png">
-<meta property="og:image" content="https://i.imgur.com/r9oXFmc.png">
-<meta property="og:image" content="https://i.imgur.com/2YKGGsw.png">
-<meta property="article:published_time" content="2021-01-22T01:31:35.000Z">
-<meta property="article:modified_time" content="2021-09-18T05:50:15.585Z">
-<meta property="article:author" content="Eva Chan">
-<meta property="article:tag" content="JS">
-<meta property="article:tag" content="jQuery ">
-<meta property="article:tag" content="toggleClass">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/fC1gVUt.png">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>JS實作- typingGame</title><meta name="description" content="Front-end Engineer"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="成品
+觀察功能需求
+在difficuly地方，有設置難易度，並於重新整理後，仍然儲存選擇的難易度
+使用到取表格中的值
+localstorage的方式，儲存設置的難易度
 
 
-    
-        
-            
-        
-    
+創造出隨機的單字，並呈現於畫面
+輸入的值與隨機出現的值要核對
 
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/"
-            aria-label=""
-        >
-            Let&#39;s Code
-        </a>
-    </div>
-    
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Open the link: /#about"
-            >
-        
-        
-            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-        </a>
-    
-</header>
 
-            <!-- Define author's picture -->
+左上方有倒數計時;右上方有分數的計算
+setInterval設定倒數
+
+
+設置reload的按鈕
+在要加入文字內容的容器中，添加location.reload()
 
 
 
-        
-    
+HTML 部分1.icon來源font-awesome - cdnjs
 
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a
-                    href="/#about"
-                    aria-label="Read more about the author"
-                >
-                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">Eva Chan</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/"
-                            
-                            rel="noopener"
-                            title="Home"
-                        >
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-categories"
-                            
-                            rel="noopener"
-                            title="Categories"
-                        >
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-tags"
-                            
-                            rel="noopener"
-                            title="Tags"
-                        >
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-archives"
-                            
-                            rel="noopener"
-                            title="Archives"
-                        >
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link open-algolia-search"
-                            href="#search"
-                            
-                            rel="noopener"
-                            title="Search"
-                        >
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="#about"
-                            
-                            rel="noopener"
-                            title="About"
-                        >
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/Eva813"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://facebook.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Facebook"
-                        >
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://plus.google.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Google +"
-                        >
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google +</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://www.linkedin.com/profile/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="LinkedIn"
-                        >
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://eva813.github.io/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="RSS"
-                        >
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
+fa-cog
 
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            JS實作- typingGame
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2021-01-22T09:31:35+08:00">
-	
-		    Jan 22, 2021
-    	
-    </time>
-    
-</div>
+1.設置難易度選單
 
-    
-</div>
+difficulty為label
 
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <p><a href="https://eva813.github.io/Eva_portfolio/typeGame/typeGame.html" target="_blank" rel="noopener">成品</a><br><img src="https://i.imgur.com/fC1gVUt.png" alt=""></p>
+下拉選單使用option
+
+
+
+&amp;lt;div id=&amp;quot;settings&amp;quot; class=&amp;quot;settings&amp;quot;&amp;gt;
+ .."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">JS實作- typingGame</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#觀察功能需求"><span class="toc-text">觀察功能需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-部分"><span class="toc-text">HTML 部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JS-部分"><span class="toc-text">JS 部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-如何隨機取到已製作好的單字"><span class="toc-text">1.如何隨機取到已製作好的單字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-單字的核對"><span class="toc-text">2.單字的核對</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-倒數計時"><span class="toc-text">3.倒數計時</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-倒數計時結束，終止畫面"><span class="toc-text">4.倒數計時結束，終止畫面</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-設置難易度"><span class="toc-text">5.設置難易度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-調整難易度，每次打對題目可以增加秒數"><span class="toc-text">6.調整難易度，每次打對題目可以增加秒數</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-設定結束時，分數-gt-5-，會出現good-job圖示"><span class="toc-text">7.設定結束時，分數(&gt;&#x3D;5)，會出現good job圖示</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/jQuery%20"><i class="tag post-item-tag">jQuery </i></a><a href="/tags/toggleClass"><i class="tag post-item-tag">toggleClass</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">JS實作- typingGame</h1><time class="has-text-grey" datetime="2021-01-22T01:31:35.000Z">2021-01-22</time><article class="mt-2 post-content"><p><a href="https://eva813.github.io/Eva_portfolio/typeGame/typeGame.html" target="_blank" rel="noopener">成品</a><br><img src="https://i.imgur.com/fC1gVUt.png" alt=""></p>
 <h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><ul>
 <li>在difficuly地方，有設置難易度，並於重新整理後，仍然儲存選擇的難易度<ul>
 <li>使用到取表格中的值</li>
@@ -360,23 +65,71 @@
 <p><img src="https://i.imgur.com/99JhtOs.png" alt=""></p>
 </li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"settings"</span> <span class="attr">class</span>=<span class="string">"settings"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"settings-form"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"difficulty"</span>&gt;</span>Difficulty<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"difficulty"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"easy"</span>&gt;</span>Easy<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"medium"</span>&gt;</span>Medium<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">"hard"</span>&gt;</span>Hard<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">&lt;div id=&quot;settings&quot; class=&quot;settings&quot;&gt;
+    &lt;form id=&quot;settings-form&quot;&gt;
+      &lt;div&gt;
+        &lt;label for=&quot;difficulty&quot;&gt;Difficulty&lt;/label&gt;
+        &lt;select id=&quot;difficulty&quot;&gt;
+          &lt;option value=&quot;easy&quot;&gt;Easy&lt;/option&gt;
+          &lt;option value=&quot;medium&quot;&gt;Medium&lt;/option&gt;
+          &lt;option value=&quot;hard&quot;&gt;Hard&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
 
+</code></pre>
 <h2 id="JS-部分"><a href="#JS-部分" class="headerlink" title="JS 部分"></a>JS 部分</h2><h3 id="1-如何隨機取到已製作好的單字"><a href="#1-如何隨機取到已製作好的單字" class="headerlink" title="1.如何隨機取到已製作好的單字"></a>1.如何隨機取到已製作好的單字</h3><p><code>words[Math.floor(Math.random() * words.length)]</code></p>
 <ul>
 <li><code>$(&#39;#word&#39;).text(randomItem);</code>讓文字呈現於畫面中</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> words = [</span><br><span class="line">  <span class="string">'sigh'</span>,</span><br><span class="line">  <span class="string">'tense'</span>,</span><br><span class="line">  <span class="string">'airplane'</span>,</span><br><span class="line">  <span class="string">'ball'</span>,</span><br><span class="line">  <span class="string">'pies'</span>,</span><br><span class="line">  <span class="string">'juice'</span>,</span><br><span class="line">  <span class="string">'warlike'</span>,</span><br><span class="line">  <span class="string">'bad'</span>,</span><br><span class="line">  <span class="string">'north'</span>,</span><br><span class="line">  <span class="string">'dependent'</span>,</span><br><span class="line">  <span class="string">'steer'</span>,</span><br><span class="line">  <span class="string">'silver'</span>,</span><br><span class="line">  <span class="string">'highfalutin'</span>,</span><br><span class="line">  <span class="string">'superficial'</span>,</span><br><span class="line">  <span class="string">'quince'</span>,</span><br><span class="line">  <span class="string">'eight'</span>,</span><br><span class="line">  <span class="string">'feeble'</span>,</span><br><span class="line">  <span class="string">'admit'</span>,</span><br><span class="line">  <span class="string">'drag'</span>,</span><br><span class="line">  <span class="string">'loving'</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomword</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//https://www.codegrepper.com/code-examples/javascript/get+random+word+from+array+javascript</span></span><br><span class="line">  randomItem = words[<span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * words.length)];</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  $(<span class="string">'#word'</span>).text(randomItem);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">getRandomword()</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">const words = [
+  &#39;sigh&#39;,
+  &#39;tense&#39;,
+  &#39;airplane&#39;,
+  &#39;ball&#39;,
+  &#39;pies&#39;,
+  &#39;juice&#39;,
+  &#39;warlike&#39;,
+  &#39;bad&#39;,
+  &#39;north&#39;,
+  &#39;dependent&#39;,
+  &#39;steer&#39;,
+  &#39;silver&#39;,
+  &#39;highfalutin&#39;,
+  &#39;superficial&#39;,
+  &#39;quince&#39;,
+  &#39;eight&#39;,
+  &#39;feeble&#39;,
+  &#39;admit&#39;,
+  &#39;drag&#39;,
+  &#39;loving&#39;
+];</code></pre>
+<pre><code class="javascript">function getRandomword() {
+  //https://www.codegrepper.com/code-examples/javascript/get+random+word+from+array+javascript
+  randomItem = words[Math.floor(Math.random() * words.length)];
 
 
+  $(&#39;#word&#39;).text(randomItem);
+};
+
+getRandomword()</code></pre>
 <h3 id="2-單字的核對"><a href="#2-單字的核對" class="headerlink" title="2.單字的核對"></a>2.單字的核對</h3><ul>
 <li>要確認抓到的單字是否一樣</li>
 <li><code>let text = $(&#39;#text&#39;).val(); let Item = randomItem;</code></li>
 <li><code>console.log(Item);</code>查看抓取到的單字</li>
 <li>設定文字核對一樣，就執行分數加一，以及創造另一組新單字  </li>
-<li>每次輸入完，並呈現新單字的同時，要清空輸入框的內容<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//輸入單字核對</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkWord</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> text = $(<span class="string">'#text'</span>).val();</span><br><span class="line">  <span class="keyword">let</span> Item = randomItem;</span><br><span class="line">  <span class="comment">//console.log(Item);</span></span><br><span class="line">  <span class="keyword">if</span> (text === Item) &#123;</span><br><span class="line">    getRandomword();</span><br><span class="line">    updateScore();</span><br><span class="line">    $(<span class="string">'#text'</span>).val(<span class="string">""</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<li>每次輸入完，並呈現新單字的同時，要清空輸入框的內容<pre><code class="javascript">//輸入單字核對
+function checkWord() {
+let text = $(&#39;#text&#39;).val();
+let Item = randomItem;
+//console.log(Item);
+if (text === Item) {
+  getRandomword();
+  updateScore();
+  $(&#39;#text&#39;).val(&quot;&quot;);
+}
+}</code></pre>
 </li>
 </ul>
 <h3 id="3-倒數計時"><a href="#3-倒數計時" class="headerlink" title="3.倒數計時"></a>3.倒數計時</h3><ul>
@@ -384,361 +137,92 @@
 <li><code>setInterval()</code>「不斷循環」地固定延遲了某段時間之後，才去執行對應的程式碼，使用 <code>clearInterval()</code>来終止</li>
 <li>在秒數倒計完之後，終止循環，並呈現結束畫面</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Init time</span></span><br><span class="line"><span class="keyword">let</span> time = <span class="number">10</span>;</span><br><span class="line"><span class="comment">// 倒數計時</span></span><br><span class="line"><span class="comment">//https://jsfiddle.net/satyasrinivaschekuri/y03m54Le/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">countTime</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  time--;</span><br><span class="line">  $(<span class="string">'#time'</span>).text(<span class="string">`<span class="subst">$&#123;time&#125;</span>s`</span>)</span><br><span class="line">  <span class="keyword">if</span> (time &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    clearInterval(downloadTimer);</span><br><span class="line">    gameOver();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//   &#125; else &#123;</span></span><br><span class="line">  <span class="comment">//     time--;</span></span><br><span class="line">  <span class="comment">//     $('#time').text(`$&#123;time&#125;s`)</span></span><br><span class="line">  <span class="comment">//   &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> downloadTimer = setInterval(countTime, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">// Init time
+let time = 10;
+// 倒數計時
+//https://jsfiddle.net/satyasrinivaschekuri/y03m54Le/
+function countTime() {
+  time--;
+  $(&#39;#time&#39;).text(`${time}s`)
+  if (time &lt;= 0) {
+    clearInterval(downloadTimer);
+    gameOver();
+  }
+  //   } else {
+  //     time--;
+  //     $(&#39;#time&#39;).text(`${time}s`)
+  //   }
+}
 
-
+var downloadTimer = setInterval(countTime, 1000);</code></pre>
 <h4 id="4-倒數計時結束，終止畫面"><a href="#4-倒數計時結束，終止畫面" class="headerlink" title="4.倒數計時結束，終止畫面"></a>4.倒數計時結束，終止畫面</h4><p><img src="https://i.imgur.com/r9oXFmc.png" alt=""></p>
 <ul>
 <li>在該div容器中，插入要顯示的標籤與內容</li>
 <li>利用<code>display:flex</code>呈現該內容</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//遊戲結束</span></span><br><span class="line"><span class="comment">//location.reload()</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gameOver</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  $(<span class="string">'#end-game-container'</span>).html(<span class="string">`&lt;h1&gt;Time ran out&lt;/h1&gt;</span></span><br><span class="line"><span class="string">  &lt;p&gt;Your final score is <span class="subst">$&#123;score&#125;</span>&lt;/p&gt;</span></span><br><span class="line"><span class="string">  &lt;button onclick="location.reload()"&gt;Reload&lt;/button&gt;</span></span><br><span class="line"><span class="string">  `</span>)</span><br><span class="line">  <span class="comment">// 顯示指定的flex容器</span></span><br><span class="line">  $(<span class="string">"#end-game-container"</span>).css(<span class="string">'display'</span>, <span class="string">'flex'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<pre><code class="javascript">//遊戲結束
+//location.reload()
+function gameOver() {
+  $(&#39;#end-game-container&#39;).html(`&lt;h1&gt;Time ran out&lt;/h1&gt;
+  &lt;p&gt;Your final score is ${score}&lt;/p&gt;
+  &lt;button onclick=&quot;location.reload()&quot;&gt;Reload&lt;/button&gt;
+  `)
+  // 顯示指定的flex容器
+  $(&quot;#end-game-container&quot;).css(&#39;display&#39;, &#39;flex&#39;);
+}</code></pre>
 <h3 id="5-設置難易度"><a href="#5-設置難易度" class="headerlink" title="5.設置難易度"></a>5.設置難易度</h3><ul>
 <li>設定在表格變動選項後的綁定事件</li>
 <li>抓取難易度選項的值，並以其值作為儲存local storage的內容</li>
 <li>接著將儲存的難易度，呈現於畫面<code>$(&#39;#difficulty&#39;).val()</code></li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果儲存端不是空值(已有選擇)，就以此為主，否則的話就是medium</span></span><br><span class="line"><span class="keyword">let</span> difficulty = localStorage.getItem(<span class="string">'difficulty'</span>) !== <span class="literal">null</span></span><br><span class="line">  ? localStorage.getItem(<span class="string">'difficulty'</span>)</span><br><span class="line">  : <span class="string">'medium'</span>;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"> <span class="comment">//設置select的選擇</span></span><br><span class="line">  $(<span class="string">'form'</span>).change(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    difficulty = $(<span class="string">'#difficulty'</span>).val();</span><br><span class="line">    localStorage.setItem(<span class="string">'difficulty'</span>, difficulty);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//使畫面的難易度選擇，呈現儲存的選項</span></span><br><span class="line">  $(<span class="string">'#difficulty'</span>).val(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> a = $(<span class="string">'#difficulty'</span>).val()</span><br><span class="line">    <span class="keyword">if</span> (localStorage.getItem(<span class="string">'difficulty'</span>) !== <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> a = localStorage.getItem(<span class="string">'difficulty'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> a = <span class="string">'medium'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">//如果儲存端不是空值(已有選擇)，就以此為主，否則的話就是medium
+let difficulty = localStorage.getItem(&#39;difficulty&#39;) !== null
+  ? localStorage.getItem(&#39;difficulty&#39;)
+  : &#39;medium&#39;;
 
 
+ //設置select的選擇
+  $(&#39;form&#39;).change(function () {
+    difficulty = $(&#39;#difficulty&#39;).val();
+    localStorage.setItem(&#39;difficulty&#39;, difficulty);
+
+  });
+  //使畫面的難易度選擇，呈現儲存的選項
+  $(&#39;#difficulty&#39;).val(function () {
+    let a = $(&#39;#difficulty&#39;).val()
+    if (localStorage.getItem(&#39;difficulty&#39;) !== null) {
+      return a = localStorage.getItem(&#39;difficulty&#39;);
+    } else {
+      return a = &#39;medium&#39;;
+    }
+  }) 
+</code></pre>
 <h3 id="6-調整難易度，每次打對題目可以增加秒數"><a href="#6-調整難易度，每次打對題目可以增加秒數" class="headerlink" title="6.調整難易度，每次打對題目可以增加秒數"></a>6.調整難易度，每次打對題目可以增加秒數</h3><ul>
 <li>在<code>checkWord()</code>函式中，如過答對題目的條件下設置</li>
 <li>判斷如果難易度為高、中、低時，可以添加的秒數分別為多少</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//time += 5;</span></span><br><span class="line">    <span class="keyword">if</span> (difficulty === <span class="string">'hard'</span>) &#123;</span><br><span class="line">      time += <span class="number">2</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (difficulty === <span class="string">'medium'</span>) &#123;</span><br><span class="line">      time += <span class="number">3</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      time += <span class="number">5</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//判斷完之後，隨之繼續倒數時間</span></span><br><span class="line">    countTime();</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">//time += 5;
+    if (difficulty === &#39;hard&#39;) {
+      time += 2;
+    } else if (difficulty === &#39;medium&#39;) {
+      time += 3;
+    } else {
+      time += 5;
+    }
+
+//判斷完之後，隨之繼續倒數時間
+    countTime();</code></pre>
 <h3 id="7-設定結束時，分數-gt-5-，會出現good-job圖示"><a href="#7-設定結束時，分數-gt-5-，會出現good-job圖示" class="headerlink" title="7.設定結束時，分數(&gt;=5)，會出現good job圖示"></a>7.設定結束時，分數(&gt;=5)，會出現good job圖示</h3><p><img src="https://i.imgur.com/2YKGGsw.png" alt=""></p>
 <ul>
 <li>在css檔案加入show的class，並插入該圖示的顯現方式</li>
-<li>於js部分，將判斷式，加入<code>gameOver()</code></li>
+<li>於js部分，將判斷式，加入<code>gameOver()a</code></li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//增加判斷，分數達到一標準，會出現圖示</span></span><br><span class="line">  <span class="keyword">let</span> s = score</span><br><span class="line">  <span class="built_in">console</span>.log(s)</span><br><span class="line">  <span class="keyword">if</span> (s &gt; = <span class="number">5</span>) &#123;</span><br><span class="line">    $(<span class="string">"#end-game-container"</span>).find(<span class="string">'img'</span>).addClass(<span class="string">'show'</span>);</span><br><span class="line"></span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">//增加判斷，分數達到一標準，會出現圖示
+  let s = score
+  console.log(s)
+  if (s &gt; = 5) {
+    $(&quot;#end-game-container&quot;).find(&#39;img&#39;).addClass(&#39;show&#39;);
 
-            
-
-
-        </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/JS/" rel="tag">JS</a> <a class="tag tag--primary tag--small t-link" href="/tags/jQuery/" rel="tag">jQuery </a> <a class="tag tag--primary tag--small t-link" href="/tags/toggleClass/" rel="tag">toggleClass</a>
-
-            </div>
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/23/API-weather/"
-                    data-tooltip="串接API- 天氣預報"
-                    aria-label="PREVIOUS: 串接API- 天氣預報"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/22/js-guessNumber/"
-                    data-tooltip="JS實作- 猜數字遊戲"
-                    aria-label="NEXT: JS實作- 猜數字遊戲"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-        
-        
-            
-        
-    </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
-    </span>
-</footer>
-
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/23/API-weather/"
-                    data-tooltip="串接API- 天氣預報"
-                    aria-label="PREVIOUS: 串接API- 天氣預報"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/01/22/js-guessNumber/"
-                    data-tooltip="JS實作- 猜數字遊戲"
-                    aria-label="NEXT: JS實作- 猜數字遊戲"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"
-                        aria-label="Share on Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"
-                        aria-label="Share on Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-typingGame/"
-                        aria-label="Share on Google+"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
-
-
-            
-        </div>
-        
-
-
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">Eva Chan</h4>
-        
-            <div id="about-card-bio"><p>Front-End Engineer</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
-
-<!--SCRIPTS END-->
-
-
-    
-
-
-
-
-    </body>
-</html>
+  };
+</code></pre>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2021/02/23/API-weather/" title="串接API- 天氣預報"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">Previous: 串接API- 天氣預報</span></a><a class="button is-default" href="/2021/01/22/js-guessNumber/" title="JS實作- 猜數字遊戲"><span class="has-text-weight-semibold">Next: JS實作- 猜數字遊戲</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

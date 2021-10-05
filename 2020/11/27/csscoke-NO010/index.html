@@ -1,351 +1,83 @@
-
-<!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Let&#39;s Code">
-    <title>Amos金魚都能懂的切版教學影片-csscoke NO010 - Let&#39;s Code</title>
-    <meta name="author" content="Eva Chan">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"練習使用float排版成品\nHTML架構12345678910111213141516171819202122232425262728293031323334353637&lt;div class=\"wrap\"&gt;\t&lt;div class=\"item\"&gt;\t\t&lt;img src=\"https://picsum.photos/500/500?random=10\"&gt;\t\t&lt;div class=\"txt\"&gt;\t\t\t&lt;h3&gt;金魚都懂切版&lt;/h3&gt;\t\t\t&lt;p&gt;金魚都懂的這個網頁怎麼切，是 IThome 鐵人賽的主題，主要訴求在簡。&lt;/p&gt;\t\t&lt;/div&gt;\t&lt;/div&gt;\t&lt;div class=\"item\"&gt;\t\t&lt;img src=\"https://picsum.photos/500/500?random=20\"&gt;\t\t&lt;div class=\"txt\"&gt;\t\t\t&lt;h3&gt;金魚也懂CSS&lt;/h3&gt;\t\t\t&lt;p&gt;金魚都能懂的 CSS 選取器，是 IThome 鐵人賽的主題之一，&lt;/p&gt;\t\t&lt;/div&gt;\t&lt;/div&gt;\t&lt;div class=\"item\"&gt;\t\t&lt;img src=\"https://picsum.photos/500/500?random=30\"&gt;\t\t&lt;div class=\"txt\"&gt;\t\t\t&lt;h3&gt;金魚還會HTML&lt;/h3&gt;\t\t\t&lt;p&gt;&lt;/p&gt;\t\t&lt;/div&gt;\t&lt;/div&gt;\t&lt;div class=\"item\"&gt;\t\t&lt;img src=\"https://picsum.photos/500/500?random=40\"&gt;\t\t&lt;div class=\"txt\"&gt;\t\t\t&lt;h3&gt;阿你會甚麼?&lt;/h3&gt;\t\t\t&lt;p&gt;&lt;/p&gt;\t\t&lt;/div&gt;\t&lt;/div&gt;\t&lt;div class=\"item\"&gt;\t\t&lt;img src=\"https://picsum.photos/500/500?random=66\"&gt;\t\t&lt;div class=\"txt\"&gt;\t\t\t&lt;h3&gt;對不起我又嗆人了&lt;/h3&gt;\t\t\t&lt;p&gt; CSScoke 的直播，趁現在趕快去定閱一波阿!&lt;/p&gt;\t\t&lt;/div&gt;\t&lt;/div&gt;&lt;/div&gt;\n調整版面\n1.在wrap來訂出畫面尺寸大小\n2.使用float\n3.在第一個的item去設定，佔畫面的50%;而另外四個則是以25％去放置在畫面中\n4.蚯蚓選取器：『對象 A 同層後方的所有 B』\n\n12345678910111213141516171819202122232425/* 先將畫面尺寸定出來 */    .wrap &#123;      width: 960px;      margin: auto;      /* 在父層設置這個，就可以讓父層抓到所有子層的高度 */      overflow: hidden;    &#125;    .item &#123;      float: left;    &#125;    .item img &#123;      width: 100%;      vertical-align: middle;    &#125;    .item:first-child &#123;      width: 50%;    &#125;    .item:first-child~.item &#123;      width: 25%;    &#125;\n\n\n\n設定.item .txt區塊的寬為100%，以及paddimg:15px，這會使得文字區塊超出div。\n要使用 box-sizing: border-box;\n\n\n\n互動效果的設定\n設定文字被摸到出現或消失\n1234567891011121314151617181920212223242526.item .txt &#123;            /* 調整兩個段落的垂直居中 */      /* display: flex; */      flex-direction: column;      justify-content: center;      align-items: center;      /* 要設定互動，display: flex;要去掉 */      display: none;    &#125;    .item:hover .txt &#123;      display: flex;    &#125;     /* ******************************/    /* ***或是以透明度的方式來做顯示互動的效果*** */  .item .txt &#123;        opacity: 0;      transition: .5s;    &#125;    .item:hover .txt &#123;      opacity: 1;    &#125;\n\n也可將互動改唯有縮放效果的方式\n\nscale()用於修改元素大小\n\n\n1234567891011.item .txt &#123;       opacity: 0;     transform: scale(0);     transition: .5s;   &#125;   .item:hover .txt &#123;     opacity: 1;     transform: scale(1);   &#125;\n\n\n補充教學-float 浮動\n以圖片與段落文字為例123456&lt;img src=\"https://picsum.photos/500/500?random=6\"&gt;&lt;p&gt;\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.&lt;/p&gt;\n\n\n\n\n\n\n當將img設定浮動之後，他會浮上來一層，在p之上，與裡面的文字同一層（所以會擠壓到文字）\nfloat:left; float:right; 沒有center\n\n示意圖：\n形成文繞圖：\n\n\n讓圖片與文字有些距離，可以在img設定margin\n\n\nfloat排版\n設定三個欄位\n\n子物件設定為浮動之後，父層就會抓不到子物件的高度\n\n\n\n\n物件設定float之後，物件會排排站\n\n\n再將三個欄位設定margin，且增加ooxx的div\n並將ooxx，設定clear：both; 讓父層抓到高度\n\n\n父層其實是被ooxx所拉開高度，而不是被內容的float物件所撐開clear作用是散開浮動物件，跑到所有浮動物件後方(最下方) 圖二，紅色。\n\n\n\n\nDay 19 | 我比較喜歡脆笛酥 - 方塊酥版面 Part 1親代選取器之妹妹選取器與鞭炮串選取器【DAY24】transform，進入視覺系的CSS第一步，網頁要動起來了！（一）Transform變形[CSS] 浮動 (float) 與清除浮動 (clear)\n","dateCreated":"2020-11-27T15:48:59+08:00","dateModified":"2021-09-18T13:43:49+08:00","datePublished":"2020-11-27T15:48:59+08:00","description":"","headline":"Amos金魚都能懂的切版教學影片-csscoke NO010","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/","keywords":"CSS, 切版, float"}</script>
-    <meta name="description" content="練習使用float排版成品 HTML架構12345678910111213141516171819202122232425262728293031323334353637&lt;div class&#x3D;&quot;wrap&quot;&gt;	&lt;div class&#x3D;&quot;item&quot;&gt;		&lt;img src&#x3D;&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;500&#x2F;500?random&#x3D;10&quot;&gt;		&lt;d">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="Amos金魚都能懂的切版教學影片-csscoke NO010">
-<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/index.html">
-<meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="練習使用float排版成品 HTML架構12345678910111213141516171819202122232425262728293031323334353637&lt;div class&#x3D;&quot;wrap&quot;&gt;	&lt;div class&#x3D;&quot;item&quot;&gt;		&lt;img src&#x3D;&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;500&#x2F;500?random&#x3D;10&quot;&gt;		&lt;d">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/HSxrHVY.jpg">
-<meta property="og:image" content="https://i.imgur.com/iaIicVC.jpg">
-<meta property="og:image" content="https://i.imgur.com/c5BGt1E.jpg">
-<meta property="og:image" content="https://i.imgur.com/VkWWZpD.png">
-<meta property="og:image" content="https://i.imgur.com/jIi69In.png">
-<meta property="og:image" content="https://i.imgur.com/lUTqlRy.png">
-<meta property="og:image" content="https://i.imgur.com/6NuHHch.png">
-<meta property="og:image" content="https://i.imgur.com/a8d7ERZ.png">
-<meta property="og:image" content="https://i.imgur.com/4vzaQnJ.png">
-<meta property="og:image" content="https://i.imgur.com/LcieUW2.png">
-<meta property="og:image" content="https://i.imgur.com/9kLyaNW.png">
-<meta property="og:image" content="https://i.imgur.com/dsqmPw6.png">
-<meta property="article:published_time" content="2020-11-27T07:48:59.000Z">
-<meta property="article:modified_time" content="2021-09-18T05:43:49.684Z">
-<meta property="article:author" content="Eva Chan">
-<meta property="article:tag" content="CSS">
-<meta property="article:tag" content="切版">
-<meta property="article:tag" content="float">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/HSxrHVY.jpg">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
-
-
-    
-        
-            
-        
-    
-
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/"
-            aria-label=""
-        >
-            Let&#39;s Code
-        </a>
-    </div>
-    
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Open the link: /#about"
-            >
-        
-        
-            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-        </a>
-    
-</header>
-
-            <!-- Define author's picture -->
-
-
-
-        
-    
-
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a
-                    href="/#about"
-                    aria-label="Read more about the author"
-                >
-                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">Eva Chan</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/"
-                            
-                            rel="noopener"
-                            title="Home"
-                        >
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-categories"
-                            
-                            rel="noopener"
-                            title="Categories"
-                        >
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-tags"
-                            
-                            rel="noopener"
-                            title="Tags"
-                        >
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-archives"
-                            
-                            rel="noopener"
-                            title="Archives"
-                        >
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link open-algolia-search"
-                            href="#search"
-                            
-                            rel="noopener"
-                            title="Search"
-                        >
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="#about"
-                            
-                            rel="noopener"
-                            title="About"
-                        >
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/Eva813"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://facebook.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Facebook"
-                        >
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://plus.google.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Google +"
-                        >
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google +</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://www.linkedin.com/profile/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="LinkedIn"
-                        >
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://eva813.github.io/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="RSS"
-                        >
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
-
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            Amos金魚都能懂的切版教學影片-csscoke NO010
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2020-11-27T15:48:59+08:00">
-	
-		    Nov 27, 2020
-    	
-    </time>
-    
-</div>
-
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <h2 id="練習使用float排版"><a href="#練習使用float排版" class="headerlink" title="練習使用float排版"></a>練習使用float排版</h2><p><a href="https://eva813.github.io/my-projects/coke-NO010(v2).html" target="_blank" rel="noopener">成品</a><br><img src="https://i.imgur.com/HSxrHVY.jpg" alt=""></p>
-<h2 id="HTML架構"><a href="#HTML架構" class="headerlink" title="HTML架構"></a>HTML架構</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrap"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://picsum.photos/500/500?random=10"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"txt"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span>&gt;</span>金魚都懂切版<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>金魚都懂的這個網頁怎麼切，是 IThome 鐵人賽的主題，主要訴求在簡。<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://picsum.photos/500/500?random=20"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"txt"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span>&gt;</span>金魚也懂CSS<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>金魚都能懂的 CSS 選取器，是 IThome 鐵人賽的主題之一，<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://picsum.photos/500/500?random=30"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"txt"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span>&gt;</span>金魚還會HTML<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://picsum.photos/500/500?random=40"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"txt"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span>&gt;</span>阿你會甚麼?<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://picsum.photos/500/500?random=66"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"txt"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span>&gt;</span>對不起我又嗆人了<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span> CSScoke 的直播，趁現在趕快去定閱一波阿!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Amos金魚都能懂的切版教學影片-csscoke NO010</title><meta name="description" content="Front-end Engineer"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="練習使用float排版成品
+HTML架構&amp;lt;div class=&amp;quot;wrap&amp;quot;&amp;gt;
+    &amp;lt;div class=&amp;quot;item&amp;quot;&amp;gt;
+        &amp;lt;img src=&amp;quot;https://picsum.photos/500/500?random=10&amp;quot;&amp;gt;
+        &amp;lt;div class=&amp;quot;txt&amp;quot;&amp;gt;
+            &amp;lt;h3&amp;gt;金魚都懂切版&amp;lt;/h3&amp;gt;
+            &amp;lt;p&amp;gt;金魚都懂的這個網頁怎麼切，是 IThome 鐵人賽的主題，主要訴求在簡。&amp;lt;/p&amp;gt;
+        &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+.."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Amos金魚都能懂的切版教學影片-csscoke NO010</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#練習使用float排版"><span class="toc-text">練習使用float排版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML架構"><span class="toc-text">HTML架構</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#調整版面"><span class="toc-text">調整版面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#互動效果的設定"><span class="toc-text">互動效果的設定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#補充教學-float-浮動"><span class="toc-text">補充教學-float 浮動</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/CSS"><i class="tag post-item-tag">CSS</i></a><a href="/tags/%E5%88%87%E7%89%88"><i class="tag post-item-tag">切版</i></a><a href="/tags/float"><i class="tag post-item-tag">float</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Amos金魚都能懂的切版教學影片-csscoke NO010</h1><time class="has-text-grey" datetime="2020-11-27T07:48:59.000Z">2020-11-27</time><article class="mt-2 post-content"><h2 id="練習使用float排版"><a href="#練習使用float排版" class="headerlink" title="練習使用float排版"></a>練習使用float排版</h2><p><a href="https://eva813.github.io/my-projects/coke-NO010(v2).html" target="_blank" rel="noopener">成品</a><br><img src="https://i.imgur.com/HSxrHVY.jpg" alt=""></p>
+<h2 id="HTML架構"><a href="#HTML架構" class="headerlink" title="HTML架構"></a>HTML架構</h2><pre><code class="html">&lt;div class=&quot;wrap&quot;&gt;
+    &lt;div class=&quot;item&quot;&gt;
+        &lt;img src=&quot;https://picsum.photos/500/500?random=10&quot;&gt;
+        &lt;div class=&quot;txt&quot;&gt;
+            &lt;h3&gt;金魚都懂切版&lt;/h3&gt;
+            &lt;p&gt;金魚都懂的這個網頁怎麼切，是 IThome 鐵人賽的主題，主要訴求在簡。&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;
+        &lt;img src=&quot;https://picsum.photos/500/500?random=20&quot;&gt;
+        &lt;div class=&quot;txt&quot;&gt;
+            &lt;h3&gt;金魚也懂CSS&lt;/h3&gt;
+            &lt;p&gt;金魚都能懂的 CSS 選取器，是 IThome 鐵人賽的主題之一，&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;
+        &lt;img src=&quot;https://picsum.photos/500/500?random=30&quot;&gt;
+        &lt;div class=&quot;txt&quot;&gt;
+            &lt;h3&gt;金魚還會HTML&lt;/h3&gt;
+            &lt;p&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;
+        &lt;img src=&quot;https://picsum.photos/500/500?random=40&quot;&gt;
+        &lt;div class=&quot;txt&quot;&gt;
+            &lt;h3&gt;阿你會甚麼?&lt;/h3&gt;
+            &lt;p&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;item&quot;&gt;
+        &lt;img src=&quot;https://picsum.photos/500/500?random=66&quot;&gt;
+        &lt;div class=&quot;txt&quot;&gt;
+            &lt;h3&gt;對不起我又嗆人了&lt;/h3&gt;
+            &lt;p&gt; CSScoke 的直播，趁現在趕快去定閱一波阿!&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
 <h2 id="調整版面"><a href="#調整版面" class="headerlink" title="調整版面"></a>調整版面</h2><ul>
 <li>1.在wrap來訂出畫面尺寸大小</li>
 <li>2.使用float</li>
 <li>3.在第一個的item去設定，佔畫面的50%;而另外四個則是以25％去放置在畫面中</li>
 <li>4.蚯蚓選取器：『對象 A 同層後方的所有 B』</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 先將畫面尺寸定出來 */</span></span><br><span class="line">    <span class="selector-class">.wrap</span> &#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">960px</span>;</span><br><span class="line">      <span class="attribute">margin</span>: auto;</span><br><span class="line">      <span class="comment">/* 在父層設置這個，就可以讓父層抓到所有子層的高度 */</span></span><br><span class="line">      <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.item</span> &#123;</span><br><span class="line">      <span class="attribute">float</span>: left;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.item</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">      <span class="attribute">vertical-align</span>: middle;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.item</span><span class="selector-pseudo">:first-child</span> &#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">50%</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.item</span><span class="selector-pseudo">:first-child</span>~<span class="selector-class">.item</span> &#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">25%</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">/* 先將畫面尺寸定出來 */
+    .wrap {
+      width: 960px;
+      margin: auto;
+      /* 在父層設置這個，就可以讓父層抓到所有子層的高度 */
+      overflow: hidden;
+    }
+
+    .item {
+      float: left;
+    }
+
+    .item img {
+      width: 100%;
+      vertical-align: middle;
+    }
 
 
+    .item:first-child {
+      width: 50%;
+    }
+
+    .item:first-child~.item {
+      width: 25%;
+    }</code></pre>
 <ul>
 <li>設定.item .txt區塊的寬為100%，以及paddimg:15px，這會使得文字區塊超出div。</li>
 <li>要使用 <code>box-sizing: border-box;</code></li>
@@ -354,380 +86,115 @@
 <p><img src="https://i.imgur.com/c5BGt1E.jpg" alt=""></p>
 <h2 id="互動效果的設定"><a href="#互動效果的設定" class="headerlink" title="互動效果的設定"></a>互動效果的設定</h2><ul>
 <li><p>設定文字被摸到出現或消失</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> <span class="selector-class">.txt</span> &#123;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">/* 調整兩個段落的垂直居中 */</span></span><br><span class="line">      <span class="comment">/* display: flex; */</span></span><br><span class="line">      <span class="attribute">flex-direction</span>: column;</span><br><span class="line">      <span class="attribute">justify-content</span>: center;</span><br><span class="line">      <span class="attribute">align-items</span>: center;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* 要設定互動，display: flex;要去掉 */</span></span><br><span class="line">      <span class="attribute">display</span>: none;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-class">.item</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.txt</span> &#123;</span><br><span class="line">      <span class="attribute">display</span>: flex;</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="comment">/* ******************************/</span></span><br><span class="line">    <span class="comment">/* ***或是以透明度的方式來做顯示互動的效果*** */</span></span><br><span class="line">  <span class="selector-class">.item</span> <span class="selector-class">.txt</span> &#123;  </span><br><span class="line">      <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">      <span class="attribute">transition</span>: .<span class="number">5s</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.item</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.txt</span> &#123;</span><br><span class="line">      <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>也可將互動改唯有縮放效果的方式</p>
-</li>
-<li><p><code>scale()</code>用於修改元素大小</p>
-</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> <span class="selector-class">.txt</span> &#123;  </span><br><span class="line">     <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">     <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">0</span>);</span><br><span class="line">     <span class="attribute">transition</span>: .<span class="number">5s</span>;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="selector-class">.item</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.txt</span> &#123;</span><br><span class="line">     <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">     <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">.item .txt {
+
+    /* 調整兩個段落的垂直居中 */
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* 要設定互動，display: flex;要去掉 */
+    display: none;
+
+  }
+  .item:hover .txt {
+    display: flex;
+  }
+   /* ******************************/
+  /* ***或是以透明度的方式來做顯示互動的效果*** */
+.item .txt {  
+    opacity: 0;
+    transition: .5s;
+
+  }
+
+  .item:hover .txt {
+    opacity: 1;
+  }
 
 
-<h2 id="補充教學-float-浮動"><a href="#補充教學-float-浮動" class="headerlink" title="補充教學-float 浮動"></a>補充教學-float 浮動</h2><ul>
-<li>以圖片與段落文字為例<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://picsum.photos/500/500?random=6"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><img src="https://i.imgur.com/VkWWZpD.png" alt=""></p>
-<p><img src="https://i.imgur.com/jIi69In.png" alt=""></p>
-<ul>
-<li>當將img設定浮動之後，他會浮上來一層，在p之上，與裡面的文字同一層（所以會擠壓到文字）</li>
-<li><code>float:left;</code> <code>float:right;</code> 沒有center</li>
-</ul>
-<p>示意圖：<br><img src="https://i.imgur.com/lUTqlRy.png" alt=""></p>
-<p>形成文繞圖：<br><img src="https://i.imgur.com/6NuHHch.png" alt=""></p>
-<p><img src="https://i.imgur.com/a8d7ERZ.png" alt=""></p>
-<ul>
-<li>讓圖片與文字有些距離，可以在img設定margin</li>
-</ul>
-<p><img src="https://i.imgur.com/4vzaQnJ.png" alt=""></p>
-<h2 id="float排版"><a href="#float排版" class="headerlink" title="float排版"></a>float排版</h2><ul>
-<li><p>設定三個欄位</p>
-</li>
-<li><p>子物件設定為浮動之後，父層就會抓不到子物件的高度</p>
+</code></pre>
 </li>
 </ul>
-<p><img src="https://i.imgur.com/LcieUW2.png" alt=""></p>
-<ul>
-<li>物件設定float之後，物件會排排站</li>
+<pre><code>
+* 也可將互動改唯有縮放效果的方式
+* `scale()`用於修改元素大小
+
+```css=
+ .item .txt {  
+      opacity: 0;
+      transform: scale(0);
+      transition: .5s;
+
+    }
+
+    .item:hover .txt {
+      opacity: 1;
+      transform: scale(1);
+    }</code></pre><h2 id="補充教學-float-浮動"><a href="#補充教學-float-浮動" class="headerlink" title="補充教學-float 浮動"></a>補充教學-float 浮動</h2><ul>
+<li>以圖片與段落文字為例<pre><code class="html"></code></pre>
+</li>
 </ul>
-<ul>
-<li>再將三個欄位設定margin，且增加ooxx的div</li>
-<li>並將ooxx，設定<code>clear：both;</code> 讓父層抓到高度</li>
-</ul>
-<blockquote>
-<p>父層其實是被ooxx所拉開高度，而不是被內容的float物件所撐開<br>clear作用是散開浮動物件，跑到所有浮動物件後方(最下方) 圖二，紅色。</p>
-</blockquote>
-<p><img src="https://i.imgur.com/9kLyaNW.png" alt=""></p>
-<p><img src="https://i.imgur.com/dsqmPw6.png" alt=""></p>
-<hr>
-<p><a href="https://ithelp.ithome.com.tw/articles/10248813" target="_blank" rel="noopener">Day 19 | 我比較喜歡脆笛酥 - 方塊酥版面 Part 1</a><br><a href="https://ithelp.ithome.com.tw/articles/10220656" target="_blank" rel="noopener">親代選取器之妹妹選取器與鞭炮串選取器</a><br><a href="https://ithelp.ithome.com.tw/articles/10196979" target="_blank" rel="noopener">【DAY24】transform，進入視覺系的CSS第一步，網頁要動起來了！（一）</a><br><a href="https://ithelp.ithome.com.tw/articles/10194395" target="_blank" rel="noopener">Transform變形</a><br><a href="https://medium.com/%E9%A6%AC%E6%A0%BC%E8%95%BE%E7%89%B9%E7%9A%84%E5%86%92%E9%9A%AA%E8%80%85%E6%97%A5%E8%AA%8C/css-%E6%B5%AE%E5%8B%95%E8%88%87%E6%B8%85%E9%99%A4%E6%B5%AE%E5%8B%95-34d3f49ef817" target="_blank" rel="noopener">[CSS] 浮動 (float) 與清除浮動 (clear)</a></p>
+<img src="https://picsum.photos/500/500?random=6">
+<p>
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 
-            
+</p>
 
 
-        </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/CSS/" rel="tag">CSS</a> <a class="tag tag--primary tag--small t-link" href="/tags/float/" rel="tag">float</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E5%88%87%E7%89%88/" rel="tag">切版</a>
-
-            </div>
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/27/csscoke-NO017/"
-                    data-tooltip="Amos金魚都能懂的切版教學影片-csscoke NO017"
-                    aria-label="PREVIOUS: Amos金魚都能懂的切版教學影片-csscoke NO017"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/27/csscoke-NO011/"
-                    data-tooltip="Amos金魚都能懂的切版教學影片-csscoke NO011"
-                    aria-label="NEXT: Amos金魚都能懂的切版教學影片-csscoke NO011"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
+<pre><code>
+![](https://i.imgur.com/VkWWZpD.png)
 
 
-        
-        
-            
-        
-    </div>
-</article>
+![](https://i.imgur.com/jIi69In.png)
 
 
+* 當將img設定浮動之後，他會浮上來一層，在p之上，與裡面的文字同一層（所以會擠壓到文字）
+* `float:left;` `float:right;` 沒有center
 
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
-    </span>
-</footer>
+示意圖：
+![](https://i.imgur.com/lUTqlRy.png)
 
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/27/csscoke-NO017/"
-                    data-tooltip="Amos金魚都能懂的切版教學影片-csscoke NO017"
-                    aria-label="PREVIOUS: Amos金魚都能懂的切版教學影片-csscoke NO017"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/11/27/csscoke-NO011/"
-                    data-tooltip="Amos金魚都能懂的切版教學影片-csscoke NO011"
-                    aria-label="NEXT: Amos金魚都能懂的切版教學影片-csscoke NO011"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
+形成文繞圖：
+![](https://i.imgur.com/6NuHHch.png)
 
 
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"
-                        aria-label="Share on Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"
-                        aria-label="Share on Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2020/11/27/csscoke-NO010/"
-                        aria-label="Share on Google+"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
+![](https://i.imgur.com/a8d7ERZ.png)
+
+* 讓圖片與文字有些距離，可以在img設定margin
+
+![](https://i.imgur.com/4vzaQnJ.png)
 
 
-            
-        </div>
-        
+## float排版
+
+* 設定三個欄位
+
+* 子物件設定為浮動之後，父層就會抓不到子物件的高度
 
 
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">Eva Chan</h4>
-        
-            <div id="about-card-bio"><p>Front-End Engineer</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
-
-<!--SCRIPTS END-->
+![](https://i.imgur.com/LcieUW2.png)
 
 
-    
+* 物件設定float之後，物件會排排站
 
 
+* 再將三個欄位設定margin，且增加ooxx的div
+* 並將ooxx，設定`clear：both;` 讓父層抓到高度
+
+&gt;父層其實是被ooxx所拉開高度，而不是被內容的float物件所撐開
+&gt;clear作用是散開浮動物件，跑到所有浮動物件後方(最下方) 圖二，紅色。
+
+![](https://i.imgur.com/9kLyaNW.png)
+
+![](https://i.imgur.com/dsqmPw6.png)
 
 
-    </body>
-</html>
+---
+
+[Day 19 | 我比較喜歡脆笛酥 - 方塊酥版面 Part 1](https://ithelp.ithome.com.tw/articles/10248813)
+[親代選取器之妹妹選取器與鞭炮串選取器](https://ithelp.ithome.com.tw/articles/10220656)
+[【DAY24】transform，進入視覺系的CSS第一步，網頁要動起來了！（一）](https://ithelp.ithome.com.tw/articles/10196979)
+[Transform變形](https://ithelp.ithome.com.tw/articles/10194395)
+[[CSS] 浮動 (float) 與清除浮動 (clear)](https://medium.com/%E9%A6%AC%E6%A0%BC%E8%95%BE%E7%89%B9%E7%9A%84%E5%86%92%E9%9A%AA%E8%80%85%E6%97%A5%E8%AA%8C/css-%E6%B5%AE%E5%8B%95%E8%88%87%E6%B8%85%E9%99%A4%E6%B5%AE%E5%8B%95-34d3f49ef817)</code></pre></article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2020/11/27/csscoke-NO017/" title="Amos金魚都能懂的切版教學影片-csscoke NO017"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">Previous: Amos金魚都能懂的切版教學影片-csscoke NO017</span></a><a class="button is-default" href="/2020/11/27/csscoke-NO011/" title="Amos金魚都能懂的切版教學影片-csscoke NO011"><span class="has-text-weight-semibold">Next: Amos金魚都能懂的切版教學影片-csscoke NO011</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

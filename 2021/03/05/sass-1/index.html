@@ -1,346 +1,25 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>CSS 預處理器- Sass/SCSS 基本介紹</title><meta name="description" content="Front-end Engineer"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="
+前言CSS預處理器，增加了一些編寫的特性，也可以說是運用程式化的方式寫CSS。
 
-<!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Let&#39;s Code">
-    <title>CSS 預處理器- Sass/SCSS 基本介紹 - Let&#39;s Code</title>
-    <meta name="author" content="Eva Chan">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png"},"articleBody":"前言CSS預處理器，增加了一些編寫的特性，也可以說是運用程式化的方式寫CSS。\n\n其中SASS最廣泛使用：Sass包含SASS與SCSS兩種\n兩者之間不同之處有以下兩點：\n1.文件擴展名不同，Sass 是以“.sass”後綴為擴展名，而SCSS 是以“.scss”後綴為擴展名\n2.語法書寫方式不同，Sass是以嚴格的縮進式語法規則來書寫，不帶大括號({})和分號(;)，而SCSS的語法書寫和我們的CSS語法書寫方式非常類似。安裝sasssass-github\n\n\n在專案底下，安裝1npm install -g sass\n安裝後，建立index.scss檔案\n手動轉擋\n會出現css檔案\n\n\n\n使用node-sass編譯\n先取得package.json檔案安裝語法：npm init --yes(要注意安裝的路徑位置)\n安裝node-sass\n\n\nnpm i -g node-sass  (i -&gt; install)\n查尋安裝是否完成\n\n\n將檔案編譯為css建立css(資料夾)使用watch，使每次修改sass檔案時，會自動編譯到css中\n\n\n在package.jason檔案中的&quot;scripts&quot;\n要注意編譯資料的位置\ncss :為資料夾路徑 \nscss/main.scss:建立的css路徑\n\n\n\n123\"scripts\": &#123;   \"watch\": \"node-sass -o css scss/main.scss -w\" &#125;\n\n在終端機要輸入npm run watch，control+c退出\n\n基本語法實作變數\n在變數前加上$，來宣告要使用的變數\n運用抽取變數方式，使運用版面顏色時，可以有一致性，修改版面時也較快速\n變數：數量不要超過10個，自己在記憶上會混亂1234567891011121314151617181920// 創造顏色、字大小的變數$white:#fff;$black:#000;.button&#123;text-align:center;background-color:$black;border:1px solid $black;color:$white;&#125;$font-lg:40px;$font-md:30px;$font-sm:20px;.footer h3&#123;  font-size: $font-md;  color: $color-secondary;  text-align: center;&#125;\nscope of sass variable\n一般常見屬於global scope\n如果將變數設在，標間架構中-&gt;local scope\n在後面加上！global就變成全域\n\nPS: 還是建議以global 的方式進行修改，才不會造成維護的混亂\n\n命名中使用-以及_，在sass中是一樣的\n如$font-lg改為$font_lg一樣也會有效\n\n\n\nNested 巢狀1.針對nav下的ul、li1234567891011.nav&#123;  background-color: $color-primary;  ul li&#123;    list-style: none;  &#125;  a&#123;    text-decoration: none;    font-size: $font-sm;    color: $color-secondary;  &#125;&#125;\n\n轉換為css12345678.nav &#123;  background-color: orange; &#125;  .nav ul li &#123;    list-style: none; &#125;  .nav a &#123;    text-decoration: none;    font-size: 20px;    color: gray; &#125;\n\n\n2.增加hover的效果\n&amp;，來指出parent element：在這便是指&lt;a&gt;\n\n1234567891011121314.nav&#123;  background-color: $color-primary;  ul li&#123;    list-style: none;  &#125;  a&#123;    text-decoration: none;    font-size: $font-sm;    color: $color-secondary;    &amp;:hover&#123;      color: $color-tertiary;    &#125;  &#125;&#125;\n\n轉換為css12345678910.nav &#123;  background-color: orange; &#125;  .nav ul li &#123;    list-style: none; &#125;  .nav a &#123;    text-decoration: none;    font-size: 20px;    color: gray; &#125;    .nav a:hover &#123;      color: royalblue; &#125;\n\n\n\n\n巢狀層級不可以太多層，否則會出現效率問題@import 是什麼\nimport 讓我們可以拉出特定區塊或是根據功能性不同拆成不同區塊，來撰寫scss，並利用@import放入主要的scss檔案，最後彙整到同一個css之中。\n再用一個css引入(@import)，各個功能\n要引入的檔案命名：在要import的檔案要加_\n\n\n六角學院\n\n_test.scss為撰寫footer樣式的檔案\n1234.footer h3&#123;  font-style:italic ;  border: blue 3px solid;&#125;\nmain.scss 要引入檔案的主要檔案\n1@import \"test\";\n轉譯為css(main.css)\n123.footer h3 &#123;  font-style: italic;  border: blue 3px solid; &#125;\n\n\n@mixin 與 @include\n當在多個地方想使用同一種style的方式。可以組成一組的樣式，並於scss中重複使用。\n以 @mixin 開頭，並自定義一個名稱\n需要它的時候就用 @include呼叫\n\n\n設定對齊方式1234567891011121314@mixin horizontal-list&#123; li&#123; display:inline-block; margin:&#123;   left:-2px;   right:2em; &#125; &#125;&#125;/*當要引用時*/nav ul&#123;  @include horizontal-list&#125;\n調整字體大小（以帶參數的方式）1234567891011121314151617// 發現h1,h3樣式一樣@mixin headingStyles($fontSize)&#123;  //以代參數方式來放入不同字體大小的變數設定  font-size: $fontSize; color: $color-secondary;  text-align: center;&#125; .banner h1&#123;  @include headingStyles($font-lg);&#125;.footer h3&#123;  @include headingStyles($font-md);&#125;\n\n\n在css的地方，可以看到字的大小不同123456789.banner h1 &#123;  font-size: 40px;  color: gray;  text-align: center; &#125;.footer h3 &#123;  font-size: 30px;  color: gray;  text-align: center; &#125;\n\n\n加入動畫效果\n\n\n在footer h3加上hover\n@mixin transition($param...)加上設定參數特性\n當要同時設定特性中的多個值時，要記得在參數後面加上...\n\n\n\n123456789101112131415161718192021222324// 發現h1,h3樣式一樣@mixin headingStyles($fontSize)&#123;  //以代參數方式來放入不同字體大小的變數設定  font-size: $fontSize; color: $color-secondary;  text-align: center;&#125; @mixin transition($param...) &#123;  transition: $param;&#125;.banner h1&#123;  @include headingStyles($font-lg);&#125;.footer h3&#123;  @include headingStyles($font-md);  @include transition(color .5s ,background-color 1s);  &amp;:hover&#123;    color:$color-tertiary;    background-color: $color-primary;  &#125;&#125;\n\n轉譯為css12345678.footer h3 &#123;  font-size: 30px;  color: gray;  text-align: center;  transition: color 0.5s, background-color 1s; &#125;  .footer h3:hover &#123;    color: royalblue;    background-color: orange; &#125;\n\n\n\n\n\n\nDay27：小事之 Transition 與 AnimationCSS3 Animation\n新手也可以輕鬆玩轉 SASS - @mixin and @include\nFunctions\n透過函式的建立，可以在需要使用時，不斷地呼叫使用\n@function fontSize($size){\n @return $size*2; }建立函式\n\n123456789101112@function fontSize($size)&#123;   @return $size*2;&#125; h1&#123;.banner p&#123;  font-size: fontSize($font-sm);  //字的大小會變成 20px*2 =&gt;40px&#125;\n\n轉譯為css\n12.banner p &#123;  font-size: 40px; &#125;\n\n將文字大小，預先設定預設值\n\n12345678910//設定預設為25px@function fontSize($size:25px)&#123;   @return $size*2;&#125;.footer p&#123;  font-size: fontSize();&#125;\n轉譯為css\n123.footer p &#123;  font-size: 50px; &#125;  /* 25*2=&gt;50 */\n\n若插入數字\n\n123.footer p&#123;  font-size: fontSize(30px);&#125;\n\n轉譯為css123.footer p &#123;  font-size: 60px; &#125;  /* 30*2=&gt;50 */\n內建函式介紹\n\n\nlighten()12.nav&#123;  background-color: lighten($color-primary,20%);&#125;\ncss12.nav &#123;  background-color: #ffc966; &#125;\n\n\n顏色變淡\n\n\ndarken()12.nav&#123;  background-color: darken($color-primary,20%);&#125;\n\n\n編譯為css12.nav &#123;  background-color: #996300; &#125;\n\n\n3.transparentize()\n\n透明度從0-1 (1是完全透明)12.nav&#123;  background-color: transparentize($color-primary,0.6);&#125;\n編譯為css12.nav &#123;  background-color: rgba(255, 165, 0, 0.4); &#125;\n\n\n4.mix()\n\n將顏色混合12.nav&#123;   background-color: mix(blue,green);&#125;\ncss12.nav &#123;  background-color: #004080; &#125;\n\n\n加入百分比（利用百分比來調配顏色的比重）\nmix(blue,green,10%)表示只有10%的藍色，90%為綠色12.nav&#123;   background-color: mix(blue,green,10%);&#125;\ncss12.nav &#123;  background-color: #00731a; &#125;\n\n\n\n補充scss檔案編制\n主要視自己專案上的區分來編制vendor:外部套件，放置bootstrap或其他frameworks、liberaries、hover.cssutils(helpers):工具類的class，放置字的大小、margin、border顏色設置、hover效果partials:放置一些部分區域的css，如：nav、footer; layout: （共通的佈局）如表頭、表尾，就是每頁都會出現而這幾個檔案，放在main.scss要有順序base:p段落、h1..等的全站設定(css reset)components ：元件，如按鈕、卡片的設定\n\n\n參考資料：alphacamp-Sass/SCSS 基本語法介紹，搞懂CSS 預處理器\n","dateCreated":"2021-03-05T09:41:46+08:00","dateModified":"2021-10-02T13:43:24+08:00","datePublished":"2021-03-05T09:41:46+08:00","description":"","headline":"CSS 預處理器- Sass/SCSS 基本介紹","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"},"publisher":{"@type":"Organization","name":"Eva Chan","sameAs":["https://github.com/Eva813","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/"],"image":"eva-round.png","logo":{"@type":"ImageObject","url":"eva-round.png"}},"url":"https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/","keywords":"SCSS"}</script>
-    <meta name="description" content="前言CSS預處理器，增加了一些編寫的特性，也可以說是運用程式化的方式寫CSS。  其中SASS最廣泛使用：Sass包含SASS與SCSS兩種 兩者之間不同之處有以下兩點： 1.文件擴展名不同，Sass 是以“.sass”後綴為擴展名，而SCSS 是以“.scss”後綴為擴展名 2.語法書寫方式不同，Sass是以嚴格的縮進式語法規則來書寫，不帶大括號({})和分號(;)，而SCSS的語法書寫和我們的">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="CSS 預處理器- Sass&#x2F;SCSS 基本介紹">
-<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/index.html">
-<meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="前言CSS預處理器，增加了一些編寫的特性，也可以說是運用程式化的方式寫CSS。  其中SASS最廣泛使用：Sass包含SASS與SCSS兩種 兩者之間不同之處有以下兩點： 1.文件擴展名不同，Sass 是以“.sass”後綴為擴展名，而SCSS 是以“.scss”後綴為擴展名 2.語法書寫方式不同，Sass是以嚴格的縮進式語法規則來書寫，不帶大括號({})和分號(;)，而SCSS的語法書寫和我們的">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/cQtE8T5.png">
-<meta property="og:image" content="https://i.imgur.com/6TYjGnV.png">
-<meta property="og:image" content="https://i.imgur.com/SHoaMLN.png">
-<meta property="og:image" content="https://i.imgur.com/f9QFcH0.png">
-<meta property="og:image" content="https://i.imgur.com/4B623eU.png">
-<meta property="og:image" content="https://i.imgur.com/vgGzk85.png">
-<meta property="og:image" content="https://i.imgur.com/EdeoV1H.png">
-<meta property="og:image" content="https://i.imgur.com/KNReHQL.png">
-<meta property="og:image" content="https://i.imgur.com/oAeBzah.png">
-<meta property="og:image" content="https://i.imgur.com/jbDV03A.png">
-<meta property="og:image" content="https://i.imgur.com/wQXDhMZ.png">
-<meta property="og:image" content="https://i.imgur.com/IL4dwvL.png">
-<meta property="og:image" content="https://i.imgur.com/SRD31V7.png">
-<meta property="og:image" content="https://i.imgur.com/WhTLwso.png">
-<meta property="og:image" content="https://i.imgur.com/LRzx1fH.png">
-<meta property="og:image" content="https://i.imgur.com/6ON5Rfk.png">
-<meta property="og:image" content="https://i.imgur.com/M9sFOr6.png">
-<meta property="og:image" content="https://i.imgur.com/TdUkHSn.png">
-<meta property="og:image" content="https://i.imgur.com/tjRLJjK.png">
-<meta property="article:published_time" content="2021-03-05T01:41:46.000Z">
-<meta property="article:modified_time" content="2021-10-02T05:43:24.214Z">
-<meta property="article:author" content="Eva Chan">
-<meta property="article:tag" content="SCSS">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/cQtE8T5.png">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://github.com/Eva813/Eva813.github.io.git/assets/images/eva-round.png"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    
-<link rel="stylesheet" href="/assets/css/style-hjuj7gqklhxvgfqyp2tco44je7uogudiobbyggt7zgeywnz7l0sdc75zx3ix.min.css">
-
-    <!--STYLES END-->
-    
-
-    
-
-    
-        
-    
-</head>
-
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
+其中SASS最廣泛使用：Sass包含SASS與SCSS兩種
+兩者之間不同之處有以下兩點：
+1.文件擴展名不同，Sass 是以“.sass”後綴為擴展名，而SCSS 是以“.scss”後綴為擴展名
+2.語法書寫方式不同，Sass是以嚴格的縮進式語法規則來書寫，不帶大括號({})和分號(;)，而SCSS的語法書寫和我們的CSS語法書寫方式非常類似。安裝sasssass-github
 
 
-    
-        
-            
-        
-    
+在專案底下，安裝npm install -g sass
 
-<header id="header" data-behavior="4">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a
-            class="header-title-link"
-            href="/"
-            aria-label=""
-        >
-            Let&#39;s Code
-        </a>
-    </div>
-    
-        
-            <a
-                class="header-right-picture "
-                href="#about"
-                aria-label="Open the link: /#about"
-            >
-        
-        
-            <img class="header-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-        </a>
-    
-</header>
-
-            <!-- Define author's picture -->
+安裝後，建立index.scss檔案
+手動轉擋
+會出現css檔案
 
 
 
-        
-    
-
-<nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a
-                    href="/#about"
-                    aria-label="Read more about the author"
-                >
-                    <img class="sidebar-profile-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">Eva Chan</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Front-End Engineer</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/"
-                            
-                            rel="noopener"
-                            title="Home"
-                        >
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-categories"
-                            
-                            rel="noopener"
-                            title="Categories"
-                        >
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-tags"
-                            
-                            rel="noopener"
-                            title="Tags"
-                        >
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="/all-archives"
-                            
-                            rel="noopener"
-                            title="Archives"
-                        >
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link open-algolia-search"
-                            href="#search"
-                            
-                            rel="noopener"
-                            title="Search"
-                        >
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="#about"
-                            
-                            rel="noopener"
-                            title="About"
-                        >
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/Eva813"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://facebook.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Facebook"
-                        >
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://plus.google.com/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="Google +"
-                        >
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google +</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://www.linkedin.com/profile/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="LinkedIn"
-                        >
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://eva813.github.io/"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="RSS"
-                        >
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
-
-            
-            <div id="main" data-behavior="4"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
-    
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            CSS 預處理器- Sass/SCSS 基本介紹
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2021-03-05T09:41:46+08:00">
-	
-		    Mar 05, 2021
-    	
-    </time>
-    
-</div>
-
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>CSS預處理器，增加了一些編寫的特性，也可以說是運用程式化的方式寫CSS。</p>
+使用node-sass編譯
+先取得package.json檔案安裝語法：npm init --yes(要注意安裝的路.."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">CSS 預處理器- Sass/SCSS 基本介紹</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安裝sass"><span class="toc-text">安裝sass</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用node-sass編譯"><span class="toc-text">使用node-sass編譯</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用watch，使每次修改sass檔案時，會自動編譯到css中"><span class="toc-text">使用watch，使每次修改sass檔案時，會自動編譯到css中</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本語法實作"><span class="toc-text">基本語法實作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#變數"><span class="toc-text">變數</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-增加hover的效果"><span class="toc-text">2.增加hover的效果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mixin-與-include"><span class="toc-text">@mixin 與 @include</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Functions"><span class="toc-text">Functions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#內建函式介紹"><span class="toc-text">內建函式介紹</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#加入百分比（利用百分比來調配顏色的比重）"><span class="toc-text">加入百分比（利用百分比來調配顏色的比重）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#補充scss檔案編制"><span class="toc-text">補充scss檔案編制</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/SCSS"><i class="tag post-item-tag">SCSS</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">CSS 預處理器- Sass/SCSS 基本介紹</h1><time class="has-text-grey" datetime="2021-03-05T01:41:46.000Z">2021-03-05</time><article class="mt-2 post-content"><p><img src="https://i.imgur.com/e59PuUk.png" alt=""></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>CSS預處理器，增加了一些編寫的特性，也可以說是運用程式化的方式寫CSS。</p>
 <ul>
 <li>其中SASS最廣泛使用：Sass包含SASS與SCSS兩種<ul>
 <li>兩者之間不同之處有以下兩點：</li>
@@ -348,7 +27,8 @@
 <li>2.語法書寫方式不同，Sass是以嚴格的縮進式語法規則來書寫，不帶大括號({})和分號(;)，而SCSS的語法書寫和我們的CSS語法書寫方式非常類似。<h2 id="安裝sass"><a href="#安裝sass" class="headerlink" title="安裝sass"></a>安裝sass</h2><a href="https://github.com/sass/sass">sass-github</a></li>
 </ul>
 </li>
-<li>在專案底下，安裝<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g sass</span><br></pre></td></tr></table></figure></li>
+<li>在專案底下，安裝<pre><code class="javascript">npm install -g sass</code></pre>
+</li>
 <li>安裝後，建立<code>index.scss</code>檔案<br><img src="https://i.imgur.com/cQtE8T5.png" alt=""></li>
 <li>手動轉擋<br><img src="https://i.imgur.com/6TYjGnV.png" alt=""><ul>
 <li>會出現css檔案<br><img src="https://i.imgur.com/SHoaMLN.png" alt=""></li>
@@ -374,86 +54,212 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">   <span class="string">"watch"</span>: <span class="string">"node-sass -o css scss/main.scss -w"</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript"> &quot;scripts&quot;: {
+    &quot;watch&quot;: &quot;node-sass -o css scss/main.scss -w&quot;
+  }</code></pre>
 <ul>
 <li>在終端機要輸入<br><code>npm run watch</code>，<code>control+c</code>退出<br><img src="https://i.imgur.com/KNReHQL.png" alt=""></li>
 </ul>
 <h2 id="基本語法實作"><a href="#基本語法實作" class="headerlink" title="基本語法實作"></a>基本語法實作</h2><h3 id="變數"><a href="#變數" class="headerlink" title="變數"></a>變數</h3><ul>
 <li>在變數前加上<code>$</code>，來宣告要使用的變數</li>
 <li>運用抽取變數方式，使運用版面顏色時，可以有一致性，修改版面時也較快速</li>
-<li>變數：數量不要超過10個，自己在記憶上會混亂<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 創造顏色、字大小的變數</span></span><br><span class="line"><span class="variable">$white</span>:<span class="number">#fff</span>;</span><br><span class="line"><span class="variable">$black</span>:<span class="number">#000</span>;</span><br><span class="line"><span class="selector-class">.button</span>&#123;</span><br><span class="line"><span class="attribute">text-align</span>:center;</span><br><span class="line"><span class="attribute">background-color</span>:<span class="variable">$black</span>;</span><br><span class="line"><span class="attribute">border</span>:<span class="number">1px</span> solid <span class="variable">$black</span>;</span><br><span class="line"><span class="attribute">color</span>:<span class="variable">$white</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$font-lg</span>:<span class="number">40px</span>;</span><br><span class="line"><span class="variable">$font-md</span>:<span class="number">30px</span>;</span><br><span class="line"><span class="variable">$font-sm</span>:<span class="number">20px</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span>&#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="variable">$font-md</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="scope-of-sass-variable"><a href="#scope-of-sass-variable" class="headerlink" title="scope of sass variable"></a>scope of sass variable</h4></li>
-<li>一般常見屬於global scope</li>
-<li>如果將變數設在，標間架構中-&gt;local scope<br><img src="https://i.imgur.com/oAeBzah.png" alt=""></li>
-<li>在後面加上<code>！global</code>就變成全域<br><img src="https://i.imgur.com/jbDV03A.png" alt=""></li>
-</ul>
-<p>PS: 還是建議以global 的方式進行修改，才不會造成維護的混亂</p>
-<ul>
-<li>命名中使用<code>-</code>以及<code>_</code>，在sass中是一樣的<ul>
-<li>如<code>$font-lg</code>改為<code>$font_lg</code>一樣也會有效</li>
-</ul>
+<li>變數：數量不要超過10個，自己在記憶上會混亂<pre><code class="scss">// 創造顏色、字大小的變數
+$white:#fff;
+$black:#000;
+.button{
+text-align:center;
+background-color:$black;
+border:1px solid $black;
+color:$white;
+}
+</code></pre>
 </li>
 </ul>
-<h3 id="Nested-巢狀"><a href="#Nested-巢狀" class="headerlink" title="Nested 巢狀"></a>Nested 巢狀</h3><h4 id="1-針對nav下的ul、li"><a href="#1-針對nav下的ul、li" class="headerlink" title="1.針對nav下的ul、li"></a>1.針對nav下的<code>ul</code>、<code>li</code></h4><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="variable">$color-primary</span>;</span><br><span class="line">  <span class="selector-tag">ul</span> <span class="selector-tag">li</span>&#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="variable">$font-sm</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>轉換為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: orange; &#125;</span><br><span class="line">  <span class="selector-class">.nav</span> <span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none; &#125;</span><br><span class="line">  <span class="selector-class">.nav</span> <span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">color</span>: gray; &#125;</span><br></pre></td></tr></table></figure>
+<p>$font-lg:40px;<br>$font-md:30px;<br>$font-sm:20px;</p>
+<p>.footer h3{<br>  font-size: $font-md;<br>  color: $color-secondary;<br>  text-align: center;</p>
+<p>}</p>
+<pre><code>#### scope of sass variable
+* 一般常見屬於global scope
+* 如果將變數設在，標間架構中-&gt;local scope
+![](https://i.imgur.com/oAeBzah.png)
+* 在後面加上`！global`就變成全域
+![](https://i.imgur.com/jbDV03A.png)
+
+
+PS: 還是建議以global 的方式進行修改，才不會造成維護的混亂
+
+* 命名中使用`-`以及`_`，在sass中是一樣的
+    * 如`$font-lg`改為`$font_lg`一樣也會有效
+
+### Nested 巢狀
+#### 1.針對nav下的`ul`、`li`
+
+```scss
+.nav{
+  background-color: $color-primary;
+  ul li{
+    list-style: none;
+  }
+  a{
+    text-decoration: none;
+    font-size: $font-sm;
+    color: $color-secondary;
+  }
+}</code></pre><ul>
+<li>轉換為css<pre><code class="css">.nav {
+background-color: orange; }
+.nav ul li {
+  list-style: none; }
+.nav a {
+  text-decoration: none;
+  font-size: 20px;
+  color: gray; }</code></pre>
 <img src="https://i.imgur.com/wQXDhMZ.png" alt=""></li>
 </ul>
 <h4 id="2-增加hover的效果"><a href="#2-增加hover的效果" class="headerlink" title="2.增加hover的效果"></a>2.增加hover的效果</h4><ul>
 <li><code>&amp;</code>，來指出<code>parent element</code>：在這便是指<code>&lt;a&gt;</code></li>
 </ul>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="variable">$color-primary</span>;</span><br><span class="line">  <span class="selector-tag">ul</span> <span class="selector-tag">li</span>&#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="variable">$font-sm</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">    &amp;<span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">      <span class="attribute">color</span>: <span class="variable">$color-tertiary</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="scss">.nav{
+  background-color: $color-primary;
+  ul li{
+    list-style: none;
+  }
+  a{
+    text-decoration: none;
+    font-size: $font-sm;
+    color: $color-secondary;
+    &amp;:hover{
+      color: $color-tertiary;
+    }
+  }
+}</code></pre>
 <ul>
-<li>轉換為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: orange; &#125;</span><br><span class="line">  <span class="selector-class">.nav</span> <span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none; &#125;</span><br><span class="line">  <span class="selector-class">.nav</span> <span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">color</span>: gray; &#125;</span><br><span class="line">    <span class="selector-class">.nav</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">      <span class="attribute">color</span>: royalblue; &#125;</span><br></pre></td></tr></table></figure>
-
+<li>轉換為css<pre><code class="css">.nav {
+background-color: orange; }
+.nav ul li {
+  list-style: none; }
+.nav a {
+  text-decoration: none;
+  font-size: 20px;
+  color: gray; }
+  .nav a:hover {
+    color: royalblue; }
+</code></pre>
 </li>
 </ul>
-<p><img src="https://i.imgur.com/IL4dwvL.png" alt=""></p>
-<h4 id="巢狀層級不可以太多層，否則會出現效率問題"><a href="#巢狀層級不可以太多層，否則會出現效率問題" class="headerlink" title="巢狀層級不可以太多層，否則會出現效率問題"></a>巢狀層級不可以太多層，否則會出現效率問題</h4><h3 id="import-是什麼"><a href="#import-是什麼" class="headerlink" title="@import 是什麼"></a>@import 是什麼</h3><ul>
-<li>import 讓我們可以拉出特定區塊或是根據功能性不同拆成不同區塊，來撰寫scss，並利用@import放入主要的scss檔案，最後彙整到同一個css之中。</li>
-<li>再用一個css引入(@import)，各個功能</li>
-<li>要引入的檔案命名：在要import的檔案要加<code>_</code></li>
-</ul>
-<blockquote>
-<p>六角學院<br><img src="https://i.imgur.com/SRD31V7.png" alt=""></p>
-</blockquote>
-<p><code>_test.scss</code>為撰寫footer樣式的檔案</p>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span>&#123;</span><br><span class="line">  <span class="attribute">font-style</span>:italic ;</span><br><span class="line">  <span class="attribute">border</span>: blue <span class="number">3px</span> solid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>main.scss</code> 要引入檔案的主要檔案</p>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@import</span> <span class="string">"test"</span>;</span><br></pre></td></tr></table></figure>
+<pre><code>
+![](https://i.imgur.com/IL4dwvL.png)
+
+
+#### 巢狀層級不可以太多層，否則會出現效率問題
+
+
+### @import 是什麼
+* import 讓我們可以拉出特定區塊或是根據功能性不同拆成不同區塊，來撰寫scss，並利用@import放入主要的scss檔案，最後彙整到同一個css之中。
+* 再用一個css引入(@import)，各個功能
+* 要引入的檔案命名：在要import的檔案要加`_`
+
+&gt;六角學院
+&gt;![](https://i.imgur.com/SRD31V7.png)
+
+`_test.scss`為撰寫footer樣式的檔案
+
+
+```scss
+.footer h3{
+  font-style:italic ;
+  border: blue 3px solid;
+}</code></pre><p><code>main.scss</code> 要引入檔案的主要檔案</p>
+<pre><code class="scss">@import &quot;test&quot;;</code></pre>
 <p>轉譯為css(main.css)</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span> &#123;</span><br><span class="line">  <span class="attribute">font-style</span>: italic;</span><br><span class="line">  <span class="attribute">border</span>: blue <span class="number">3px</span> solid; &#125;</span><br></pre></td></tr></table></figure>
-
-
+<pre><code class="css=">.footer h3 {
+  font-style: italic;
+  border: blue 3px solid; }</code></pre>
 <h2 id="mixin-與-include"><a href="#mixin-與-include" class="headerlink" title="@mixin 與 @include"></a>@mixin 與 @include</h2><ul>
 <li>當在多個地方想使用同一種style的方式。可以組成一組的樣式，並於scss中重複使用。</li>
 <li>以 <code>@mixin</code> 開頭，並自定義一個名稱</li>
 <li>需要它的時候就用 <code>@include</code>呼叫</li>
 </ul>
 <ol>
-<li>設定對齊方式<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@mixin</span> horizontal-list&#123;</span><br><span class="line"> <span class="selector-tag">li</span>&#123;</span><br><span class="line"> <span class="attribute">display</span>:inline-block;</span><br><span class="line"> <span class="attribute">margin</span>:&#123;</span><br><span class="line">   left:-<span class="number">2px</span>;</span><br><span class="line">   <span class="attribute">right</span>:<span class="number">2em</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*當要引用時*/</span></span><br><span class="line"><span class="selector-tag">nav</span> <span class="selector-tag">ul</span>&#123;</span><br><span class="line">  <span class="keyword">@include</span> horizontal-list</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>調整字體大小（以帶參數的方式）<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 發現h1,h3樣式一樣</span></span><br><span class="line"><span class="keyword">@mixin</span> headingStyles(<span class="variable">$fontSize</span>)&#123;</span><br><span class="line">  <span class="comment">//以代參數方式來放入不同字體大小的變數設定</span></span><br><span class="line">  <span class="attribute">font-size</span>: <span class="variable">$fontSize</span>;</span><br><span class="line"> <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">h1</span>&#123;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">@include</span> headingStyles(<span class="variable">$font-lg</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">@include</span> headingStyles(<span class="variable">$font-md</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>設定對齊方式<pre><code class="scss">@mixin horizontal-list{
+li{
+display:inline-block;
+margin:{
+left:-2px;
+right:2em;
+}
+}
+}
+</code></pre>
+</li>
 </ol>
-<ul>
-<li>在css的地方，可以看到字的大小不同<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">h1</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">color</span>: gray;</span><br><span class="line">  <span class="attribute">text-align</span>: center; &#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">color</span>: gray;</span><br><span class="line">  <span class="attribute">text-align</span>: center; &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ol start="3">
-<li>加入動畫效果</li>
-</ol>
-<ul>
-<li>在<code>footer h3</code>加上<code>hover</code></li>
-<li><code>@mixin transition($param...)</code>加上設定參數特性<ul>
-<li>當要同時設定特性中的多個值時，要記得在參數後面加上<code>...</code></li>
-</ul>
+<p>/<em>當要引用時</em>/<br>nav ul{<br>  @include horizontal-list<br>}</p>
+<pre><code>2. 調整字體大小（以帶參數的方式）
+```scss
+// 發現h1,h3樣式一樣
+@mixin headingStyles($fontSize){
+  //以代參數方式來放入不同字體大小的變數設定
+  font-size: $fontSize;
+ color: $color-secondary;
+  text-align: center;
+} 
+
+
+.banner h1{
+
+ @include headingStyles($font-lg);
+}
+.footer h3{
+
+  @include headingStyles($font-md);
+}</code></pre><ul>
+<li>在css的地方，可以看到字的大小不同<pre><code class="css">.banner h1 {
+font-size: 40px;
+color: gray;
+text-align: center; }
+</code></pre>
 </li>
 </ul>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 發現h1,h3樣式一樣</span></span><br><span class="line"><span class="keyword">@mixin</span> headingStyles(<span class="variable">$fontSize</span>)&#123;</span><br><span class="line">  <span class="comment">//以代參數方式來放入不同字體大小的變數設定</span></span><br><span class="line">  <span class="attribute">font-size</span>: <span class="variable">$fontSize</span>;</span><br><span class="line"> <span class="attribute">color</span>: <span class="variable">$color-secondary</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">@mixin</span> transition(<span class="variable">$param</span>...) &#123;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="variable">$param</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">h1</span>&#123;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">@include</span> headingStyles(<span class="variable">$font-lg</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">@include</span> headingStyles(<span class="variable">$font-md</span>);</span><br><span class="line">  <span class="keyword">@include</span> transition(color .<span class="number">5s</span> ,background-color <span class="number">1s</span>);</span><br><span class="line">  &amp;<span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>:<span class="variable">$color-tertiary</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="variable">$color-primary</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>轉譯為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">h3</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">color</span>: gray;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  <span class="attribute">transition</span>: color <span class="number">0.5s</span>, background-color <span class="number">1s</span>; &#125;</span><br><span class="line">  <span class="selector-class">.footer</span> <span class="selector-tag">h3</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: royalblue;</span><br><span class="line">    <span class="attribute">background-color</span>: orange; &#125;</span><br></pre></td></tr></table></figure>
+<p>.footer h3 {<br>  font-size: 30px;<br>  color: gray;<br>  text-align: center; }</p>
+<pre><code>3. 加入動畫效果
 
+* 在`footer h3`加上`hover`
+* `@mixin transition($param...)`加上設定參數特性
+    * 當要同時設定特性中的多個值時，要記得在參數後面加上`...`
 
+```scss
+// 發現h1,h3樣式一樣
+@mixin headingStyles($fontSize){
+  //以代參數方式來放入不同字體大小的變數設定
+  font-size: $fontSize;
+ color: $color-secondary;
+  text-align: center;
+} 
 
+@mixin transition($param...) {
+  transition: $param;
+}
+.banner h1{
 
+ @include headingStyles($font-lg);
+}
+.footer h3{
+
+  @include headingStyles($font-md);
+  @include transition(color .5s ,background-color 1s);
+  &amp;:hover{
+    color:$color-tertiary;
+    background-color: $color-primary;
+  }
+}</code></pre><ul>
+<li>轉譯為css<pre><code class="css">.footer h3 {
+font-size: 30px;
+color: gray;
+text-align: center;
+transition: color 0.5s, background-color 1s; }
+.footer h3:hover {
+  color: royalblue;
+  background-color: orange; }</code></pre>
 </li>
 </ul>
 <p><a href="https://ithelp.ithome.com.tw/articles/10197303" target="_blank" rel="noopener">Day27：小事之 Transition 與 Animation</a><br><a href="https://cythilya.github.io/2017/08/27/css-animation/#transition-%E6%BC%B8%E8%AE%8A" target="_blank" rel="noopener">CSS3 Animation</a></p>
@@ -463,53 +269,94 @@
 <li><code>@function fontSize($size){
  @return $size*2; }</code>建立函式</li>
 </ul>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@function</span> fontSize(<span class="variable">$size</span>)&#123;</span><br><span class="line">   <span class="keyword">@return</span> <span class="variable">$size</span>*<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="selector-tag">h1</span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">p</span>&#123;</span><br><span class="line">  <span class="attribute">font-size</span>: fontSize(<span class="variable">$font-sm</span>);</span><br><span class="line">  <span class="comment">//字的大小會變成 20px*2 =&gt;40px</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="scss">@function fontSize($size){
+   @return $size*2;
+}
 
+
+ h1{
+
+
+.banner p{
+  font-size: fontSize($font-sm);
+  //字的大小會變成 20px*2 =&gt;40px
+}
+</code></pre>
 <p>轉譯為css</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.banner</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">40px</span>; &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">.banner p {
+  font-size: 40px; }</code></pre>
 <ul>
 <li>將文字大小，預先設定預設值</li>
 </ul>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//設定預設為25px</span></span><br><span class="line"><span class="keyword">@function</span> fontSize(<span class="variable">$size</span>:<span class="number">25px</span>)&#123;</span><br><span class="line">   <span class="keyword">@return</span> <span class="variable">$size</span>*<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">p</span>&#123;</span><br><span class="line">  <span class="attribute">font-size</span>: fontSize();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="scss">//設定預設為25px
+@function fontSize($size:25px){
+   @return $size*2;
+}
+
+
+
+.footer p{
+  font-size: fontSize();
+}</code></pre>
 <p>轉譯為css</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">50px</span>; &#125;</span><br><span class="line">  <span class="comment">/* 25*2=&gt;50 */</span></span><br></pre></td></tr></table></figure>
+<pre><code class="css">.footer p {
+  font-size: 50px; }
+  /* 25*2=&gt;50 */</code></pre>
 <ul>
 <li>若插入數字</li>
 </ul>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">p</span>&#123;</span><br><span class="line">  <span class="attribute">font-size</span>: fontSize(<span class="number">30px</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="scss">.footer p{
+  font-size: fontSize(30px);
+}
+</code></pre>
 <ul>
-<li>轉譯為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">60px</span>; &#125;</span><br><span class="line">  <span class="comment">/* 30*2=&gt;50 */</span></span><br></pre></td></tr></table></figure>
+<li>轉譯為css<pre><code class="css">.footer p {
+font-size: 60px; }
+/* 30*2=&gt;50 */</code></pre>
 <h3 id="內建函式介紹"><a href="#內建函式介紹" class="headerlink" title="內建函式介紹"></a>內建函式介紹</h3></li>
 </ul>
 <ol>
-<li><code>lighten()</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.nav&#123;</span><br><span class="line">  background-color: lighten($color-primary,20%);&#125;</span><br></pre></td></tr></table></figure>
-css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#ffc966</span>; &#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>lighten()</code><pre><code class="sass=">.nav{
+background-color: lighten($color-primary,20%);}</code></pre>
+css<pre><code class="css=">.nav {
+background-color: #ffc966; }</code></pre>
+</li>
 </ol>
 <ul>
 <li>顏色變淡<br><img src="https://i.imgur.com/WhTLwso.png" alt=""></li>
 </ul>
 <ol start="2">
-<li><code>darken()</code><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: darken(<span class="variable">$color-primary</span>,<span class="number">20%</span>);&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>darken()</code><pre><code class="scss">.nav{
+background-color: darken($color-primary,20%);}</code></pre>
+</li>
 </ol>
 <ul>
-<li>編譯為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#996300</span>; &#125;</span><br></pre></td></tr></table></figure>
+<li>編譯為css<pre><code class="css">.nav {
+background-color: #996300; }</code></pre>
 <img src="https://i.imgur.com/LRzx1fH.png" alt=""></li>
 </ul>
 <p>3.<code>transparentize()</code></p>
 <ul>
-<li>透明度從0-1 (1是完全透明)<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">  <span class="attribute">background-color</span>: transparentize(<span class="variable">$color-primary</span>,<span class="number">0.6</span>);&#125;</span><br></pre></td></tr></table></figure></li>
-<li>編譯為css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">255</span>, <span class="number">165</span>, <span class="number">0</span>, <span class="number">0.4</span>); &#125;</span><br></pre></td></tr></table></figure>
+<li>透明度從0-1 (1是完全透明)<pre><code class="scss">.nav{
+background-color: transparentize($color-primary,0.6);}</code></pre>
+</li>
+<li>編譯為css<pre><code class="css">.nav {
+background-color: rgba(255, 165, 0, 0.4); }</code></pre>
 <img src="https://i.imgur.com/6ON5Rfk.png" alt=""></li>
 </ul>
 <p>4.<code>mix()</code></p>
 <ul>
-<li>將顏色混合<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">   <span class="attribute">background-color</span>: mix(blue,green);&#125;</span><br></pre></td></tr></table></figure>
-css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#004080</span>; &#125;</span><br></pre></td></tr></table></figure>
+<li>將顏色混合<pre><code class="scss">.nav{
+ background-color: mix(blue,green);}</code></pre>
+css<pre><code class="css">.nav {
+background-color: #004080; }</code></pre>
 <img src="https://i.imgur.com/M9sFOr6.png" alt=""></li>
 </ul>
 <h4 id="加入百分比（利用百分比來調配顏色的比重）"><a href="#加入百分比（利用百分比來調配顏色的比重）" class="headerlink" title="加入百分比（利用百分比來調配顏色的比重）"></a>加入百分比（利用百分比來調配顏色的比重）</h4><ul>
-<li><code>mix(blue,green,10%)</code>表示只有10%的藍色，90%為綠色<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span>&#123;</span><br><span class="line">   <span class="attribute">background-color</span>: mix(blue,green,<span class="number">10%</span>);&#125;</span><br></pre></td></tr></table></figure>
-css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#00731a</span>; &#125;</span><br></pre></td></tr></table></figure>
+<li><code>mix(blue,green,10%)</code>表示只有10%的藍色，90%為綠色<pre><code class="scss">.nav{
+ background-color: mix(blue,green,10%);}</code></pre>
+css<pre><code class="css">.nav {
+background-color: #00731a; }</code></pre>
 <img src="https://i.imgur.com/TdUkHSn.png" alt=""></li>
 </ul>
 <hr>
@@ -518,331 +365,4 @@ css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class=
 </ul>
 <hr>
 <p>參考資料：<a href="https://tw.alphacamp.co/blog/css-preprocessor-sass-scss" target="_blank" rel="noopener">alphacamp-Sass/SCSS 基本語法介紹，搞懂CSS 預處理器</a></p>
-
-            
-
-
-        </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/SCSS/" rel="tag">SCSS</a>
-
-            </div>
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/03/05/scss-ClothesStore/"
-                    data-tooltip="SCSS- ClothesStore"
-                    aria-label="PREVIOUS: SCSS- ClothesStore"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/23/API-youtube/"
-                    data-tooltip="API-youtube"
-                    aria-label="NEXT: API-youtube"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-        
-        
-            
-        
-    </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2021 Eva Chan. All Rights Reserved.
-    </span>
-</footer>
-
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/03/05/scss-ClothesStore/"
-                    data-tooltip="SCSS- ClothesStore"
-                    aria-label="PREVIOUS: SCSS- ClothesStore"
-                >
-                    
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                    </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/23/API-youtube/"
-                    data-tooltip="API-youtube"
-                    aria-label="NEXT: API-youtube"
-                >
-                    
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a
-                class="post-action-btn btn btn--default btn-open-shareoptions"
-                href="#btn-open-shareoptions"
-                aria-label="Share this post"
-            >
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
-                >
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
-                >
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a
-                    class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"
-                    title="Share on Google+"
-                    aria-label="Share on Google+"
-                >
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"
-                        aria-label="Share on Facebook"
-                    >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://twitter.com/intent/tweet?text=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"
-                        aria-label="Share on Twitter"
-                    >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a
-                        class="share-option-btn"
-                        target="new"
-                        href="https://plus.google.com/share?url=https://github.com/Eva813/Eva813.github.io.git/2021/03/05/sass-1/"
-                        aria-label="Share on Google+"
-                    >
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
-
-
-            
-        </div>
-        
-
-
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/eva-round.png" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">Eva Chan</h4>
-        
-            <div id="about-card-bio"><p>Front-End Engineer</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>author.job</p>
-
-            </div>
-        
-        
-    </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover-v1.2.0.jpg');"></div>
-        <!--SCRIPTS-->
-
-<script src="/assets/js/script-0ugzcshry6fwt459bsvhpkhas3lu3b1dzaepr6am1jchcl9ilsd8xf09sigu.min.js"></script>
-
-<!--SCRIPTS END-->
-
-
-    
-
-
-
-
-    </body>
-</html>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2021/03/05/scss-ClothesStore/" title="SCSS- ClothesStore"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">Previous: SCSS- ClothesStore</span></a><a class="button is-default" href="/2021/02/23/API-youtube/" title="API-youtube"><span class="has-text-weight-semibold">Next: API-youtube</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>
