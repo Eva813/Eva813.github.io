@@ -1,0 +1,65 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>FormData 表單的運用</title><meta name="description" content="Front-end Engineer"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="
+最近遇到將表單資料存到後端的方式，過去一直以為是將資料整理為物件方式存取即可，後來發現使用FormData來建立物件傳送檔案即可!
+
+FormData 是一個表單格式，利用它將資料轉成表單的格式，並且以表單的形式回傳給後端
+
+建立 FormData 物件
+最直接方式，先取得form的資料
+
+// 根據表單元素取得表單資料
+var form = document.querySelector(&amp;#39;form&amp;#39;);
+var formData = new FormData(form);
+
+// 可以用 append 把欄位灌進去表單中
+var formData = new FormData(); // 一開始表單的資料是空的
+formData.append(&amp;#39;username&amp;#39;, Ch.."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">FormData 表單的運用</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#建立-FormData-物件"><span class="toc-text">建立 FormData 物件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#以下介紹幾個基礎的使用方式："><span class="toc-text">以下介紹幾個基礎的使用方式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用axios-傳遞資料"><span class="toc-text">使用axios 傳遞資料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#補充-vue-Typescript-宣告型別"><span class="toc-text">補充 vue+Typescript 宣告型別</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/TypeScript"><i class="tag post-item-tag">TypeScript</i></a><a href="/tags/JavaScript"><i class="tag post-item-tag">JavaScript</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">FormData 表單的運用</h1><time class="has-text-grey" datetime="2022-01-06T02:44:33.000Z">2022-01-06</time><article class="mt-2 post-content"><p><img src="https://i.imgur.com/xf0DAqA.png" alt=""></p>
+<p>最近遇到將表單資料存到後端的方式，過去一直以為是將資料整理為物件方式存取即可，後來發現使用FormData來建立物件傳送檔案即可!</p>
+<ul>
+<li>FormData 是一個表單格式，利用它將資料轉成表單的格式，並且以表單的形式回傳給後端</li>
+</ul>
+<h2 id="建立-FormData-物件"><a href="#建立-FormData-物件" class="headerlink" title="建立 FormData 物件"></a>建立 FormData 物件</h2><ul>
+<li>最直接方式，先取得form的資料</li>
+</ul>
+<pre><code class="javascript">// 根據表單元素取得表單資料
+var form = document.querySelector(&#39;form&#39;);
+var formData = new FormData(form);
+
+// 可以用 append 把欄位灌進去表單中
+var formData = new FormData(); // 一開始表單的資料是空的
+formData.append(&#39;username&#39;, Chris); // 增加欄位
+formData.append(&#39;image&#39;, file); // 檔案也可以透過 append 放進來</code></pre>
+<h2 id="以下介紹幾個基礎的使用方式："><a href="#以下介紹幾個基礎的使用方式：" class="headerlink" title="以下介紹幾個基礎的使用方式："></a>以下介紹幾個基礎的使用方式：</h2><ul>
+<li><code>formData.append(name, value)</code> : 加入有 name 和 value 的表單資料(name:表單標籤的名稱,value: input 輸入的值)</li>
+<li><code>formData.append(name, blob, fileName)</code> : 加入字段，就像它是 <code>&lt;input type=&quot;file&quot;&gt;</code>，第三個參數 fileName 設置檔案名</li>
+<li><code>formData.delete(name)</code> : 移除帶有 name 的字段，</li>
+<li><code>formData.get(name)</code> : 取得帶有 name 的值，</li>
+<li><code>formData.has(name)</code> : 如果帶有給定 name 的字段，返回 true，否則返回 false。</li>
+</ul>
+<h2 id="使用axios-傳遞資料"><a href="#使用axios-傳遞資料" class="headerlink" title="使用axios 傳遞資料"></a>使用axios 傳遞資料</h2><pre><code class="javascript">var formData = new FormData();
+//宣告要取得的值
+var title = form.name
+formData.append(&quot;formTitle&quot;, title);
+axios.post(&#39;upload_file&#39;, formData, {
+    headers: {
+      &#39;Content-Type&#39;: &#39;multipart/form-data&#39;
+    }
+})</code></pre>
+<h2 id="補充-vue-Typescript-宣告型別"><a href="#補充-vue-Typescript-宣告型別" class="headerlink" title="補充 vue+Typescript 宣告型別"></a>補充 vue+Typescript 宣告型別</h2><ul>
+<li>以 stack overflow 內的資料為例：<ul>
+<li>可以使用 ref來取得DOM元素，並宣告該變數為HTMLFormElement<pre><code class="javascript">&lt;el-form
+    class=&quot;m-auto&quot;
+    ref=&quot;formRef&quot;
+    :model=&quot;form&quot;
+    :rules=&quot;rules&quot;
+  &gt;</code></pre>
+<pre><code class="javascript">const formRef = ref&lt;HTMLFormElement&gt;();</code></pre>
+</li>
+</ul>
+</li>
+<li>另是使用 element-UI 的表單，也可以使用<br><code>import {  ElForm } from &quot;element-ui&quot;;</code></li>
+</ul>
+<p><a href="https://www.ucamc.com/articles/332-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8jquery-ajax-submit-%E5%82%B3%E9%80%81form%E8%A1%A8%E5%96%AEserialize-%E6%96%B9%E6%B3%95" target="_blank" rel="noopener">如何使用jQuery AJAX submit 傳送form表單方法</a><br><a href="https://5xruby.tw/courses/javascript" target="_blank" rel="noopener">JavaScript / jQuery 前端開發入門實戰
+</a><br><a href="https://zh.javascript.info/formdata" target="_blank" rel="noopener">JavaScript Info-formData</a><br><a href="https://stackoverflow.com/questions/67074871/vue-3-typescript-unable-to-access-method-from-ref" target="_blank" rel="noopener">stackoverflow</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><em></em><a class="button is-default" href="/2021/11/27/TS-2/" title="TypeScript 基礎介紹 (2)"><span class="has-text-weight-semibold">Next: TypeScript 基礎介紹 (2)</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2022</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>
