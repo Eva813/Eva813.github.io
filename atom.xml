@@ -6,7 +6,7 @@
   <link href="https://github.com/Eva813/Eva813.github.io.git/atom.xml" rel="self"/>
   
   <link href="https://github.com/Eva813/Eva813.github.io.git/"/>
-  <updated>2022-01-16T03:22:36.487Z</updated>
+  <updated>2022-02-28T06:23:29.194Z</updated>
   <id>https://github.com/Eva813/Eva813.github.io.git/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Vue.js 3 - toRef toRefs</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/02/28/Vue-toRef/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2022/02/28/Vue-toRef/</id>
+    <published>2022-02-28T06:16:15.000Z</published>
+    <updated>2022-02-28T06:23:29.194Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="toRef"><a href="#toRef" class="headerlink" title="toRef"></a>toRef</h2><ul><li>將…變成 ref<br>從 reactive 物件抽出包裝成一個 ref 的值，與原本物件 是連接的，所以修改時，原本的值也會跟著變動。</li><li>只能處理一個屬性，須告知要輸入的屬性\物件</li><li>注意: 更改原始物件內的值，所響應會跟著變動</li></ul><h3 id="在-prop-的應用"><a href="#在-prop-的應用" class="headerlink" title="在 prop 的應用"></a>在 prop 的應用</h3><ul><li>來自的 props 是 物件資料，可以使用toRef<pre><code class="javascript">props: {apiUser: { required: true, type: Object}},setup(props) { const userCopy = toRef(props, &#39;apiUser&#39;)}</code></pre></li><li>範例二</li></ul><pre><code class="html">&lt;template&gt;&lt;h2&gt;姓名: {{person.name}}&lt;/h2&gt;&lt;h2&gt;年齡: {{person.age}}&lt;/h2&gt;&lt;h2&gt;職業描述: {{person.job.front.dec}}&lt;/h2&gt;&lt;button @click=&#39;person.name += ~&#39;&gt;修改姓名&lt;/button&gt;&lt;button @click=&#39;person.age ++ &#39;&gt;增加年齡&lt;/button&gt;&lt;/template&gt;</code></pre><pre><code class="javascript">&lt;script&gt;import {reactive} from &#39;vue&#39;;export default {    name: &#39;Demo&#39;,    setup(){        const person = reactive({            name: &#39;Eva&#39;,            age: 25,            job:{               front:{                   dec:&#39;前端工程師&#39;               }            }        })        return{            person        }    }}&lt;/script&gt;</code></pre><ul><li>要將以上的模板寫的更容易</li></ul><pre><code class="html">&lt;template&gt;&lt;h2&gt;姓名: {{name}}&lt;/h2&gt;&lt;h2&gt;年齡: {{age}}&lt;/h2&gt;&lt;h2&gt;職業描述: {{dec}}&lt;/h2&gt;&lt;button @click=&#39;name += ~&#39;&gt;修改姓名&lt;/button&gt;&lt;button @click=&#39;age ++ &#39;&gt;增加年齡&lt;/button&gt;&lt;/template&gt;</code></pre><pre><code class="javascript">//就是返回普通的物件內容        return{            name: person.name,            age: person.age,            dec: person.job.front.dec        }</code></pre><ul><li><p>但此方式要注意，字串模板會無法響應更新的問題</p></li><li><p>使用 toRef 來達到響應</p></li></ul><pre><code class="javascript">&lt;script&gt;import {reactive,toRef} from &#39;vue&#39;;export default {    name: &#39;Demo&#39;,    setup(){        const person = reactive({            name: &#39;Eva&#39;,            age: 25,            job:{               front:{                   dec:&#39;前端工程師&#39;               }            }        })        //單一轉換        const name2 = toRefs(person,&#39;name&#39;)        return{            name: toRef(person,&#39;name&#39;),            age: toRef(person,&#39;age&#39;),            dec: toRef(person.job.front,&#39;dec&#39;)        }    }}&lt;/script&gt;</code></pre><h2 id="toRefs"><a href="#toRefs" class="headerlink" title="toRefs"></a>toRefs</h2><p>toRefs用來把響應式物件轉換成普通物件，把物件中的每一個屬性，包裹成ref物件<br>    * toRefs就是toRef的升級版，只是toRefs是把響應式物件進行轉換</p><h3 id="延續上方，toRefs"><a href="#延續上方，toRefs" class="headerlink" title="延續上方，toRefs"></a>延續上方，toRefs</h3><ul><li>可以批量處理，一個物件裡的屬性<ul><li>只會將第一層展開，所以以下在 job 的內層 </li></ul></li></ul><pre><code class="html">&lt;template&gt;&lt;h2&gt;姓名: {{name}}&lt;/h2&gt;&lt;h2&gt;年齡: {{age}}&lt;/h2&gt;&lt;h2&gt;職業描述: {{job.front.dec}}&lt;/h2&gt;&lt;button @click=&#39;name += ~&#39;&gt;修改姓名&lt;/button&gt;&lt;button @click=&#39;age ++ &#39;&gt;增加年齡&lt;/button&gt;&lt;/template&gt;</code></pre><pre><code class="javascript">&lt;script&gt;import {reactive,toRefs} from &#39;vue&#39;;export default {    name: &#39;Demo&#39;,    setup(){        const person = reactive({            name: &#39;Eva&#39;,            age: 25,            job:{               front:{                   dec:&#39;前端工程師&#39;               }            }        })        //可以批量處理，所以只需要傳入個物件，        const new = toRefs(person)        console.log(new)        //在物件中再放toRefs(person) ，會變成物件包物件，所以要展開        return{           ...toRefs(person)            // name: toRef(person,&#39;name&#39;),            // age: toRef(person,&#39;age&#39;),            // dec: toRef(person.job.front,&#39;dec&#39;)        }    }}&lt;/script&gt;</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;toRef&quot;&gt;&lt;a href=&quot;#toRef&quot; class=&quot;headerlink&quot; title=&quot;toRef&quot;&gt;&lt;/a&gt;toRef&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;將…變成 ref&lt;br&gt;從 reactive 物件抽出包裝成一個 ref 的值，與原本物件 是連接的，所</summary>
+      
+    
+    
+    
+    
+    <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Vue/"/>
+    
+    <category term="v-for" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/v-for/"/>
+    
+  </entry>
   
   <entry>
     <title>TypeScript - 註記(Annotation) 與斷言(Assertion)</title>
@@ -453,34 +478,6 @@
       
     <summary type="html">&lt;h2 id=&quot;動態屬性綁定-注意大小寫&quot;&gt;&lt;a href=&quot;#動態屬性綁定-注意大小寫&quot; class=&quot;headerlink&quot; title=&quot;動態屬性綁定(注意大小寫)&quot;&gt;&lt;/a&gt;動態屬性綁定(注意大小寫)&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;宣告變數dynamic，將 dynamic </summary>
-      
-    
-    
-    
-    
-    <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Vue/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vue.js 3 - 事件綁定</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2021/05/16/Vue-v-on/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2021/05/16/Vue-v-on/</id>
-    <published>2021-05-16T08:16:30.000Z</published>
-    <updated>2021-10-05T08:38:53.199Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="https://i.imgur.com/NBBY8vo.png" alt=""></p><ul><li>建立add、minus兩個按鈕<ul><li>點選add增加數字、點選minus減少數字</li></ul></li><li>讓add按鈕綁定<code>addFn</code>函式：<code>v-on:click=&quot;addFn&quot;</code> <code>on</code> <code>click</code>事件，執行<code>addFn</code>函式</li><li>綁定後，在<code>methods</code>撰寫<code>addFn</code>函式內容，要取得 data 中的 num 才能進行運算 =&gt;<code>this.num++</code></li><li>同理，在minus的按鈕，函式內運算<code>this.num++</code>，並將點擊事件放入<code>button</code><ul><li>v-on:Event 事件綁定，有兩種撰寫方式<br><img src="https://i.imgur.com/IUUcznh.png" alt=""></li></ul></li></ul><pre><code class="html"> &lt;div id=&quot;app&quot;&gt;   &lt;h1&gt;{{num}}&lt;/h1&gt;    &lt;button v-on:click=&quot;addFn&quot;&gt;Add&lt;/button&gt;    &lt;!-- v-on 改為@ --&gt;    &lt;button @click=&quot;MinusFun&quot;&gt;Minus&lt;/button&gt;  &lt;/div&gt;</code></pre><pre><code class="javascript">Vue.createApp({  data(){     return {       num: 0    }  },  methods: {    addFn() {       //num.value = num.value + 1;          this.num ++;    },     MinusFun(){        this.num--;     },  }}).mount(&#39;#app&#39;)</code></pre><p><a href="https://codepen.io/Eva-go/pen/bGRLXNW" target="_blank" rel="noopener">codepen</a></p><h2 id="事件與class的綁定"><a href="#事件與class的綁定" class="headerlink" title="事件與class的綁定"></a>事件與class的綁定</h2><ul><li><p>於 box 綁定旋轉的效果 <code>:class=&quot;{ rotate: isTransform }</code></p></li><li><p>在button綁定觸發旋轉的事件</p><pre><code class="html">&lt;style&gt;.box { margin:0 auto;background-color: #fff;border: 1px solid #ccc;width: 80px;height: 80px;}.box {transition: all .5s;}.box.rotate {transform: rotate(45deg)}&lt;/style&gt;&lt;div id=&quot;app&quot;&gt; &lt;h3&gt;觸發事件 與 縮寫*&lt;/h3&gt;&lt;div class=&quot;box&quot; :class=&quot;{ rotate: isTransform }&quot;&gt;&lt;/div&gt;&lt;hr&gt;&lt;button class=&quot;btn btn-outline-primary&quot; @click=&quot;changeClass&quot; &gt;選轉物件&lt;/button&gt;&lt;/div&gt;</code></pre><pre><code class="javascript">Vue.createApp({data() {  return {     isTransform: true,  };},methods: {   changeClass() {    this.isTransform =!this.isTransform;  },}};</code></pre></li></ul><p>}).mount(‘#app’)</p><pre><code>## 帶入參數* 建立 `change()` 函式以帶入參數方式，來變化 isTransform 的 true\false```html&lt;h3&gt;帶入參數*&lt;/h3&gt;  &lt;div class=&quot;box&quot; :class=&quot;{ rotate: isTransform }&quot;&gt;&lt;/div&gt;  &lt;button class=&quot;btn btn-outline-primary&quot; @click=&quot;change(&#39;isTransform&#39;)&quot;&gt;選轉物件&lt;/button&gt;</code></pre><pre><code class="javascript">Vue.createApp({ data() {    return {       isTransform: true,    };  },  methods: {     changeClass() {      this.isTransform =!this.isTransform;    },    change(key) {      this[key] = !this[key];    },  }};}).mount(&#39;#app&#39;)</code></pre><h2 id="動態物件方法"><a href="#動態物件方法" class="headerlink" title="動態物件方法 {}"></a>動態物件方法 {}</h2><ul><li><p>在一個元素上，加入多個事件</p></li><li><p>注意：此方式無法傳入參數</p><pre><code class="html">&lt;h3&gt;動態物件方法 {}&lt;/h3&gt;        &lt;!-- 此方法無法傳入參數 --&gt;&lt;button class=&quot;box&quot; @=&quot;{    mousedown:down,    mouseup:up }&quot;&gt;&lt;/button&gt;</code></pre><pre><code class="javascript">Vue.createApp({data() {  return {     isTransform: true,  };},methods: {   changeClass() {    this.isTransform =!this.isTransform;  },  change(key) {    this[key] = !this[key];  },  down() {    console.log(&quot;按下&quot;);  },  up() {    console.log(&quot;放開&quot;);  }}};</code></pre></li></ul><p>}).mount(‘#app’)</p><pre><code>![](https://i.imgur.com/qO3AcxL.gif)[codepen](https://codepen.io/Eva-go/pen/abwYwPa)</code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/NBBY8vo.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;建立add、minus兩個按鈕&lt;ul&gt;
-&lt;li&gt;點選add增加數字、點選minus減少數字&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;讓add按鈕</summary>
       
     
     
