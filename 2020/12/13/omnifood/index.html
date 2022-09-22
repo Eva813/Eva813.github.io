@@ -1,0 +1,882 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>CSS練習- omnifood 餐廳網頁</title><meta name="description" content="Front-end Engineer"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="
+介紹成品使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。
+
+首先，文字字型的選擇先用Normalize.css，下載並連結字型：使用google font &amp;gt; lato
+text-rendering告訴渲染引擎工作時如何優化顯示文字
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+  background-color: #fff;
+  color: #555;
+  font-family: &amp;#39;Lato&amp;#39;, &amp;#39;Arial&amp;#39;,sans-serif;
+  font-weight: 300;
+  font-siz.."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">CSS練習- omnifood 餐廳網頁</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介紹"><span class="toc-text">介紹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#首先，文字字型的選擇"><span class="toc-text">首先，文字字型的選擇</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#head區塊"><span class="toc-text">head區塊</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#表頭的製作"><span class="toc-text">表頭的製作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#調整背景圖位置"><span class="toc-text">調整背景圖位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#讓h1文字置中"><span class="toc-text">讓h1文字置中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文字放在圖片上使得看不清楚"><span class="toc-text">文字放在圖片上使得看不清楚</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#h1文字區的細節調整"><span class="toc-text">h1文字區的細節調整</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文字區下面的按鈕"><span class="toc-text">文字區下面的按鈕</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#按鈕的觸碰與點選"><span class="toc-text">按鈕的觸碰與點選</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表頭導覽列的製作"><span class="toc-text">表頭導覽列的製作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nav"><span class="toc-text">nav</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#icon"><span class="toc-text">icon</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#h2的文字與p"><span class="toc-text">h2的文字與p</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#欄位col的處理（class-”items”）"><span class="toc-text">欄位col的處理（class&#x3D;”items”）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#食物照片區"><span class="toc-text">食物照片區</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#html結構"><span class="toc-text">html結構</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加入文字區在圖片上方"><span class="toc-text">加入文字區在圖片上方</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#當圖片的scale被放大，會超出原有容器"><span class="toc-text">當圖片的scale被放大，會超出原有容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#讓圖片有黑色透明效果"><span class="toc-text">讓圖片有黑色透明效果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#訂餐方法介紹-的介面"><span class="toc-text">訂餐方法介紹 的介面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#標題調整"><span class="toc-text">標題調整</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#右欄文字區"><span class="toc-text">右欄文字區</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#讓圓形變圓，增加寬高"><span class="toc-text">讓圓形變圓，增加寬高</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按鈕的處理"><span class="toc-text">按鈕的處理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#地點資訊"><span class="toc-text">地點資訊</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#顧客回饋區"><span class="toc-text">顧客回饋區</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增加上面逗點符號"><span class="toc-text">增加上面逗點符號</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#訂購方案介紹區"><span class="toc-text">訂購方案介紹區</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#頁尾表單的建構"><span class="toc-text">頁尾表單的建構</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#footer"><span class="toc-text">footer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#連結顏色調整"><span class="toc-text">連結顏色調整</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#補充"><span class="toc-text">補充</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#background與background-imge之差別"><span class="toc-text">background與background-imge之差別</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文字框置中（區塊（div）的垂直置中）"><span class="toc-text">文字框置中（區塊（div）的垂直置中）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用button-vs-link"><span class="toc-text">使用button vs link</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grid參考資料"><span class="toc-text">grid參考資料</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#margin-與-paggimg"><span class="toc-text">margin 與 paggimg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#練習後的小心得："><span class="toc-text">練習後的小心得：</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/udemy"><i class="tag post-item-tag">udemy</i></a><a href="/tags/CSS"><i class="tag post-item-tag">CSS</i></a><a href="/tags/icon"><i class="tag post-item-tag">icon</i></a><a href="/tags/grid"><i class="tag post-item-tag">grid</i></a><a href="/tags/%E5%A4%9A%E9%87%8D%E8%83%8C%E6%99%AF"><i class="tag post-item-tag">多重背景</i></a><a href="/tags/opacity"><i class="tag post-item-tag">opacity</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">CSS練習- omnifood 餐廳網頁</h1><time class="has-text-grey" datetime="2020-12-13T05:05:53.000Z">2020-12-13</time><article class="mt-2 post-content"><p><img src="https://i.imgur.com/JNV0OeO.png" alt=""></p>
+<h2 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h2><p><a href="https://eva813.github.io/Eva_portfolio/Omnifood/omnifood.html" target="_blank" rel="noopener">成品</a><br>使用css來製作一個一頁式的網站，將網站分為表頭、特色區塊、食物照片區、訂餐方法介紹…等，從不同區塊，去操作字型、文字排版、圖片處理。</p>
+<p><img src="https://i.imgur.com/OwpZq8P.png" alt=""></p>
+<h2 id="首先，文字字型的選擇"><a href="#首先，文字字型的選擇" class="headerlink" title="首先，文字字型的選擇"></a>首先，文字字型的選擇</h2><p>先用Normalize.css，下載並連結<br>字型：使用google font &gt; lato<br><img src="https://i.imgur.com/4VSiIEZ.png" alt=""></p>
+<p>text-rendering告訴渲染引擎工作時如何優化顯示文字</p>
+<pre><code class="css">*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+  background-color: #fff;
+  color: #555;
+  font-family: &#39;Lato&#39;, &#39;Arial&#39;,sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  text-rendering: optimizeLegibility;
+  /* 繪制文本時易讀性優先，會啟用字距調整和連字 */
+}
+
+/* content will be in rows */
+.row{
+  /* 只有這邊是用px，之後的margin等設定都會用% */
+ max-width: 1140px; 
+ margin:0 auto;
+/* 讓左右的距離能夠平均分散，使其置中 */
+
+}
+
+
+</code></pre>
+<h1 id="head區塊"><a href="#head區塊" class="headerlink" title="head區塊"></a>head區塊</h1><p><img src="https://i.imgur.com/pc0jiX3.png" alt=""></p>
+<h2 id="表頭的製作"><a href="#表頭的製作" class="headerlink" title="表頭的製作"></a>表頭的製作</h2><pre><code class="htmlembedded="> &lt;div class=&quot;hero-text-box&quot;&gt;
+      &lt;h1&gt;Goodbye junk food. Hello super healthy meals.
+      &lt;/h1&gt;
+      &lt;a href=&quot;#&quot;&gt;I’m hungry&lt;/a&gt;
+      &lt;a href=&quot;#&quot;&gt;Show me more&lt;/a&gt;
+
+    &lt;/div&gt;
+</code></pre>
+<p><img src="https://i.imgur.com/ioW5W5p.png" alt=""></p>
+<ul>
+<li>利用background-image插入圖片後，往上滑會出現上方的空白處<ul>
+<li>是因為h1的margin（因設置normalize.css）</li>
+</ul>
+</li>
+<li>此時照片也還沒有填滿、置中</li>
+</ul>
+<p><img src="https://i.imgur.com/dZzd6V7.png" alt=""><br><img src="https://i.imgur.com/pe6AUaN.png" alt=""></p>
+<h3 id="調整背景圖位置"><a href="#調整背景圖位置" class="headerlink" title="調整背景圖位置"></a>調整背景圖位置</h3><p><img src="https://i.imgur.com/zoaaQoB.jpg" alt=""></p>
+<h3 id="讓h1文字置中"><a href="#讓h1文字置中" class="headerlink" title="讓h1文字置中"></a>讓h1文字置中</h3><p>透過使用絕對定位，讓文字可以置中</p>
+<pre><code class="css=">.hero-text-box{
+  position: absolute;
+
+  width: 1140px;
+  top: 50%;
+  left:}</code></pre>
+<p><img src="https://i.imgur.com/r4IryMQ.jpg" alt=""></p>
+<ul>
+<li>transform: translate(-50%,-50%);</li>
+</ul>
+<p><img src="https://i.imgur.com/QcgKtPg.jpg" alt=""></p>
+<h3 id="文字放在圖片上使得看不清楚"><a href="#文字放在圖片上使得看不清楚" class="headerlink" title="文字放在圖片上使得看不清楚"></a>文字放在圖片上使得看不清楚</h3><ul>
+<li>將背景圖調成深色<pre><code class="css=">background:linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,.5)) center center,
+ url(./Omnifood\ Contents/hero.jpg) no-repeat center center/cover ;</code></pre>
+<img src="https://i.imgur.com/NmUA3qy.jpg" alt=""></li>
+</ul>
+<h2 id="h1文字區的細節調整"><a href="#h1文字區的細節調整" class="headerlink" title="h1文字區的細節調整"></a>h1文字區的細節調整</h2><ul>
+<li>調整字的顏色、大小</li>
+<li>字母、單字之間的間距<pre><code class="css=">.hero-text-box h1{
+margin: 0;
+color: #fff;
+/* 這裏的字體大小用百分比，是為了相對於一開始設定font-size: 20px;，以他的百分比來計算 */
+font-size: 240%;
+font-weight: 400;
+letter-spacing: 1px;
+text-transform: uppercase; /*將字母改為大寫 */
+word-spacing: 3px;
+}</code></pre>
+</li>
+</ul>
+<h2 id="文字區下面的按鈕"><a href="#文字區下面的按鈕" class="headerlink" title="文字區下面的按鈕"></a>文字區下面的按鈕</h2><p>html結構是使用<code>&lt;a&gt;</code>來製作連結的點選<br>將型態改為inline-block</p>
+<pre><code class="html">      &lt;a class=&quot;btn btn-full&quot; href=&quot;#&quot;&gt;I’m hungry&lt;/a&gt;
+      &lt;a class=&quot;btn btn-ghost &quot; href=&quot;#&quot;&gt;Show me more&lt;/a&gt;</code></pre>
+<ul>
+<li>希望連結與被點選的樣式都是一樣</li>
+<li>顏色是到：UI flat color tool ; 要找尋顏色深淺 <a href="https://www.0to255.com/e67e22" target="_blank" rel="noopener">0 to 255</a></li>
+</ul>
+<pre><code class="css">.btn:link,.btn:visited{
+  display: inline-block;
+  text-decoration: none;
+padding: 10px 15px;
+border-radius: 200px;
+
+}
+
+.btn-full:link,.btn-full:visited{
+  /* UI flat color tool */
+  background-color: #e67e22;
+  /* border: 1px solid #e67e22 ; */
+  color: #fff;
+}
+
+.btn-ghost:link,.btn-ghost:visited{
+  border: 1px solid #e67e22 ;
+  color:#e67e22;
+
+}</code></pre>
+<p><img src="https://i.imgur.com/MuiBMCl.png" alt=""></p>
+<h3 id="按鈕的觸碰與點選"><a href="#按鈕的觸碰與點選" class="headerlink" title="按鈕的觸碰與點選"></a>按鈕的觸碰與點選</h3><p><code>:active</code> 滑鼠按下的樣式; <code>:focus</code> 鍵盤聚焦的樣式 ;<code>:hover</code> 滑鼠滑過</p>
+<ul>
+<li>注意transition此屬性是放在要被摸的元素裡面，不是hover那裡<br><a href="https://www.w3schools.com/howto/howto_css_transition_hover.asp" target="_blank" rel="noopener">How TO - Transition on Hover</a></li>
+</ul>
+<p><code>.btn:link,.btn:visited{}</code></p>
+<pre><code class="css=">  /* transition 放在這裡！ */
+ transition: background-color 0.5s,border 0.5s,color 0.5s;
+
+}
+
+.btn:hover,.btn:active{
+
+ background-color: #cf6d17;
+}
+.btn-full:hover,.btn-full:active{ 
+  border: 1px solid #cf6d17 ;
+  color: #fff;
+}
+
+.btn-ghost:hover,.btn-ghost:active{
+  border: 1px solid #cf6d17 ;
+  color:#fff;
+
+}
+</code></pre>
+<p><img src="https://i.imgur.com/3UM8SpB.png" alt=""></p>
+<h2 id="表頭導覽列的製作"><a href="#表頭導覽列的製作" class="headerlink" title="表頭導覽列的製作"></a>表頭導覽列的製作</h2><p><a href="https://ithelp.ithome.com.tw/articles/10219845" target="_blank" rel="noopener">金魚都能懂的這個網頁畫面怎麼切 : 導覽列</a></p>
+<ul>
+<li><p>header裡面的nav，html架構：</p>
+<pre><code class="htmlembedded">
+  &lt;nav&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;img src=&quot;./Omnifood Contents/logo-white.png&quot; alt=&quot;Omnifood logo&quot; class=&quot;logo&quot;&gt;
+      &lt;ul class=&quot;main-nav&quot;&gt;
+        &lt;li&gt; &lt;a href=&quot;#&quot;&gt;Food delivery&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;How it works&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Our cities&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Sign up&lt;/a&gt;&lt;/li&gt;
+
+      &lt;/ul&gt;
+
+    &lt;/div&gt;
+  &lt;/nav&gt;
+</code></pre>
+</li>
+</ul>
+<pre><code>![](https://i.imgur.com/jOySkuH.png)
+
+* logo
+```css=
+header .logo{
+height: 100px;
+width: auto;
+float: left;  
+}</code></pre><p><img src="https://i.imgur.com/KMLsFMM.png" alt=""></p>
+<h2 id="nav"><a href="#nav" class="headerlink" title="nav"></a>nav</h2><ul>
+<li>讓nav區靠右</li>
+<li>為了讓四個連結區塊可以橫向排列，設定inline-box</li>
+<li>針對字型、顏色等做調整</li>
+<li>並於連結下方增加線的動畫效果<pre><code class="css"></code></pre>
+</li>
+</ul>
+<p>.main-nav{<br>float: right;<br>margin-top: 55px;</p>
+<p>}<br>.main-nav li{<br>display: inline-block;<br>margin-left: 20px;</p>
+<p>}<br>.main-nav li a:link,.main-nav li a:visited{<br>text-decoration: none;<br>font-weight: 400;<br>font-size: 90%; /<em>想要18px，18px / 20px=0.9</em>/<br>color: #fff;<br>text-transform: uppercase;<br>position: relative;<br>padding-bottom: 5px;</p>
+<p>}</p>
+<p>.main-nav a::after{<br>  content: ‘’;<br>  width: 100%;<br>  position: absolute;<br>  border: solid .5px rgba(230, 126, 34,.6);<br>  left: 0;<br>  bottom:0 ;<br>  margin-top: 5px;<br>  transform: scale(0);<br>  transition: 0.5s;</p>
+<p>}</p>
+<p>.main-nav li:hover a::after,.main-nav li:active a::after{<br>transform: scale(1);</p>
+<p>}</p>
+<pre><code>![](https://i.imgur.com/1su6NCZ.png)
+
+---
+
+# 特色區塊
+
+![](https://i.imgur.com/nl0Z3uS.png)
+
+
+
+* ``—`` 用html符號 --&gt; `&amp;mdash;`
+     ![](https://i.imgur.com/kl8kJq1.png)
+     更多...[HTML Entity List](https://www.freeformatter.com/html-entities.html)
+* features這部分，使用section標籤來包覆，而其中的不同區塊則使用`.row`來包覆內容(並用來固定寬度)
+* 這裏的html運用grid來配置欄位
+
+```html
+&lt;section class=&quot;section-features&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+
+      &lt;h2&gt;Get food fast &amp;mdash; not fast food&lt;/h2&gt;
+      &lt;p class=&quot;long-copy&quot;&gt;Hello, we’re Omnifood, your new premium food delivery service. We know you’re always busy. we promise!&lt;/p&gt;
+    &lt;/div&gt;
+&lt;div class=&quot;row&quot;&gt;
+      &lt;!-- 第二區塊：features，這裏要開始應用grid --&gt;
+      &lt;div class=&quot;col span-1-of-4&quot;&gt;
+        &lt;h3&gt;Up to 365 days/year&lt;/h3&gt;
+        &lt;p&gt;Never cook again! We really mean that. Our subscript &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col span-1-of-4&quot;&gt;
+        &lt;h3&gt;Ready in 20 minutes&lt;/h3&gt;
+        &lt;p&gt;You&#39;re only twenty minutes away from your delicious ant chefs in each town to ensure that you&#39;re 100% happy.
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col span-1-of-4&quot;&gt;
+        &lt;h3&gt;100% organic&lt;/h3&gt;
+        &lt;p&gt;All our vegetables are fresh, organic and local. Animals are raised without added hormones or antibiotbetter!&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col span-1-of-4&quot;&gt;
+        &lt;h3&gt;Order anything&lt;/h3&gt;
+        &lt;p&gt;We don&#39;t limit your creativity, which means you cacious meals. It&#39;s up to you!&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;</code></pre><p><img src="https://i.imgur.com/sg0YUDI.png" alt=""></p>
+<h3 id="icon"><a href="#icon" class="headerlink" title="icon"></a>icon</h3><p>使用ionicon:<a href="https://ionicons.com/" target="_blank" rel="noopener">ionicon</a></p>
+<pre><code class="javascript">&lt;script src=&quot;https://unpkg.com/ionicons@5.2.3/dist/ionicons.js&quot;&gt;&lt;/script&gt;`</code></pre>
+<ul>
+<li>讓他斷行排列使用block</li>
+<li>字的大小適用比例設置</li>
+</ul>
+<pre><code class="css">.section-features .icon-big{
+display: block;
+  font-size: 350%;
+  color: #e67e22;
+  margin-bottom: 10px;
+  font-weight: 100;
+
+}</code></pre>
+<h2 id="h2的文字與p"><a href="#h2的文字與p" class="headerlink" title="h2的文字與p"></a>h2的文字與p</h2><pre><code class="css">.section-features .long-copy{
+width: 70%;
+/* 總寬100%,左邊設置15%，就會平均 */
+margin-left: 15%;
+
+/* line-height: 1.3; */
+line-height: 145%; /*120-145%最合適 */
+/* word-spacing: 1px; */
+}</code></pre>
+<h2 id="欄位col的處理（class-”items”）"><a href="#欄位col的處理（class-”items”）" class="headerlink" title="欄位col的處理（class=”items”）"></a>欄位col的處理（class=”items”）</h2><pre><code class="css">.section-features h3{
+  font-weight: 300;
+  font-size: 110%;
+  text-transform: uppercase;
+
+  margin-bottom: 15px;
+}
+.section-features .items {
+  padding:1% ;
+
+}
+
+.section-features .items p{
+  line-height: 145%;
+  font-size:90% ;
+}</code></pre>
+<p><img src="https://i.imgur.com/Sr0NhBr.png" alt=""></p>
+<hr>
+<h1 id="食物照片區"><a href="#食物照片區" class="headerlink" title="食物照片區"></a>食物照片區</h1><p><img src="https://i.imgur.com/BzV03pk.png" alt=""></p>
+<ul>
+<li>這裏的內容不適用<code>.row</code>來包覆，因為我們希望它的寬度可以站滿橫向的視窗</li>
+</ul>
+<h3 id="html結構"><a href="#html結構" class="headerlink" title="html結構"></a>html結構</h3><pre><code class="html">
+  &lt;section class=&quot;section-maels&quot;&gt;
+    &lt;!-- 要製作2列各4格的食物照片，這裏使用ul,li的方式排列 --&gt;
+    &lt;ul class=&quot;meals-showcase&quot;&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/1.jpg&quot; alt=&quot;Korean bibimbap with egg and vegetables&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/2.jpg&quot; alt=&quot;Simple italian pizza with cherry tomatoes&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/3.jpg&quot; alt=&quot;Chicken breast steak with vegetables&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/4.jpg&quot; alt=&quot;Autumn pumpkin soup&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+
+
+    &lt;/ul&gt;
+
+    &lt;ul class=&quot;meals-showcase&quot;&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/5.jpg&quot; alt=&quot;Paleo beef steak with vegetables&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/6.jpg&quot; alt=&quot;Healthy baguette with egg and vegetables&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/7.jpg&quot; alt=&quot;Burger with cheddar and bacon&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;figure&gt;
+          &lt;img src=&quot;./Omnifood Contents/8.jpg&quot; alt=&quot;Granola with cherries and strawberries&quot;&gt;
+        &lt;/figure&gt;
+      &lt;/li&gt;
+
+    &lt;/ul&gt;
+
+
+  &lt;/section&gt;</code></pre>
+<p><img src="https://i.imgur.com/zBU6WCx.png" alt=""></p>
+<ul>
+<li>設定此區塊滿版，並讓他們設定為區塊</li>
+<li>讓li，每個設定寬度為25%(4個共100％)，並利用float使他們比鄰排列</li>
+</ul>
+<pre><code class="css">.meals-showcase{
+  list-style: none; /* 去除ul的預設樣式*/
+  display: block;
+  width: 100%;
+
+}
+.meals-showcase li{
+  float: left;
+  width: 25%;
+}</code></pre>
+<p><img src="https://i.imgur.com/jaYired.jpg" alt=""></p>
+<ul>
+<li>上面的照片並未合乎大小，以及置中</li>
+</ul>
+<pre><code class="css">.meals-showcase figure{
+  width: 100%;
+
+}
+.meals-showcase figure img{
+  width: 100%;
+
+
+}</code></pre>
+<p><img src="https://i.imgur.com/XNsC9JM.jpg" alt=""></p>
+<ul>
+<li>去除上圖的空隙vertical-align: middle;</li>
+</ul>
+<pre><code class="css">.meals-showcase figure img{
+  width: 100%;
+  vertical-align: middle;}
+
+</code></pre>
+<p><img src="https://i.imgur.com/QsAwjZx.jpg" alt=""></p>
+<h2 id="加入文字區在圖片上方"><a href="#加入文字區在圖片上方" class="headerlink" title="加入文字區在圖片上方"></a>加入文字區在圖片上方</h2><p>製作圖片被摸到，有圖片縮放的動畫</p>
+<pre><code class="css=">.meals-showcase figure img{
+  width: 100%;
+  vertical-align: middle;
+transform: scale(1.15);
+transition: transform .5s;
+
+}
+.meals-showcase figure:hover img{
+  transform: scale(1);
+}</code></pre>
+<ul>
+<li><h3 id="當圖片的scale被放大，會超出原有容器"><a href="#當圖片的scale被放大，會超出原有容器" class="headerlink" title="當圖片的scale被放大，會超出原有容器"></a>當圖片的scale被放大，會超出原有容器</h3><ul>
+<li>處理方式：在所在的容器，設定overflow: hidden; </li>
+<li><a href="https://juejin.cn/post/6844903650901540872" target="_blank" rel="noopener">CSS深入理解：overflow:hidden——溢出,坍塌,清除浮动</a>,<a href="https://www.itread01.com/content/1524202931.html" target="_blank" rel="noopener">overflow：hidden 失效</a><br><img src="https://i.imgur.com/zBiOKSv.jpg" alt=""></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><h3 id="讓圖片有黑色透明效果"><a href="#讓圖片有黑色透明效果" class="headerlink" title="讓圖片有黑色透明效果"></a>讓圖片有黑色透明效果</h3><ul>
+<li>在圖片本身img設定透明度，在figure放圖標籤裡設定背景為黑色</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/ADUUni8.jpg" alt=""></p>
+<pre><code class="css">.meals-showcase figure{
+  width: 100%;
+  overflow: hidden;
+  background-color:#000;
+
+}
+.meals-showcase figure img{
+  width: 100%;
+  vertical-align: middle;
+transform: scale(1.15);
+transition: transform .5s ,opicity .5s;
+opacity: 0.7;
+}
+.meals-showcase figure:hover img{
+  transform: scale(1);
+  opacity: 1;
+}
+</code></pre>
+<p><img src="https://i.imgur.com/okb9F66.jpg" alt=""></p>
+<hr>
+<h1 id="訂餐方法介紹-的介面"><a href="#訂餐方法介紹-的介面" class="headerlink" title="訂餐方法介紹 的介面"></a>訂餐方法介紹 的介面</h1><p><img src="https://i.imgur.com/HxrpNQG.png" alt=""></p>
+<ul>
+<li>html的結構</li>
+</ul>
+<pre><code class="html">&lt;section class=&quot;meal-steps&quot;&gt;
+    &lt;!-- 在row裡面，放一個h2標題，在增加一個row的div，使用grid兩欄的class --&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;h2&gt;How it works - Simple as 1, 2, 3&lt;/h2&gt;
+
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;!-- 左欄 --&gt;
+      &lt;div class=&quot;col span-2-of-4&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/app-iPhone.png&quot; alt=&quot;Omnifood-app&quot; class=&quot;app-screen&quot;&gt;
+      &lt;/div&gt;
+      &lt;!-------- 右欄 ------&gt;
+      &lt;div class=&quot;col span-2-of-4&quot;&gt;
+        &lt;div class=&quot;work-step&quot;&gt;
+          &lt;div&gt;1&lt;/div&gt;
+          &lt;p&gt;Choose the subscription plan that best fits your needs and sign up today.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;work-step&quot;&gt;
+          &lt;div&gt;2&lt;/div&gt;
+          &lt;p&gt;Order your delicious meal using our mobile app or website. Or you can even call us!&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;work-step&quot;&gt;
+          &lt;div&gt;3&lt;/div&gt;
+          &lt;p&gt;Enjoy your meal after less than 20 minutes. See you the next time!&lt;/p&gt;
+        &lt;/div&gt;
+&lt;!------- 與步驟同一欄，下載的按鈕使用&lt;a&gt; ------&gt;
+
+        &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;./Omnifood Contents/download-app.svg&quot; alt=&quot;apple store button&quot;&gt;&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;./Omnifood Contents/download-app-android.png&quot; alt=&quot;play store button&quot;&gt;&lt;/a&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+
+  &lt;/section&gt;
+
+
+</code></pre>
+<p><img src="https://i.imgur.com/F9MrnmA.png" alt=""></p>
+<ul>
+<li><h3 id="標題調整"><a href="#標題調整" class="headerlink" title="標題調整"></a>標題調整</h3></li>
+</ul>
+<p>:first-child</p>
+<p>圖片靠右：text-align: right;</p>
+<h4 id="右欄文字區"><a href="#右欄文字區" class="headerlink" title="右欄文字區"></a>右欄文字區</h4><p>在數字部分：要讓他與文字區能夠排列，使用inline-block,float<br>    數字的外圈：參考以下css</p>
+<pre><code class="css=">.work-step{
+  display: inline-block;
+  margin-bottom: 50px;
+}
+
+  .work-step div{
+
+  float: left;
+  color:#e67e22 ;
+  border: 2px solid #e67e22;
+  border-radius: 50%;
+  }</code></pre>
+<p><img src="https://i.imgur.com/cPpSW9S.png" alt=""></p>
+<h4 id="讓圓形變圓，增加寬高"><a href="#讓圓形變圓，增加寬高" class="headerlink" title="讓圓形變圓，增加寬高"></a>讓圓形變圓，增加寬高</h4><pre><code class="css=">.work-step div{
+height: 55px;
+  width: 55px;
+  text-align: center;
+  padding: 5px;
+  font-size: 150%;}</code></pre>
+<p><img src="https://i.imgur.com/odR0Tm5.png" alt=""></p>
+<ul>
+<li>margin-right: 25px;</li>
+</ul>
+<p><img src="https://i.imgur.com/OHIFt8g.png" alt=""></p>
+<h2 id="按鈕的處理"><a href="#按鈕的處理" class="headerlink" title="按鈕的處理"></a>按鈕的處理</h2><p><img src="https://i.imgur.com/NOTJn47.png" alt=""></p>
+<pre><code class="css=">.btn-app img{
+  height: 50px;
+  width: auto;
+  margin-right: 10px;
+}</code></pre>
+<h1 id="地點資訊"><a href="#地點資訊" class="headerlink" title="地點資訊"></a>地點資訊</h1><p><img src="https://i.imgur.com/zvBsOgb.png" alt=""></p>
+<pre><code class="html">&lt;section class=&quot;section-cities&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;h2&gt;We&#39;re currently in these cities&lt;/h2&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;!-- 第一個地點 --&gt;
+      &lt;div class=&quot;col span-1-of-4 items&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/lisbon-3.jpg&quot; alt=&quot;&quot;&gt;
+        &lt;h3&gt;Lisbon&lt;/h3&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;person&quot; class=&quot;person&quot;&gt;&lt;/ion-icon&gt;
+          1600+ happy eaters
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;star&quot; class=&quot;star&quot;&gt;&lt;/ion-icon&gt;
+          60+ top chefs
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitter&quot;&gt;&lt;/ion-icon&gt;
+          @omnifood_lx
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- 第二個地點 --&gt;
+      &lt;div class=&quot;col span-1-of-4 items&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/san-francisco.jpg&quot; alt=&quot;&quot;&gt;
+        &lt;h3&gt;San Francisco&lt;/h3&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;person&quot; class=&quot;person&quot;&gt;&lt;/ion-icon&gt;
+          3700+ happy eaters
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;star&quot; class=&quot;star&quot;&gt;&lt;/ion-icon&gt;
+          160+ top chefs
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitter&quot;&gt;&lt;/ion-icon&gt;
+          @omnifood_sf
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- 第三個地點 --&gt;
+      &lt;div class=&quot;col span-1-of-4 items&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/berlin.jpg&quot; alt=&quot;&quot;&gt;
+        &lt;h3&gt;Berlin&lt;/h3&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;person&quot; class=&quot;person&quot;&gt;&lt;/ion-icon&gt;
+          2300+ happy eaters
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;star&quot; class=&quot;star&quot;&gt;&lt;/ion-icon&gt;
+          110+ top chefs
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitter&quot;&gt;&lt;/ion-icon&gt;
+          @omnifood_berlin
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- 第四個地點 --&gt;
+      &lt;div class=&quot;col span-1-of-4 items&quot;&gt;
+        &lt;img src=&quot;./Omnifood Contents/london.jpg&quot; alt=&quot;&quot;&gt;
+        &lt;h3&gt;London&lt;/h3&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;person&quot; class=&quot;person&quot;&gt;&lt;/ion-icon&gt;
+          1200+ happy eaters
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;star&quot; class=&quot;star&quot;&gt;&lt;/ion-icon&gt;
+          50+ top chefs
+        &lt;/div&gt;
+        &lt;div class=&quot;city-features&quot;&gt;
+          &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitter&quot;&gt;&lt;/ion-icon&gt;
+          @omnifood_london
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+  &lt;/section&gt;</code></pre>
+<p><img src="https://i.imgur.com/gC2Om3f.png" alt=""></p>
+<p><img src="https://i.imgur.com/YzSZlES.jpg" alt=""></p>
+<pre><code class="css=">.section-cities img{
+  width: 100%;
+  vertical-align: middle;
+  margin-bottom: 15px;
+}</code></pre>
+<pre><code class="css=">.section-cities .icon-small{
+  color: #e67e22;
+ display: inline-block;
+ text-align: center;
+ font-size: 120%;
+ margin-right: 10px;
+
+/*讓icon與文字，置中、對其*/
+ line-height: 120%;
+ vertical-align: middle;
+ margin-top: -5px;
+
+}</code></pre>
+<p><img src="https://i.imgur.com/1s1kBSH.png" alt=""></p>
+<h1 id="顧客回饋區"><a href="#顧客回饋區" class="headerlink" title="顧客回饋區"></a>顧客回饋區</h1><p><img src="https://i.imgur.com/621x3W2.png" alt=""></p>
+<ul>
+<li>區分為三個區塊，一列三欄的方式劃分</li>
+<li>用<code>&lt;blockquote&gt;</code>來包顧客的回饋文字</li>
+<li>並加入顧客的頭像以及姓名</li>
+</ul>
+<pre><code class="html">&lt;section class=&quot;section-testimonials&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;h2&gt;Our customers can&#39;t live without us&lt;/h2&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;div class=&quot;col span-1-of-3&quot;&gt;
+
+        &lt;blockquote&gt;
+          Omnifood is just awesome! I just launched a startup which leaves me with no time for cooking, so Omnifood is a
+          life-saver. Now that I got used to it, I couldn&#39;t live without my daily meals!
+          &lt;cite&gt;&lt;img src=&quot;./Omnifood Contents/customer-1.jpg&quot; alt=&quot;&quot;&gt;Alberto Duncan&lt;/cite&gt;
+        &lt;/blockquote&gt;
+
+      &lt;/div&gt;
+      &lt;div class=&quot;col span-1-of-3&quot;&gt;
+
+        &lt;blockquote&gt;
+          Inexpensive, healthy and great-tasting meals, delivered right to my home. We have lots of food delivery here
+          in Lisbon,
+          but no one comes even close to Omifood. Me and my family are so in love!
+          &lt;cite&gt;&lt;img src=&quot;./Omnifood Contents/customer-2.jpg&quot; alt=&quot;&quot;&gt;Joana Silva&lt;/cite&gt;
+        &lt;/blockquote&gt;
+
+      &lt;/div&gt;
+
+      &lt;div class=&quot;col span-1-of-3&quot;&gt;
+
+        &lt;blockquote&gt;
+          I was looking for a quick and easy food delivery service in San Franciso. I tried a lot of them and ended up
+          with
+          Omnifood. Best food delivery service in the Bay Area. Keep up the great work!
+          &lt;cite&gt;&lt;img src=&quot;./Omnifood Contents/customer-3.jpg&quot; alt=&quot;&quot;&gt;Milton Chapman&lt;/cite&gt;
+        &lt;/blockquote&gt;
+
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+
+
+  &lt;/section&gt;
+</code></pre>
+<p><img src="https://i.imgur.com/LMPlqlx.png" alt=""></p>
+<ul>
+<li>先做背景的處理</li>
+</ul>
+<pre><code class="css=">.section-testimonials {
+  background:linear-gradient(0deg,rgba(0,0,0,.7),rgba(0,0,0,.7)) center center, url(./Omnifood\ Contents/back-customers.jpg)no-repeat center center/cover ;
+  color: #fff;
+  background-attachment: fixed;
+}</code></pre>
+<p><img src="https://i.imgur.com/ofR8ghb.png" alt=""></p>
+<ul>
+<li>增加相片背景</li>
+<li>可以看到文字與，照片相</li>
+</ul>
+<p><img src="https://i.imgur.com/deniLe4.jpg" alt=""></p>
+<p><img src="https://i.imgur.com/lO5KPTq.jpg" alt=""></p>
+<p><img src="https://i.imgur.com/VBEGepa.png" alt=""></p>
+<ul>
+<li>在.section-testimonials img 增加vertical-align: middle;</li>
+</ul>
+<p><img src="https://i.imgur.com/bifGooB.png" alt=""></p>
+<h3 id="增加上面逗點符號"><a href="#增加上面逗點符號" class="headerlink" title="增加上面逗點符號"></a>增加上面逗點符號</h3><p><a href="https://css-tricks.com/snippets/html/glyphs/" target="_blank" rel="noopener">符號表</a></p>
+<pre><code class="css=">.section-testimonials blockquote:before{
+ content:&quot;\201C&quot;;
+ font-size:500%;
+ display: block;
+
+position: absolute;
+top: -5px;
+left: -5px;
+}
+
+}</code></pre>
+<p><img src="https://i.imgur.com/MJpSGz0.png" alt=""></p>
+<h1 id="訂購方案介紹區"><a href="#訂購方案介紹區" class="headerlink" title="訂購方案介紹區"></a>訂購方案介紹區</h1><p><img src="https://i.imgur.com/6tr0o3E.png" alt=""></p>
+<p><img src="https://i.imgur.com/8lTrnUY.png" alt=""></p>
+<ul>
+<li>span標籤的應用</li>
+<li>當全部設定寬度100%，會出現問題<ul>
+<li>要利用篩選器，來選擇指定框</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/1XlErXn.png" alt=""></p>
+<p><img src="https://i.imgur.com/YnpnJBc.png" alt=""></p>
+<ul>
+<li>解決方式，在html的標籤增加空行</li>
+</ul>
+<p><img src="https://i.imgur.com/Dke7ilN.png" alt=""></p>
+<p><img src="https://i.imgur.com/oC2aMcy.png" alt=""></p>
+<h1 id="頁尾表單的建構"><a href="#頁尾表單的建構" class="headerlink" title="頁尾表單的建構"></a>頁尾表單的建構</h1><p><img src="https://i.imgur.com/y9sxEXR.png" alt=""></p>
+<p><img src="https://i.imgur.com/VQ5YHHR.png" alt=""></p>
+<h1 id="footer"><a href="#footer" class="headerlink" title="footer"></a>footer</h1><p><img src="https://i.imgur.com/E4C4qY3.png" alt=""></p>
+<ul>
+<li>放入相關連結的icon</li>
+</ul>
+<pre><code class="html">&lt;footer&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;div class=&quot;col span-1-of-2&quot;&gt;
+        &lt;ul class=&quot;footer-nav&quot;&gt;
+
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About us&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Blog&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Press&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Android App&lt;/a&gt;&lt;/li&gt;
+
+        &lt;/ul&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;col span-1-of-2 &quot;&gt;
+
+        &lt;ul class=&quot;socilmedia-link&quot;&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;
+              &lt;ion-icon name=&quot;logo-facebook&quot; class=&quot;logo-facebook&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;
+              &lt;ion-icon name=&quot;logo-twitter&quot; class=&quot;logo-twitte&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;
+              &lt;ion-icon name=&quot;logo-google&quot; class=&quot;logo-google&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;
+              &lt;ion-icon name=&quot;logo-instagram&quot; class=&quot;logo-instagram&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/a&gt;&lt;/li&gt;
+
+        &lt;/ul&gt;
+
+
+      &lt;/div&gt;
+      &lt;div class=&quot;row&quot;&gt;
+
+        &lt;p&gt;
+          copyright &amp;copy; 2020 by Omnifood. All right reserved.
+        &lt;/p&gt;
+
+      &lt;/div&gt;
+
+
+
+    &lt;/div&gt;
+
+
+
+
+
+  &lt;/footer&gt;
+</code></pre>
+<p><img src="https://i.imgur.com/X2b2hfu.png" alt=""></p>
+<ul>
+<li>使用float來使物件放置左右側</li>
+<li>footer-nav li使用inline-block</li>
+</ul>
+<pre><code class="css"> footer{
+  background-color: #333;
+  padding: 50px;
+  font-size: 80%;
+}
+footer .footer-nav{
+  list-style: none;
+  float: left;
+}
+.socilmedia-link{
+  list-style: none;
+  float: right;
+}
+.footer-nav li,.socilmedia-link li{
+  display: inline-block;
+  margin-right: 20px;
+} </code></pre>
+<p><img src="https://i.imgur.com/Uph2clO.png" alt=""></p>
+<h3 id="連結顏色調整"><a href="#連結顏色調整" class="headerlink" title="連結顏色調整"></a>連結顏色調整</h3><pre><code class="css">.footer-nav li:last-child,.socilmedia-link li:last-child{
+  margin-right: 0px;
+}
+
+.footer-nav li a:link ,.footer-nav li a:visited, .socilmedia-link li a:link ,.socilmedia-link li a:visited{
+ text-decoration: none;
+ border: none;
+ color: #888;
+ transition: color .3s;
+}
+
+
+.footer-nav li a:hover ,.footer-nav li a:active{
+  color: #ddd;
+
+}
+
+.socilmedia-link li a:link,.socilmedia-link  li a:visited{
+ font-size: 160%;
+
+}
+</code></pre>
+<p><img src="https://i.imgur.com/A2Z6Meh.png" alt=""></p>
+<pre><code class="css">footer p{
+  color:#888;
+  text-align: center;
+
+  margin-top: 20px;
+}
+
+.logo-instagram,
+.logo-google,
+.logo-twitte,
+.logo-facebook{
+transition: color .3s;
+}
+
+.logo-instagram:hover{
+  color: #517fa4;
+}
+.logo-google:hover{
+  color: #dd4b39;
+}
+.logo-twitte:hover{
+  color: #00aced;
+}
+.logo-facebook:hover{
+  color: #3b5998;
+} </code></pre>
+<p><img src="https://i.imgur.com/bLtpdK7.png" alt=""></p>
+<hr>
+<h1 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h1><h2 id="background與background-imge之差別"><a href="#background與background-imge之差別" class="headerlink" title="background與background-imge之差別"></a><code>background</code>與<code>background-imge</code>之差別</h2><pre><code>background属性是整體設置的，background image是background的属性之一，background的屬性包括
+background-color
+background-image
+background-repeat
+background-attachment
+background-position，
+你看不到圖片是因为設置錯，不能加no-repeat屬性，應改為：
+background-image:url(&quot;some.jpg&quot;); background-repeat:no-repeat;分開寫
+
+[background和background-image什么区别](https://bbs.csdn.net/topics/310167508)</code></pre><pre><code class="css">.header{
+background-image:url(./Omnifood\ Contents/hero.jpg) ;
+
+background-size: cover;
+background-position: center;
+}
+/********我改為下面這樣*******/
+.header{
+background: url(./Omnifood\ Contents/hero.jpg) no-repeat
+ center center/cover;}</code></pre>
+<h2 id="文字框置中（區塊（div）的垂直置中）"><a href="#文字框置中（區塊（div）的垂直置中）" class="headerlink" title="文字框置中（區塊（div）的垂直置中）"></a>文字框置中（區塊（div）的垂直置中）</h2><blockquote>
+<p>pjchender</p>
+<blockquote>
+<p>Position + Transform（常用）:先利用 position: absolute 把 top: 50% 設在 50%；接著再透過 transform: translateY(-50%) 把超過的部分修正回來，達到垂直置中。</p>
+</blockquote>
+</blockquote>
+<pre><code class="css=">.hero-text-box{
+  display: flex;
+  width: 1140px;
+  height: 100%;
+  flex-direction: column; 
+
+   align-items: center; 
+  justify-content: center;
+} </code></pre>
+<p>參考：<br><a href="https://pjchender.blogspot.com/2015/04/css_15.html" target="_blank" rel="noopener">pjchender</a></p>
+<h2 id="使用button-vs-link"><a href="#使用button-vs-link" class="headerlink" title="使用button vs link"></a>使用<code>button</code> vs <code>link</code></h2><p><a href="https://a11y-101.com/design/button-vs-link" target="_blank" rel="noopener">Button versus Link</a></p>
+<pre><code>From a semantics and accessibility viewpoint:
+Links ``(&lt;a&gt;) ``are for &quot;going someplace&quot; such as &quot;jumping to a different section of a page, going to another URL, etc.
+Whereas
+Buttons ``&lt;button&gt; ``are for &quot;doing something&quot; such as a function on the page to expand/collapse a menu, submit a form or etc.</code></pre><h2 id="grid參考資料"><a href="#grid參考資料" class="headerlink" title="grid參考資料"></a><code>grid</code>參考資料</h2><p><a href="http://www.responsivegridsystem.com/" target="_blank" rel="noopener">Spectacularly Easy Responsive Design</a><br><a href="https://blog.hinablue.me/css-grid-layout/" target="_blank" rel="noopener">關於 Grid Layout 的使用姿勢</a><br><a href="https://www.youtube.com/watch?v=uZRkVOeRHws" target="_blank" rel="noopener">六角學院 - Bootstrap Grid System 原理介紹</a></p>
+<h3 id="margin-與-paggimg"><a href="#margin-與-paggimg" class="headerlink" title="margin 與 paggimg"></a><code>margin</code> 與 <code>paggimg</code></h3><p>製作steps區塊時，因設定section的margin距離<br>使得想在此區塊多加上背景色彩，有了中間的空白處</p>
+<pre><code class="css">.meal-steps{
+  background: #f4f4f4;
+}</code></pre>
+<ul>
+<li>這裏應該改為padding<pre><code class="css">section{
+padding: 80px 0; 
+/*margin: 80px 0;*/
+}</code></pre>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/ss2XfZd.png" alt=""></p>
+<h3 id="練習後的小心得："><a href="#練習後的小心得：" class="headerlink" title="練習後的小心得："></a>練習後的小心得：</h3><p>1.在html建構會使用<code>.row</code><br>2.應用grid,css<br>3.內部，字的大小用百分比<br>4.有一些可以共用的區塊，可以放在reuse區塊，並設一樣的class名稱，在建構時，可以更快速</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2020/12/13/portfolio-web-page/" title="CSS練習- portfolio web page 作品集網頁"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">Previous: CSS練習- portfolio web page 作品集網頁</span></a><a class="button is-default" href="/2020/11/28/csscoke-NO013/" title="Amos金魚都能懂的切版教學影片- csscoke NO013"><span class="has-text-weight-semibold">Next: Amos金魚都能懂的切版教學影片- csscoke NO013</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2022</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>JS-browser</title><meta name="description" content="Front-end Engineer"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="
+1. DOM 與樹狀結構
+
+DOM: document:網頁內部
+KURO 老師:DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。
+
+
+
+
+Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西 
+
+API (Application Programming Interface)
+應用程式 編程 介面
+document 物件 API 文件
+getElementsByTagName : 抓取html中某tag的元素&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;div&amp;gt;
+  hello~
+
+&amp;lt;/div&amp;gt;
+&amp;lt;div&amp;gt;
+.."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">JS-browser</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-DOM-與樹狀結構"><span class="toc-text">1. DOM 與樹狀結構</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#API-Application-Programming-Interface"><span class="toc-text">API (Application Programming Interface)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#document-物件-API-文件"><span class="toc-text">document 物件 API 文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#getElementsByTagName-抓取html中某tag的元素"><span class="toc-text">getElementsByTagName : 抓取html中某tag的元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取"><span class="toc-text">getElementsByClassName: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getElementById-注意：getElement-沒有加s！這是用來抓取指定ID"><span class="toc-text">getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#querySelectorAll-可以選取多個元素"><span class="toc-text">querySelectorAll: 可以選取多個元素</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#順利選則元素之後，嘗試做些改變"><span class="toc-text">順利選則元素之後，嘗試做些改變</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BOM-與-window-物件"><span class="toc-text">BOM 與 window 物件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#參考資料"><span class="toc-text">參考資料</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/DOM%22"><i class="tag post-item-tag">DOM&quot;</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">JS-browser</h1><time class="has-text-grey" datetime="2020-12-28T10:47:58.000Z">2020-12-28</time><article class="mt-2 post-content"><p><img src="https://i.imgur.com/NdO4OR5.png" alt=""></p>
+<h2 id="1-DOM-與樹狀結構"><a href="#1-DOM-與樹狀結構" class="headerlink" title="1. DOM 與樹狀結構"></a>1. DOM 與樹狀結構</h2><p><img src="https://i.imgur.com/uZDTql8.png" alt=""></p>
+<ul>
+<li>DOM: document:網頁內部<blockquote>
+<p>KURO 老師:<br>DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西<br> <img src="https://i.imgur.com/tPHGSL4.png" alt=""></p>
+</blockquote>
+<h3 id="API-Application-Programming-Interface"><a href="#API-Application-Programming-Interface" class="headerlink" title="API (Application Programming Interface)"></a>API (Application Programming Interface)</h3><ul>
+<li><p>應用程式 編程 介面</p>
+<h2 id="document-物件-API-文件"><a href="#document-物件-API-文件" class="headerlink" title="document 物件 API 文件"></a>document 物件 API 文件</h2></li>
+<li><h4 id="getElementsByTagName-抓取html中某tag的元素"><a href="#getElementsByTagName-抓取html中某tag的元素" class="headerlink" title="getElementsByTagName : 抓取html中某tag的元素"></a><code>getElementsByTagName</code> : 抓取html中某tag的元素</h4><pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;body&gt;
+&lt;div&gt;
+  hello~
+
+&lt;/div&gt;
+&lt;div&gt;
+  yo!
+&lt;/div&gt;
+&lt;script&gt;
+
+  const elements = document.getElementsByTagName(&#39;div&#39;);
+  console.log(elements);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p><img src="https://i.imgur.com/hSmfZ9u.png" alt=""></p>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/yNOOK2m.png" alt=""></p>
+<ul>
+<li><h4 id="getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取"><a href="#getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取" class="headerlink" title="getElementsByClassName: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)"></a><code>getElementsByClassName</code>: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)</h4></li>
+</ul>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;h1&gt;DOM
+  &lt;/h1&gt;
+  &lt;div class=&quot;block1&quot;&gt;
+    hello~
+
+  &lt;/div&gt;
+  &lt;div&gt;
+    yo!
+  &lt;/div&gt;
+  &lt;script&gt;
+
+    const elements = document.getElementsByClassName(&#39;block1&#39;);
+    console.log(elements);
+  &lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+<p><img src="https://i.imgur.com/d7ZlZnr.png" alt=""></p>
+<ul>
+<li><h4 id="getElementById-注意：getElement-沒有加s！這是用來抓取指定ID"><a href="#getElementById-注意：getElement-沒有加s！這是用來抓取指定ID" class="headerlink" title="getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID"></a><code>getElementById</code> : 注意：getElement 沒有加s！這是用來抓取指定ID</h4><pre><code class="html">&lt;body&gt;
+&lt;h1&gt;DOM
+&lt;/h1&gt;
+&lt;div class=&quot;block1&quot;&gt;
+  hello~
+
+&lt;/div&gt;
+&lt;div id=&quot;myyo&quot;&gt;
+  yo!
+&lt;/div&gt;
+&lt;script&gt;
+  const elements = document.getElementById(&#39;myyo&#39;);
+  console.log(elements);
+&lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+</li>
+</ul>
+<pre><code>![](https://i.imgur.com/1ouq4WA.png)
+
+* #### `querySelector`: 後面接的是css選擇器
+* 只會針對元素的第一筆資料，其他並不會被選入這時候可以使用
+
+    * 選擇tag標籤：(&#39;div&#39;)：注意：使用此方式當html有多個div，他只會選擇到第一個符合的
+    * 選擇cass : (&#39;.calssName&#39;)
+    * 選擇id : (&#39;#idName&#39;)
+
+![](https://i.imgur.com/QzoOo6r.png)
+
+![](https://i.imgur.com/pSMPFCJ.png)
+
+* 也可以選區某一tag下的tag
+    * `querySelector(&#39;div &gt; a&#39;)`
+```html
+&lt;body&gt;
+  &lt;h1&gt;DOM
+  &lt;/h1&gt;
+  &lt;div class=&quot;block1&quot;&gt;
+    hello~
+
+  &lt;/div&gt;
+  &lt;div id=&quot;myyo&quot;&gt;
+    yo!
+    &lt;a href=&quot;#&quot;&gt;hello&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+
+    const elements = document.querySelector(&#39;div &gt; a&#39;);
+    console.log(elements);
+  &lt;/script&gt;
+&lt;/body&gt;</code></pre><p><img src="https://i.imgur.com/I9qr8LD.png" alt=""></p>
+<ul>
+<li><h4 id="querySelectorAll-可以選取多個元素"><a href="#querySelectorAll-可以選取多個元素" class="headerlink" title="querySelectorAll: 可以選取多個元素"></a><code>querySelectorAll</code>: 可以選取多個元素</h4></li>
+</ul>
+<pre><code class="html">&lt;body&gt;
+  &lt;h1&gt;DOM
+  &lt;/h1&gt;
+  &lt;div class=&quot;block1&quot;&gt;
+    hello~
+
+  &lt;/div&gt;
+  &lt;div id=&quot;myyo&quot;&gt;
+    yo!
+    &lt;a href=&quot;#&quot;&gt;hello&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+
+    const elements = document.querySelectorAll(&#39;div&#39;);
+    console.log(elements);
+  &lt;/script&gt;</code></pre>
+<p><img src="https://i.imgur.com/jFPYIO0.png" alt="Eloquent JavaScript, 3rd Edition"></p>
+<h3 id="順利選則元素之後，嘗試做些改變"><a href="#順利選則元素之後，嘗試做些改變" class="headerlink" title="順利選則元素之後，嘗試做些改變"></a>順利選則元素之後，嘗試做些改變</h3><p>可以看看，js如何與瀏覽器互動 -&gt;<a href="https://hackmd.io/yGiTI8qVRLWmDCpD1w7HcA?view" target="_blank" rel="noopener">JavaScript 與瀏覽器的溝通</a></p>
+<h3 id="BOM-與-window-物件"><a href="#BOM-與-window-物件" class="headerlink" title="BOM 與 window 物件"></a>BOM 與 window 物件</h3><ul>
+<li>BOM (Browser Object Model，瀏覽器物件模型)，是瀏覽器所有功能的核心，與網頁的內容無關。<ul>
+<li>window是瀏覽器的根物件，也是BOM的瀏覽器模型</li>
+</ul>
+</li>
+<li>window.location.hrrf =&gt; 可以知道現在網址<br><img src="https://i.imgur.com/8EeLLGQ.png" alt=""></li>
+<li>window.history.back(); =&gt; 回到網頁瀏覽的上一頁<br><img src="https://i.imgur.com/kBtDslP.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/jyPOjvH.png" alt=""></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a href="https://ithelp.ithome.com.tw/articles/10202689" target="_blank" rel="noopener">Day03-深入理解網頁架構：DOM</a><br><a href="https://hsuchihting.github.io/javascript/20200615/1316819935/" target="_blank" rel="noopener">JS 筆記 - 認識 DOM 文件物件模型</a><br><a href="https://developer.mozilla.org/zh-TW/docs/Web/API/Document" target="_blank" rel="noopener">MDN-Document</a><br><a href="https://www.w3schools.com/jsref/dom_obj_document.asp" target="_blank" rel="noopener">The HTML DOM Document Object</a><br><a href="https://ithelp.ithome.com.tw/articles/10211614" target="_blank" rel="noopener">JavaScript 基礎知識-querySelectorAll</a><br><a href="https://eloquentjavascript.net/14_dom.html" target="_blank" rel="noopener">The Document Object Model</a><br><a href="https://www.happycoding.today/posts/43" target="_blank" rel="noopener">JavaScript入門系列：BOM和DOM筆記</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2021/01/10/js-exchangeRate/" title="JS實作- exchangeRate匯率轉換器"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">Previous: JS實作- exchangeRate匯率轉換器</span></a><a class="button is-default" href="/2020/12/27/js-array/" title="JS基本功- 物件與陣列"><span class="has-text-weight-semibold">Next: JS基本功- 物件與陣列</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2022</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>
