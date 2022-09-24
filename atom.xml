@@ -6,7 +6,7 @@
   <link href="https://github.com/Eva813/Eva813.github.io.git/atom.xml" rel="self"/>
   
   <link href="https://github.com/Eva813/Eva813.github.io.git/"/>
-  <updated>2022-09-17T00:10:00.716Z</updated>
+  <updated>2022-09-24T01:05:43.031Z</updated>
   <id>https://github.com/Eva813/Eva813.github.io.git/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>刷題練習 - Valid Parentheses</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/09/24/code-practice/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2022/09/24/code-practice/</id>
+    <published>2022-09-24T00:32:55.000Z</published>
+    <updated>2022-09-24T01:05:43.031Z</updated>
+    
+    <content type="html"><![CDATA[<p>  對於刷題總時敬而遠之，記得剛開始學習 JavaScript 時，有挑幾題來練習，看到題目後完全不知道該如何著手，甚至有些題目還要反覆看幾次才比較理解。 畢竟也踏入前端工程師近一年的時間，使用 JavaScript 也有兩年了，該是好好鑽研練習 Leetcode。</p><p>題目：<br>  Given a string s containing just the characters ‘(‘, ‘)’, ‘{‘, ‘}’, ‘[‘ and ‘]’, determine if the input string is valid.</p><p>  An input string is valid if:</p><p>  Open brackets must be closed by the same type of brackets.<br>  Open brackets must be closed in the correct order.<br>  Every close bracket has a corresponding open bracket of the same type.</p><p>  以字串帶入，並要確認傳入的字串中的大括號, 中括號等是否有兩倆配對</p><p>Example 1: </p><pre><code>Input: s = &quot;()&quot;Output: true</code></pre><pre><code>Input: s = &quot;()[]{}&quot;Output: true</code></pre><pre><code>Input: s = &quot;(]&quot;Output: false</code></pre><ol><li>製作一個物件，為括號的配對</li><li>存放括號的空物件</li><li>將字串進行迭代判斷</li></ol><pre><code>  i 會loop 此字串  &quot;([]){}&quot;  第一圈：遇到 &quot;(&quot;  stack = [ &quot;)&quot;]  第二圈：遇到 &quot;[&quot;  stack = [ &quot;)&quot;,&quot;]&quot;]  第三圈：遇到 &quot;]&quot; , 此時，stack = [ &quot;)&quot;,&quot;]&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=2 ,ch = &quot;]&quot; 互相配對，若配對成功則從陣列中刪除  第四圈：遇到 &quot;)&quot; , 此時，stack = [ &quot;)&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=3 ,ch = &quot;)&quot; 互相配對，若配對成功則從陣列中刪除  第五圈：遇到 &quot;{&quot; , 此時，stack = []  stack = [ &quot;}&quot;]  第六圈：遇到 &quot;}&quot; , 此時，stack = [ &quot;}&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=5 ,ch = &quot;}&quot; 互相配對，若配對成功則從陣列中刪除    最後跳出陣列確認 stack.length === 0 =&gt; 為 0 表示皆配對成功</code></pre><pre><code class="JavaScript">  var isValid = function (s) {    const hashMap = { &quot;(&quot;: &quot;)&quot;, &quot;{&quot;: &quot;}&quot;, &quot;[&quot;: &quot;]&quot; };    const stack = [];    for (let ch of s) {      if (hashMap[ch]) {        // ch is an opening bracket        stack.push(hashMap[ch]);      } else if (stack.length &gt; 0 &amp;&amp; stack[stack.length - 1] === ch) {        //當空陣列裡面有值且陣列的最後一個值和 key 是一樣的就從陣列中刪除        // ch is a closing bracket and top of stack matches        stack.pop();      } else {        // ch is a closing bracket and top of the stack doesn&#39;t match        return false;      }    }    return stack.length === 0;  };</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;  對於刷題總時敬而遠之，記得剛開始學習 JavaScript 時，有挑幾題來練習，看到題目後完全不知道該如何著手，甚至有些題目還要反覆看幾次才比較理解。 畢竟也踏入前端工程師近一年的時間，使用 JavaScript 也有兩年了，該是好好鑽研練習 Leetcode。&lt;/p&gt;</summary>
+      
+    
+    
+    
+    
+    <category term="Leetcode" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Leetcode/"/>
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
@@ -460,29 +482,6 @@
     
     
     <category term="Algorithm" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Algorithm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vue.js 3 -  資料傳遞 emit</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2021/09/21/vue-emit/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2021/09/21/vue-emit/</id>
-    <published>2021-09-21T04:42:48.000Z</published>
-    <updated>2022-09-17T00:10:00.719Z</updated>
-    
-    <content type="html"><![CDATA[<p>圖示：<br><img src="https://i.imgur.com/PxIIobu.png" alt=""></p><h2 id="emit-實作練習"><a href="#emit-實作練習" class="headerlink" title="emit 實作練習"></a>emit 實作練習</h2><p><img src="https://i.imgur.com/7guYdVb.png" alt=""></p><ul><li>透過點擊add按鈕，觸發外層元件數值的改變<ul><li>先定義外層接收資料方式</li><li>定義內層的 $emit 觸發方法</li><li>使用 v-on 的方式觸發外層方法（口訣：前內、後外）</li></ul></li></ul><h3 id="外層元件"><a href="#外層元件" class="headerlink" title="外層元件"></a>外層元件</h3><ul><li><p>定義接收方法：當內層傳給你的時候，要做什麼事</p><ul><li><p><code>addNumber()</code>使num 增加1</p><pre><code class="javascript">const app = Vue.createApp({      data() {        return {          num: 0,          text: &#39;&#39;        };      },      methods: {        addNumber() {          console.log(&#39;addnumber&#39;);          this.num++;        },      }    });</code></pre></li></ul></li></ul><h3 id="內層元件"><a href="#內層元件" class="headerlink" title="內層元件"></a>內層元件</h3><ul><li>在方法內建立函式，來觸發資料傳遞</li><li>並將<code>click</code>綁到內部元件的按鈕上。使點擊時候，會觸發$emit<ul><li>emit 名稱<code>emit-num</code><pre><code class="javascript">app.component(&#39;button-counter&#39;, {      methods: {        click() {          console.log(&#39;inner,click&#39;);          this.$emit(&#39;emit-num&#39;);        }      },      template: `&lt;button type=&quot;button&quot; @click=&quot;click&quot;&gt;add&lt;/button&gt;`    });</code></pre></li></ul></li></ul><p><img src="https://i.imgur.com/W1s9mhp.png" alt=""></p><h2 id="建立內外層元件的溝通橋樑"><a href="#建立內外層元件的溝通橋樑" class="headerlink" title="建立內外層元件的溝通橋樑"></a>建立內外層元件的溝通橋樑</h2><ul><li>使用 v-on 的方式觸發外層方法（口訣：前內、後外）<ul><li>在 div內放入子元件<code>button-counter</code></li><li><code>:emit-num=&quot;addNumber&quot;</code></li></ul></li></ul><pre><code class="javascript">&lt;div id=&quot;app&quot;&gt;          {{ num }}    &lt;button-counter v-on:emit-num=&quot;addNumber&quot;&gt;&lt;/button-counter&gt;     &lt;/div&gt;</code></pre><h2 id="練習二，資料接收"><a href="#練習二，資料接收" class="headerlink" title="練習二，資料接收"></a>練習二，資料接收</h2><h3 id="外層元件-1"><a href="#外層元件-1" class="headerlink" title="外層元件"></a>外層元件</h3><ul><li><p>接收方法為 <code>getData</code> 接收 text</p><pre><code class="javascript">const app = Vue.createApp({          data() {            return {              text: &#39;&#39;            };          },          methods: {            getData(value) {              console.log(&#39;getData&#39;, text);              this.text = value;            }          }        });</code></pre></li></ul><h3 id="內層元件-1"><a href="#內層元件-1" class="headerlink" title="內層元件"></a>內層元件</h3><ul><li>建立觸發傳遞的方式<ul><li>將內層元件<code>text: &#39;內部資料&#39;</code> 傳遞到外層<pre><code class="javascript">app.component(&#39;button-text&#39;, {data() {  return {  text: &#39;內部資料&#39;,   }},methods: {emitText() {this.emit(&#39;emit-text&#39;, this.text)   }},template: `&lt;button type=&quot;button&quot; @click=&quot;emitText&quot;&gt;emit data&lt;/button&gt;`});</code></pre><h3 id="建立內外橋樑"><a href="#建立內外橋樑" class="headerlink" title="建立內外橋樑"></a>建立內外橋樑</h3><pre><code class="javascript">&lt;h3&gt;傳遞資料狀態&lt;/h3&gt;內部傳來的文字：{{ text }}&lt;br&gt;&lt;button-text @emit-text=&quot;getData&quot;&gt;&lt;/button-text&gt;</code></pre><img src="https://i.imgur.com/avhMirS.png" alt=""></li></ul></li></ul><h2 id="emit-命名"><a href="#emit-命名" class="headerlink" title="emit 命名"></a>emit 命名</h2><p>與 props 命名一樣需要注意：</p><ul><li>在內層若以駝峰命名 <code>emitText</code><ul><li>也可以一開始內層就是用<code>-</code> 來命名即可，如<code>emit-text</code><pre><code class="javascript">emitText() { this.emit(&#39;emitText&#39;, this.text)}</code></pre></li></ul></li><li>到了要綁定的 template 上，<code>emit-text</code><pre><code class="javascript">&lt;button-text @emit-text=&quot;getData&quot;&gt;&lt;/button-text&gt;</code></pre></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;圖示：&lt;br&gt;&lt;img src=&quot;https://i.imgur.com/PxIIobu.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;emit-實作練習&quot;&gt;&lt;a href=&quot;#emit-實作練習&quot; class=&quot;headerlink&quot; title=&quot;emit 實作練習</summary>
-      
-    
-    
-    
-    
-    <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Vue/"/>
     
   </entry>
   

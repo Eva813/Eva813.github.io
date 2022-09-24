@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>刷題練習 - Valid Parentheses</title>
+      <link href="/2022/09/24/code-practice/"/>
+      <url>/2022/09/24/code-practice/</url>
+      
+        <content type="html"><![CDATA[<p>  對於刷題總時敬而遠之，記得剛開始學習 JavaScript 時，有挑幾題來練習，看到題目後完全不知道該如何著手，甚至有些題目還要反覆看幾次才比較理解。 畢竟也踏入前端工程師近一年的時間，使用 JavaScript 也有兩年了，該是好好鑽研練習 Leetcode。</p><p>題目：<br>  Given a string s containing just the characters ‘(‘, ‘)’, ‘{‘, ‘}’, ‘[‘ and ‘]’, determine if the input string is valid.</p><p>  An input string is valid if:</p><p>  Open brackets must be closed by the same type of brackets.<br>  Open brackets must be closed in the correct order.<br>  Every close bracket has a corresponding open bracket of the same type.</p><p>  以字串帶入，並要確認傳入的字串中的大括號, 中括號等是否有兩倆配對</p><p>Example 1: </p><pre><code>Input: s = &quot;()&quot;Output: true</code></pre><pre><code>Input: s = &quot;()[]{}&quot;Output: true</code></pre><pre><code>Input: s = &quot;(]&quot;Output: false</code></pre><ol><li>製作一個物件，為括號的配對</li><li>存放括號的空物件</li><li>將字串進行迭代判斷</li></ol><pre><code>  i 會loop 此字串  &quot;([]){}&quot;  第一圈：遇到 &quot;(&quot;  stack = [ &quot;)&quot;]  第二圈：遇到 &quot;[&quot;  stack = [ &quot;)&quot;,&quot;]&quot;]  第三圈：遇到 &quot;]&quot; , 此時，stack = [ &quot;)&quot;,&quot;]&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=2 ,ch = &quot;]&quot; 互相配對，若配對成功則從陣列中刪除  第四圈：遇到 &quot;)&quot; , 此時，stack = [ &quot;)&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=3 ,ch = &quot;)&quot; 互相配對，若配對成功則從陣列中刪除  第五圈：遇到 &quot;{&quot; , 此時，stack = []  stack = [ &quot;}&quot;]  第六圈：遇到 &quot;}&quot; , 此時，stack = [ &quot;}&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=5 ,ch = &quot;}&quot; 互相配對，若配對成功則從陣列中刪除    最後跳出陣列確認 stack.length === 0 =&gt; 為 0 表示皆配對成功</code></pre><pre><code class="JavaScript">  var isValid = function (s) {    const hashMap = { &quot;(&quot;: &quot;)&quot;, &quot;{&quot;: &quot;}&quot;, &quot;[&quot;: &quot;]&quot; };    const stack = [];    for (let ch of s) {      if (hashMap[ch]) {        // ch is an opening bracket        stack.push(hashMap[ch]);      } else if (stack.length &gt; 0 &amp;&amp; stack[stack.length - 1] === ch) {        //當空陣列裡面有值且陣列的最後一個值和 key 是一樣的就從陣列中刪除        // ch is a closing bracket and top of stack matches        stack.pop();      } else {        // ch is a closing bracket and top of the stack doesn&#39;t match        return false;      }    }    return stack.length === 0;  };</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Leetcode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2022/09/17/hello-world/"/>
       <url>/2022/09/17/hello-world/</url>
@@ -837,9 +856,9 @@
             
             <tag> JS </tag>
             
-            <tag> jQuery  </tag>
-            
             <tag> append </tag>
+            
+            <tag> jQuery  </tag>
             
         </tags>
       
@@ -910,11 +929,11 @@
             
             <tag> JS </tag>
             
-            <tag> append </tag>
-            
             <tag> local storage </tag>
             
             <tag> forEach </tag>
+            
+            <tag> append </tag>
             
         </tags>
       
@@ -1273,9 +1292,9 @@
             
             <tag> 切版 </tag>
             
-            <tag> icon </tag>
-            
             <tag> animation </tag>
+            
+            <tag> icon </tag>
             
         </tags>
       
