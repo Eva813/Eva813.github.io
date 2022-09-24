@@ -6,7 +6,7 @@
   <link href="https://github.com/Eva813/Eva813.github.io.git/atom.xml" rel="self"/>
   
   <link href="https://github.com/Eva813/Eva813.github.io.git/"/>
-  <updated>2022-09-24T01:05:43.031Z</updated>
+  <updated>2022-09-24T12:13:07.055Z</updated>
   <id>https://github.com/Eva813/Eva813.github.io.git/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>刷題練習 - Merge Two Sorted Lists</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/09/24/code-Merge-Two-Sorted-Lists/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2022/09/24/code-Merge-Two-Sorted-Lists/</id>
+    <published>2022-09-24T06:57:04.671Z</published>
+    <updated>2022-09-24T12:13:07.055Z</updated>
+    
+    <content type="html"><![CDATA[<p>   首先要先了解 linked lists 和陣列是不一樣的！！<br>   linked lists是一種常見的資料結構，其使用node(節點)來記錄、表示、儲存資料(data)，並利用每個node中的pointer指向下一個node </p><h2 id="題目："><a href="#題目：" class="headerlink" title="題目："></a>題目：</h2><p>You are given the heads of two sorted linked lists list1 and list2.</p><p>Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.</p><p>Return the head of the merged linked list.</p><p><img src="https://i.imgur.com/I645KZq.png" alt=""></p><p>注意類似題目要設立一個 dummy 節點</p><ul><li>如何訪問list 中某個節點的 值，要從第一個節點開始，透過 next 依序訪問下一個節點重複操作直到抵達目標節點並讀取 value</li><li>訪問第一個節點為 list.val  ; 訪問第二個節點 list.next.val ; 訪問第三個節點list.next.next.val </li><li>要將兩個 list 合併的方法，每次比較兩個 而最小的數挑出，放入新的 list</li></ul><pre><code class="JavaScript">/** * Definition for singly-linked list. * function ListNode(val, next) { *     this.val = (val===undefined ? 0 : val) *     this.next = (next===undefined ? null : next) * } *//** * @param {ListNode} list1 * @param {ListNode} list2 * @return {ListNode} */  var mergeTwoLists = function (l1, l2) {    //current    const dummy = new ListNode(-Infinity)    //point dummy node    let prev = dummy;    while (l1 &amp;&amp; l2) {      if (l1.val &lt;= l2.val) {        prev.next = l1;        //移動 prev list        prev = l1        //鏈錶指針 l1 就往後移動        l1 = l1.next      } else {        prev.next = l2;        prev = l2        l2 = l2.next      }    }    //如果 l1 是 null ,就是 l2    if (!l1) prev.next = l2;    if (!l2) prev.next = l1;    return dummy.next  };  mergeTwoLists([1, 100], [3, 4, 6, 8])</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;   首先要先了解 linked lists 和陣列是不一樣的！！&lt;br&gt;   linked lists是一種常見的資料結構，其使用node(節點)來記錄、表示、儲存資料(data)，並利用每個node中的pointer指向下一個node &lt;/p&gt;
+&lt;h2 id=&quot;題目：&quot;</summary>
+      
+    
+    
+    
+    <category term="Leetcode" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/Leetcode/"/>
+    
+    
+    <category term="Leetcode" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
     <title>刷題練習 - Valid Parentheses</title>
     <link href="https://github.com/Eva813/Eva813.github.io.git/2022/09/24/code-practice/"/>
     <id>https://github.com/Eva813/Eva813.github.io.git/2022/09/24/code-practice/</id>
     <published>2022-09-24T00:32:55.000Z</published>
-    <updated>2022-09-24T01:05:43.031Z</updated>
+    <updated>2022-09-24T06:41:03.932Z</updated>
     
     <content type="html"><![CDATA[<p>  對於刷題總時敬而遠之，記得剛開始學習 JavaScript 時，有挑幾題來練習，看到題目後完全不知道該如何著手，甚至有些題目還要反覆看幾次才比較理解。 畢竟也踏入前端工程師近一年的時間，使用 JavaScript 也有兩年了，該是好好鑽研練習 Leetcode。</p><p>題目：<br>  Given a string s containing just the characters ‘(‘, ‘)’, ‘{‘, ‘}’, ‘[‘ and ‘]’, determine if the input string is valid.</p><p>  An input string is valid if:</p><p>  Open brackets must be closed by the same type of brackets.<br>  Open brackets must be closed in the correct order.<br>  Every close bracket has a corresponding open bracket of the same type.</p><p>  以字串帶入，並要確認傳入的字串中的大括號, 中括號等是否有兩倆配對</p><p>Example 1: </p><pre><code>Input: s = &quot;()&quot;Output: true</code></pre><pre><code>Input: s = &quot;()[]{}&quot;Output: true</code></pre><pre><code>Input: s = &quot;(]&quot;Output: false</code></pre><ol><li>製作一個物件，為括號的配對</li><li>存放括號的空物件</li><li>將字串進行迭代判斷</li></ol><pre><code>  i 會loop 此字串  &quot;([]){}&quot;  第一圈：遇到 &quot;(&quot;  stack = [ &quot;)&quot;]  第二圈：遇到 &quot;[&quot;  stack = [ &quot;)&quot;,&quot;]&quot;]  第三圈：遇到 &quot;]&quot; , 此時，stack = [ &quot;)&quot;,&quot;]&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=2 ,ch = &quot;]&quot; 互相配對，若配對成功則從陣列中刪除  第四圈：遇到 &quot;)&quot; , 此時，stack = [ &quot;)&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=3 ,ch = &quot;)&quot; 互相配對，若配對成功則從陣列中刪除  第五圈：遇到 &quot;{&quot; , 此時，stack = []  stack = [ &quot;}&quot;]  第六圈：遇到 &quot;}&quot; , 此時，stack = [ &quot;}&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=5 ,ch = &quot;}&quot; 互相配對，若配對成功則從陣列中刪除    最後跳出陣列確認 stack.length === 0 =&gt; 為 0 表示皆配對成功</code></pre><pre><code class="JavaScript">  var isValid = function (s) {    const hashMap = { &quot;(&quot;: &quot;)&quot;, &quot;{&quot;: &quot;}&quot;, &quot;[&quot;: &quot;]&quot; };    const stack = [];    for (let ch of s) {      if (hashMap[ch]) {        // ch is an opening bracket        stack.push(hashMap[ch]);      } else if (stack.length &gt; 0 &amp;&amp; stack[stack.length - 1] === ch) {        //當空陣列裡面有值且陣列的最後一個值和 key 是一樣的就從陣列中刪除        // ch is a closing bracket and top of stack matches        stack.pop();      } else {        // ch is a closing bracket and top of the stack doesn&#39;t match        return false;      }    }    return stack.length === 0;  };</code></pre>]]></content>
     
@@ -32,6 +57,8 @@
       
     
     
+    
+    <category term="Leetcode" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/Leetcode/"/>
     
     
     <category term="Leetcode" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Leetcode/"/>
@@ -453,29 +480,6 @@
       
     <summary type="html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/glzKE9I.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;延續 Wilson Ren&lt;a href=&quot;https://www.udemy.com/course/algorithm-data-structure/?co</summary>
-      
-    
-    
-    
-    
-    <category term="Algorithm" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Algorithm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>演算法入門</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2021/10/02/Algorithm/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2021/10/02/Algorithm/</id>
-    <published>2021-10-02T05:17:40.000Z</published>
-    <updated>2022-09-17T00:10:00.713Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="https://i.imgur.com/LHDcmBI.png" alt=""></p><p>常常看到 YouTube 演算法造成頻道經營的難度、或是facebook演算法而使得行銷曝光度的改變，但始終對演算法這個名詞沒有認識。<br>藉由 Wilson Ren<a href="https://www.udemy.com/course/algorithm-data-structure/?course_id=3819536&fbclid=IwAR3ugnEJMsniBCvoMHthf31EqEQeG9hCL3BQb2gWS7eAFZ4lcixmWOiwNAo" target="_blank" rel="noopener">課程</a></p><h2 id="什麼是演算法？"><a href="#什麼是演算法？" class="headerlink" title="什麼是演算法？"></a>什麼是演算法？</h2><p>用以解決問題而可以逐步執行的步驟或程序。</p><h4 id="來看看現實生活中的演算法"><a href="#來看看現實生活中的演算法" class="headerlink" title="來看看現實生活中的演算法"></a>來看看現實生活中的演算法</h4><ul><li>Google Map 如何找到最短路徑</li><li>YouTube 推薦給你，認為你有興趣的影片</li><li>FB\IG 的加好友、追蹤推薦</li></ul><h2 id="演算法比較"><a href="#演算法比較" class="headerlink" title="演算法比較"></a>演算法比較</h2><p>有兩個演算法都可以完成目標任務，那我們會如何取決誰比較好？</p><ul><li>哪個演算法執行速度快？</li><li>所佔用電腦的記憶體資源少？<h3 id="時間"><a href="#時間" class="headerlink" title="時間?"></a>時間?</h3>首先，在計時演算法所耗時的部分：</li><li>幫演算法做計時，是不實際的事情<ul><li>同一台電腦在執行同一任務，所執行的時間會不同</li><li>不同電腦、CPU處理速度不一樣<h4 id="應該考慮，複雜度-Complexity"><a href="#應該考慮，複雜度-Complexity" class="headerlink" title="應該考慮，複雜度 Complexity"></a>應該考慮，複雜度 Complexity</h4></li></ul></li><li>複雜度分為兩種：時間複雜度、空間複雜度 （在本文多是討論時間複雜度）</li><li>要如何計算時間複雜度?<ul><li>加、減、乘、除、comparison ，這些每一個都可以被算作一個 operation</li><li>Complexity: 在所寫的演算法中，總共用到多少 operations(運算子)</li><li>使用 function 來顯示 Complexity 和 input size 的關係。</li></ul></li></ul><h2 id="Big-O-Notation"><a href="#Big-O-Notation" class="headerlink" title="Big O Notation"></a>Big O Notation</h2><ol><li>是一個工具，用來描述當你的值不斷擴大時，f(n)值會去哪裡</li><li>為最壞情況的打算。他會展示一個演算法複雜度的趨勢</li></ol><h3 id="計算-Big-O-的值"><a href="#計算-Big-O-的值" class="headerlink" title="計算 Big O 的值"></a>計算 Big O 的值</h3><ol><li>Constant doesn’t matter : 常數它並不重要<ul><li>f(n)=3n ：3為常數、n為變數</li></ul></li><li>Small Terms don’t matter<ul><li>fn= 3n^2 + 6n + 4 =&gt; 只需保留到fn= 3n^2</li></ul></li><li>Logarithm Base doesn’t matter<br><img src="https://i.imgur.com/dNM08rx.png" alt=""><h2 id="範例："><a href="#範例：" class="headerlink" title="範例："></a>範例：</h2></li><li>f(n)=3n<br>答案：O(n)</li><li>f(n)=13n^3 + 6n +7<br>答案：O(n^3)</li><li>f(n)=4log₂n<br>答案：O(logn)</li><li>f(n)=5<br>答案：O(1)</li></ol><h2 id="演算法常見-Big-O-的值"><a href="#演算法常見-Big-O-的值" class="headerlink" title="演算法常見 Big O 的值"></a>演算法常見 Big O 的值</h2><p>由好至差</p><ol><li>O(1)</li><li>O(logn)</li><li>O(n)</li><li>O(nlogn)</li><li>O(n^2)</li><li>O(n^3)</li></ol><ul><li>很多sorting值會是 O(nlogn)</li><li>盡量讓演算法可以達到3、4的值</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/LHDcmBI.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;常常看到 YouTube 演算法造成頻道經營的難度、或是facebook演算法而使得行銷曝光度的改變，但始終對演算法這個名詞沒有認識。&lt;br&gt;藉由 Wilso</summary>
       
     
     

@@ -4,12 +4,43 @@
   
     
     <entry>
+      <title>刷題練習 - Merge Two Sorted Lists</title>
+      <link href="/2022/09/24/code-Merge-Two-Sorted-Lists/"/>
+      <url>/2022/09/24/code-Merge-Two-Sorted-Lists/</url>
+      
+        <content type="html"><![CDATA[<p>   首先要先了解 linked lists 和陣列是不一樣的！！<br>   linked lists是一種常見的資料結構，其使用node(節點)來記錄、表示、儲存資料(data)，並利用每個node中的pointer指向下一個node </p><h2 id="題目："><a href="#題目：" class="headerlink" title="題目："></a>題目：</h2><p>You are given the heads of two sorted linked lists list1 and list2.</p><p>Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.</p><p>Return the head of the merged linked list.</p><p><img src="https://i.imgur.com/I645KZq.png" alt=""></p><p>注意類似題目要設立一個 dummy 節點</p><ul><li>如何訪問list 中某個節點的 值，要從第一個節點開始，透過 next 依序訪問下一個節點重複操作直到抵達目標節點並讀取 value</li><li>訪問第一個節點為 list.val  ; 訪問第二個節點 list.next.val ; 訪問第三個節點list.next.next.val </li><li>要將兩個 list 合併的方法，每次比較兩個 而最小的數挑出，放入新的 list</li></ul><pre><code class="JavaScript">/** * Definition for singly-linked list. * function ListNode(val, next) { *     this.val = (val===undefined ? 0 : val) *     this.next = (next===undefined ? null : next) * } *//** * @param {ListNode} list1 * @param {ListNode} list2 * @return {ListNode} */  var mergeTwoLists = function (l1, l2) {    //current    const dummy = new ListNode(-Infinity)    //point dummy node    let prev = dummy;    while (l1 &amp;&amp; l2) {      if (l1.val &lt;= l2.val) {        prev.next = l1;        //移動 prev list        prev = l1        //鏈錶指針 l1 就往後移動        l1 = l1.next      } else {        prev.next = l2;        prev = l2        l2 = l2.next      }    }    //如果 l1 是 null ,就是 l2    if (!l1) prev.next = l2;    if (!l2) prev.next = l1;    return dummy.next  };  mergeTwoLists([1, 100], [3, 4, 6, 8])</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> Leetcode </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Leetcode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>刷題練習 - Valid Parentheses</title>
       <link href="/2022/09/24/code-practice/"/>
       <url>/2022/09/24/code-practice/</url>
       
         <content type="html"><![CDATA[<p>  對於刷題總時敬而遠之，記得剛開始學習 JavaScript 時，有挑幾題來練習，看到題目後完全不知道該如何著手，甚至有些題目還要反覆看幾次才比較理解。 畢竟也踏入前端工程師近一年的時間，使用 JavaScript 也有兩年了，該是好好鑽研練習 Leetcode。</p><p>題目：<br>  Given a string s containing just the characters ‘(‘, ‘)’, ‘{‘, ‘}’, ‘[‘ and ‘]’, determine if the input string is valid.</p><p>  An input string is valid if:</p><p>  Open brackets must be closed by the same type of brackets.<br>  Open brackets must be closed in the correct order.<br>  Every close bracket has a corresponding open bracket of the same type.</p><p>  以字串帶入，並要確認傳入的字串中的大括號, 中括號等是否有兩倆配對</p><p>Example 1: </p><pre><code>Input: s = &quot;()&quot;Output: true</code></pre><pre><code>Input: s = &quot;()[]{}&quot;Output: true</code></pre><pre><code>Input: s = &quot;(]&quot;Output: false</code></pre><ol><li>製作一個物件，為括號的配對</li><li>存放括號的空物件</li><li>將字串進行迭代判斷</li></ol><pre><code>  i 會loop 此字串  &quot;([]){}&quot;  第一圈：遇到 &quot;(&quot;  stack = [ &quot;)&quot;]  第二圈：遇到 &quot;[&quot;  stack = [ &quot;)&quot;,&quot;]&quot;]  第三圈：遇到 &quot;]&quot; , 此時，stack = [ &quot;)&quot;,&quot;]&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=2 ,ch = &quot;]&quot; 互相配對，若配對成功則從陣列中刪除  第四圈：遇到 &quot;)&quot; , 此時，stack = [ &quot;)&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=3 ,ch = &quot;)&quot; 互相配對，若配對成功則從陣列中刪除  第五圈：遇到 &quot;{&quot; , 此時，stack = []  stack = [ &quot;}&quot;]  第六圈：遇到 &quot;}&quot; , 此時，stack = [ &quot;}&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=5 ,ch = &quot;}&quot; 互相配對，若配對成功則從陣列中刪除    最後跳出陣列確認 stack.length === 0 =&gt; 為 0 表示皆配對成功</code></pre><pre><code class="JavaScript">  var isValid = function (s) {    const hashMap = { &quot;(&quot;: &quot;)&quot;, &quot;{&quot;: &quot;}&quot;, &quot;[&quot;: &quot;]&quot; };    const stack = [];    for (let ch of s) {      if (hashMap[ch]) {        // ch is an opening bracket        stack.push(hashMap[ch]);      } else if (stack.length &gt; 0 &amp;&amp; stack[stack.length - 1] === ch) {        //當空陣列裡面有值且陣列的最後一個值和 key 是一樣的就從陣列中刪除        // ch is a closing bracket and top of stack matches        stack.pop();      } else {        // ch is a closing bracket and top of the stack doesn&#39;t match        return false;      }    }    return stack.length === 0;  };</code></pre>]]></content>
       
+      
+      <categories>
+          
+          <category> Leetcode </category>
+          
+      </categories>
       
       
         <tags>
@@ -561,6 +592,12 @@
       
         <content type="html"><![CDATA[<p>今天要介紹的是 Vue.js3 的起手式，主要參考<a href="https://vuejs.org/v2/guide/#Getting-Started" target="_blank" rel="noopener">官方文件</a>來學習</p><h3 id="載入方式"><a href="#載入方式" class="headerlink" title="載入方式"></a>載入方式</h3><pre><code class="javascript">&lt;script src=&quot;https://unpkg.com/vue@next&quot;&gt;&lt;/script&gt;</code></pre><h3 id="引入之後，在index-html檔案"><a href="#引入之後，在index-html檔案" class="headerlink" title="引入之後，在index.html檔案"></a>引入之後，在<code>index.html</code>檔案</h3><pre><code class="html"> &lt;div id=&quot;app&quot;&gt;    &lt;h1&gt;{{message}}&lt;/h1&gt;  &lt;/div&gt;</code></pre><pre><code class="javascript">//JSVue.createApp({  data(){     return {      message: &#39;I am Eva!&#39;    }  }}).mount(&#39;#app&#39;)</code></pre><ul><li>畫面就會出現相應的文字<br><img src="https://i.imgur.com/l7MiTCV.png" alt=""></li></ul>]]></content>
       
+      
+      <categories>
+          
+          <category> Vue </category>
+          
+      </categories>
       
       
         <tags>
