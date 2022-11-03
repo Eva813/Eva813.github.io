@@ -6,7 +6,7 @@
   <link href="https://github.com/Eva813/Eva813.github.io.git/atom.xml" rel="self"/>
   
   <link href="https://github.com/Eva813/Eva813.github.io.git/"/>
-  <updated>2022-10-18T06:13:23.971Z</updated>
+  <updated>2022-11-02T13:05:26.707Z</updated>
   <id>https://github.com/Eva813/Eva813.github.io.git/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>React 測試 - 以登入元件練習</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/11/02/rect-test-2/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2022/11/02/rect-test-2/</id>
+    <published>2022-11-02T12:49:15.000Z</published>
+    <updated>2022-11-02T13:05:26.707Z</updated>
+    
+    <content type="html"><![CDATA[<p>想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。</p><h3 id="建立-login-檔案"><a href="#建立-login-檔案" class="headerlink" title="建立 login 檔案"></a>建立 login 檔案</h3><ul><li><p>login.js : 製作登入元件</p></li><li><p>login.test.js : 撰寫測試</p><p><img src="https://i.imgur.com/4Pw5JTD.png" alt=""></p></li></ul><h3 id="確認-輸入框-有渲染至文件"><a href="#確認-輸入框-有渲染至文件" class="headerlink" title="確認 輸入框 有渲染至文件"></a>確認 輸入框 有渲染至文件</h3><ul><li>使用 <code>getByPlaceholderText</code> 取得輸入框元素</li></ul><pre><code class="html"> &lt;form&gt;        &lt;input          type=&quot;text&quot;          placeholder=&quot;username&quot;          value=&#39;&#39;        /&gt;        &lt;input          type=&quot;password&quot;          placeholder=&quot;password&quot;          value=&#39;&#39;        /&gt;  &lt;/form&gt;</code></pre><pre><code class="javascript">  test(&quot;username input should be rendered&quot;, () =&gt; {    render(&lt;Login /&gt;);    const usernameInputEl = screen.getByPlaceholderText(/username/i);    expect(usernameInputEl).toBeInTheDocument();  });  test(&quot;password input should be rendered&quot;, () =&gt; {    render(&lt;Login /&gt;);    const passwordInputEl = screen.getByPlaceholderText(/password/i);    expect(passwordInputEl).toBeInTheDocument();  });</code></pre><h3 id="確認畫面上有按鈕"><a href="#確認畫面上有按鈕" class="headerlink" title="確認畫面上有按鈕"></a>確認畫面上有按鈕</h3><ul><li>getByRole 取得按鈕</li></ul><pre><code class="javascript">  test(&quot;button should be rendered&quot;, () =&gt; {    render(&lt;Login /&gt;);    const buttonEl = screen.getByRole(&quot;button&quot;);    expect(buttonEl).toBeInTheDocument();  });</code></pre><h3 id="輸入框一開始為空"><a href="#輸入框一開始為空" class="headerlink" title="輸入框一開始為空"></a>輸入框一開始為空</h3><pre><code class="javascript">test(&quot;username input should be empty&quot;, () =&gt; {  render(&lt;Login /&gt;);  const usernameInputEl = screen.getByPlaceholderText(/username/i);  expect(usernameInputEl.value).toBe(&quot;&quot;);});test(&quot;password input should be empty&quot;, () =&gt; {  render(&lt;Login /&gt;);  const passwordInputEl = screen.getByPlaceholderText(/password/i);  expect(passwordInputEl.value).toBe(&quot;&quot;);});</code></pre><h3 id="輸入框為空時，按鈕應為-disabled"><a href="#輸入框為空時，按鈕應為-disabled" class="headerlink" title="輸入框為空時，按鈕應為 disabled"></a>輸入框為空時，按鈕應為 disabled</h3><p>可以觀察到測試是根據使用情境一步步的拆解並加入測試</p><p>參考資料<br><a href="https://github.com/safak/youtube2022/blob/react-testing/src/components/login/Login.jsx">github-login</a><br><a href="https://www.youtube.com/watch?v=Flo268xRpV0" target="_blank" rel="noopener">React Testing Tutorial with React Testing Library and Jest</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。&lt;/p&gt;
+&lt;h3 id=&quot;建立-login-檔案&quot;&gt;&lt;a href=&quot;#建立-login-檔案&quot; class=&quot;headerlink&quot; title=&quot;建立 login 檔案&quot;&gt;&lt;/a&gt;建立 login </summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>React 測試</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/11/02/rect-test-1/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2022/11/02/rect-test-1/</id>
+    <published>2022-11-02T07:43:21.000Z</published>
+    <updated>2022-11-02T08:42:12.042Z</updated>
+    
+    <content type="html"><![CDATA[<p>使用 JavaSript 要進行測試最常使用的就是使用 Jest ，另外依據使用的前端框架來搭配使用進行測試。<br>以下內文就先以一些範例來直接學習</p><h2 id="testing-library"><a href="#testing-library" class="headerlink" title="testing-library"></a>testing-library</h2><ul><li><p>當使創建一個 react 檔案，會預設加入的測試範例檔</p><pre><code class="javascript">test(&#39;renders learn react link&#39;, () =&gt; {const linkElement = screen.getByText(/learn react/i);expect(linkElement).toBeInTheDocument();});</code></pre></li><li><p>screen  : it represent the whole document which we have rendered</p></li><li><p>getByText: 取得 text</p><ul><li><code>getByText(/learn react/i)</code></li><li><code>expect(linkElement).toBeInTheDocument();</code></li><li>期待變數得值，<code>toBeInTheDocument()</code></li><li>檢測此項目是否存在於文件之中</li><li><ul><li><a href="https://github.com/testing-library/jest-dom#tobeinthedocument">toBeInTheDocument</a>：判斷一個 Element 是否存在於 DOM 中</li></ul></li></ul></li></ul><h3 id="撰寫測試的參考文件"><a href="#撰寫測試的參考文件" class="headerlink" title="撰寫測試的參考文件"></a>撰寫測試的參考文件</h3><p><a href="https://testing-library.com/docs/queries/byrole" target="_blank" rel="noopener">ByRole</a><br><a href="https://www.w3.org/TR/html-aria/#docconformance" target="_blank" rel="noopener"> role attribute</a></p><h3 id="加入列表（list）測試"><a href="#加入列表（list）測試" class="headerlink" title="加入列表（list）測試"></a>加入列表（list）測試</h3><pre><code class="jsx">import logo from &#39;./logo.svg&#39;;import &#39;./App.css&#39;;import Login from &#39;./components/Login/Login&#39;;function App() {    return (    &lt;div className=&quot;App&quot;&gt;        &lt;header className=&quot;App-header&quot;&gt;            &lt;img src={logo} className=&quot;App-logo&quot; alt=&quot;logo&quot; /&gt;            &lt;p&gt;            Edit &lt;code&gt;src/App.js&lt;/code&gt; and save to reload.            &lt;/p&gt;            &lt;a            className=&quot;App-link&quot;            href=&quot;https://reactjs.org&quot;            target=&quot;_blank&quot;            rel=&quot;noopener noreferrer&quot;     .     &gt;                                    Learn React            &lt;/a&gt;            &lt;ul&gt;                &lt;li&gt;Apple&lt;/li&gt;                &lt;li&gt;Banana&lt;/li&gt;                &lt;li&gt;Kiwi&lt;/li&gt;            &lt;/ul&gt;        &lt;/header&gt;    &lt;/div&gt;);}export default App;</code></pre><pre><code class="javascript">test(&#39;renders 3 list items&#39;, () =&gt; {  render(&lt;App /&gt;);  const listItems = screen.getAllByRole(&quot;listitem&quot;);  expect(listItems.length).toEqual(3);});</code></pre><ul><li>jest <a href="https://jestjs.io/docs/expect" target="_blank" rel="noopener">expect</a></li><li>需要時到官網看相關使用的API<br><code>expect(listItems.length).toBe(3);</code><br><code>expect(listItems.length).toEqual(3);</code></li></ul><h3 id="測試-title"><a href="#測試-title" class="headerlink" title="測試 title"></a>測試 title</h3><ul><li>getByTestId：運用此方法可以直接取得在元素上設置的 data-testid</li><li>getByTitle : 取得在標籤設置 title 的元素</li></ul><pre><code class="html">  &lt;!-- const a = 2  const b = 1 --&gt;     &lt;h1 data-testid=&quot;mytestid&quot;&gt;Hello&lt;/h1&gt;      &lt;span title=&quot;sum&quot;&gt;{a + b}&lt;/span&gt;</code></pre><pre><code class="javascript">test(&#39;renders title&#39;, () =&gt; {    render(&lt;App /&gt;);    const title = screen.getByTestId(&quot;mytestid&quot;);    expect(title).toBeInTheDocument();});test(&#39;sum should be 3&#39;, () =&gt; {  render(&lt;App /&gt;);  const titleSum = screen.getByTitle(&quot;sum&quot;);  expect(titleSum.textContent).toBe(&quot;3&quot;);});</code></pre><h3 id="運行測試"><a href="#運行測試" class="headerlink" title="運行測試"></a>運行測試</h3><p><code>npm run test</code></p><ul><li><p>透過測試所提供的錯誤提示，可以得知預期的結果以及實際運行後得到的值之間的差異</p><p><img src="https://i.imgur.com/IT8leGK.png" alt=""></p></li></ul><p>參考資料：<br><a href="https://ithelp.ithome.com.tw/articles/10281691" target="_blank" rel="noopener">[Day29] React Testing Library 的一些實用的小技巧</a><br><a href="https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/nextjs-testing-tutorial-1-ed4b27563761" target="_blank" rel="noopener">Next.js | 初探單元測試，使用 Jest + React Testing Library</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;使用 JavaSript 要進行測試最常使用的就是使用 Jest ，另外依據使用的前端框架來搭配使用進行測試。&lt;br&gt;以下內文就先以一些範例來直接學習&lt;/p&gt;
+&lt;h2 id=&quot;testing-library&quot;&gt;&lt;a href=&quot;#testing-library&quot; class</summary>
+      
+    
+    
+    
+    
+    <category term="React" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/React/"/>
+    
+  </entry>
   
   <entry>
     <title>React - 從官方文件學習 Context 的使用</title>
@@ -438,53 +482,6 @@
     <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Vue/"/>
     
     <category term="Vuex" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Vuex/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vue.js 3 -  組件的拆分</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2021/10/19/Vue-setComponent/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2021/10/19/Vue-setComponent/</id>
-    <published>2021-10-19T08:36:10.000Z</published>
-    <updated>2022-09-17T00:10:00.715Z</updated>
-    
-    <content type="html"><![CDATA[<p>試想今天有一個網頁，上方的導覽列有不同的分類，帶領你到該項目的分頁中<br>那我們該如何實現，將各個項目的內容一一呈現<br><img src="https://i.imgur.com/7LUqd5I.png" alt=""></p><h2 id="簡單分別製作-component"><a href="#簡單分別製作-component" class="headerlink" title="簡單分別製作 component"></a>簡單分別製作 component</h2><p>首先：component的命名要用大寫<br><img src="https://i.imgur.com/fAOtmM8.png" alt=""></p><ul><li>在 component 中<br><img src="https://i.imgur.com/dgWnvii.png" alt=""></li></ul><h3 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h3><ul><li>在 App.vue<br>讓vue知道有個component可以被使用，透過ES6的解構放入<br><img src="https://i.imgur.com/4yAMVNw.png" alt=""><br>將引入的component放到template<br><img src="https://i.imgur.com/PO4LhRv.png" alt=""><br><img src="https://i.imgur.com/K0UmvdI.png" alt=""></li></ul><h2 id="將其他組件引入"><a href="#將其他組件引入" class="headerlink" title="將其他組件引入"></a>將其他組件引入</h2><p><img src="https://i.imgur.com/EgWUGfG.png" alt=""></p><p><img src="https://i.imgur.com/qIvkq2l.png" alt=""></p><h2 id="補充說明："><a href="#補充說明：" class="headerlink" title="補充說明："></a>補充說明：</h2><p>修改路徑:<br>用~@來指定圖片路徑：@在vuecli是代表特殊意義，就會直接從src這個資料夾底下開始查找;而波浪符號，代表現在在css之中使用這個功能<br><img src="https://i.imgur.com/NefWOd8.png" alt=""></p><ul><li>也就是在專案中，即便路徑複雜，只要在路徑最前面加上<code>@</code>就會直接進去src<br><img src="https://i.imgur.com/sPhH1rs.png" alt=""></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;試想今天有一個網頁，上方的導覽列有不同的分類，帶領你到該項目的分頁中&lt;br&gt;那我們該如何實現，將各個項目的內容一一呈現&lt;br&gt;&lt;img src=&quot;https://i.imgur.com/7LUqd5I.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;簡單分別製作-comp</summary>
-      
-    
-    
-    
-    
-    <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Vue/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JS基本觀念 - 認識 pass by value、pass by reference 、 pass by sharing，Javascript 又是哪一個？</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2021/10/09/js-pass/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2021/10/09/js-pass/</id>
-    <published>2021-10-09T04:18:41.000Z</published>
-    <updated>2022-09-17T00:10:00.717Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="https://i.imgur.com/zT0UU5c.jpg" alt=""></p><p>之所以會撰寫這篇文，是因為面試過程被考倒的觀念，才發現自己過去從沒注意到這部分啊，那就來寫篇文章來認識它們之中的傳遞方式。</p><h2 id="首先，先從型別的認識開始"><a href="#首先，先從型別的認識開始" class="headerlink" title="首先，先從型別的認識開始"></a>首先，先從型別的認識開始</h2><p>在Javascript分兩大類，一種是基本型別(primitive type)，另一種是物件(Object)。</p><ul><li>Primitive type （以純值的形式存在）<br>Boolean<br>Null<br>Undefined<br>Number<br>BigInt<br>String<br>Symbol（於 ECMAScript 6 新定義）</li><li>Object<br>物件型別指的是可能由零或多種不同型別 (包括純值與物件) 所組合成，例如object,array, function, map</li></ul><p>知道型別後，可以簡易的分類：</p><ul><li>primitive type會是 pass by value，</li><li>object 是 pass by reference。</li></ul><h2 id="接下來來觀察，它們之間不同"><a href="#接下來來觀察，它們之間不同" class="headerlink" title="接下來來觀察，它們之間不同"></a>接下來來觀察，它們之間不同</h2><h3 id="pass-by-value"><a href="#pass-by-value" class="headerlink" title="pass by value"></a>pass by value</h3><p>範例1：</p><pre><code class="javascript">let x=10;let y=x;x=20;console.log(x); //20console.log(y); //10</code></pre><ul><li>注意：x和y是兩個獨立變數 （先記著這點）<ul><li>值會存入該變數<br><code>var y = x;</code> 看起來會像是y的內容要複製x，但可以的話要理解為，變數 y 是去建立了一個新的值，然後將變數 x 的內容複製了一份過來。</li></ul></li><li>因為兩的變數，各自獨立，所以當變數 x 的內容後來經過更新變成 20 之後，變數 y 的內容依舊保持原來的 10 而不受影響。</li></ul><p>範例2</p><pre><code class="javascript">var num=3;console.log(&quot;num start:&quot;,num);function passByValue(func_num){  func_num=5;}passByValue(num);console.log(&quot;num end:&quot;, num);</code></pre><h4 id="結果："><a href="#結果：" class="headerlink" title="結果："></a>結果：</h4><pre><code class="javascript">num start:3num end: 3</code></pre><ul><li>先是宣告新變數</li><li>隨後建立<code>passByValue()</code> 函式</li><li>呼叫<code>passByValue(num)</code> 複製變數num的值，3傳入<code>passByValue(func_num)</code>。<ul><li>一開始 值會是3</li><li>遇到<code>func_num=5;</code> =&gt; 將值改為 5</li></ul></li><li>但因為出去了函式範圍(scope)，最終的值 <code>num end:3</code></li></ul><h3 id="pass-by-refrence"><a href="#pass-by-refrence" class="headerlink" title="pass by refrence"></a>pass by refrence</h3><p>範例</p><pre><code class="javascript">let x={value:10};let y=x;x.value=20;console.log(x); //{value:20}console.log(y); //{value:20}console.log( x === y );  //true</code></pre><h3 id="拆解說明一下"><a href="#拆解說明一下" class="headerlink" title="拆解說明一下"></a>拆解說明一下</h3><ul><li>當宣告一個物件</li><li>JavaScript 會在記憶體的某處建立起一個物件 (圖右側)，然後再將這個 <code>x</code>變數指向新生成的物件</li></ul><p><img src="https://i.imgur.com/LPwkZAg.png" alt=""></p><ul><li>接著，當我們宣告了第二個變數 y ，並且透過 = 將y 指向 x 的位置。</li><li>接著當我們更新了 x.value 的內容後， y.value 的內容也被更新了。</li></ul><p><img src="https://i.imgur.com/vFUhP6X.png" alt=""></p><p>範例2</p><pre><code class="javascript">var obj1={item:&quot;unchanged&quot;};console.log(&quot;obj1 start:&quot;,obj1);function passByReference(ref){  ref.item= &quot;changed&quot;;}passByReference(obj1);console.log(&quot;obj end&quot;, obj1);</code></pre><h4 id="結果"><a href="#結果" class="headerlink" title="結果"></a>結果</h4><pre><code class="javascript">obj1 start:{item: &quot;unchanged&quot;}obj1 end:{item:&quot;changed&quot;}</code></pre><ul><li>當執行passByReference(obj1) 。想像他是個地址(0x0016)，進入函式中將地址複製，傳入。<ul><li>此時他的value 是個地址(0x0016)</li></ul></li><li>進入函式，遇到<code>ref.item</code><ul><li>de-reference ，進入原本的記憶體位置，找到item，並改變他的值</li></ul></li></ul><p><img src="https://i.imgur.com/3Ytn7bk.png" alt=""></p><h4 id="在不一般情況下，基本型別是-pass-by-value，而物件型別是-pass-by-reference的方式，但總有例外的時候。"><a href="#在不一般情況下，基本型別是-pass-by-value，而物件型別是-pass-by-reference的方式，但總有例外的時候。" class="headerlink" title="在不一般情況下，基本型別是 pass by value，而物件型別是 pass by reference的方式，但總有例外的時候。"></a>在不一般情況下，基本型別是 pass by value，而物件型別是 pass by reference的方式，但總有例外的時候。</h4><h3 id="pass-by-sharing"><a href="#pass-by-sharing" class="headerlink" title="pass by  sharing"></a>pass by  sharing</h3><pre><code class="javascript">var obj1={item:&quot;unchanged&quot;};console.log(&quot;obj1 start:&quot;,obj1);function passBySharing(ref){  ref={ item: &quot;changed&quot;};}passBySharing(obj1);console.log(&quot;obj end&quot;, obj1);</code></pre><pre><code class="javascript">obj1 start:{item: &quot;unchanged&quot;}obj1 end:{item:&quot;unchanged&quot;}</code></pre><ul><li>傳入之前start 沒有改變</li><li>呼叫函式，並進入<code>passBySharing()</code>，還是複製地址，傳入</li><li>遇到<code>ref={ item: &quot;changed&quot;};</code>，會直接覆蓋地址(有點類似pass by value)<ul><li>這並不是直接更改物件特性</li></ul></li></ul><p><img src="https://i.imgur.com/Kst3565.png" alt=""></p><h2 id="最後，來說說-JavaScript-屬於？"><a href="#最後，來說說-JavaScript-屬於？" class="headerlink" title="最後，來說說 JavaScript 屬於？"></a>最後，來說說 JavaScript 屬於？</h2><p>看了多篇文章，實在也是有點混亂，該認為三種形式都有呢？還是就是Pass by sharing、Pass by reference呢？ 那例外情形又該如何解釋？</p><p>所以這邊的結尾，直接引用Kuro、Huli老師文章的資訊，供給大家參考。</p><p>從Kuro Hsu 的<a href="https://ithelp.ithome.com.tw/articles/10191057" target="_blank" rel="noopener">文章</a>、<a href="https://www.tenlong.com.tw/products/9789864344130" target="_blank" rel="noopener">書</a><br>提及認為 JavaScript 應該更屬於 Pass by sharing 的形式。</p><ul><li>JavaScript 不屬於單純的傳值或傳址。</li></ul><p>參考 ECMA-262-3 in detail. Chapter 8. Evaluation strategy</p><blockquote><p>Regardless of usage concept of reference in this case, this strategy should not be confused with the “call by reference” discussed above. The value of the argument is not a direct alias, but the copy of the address.<br>由於在 JavaScript 的物件類型是可變的 (mutable)，當物件更新時，會影響到所有引用這個物件的變數與其副本，修改時會變動到原本的參考，但當賦與新值時，會產生新的實體參考。</p></blockquote><p>另外在 Huli 的文章中：</p><blockquote><p>依據細分程度的不同，下面幾句話都是正確的：<br>JavaScript 裡面只有 pass by value<br>JavaScript 的 primitive type 是 pass by value，object 是 pass by sharing</p></blockquote><hr><h2 id="最終來個綜合練習："><a href="#最終來個綜合練習：" class="headerlink" title="最終來個綜合練習："></a>最終來個綜合練習：</h2><p>相信在最後的這個練習，可以更清楚，pass by value，pass by reference，pass by sharing</p><pre><code class="javascript">function changeStuff(num,obj,obj2){  num=num*10;  obj.item=&quot;changed&quot;;  obj={item:&quot;changed&quot;};}var num=10;var obj={item: &quot;unchanged&quot;};var obj2= {item: &quot;unchanged&quot;};changeStuff(num, obj, obj2);console.log(num);console.log(obj.item);console.log(obj.item);</code></pre><pre><code>console=&gt; 10 &quot;changed&quot; &quot;unchanged&quot;</code></pre><p>參考資料：<br><a href="https://medium.com/@mengchiang000/js%E5%9F%BA%E6%9C%AC%E8%A7%80%E5%BF%B5-call-by-value-%E9%82%84%E6%98%AFreference-%E5%8F%88%E6%88%96%E6%98%AF-sharing-22a87ca478fc" target="_blank" rel="noopener">JS基本觀念：call by value 還是reference 又或是 sharing?</a><br><a href="https://ithelp.ithome.com.tw/articles/10191057" target="_blank" rel="noopener">重新認識 JavaScript: Day 05 JavaScript 是「傳值」或「傳址」？</a><br><a href="https://www.youtube.com/watch?v=1YFss_4B_o4&t=302s" target="_blank" rel="noopener">Tech Talk: Pass By Sharing with Javascript</a><br><a href="https://blog.techbridge.cc/2018/06/23/javascript-call-by-value-or-reference/" target="_blank" rel="noopener">深入探討 JavaScript 中的參數傳遞：call by value 還是 reference？</a></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/zT0UU5c.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;之所以會撰寫這篇文，是因為面試過程被考倒的觀念，才發現自己過去從沒注意到這部分啊，那就來寫篇文章來認識它們之中的傳遞方式。&lt;/p&gt;
-&lt;h2 id=&quot;首先，先從</summary>
-      
-    
-    
-    
-    
-    <category term="JS" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/JS/"/>
     
   </entry>
   
