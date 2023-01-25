@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>TypeScript - interface 使用</title>
+      <link href="/2023/01/25/TS-interface/"/>
+      <url>/2023/01/25/TS-interface/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p><p>最近在複習使用 TypeScript 發現還有些部分可以做紀錄並且重新回憶的區塊，藉此再紀錄於部落格。</p><h2 id="TS-interface的基礎宣告"><a href="#TS-interface的基礎宣告" class="headerlink" title="TS interface的基礎宣告"></a>TS interface的基礎宣告</h2><ul><li>將複雜系統簡化的結果叫做介面</li><li>介面一般首字母大寫</li></ul><pre><code class="typescript">interface Person {  name: string;  age: number;}let Eva: Person = {    name: &#39;Eva&#39;,    age: 25};</code></pre><h2 id="函式與介面"><a href="#函式與介面" class="headerlink" title="函式與介面"></a>函式與介面</h2><ul><li>以下範例宣告 AddFunction 的介面</li><li>並將此型別應用於 add 這個變數的方法中</li></ul><pre><code class="typescript">interface AddFunction {  (a: number, b: number): number;}let add: AddFunction = function(a, b) { return a + b; };</code></pre><h2 id="class與介面"><a href="#class與介面" class="headerlink" title="class與介面"></a>class與介面</h2><pre><code class="typescript">interface CatInterface {    //普通成員變數的規格    name: string;    breed: string;    noise: string;    //普通成員方法的規格，使用函式型別格式    makeNoise(): void;    feed(something: string): void}</code></pre><ul><li>若類別想要實踐此介面，必須用 <code>implements</code> 這個關鍵字</li><li>如果類別實踐介面的規格中，任何一個成員不見或沒有實踐時，會出現提醒訊息。</li></ul><pre><code class="typescript">class Cat implements CatInterface{    public name: string;    public breed: string;    public noise: string = &#39;Meow meow!&#39;;  constructor(name:string, breed:string){        this.name = name;        this.breed = breed;    }  public makeNoise(){        console.log(this.noise);    }   public feed(something: string){         console.log(`${this.name} is eating ${something}...`)     }}</code></pre><h2 id="搭配-interface-常用的方法"><a href="#搭配-interface-常用的方法" class="headerlink" title="搭配 interface 常用的方法"></a>搭配 interface 常用的方法</h2><ol><li>extends</li></ol><ul><li>以 <code>PersonalInfo</code> 為例</li></ul><pre><code class="typescript">interface PersonalInfo{    name: string;    age: number;    interesting: string[];}</code></pre><ul><li>假設今天想宣告一個新的使用者帳戶的介面為 <code>UserAccount</code><ul><li>除了有一些和客戶相關的規格屬性外，還要包含介面 <code>PersonalInfo</code> 裡的規格</li></ul></li></ul><pre><code class="typescript">interface UserAccount extends PersonalInfo{    email: string;    password: string;    subscribed: boolean;}</code></pre><ul><li>上面的撰寫方式，等同於</li><li>透過使用 extends 延展可以將功用的屬性、型別整理一起</li></ul><pre><code class="typescript">interface UserAccount{    email: string;    password: string;    subscribed: boolean;    //從PersonalInfo延展而來    name: string;    age: number;    interesting: string[];}</code></pre><p>另外若需要再合併新的型別，也可以透過逗號方式加以延伸</p><ul><li>此外還能再多新增 <code>SocialLinks</code></li></ul><pre><code class="typescript">interface SocialLinks {    facebook?: string;    twitter?: string;    linkedin?: string;    website?: ({name:string; url:string})[]}</code></pre><ul><li>同時延展:透過逗號再加入新的</li></ul><pre><code class="typescript">interface UserAccount extends PersonalInfo, SocialLinks{    //...}</code></pre><h2 id="pick"><a href="#pick" class="headerlink" title="pick"></a>pick</h2><p>Picking Items with <code>Pick&lt;Type, Keys&gt;</code></p><ul><li>挑選想要的屬性(key)做使用</li><li>注意 pick 只能在 type 宣告使用<pre><code class="typescript">interface Todo {title: string;description: string;completed: boolean;}</code></pre></li></ul><p>type TodoPreview = Pick&lt;Todo, “title” | “completed”&gt;;</p><p>const todo: TodoPreview = {<br>  title: “Clean room”,<br>  completed: false,<br>};</p><p>console.log(todo.title); // “Clean room”<br>console.log(todo.description); // undefined</p><pre><code>* 注意 pick 只能在 type 宣告使用```typescriptinterface todo = Pick&lt;Todo, &quot;title&quot; | &quot;completed&quot;&gt;;// &#39;Pick&#39; only refers to a type, but is being used as a value here.</code></pre><h2 id="omit"><a href="#omit" class="headerlink" title="omit"></a>omit</h2><p><code>Omit&lt;Type, Keys&gt;</code></p><pre><code class="typeScript">interface Todo {  title: string;  description: string;  completed: boolean;  createdAt: number;}type TodoPreview = Omit&lt;Todo, &quot;description&quot;&gt;;const todo: TodoPreview = {  title: &quot;Clean room&quot;,  completed: false,  createdAt: 1615544252770,};</code></pre><p>參考資料<br><a href="https://refine.dev/blog/typescript-pick-utility-type/" target="_blank" rel="noopener">A Detailed Guide on TypeScript Pick Type</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> TypeScript </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> TypeScript </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Leetcode rotate-image</title>
+      <link href="/2022/12/21/rotate-image/"/>
+      <url>/2022/12/21/rotate-image/</url>
+      
+        <content type="html"><![CDATA[<p>一開始看到題目，看到2維陣列就會有些緊張，想著是否要拆開，或是要如何從圖示去轉陣列，寫得很亂又雜還是解不出來。<br>看完其他教學才知道可以從斜對角開始調換，最後再將左右做調換。</p><p>You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).</p><p>You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.</p><p> <img src="https://i.imgur.com/0khxyek.png" alt=""></p><p><img src="https://i.imgur.com/LjKoWWh.jpg" alt=""></p><pre><code class="javascript">var rotate = function (matrix) {  //斜對角  for (let i = 0; i &lt; matrix.length; i++) {    for (let j = 0; j &lt; matrix.length; j++) {      let temp = matrix[i][j];      matrix[i][j] = matrix[j][i];      matrix[j][i] = temp;    }  }  //reverse  // Secondly Make Reflected Image Of Matrix  for (let i = 0; i &lt; matrix.length; i++) {      //最左和最右調換，為兩兩調換，所以j的長度為matrix長度除以2    for (let j = 0; j &lt; matrix.length / 2; j++) {      var Temp = matrix[i][j]      //右側最後的值為長度-1      matrix[i][j] = matrix[i][matrix.length - 1 - j]      matrix[i][matrix.length - 1 - j] = Temp    }  }  return matrix;};</code></pre><p>參考資料：<br><a href="https://www.youtube.com/watch?v=swlO6KKh8yk" target="_blank" rel="noopener">Rotate Image - LeetCode 48 - JavaScript</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Leetcode </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Leetcode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Redux Toolkit - RTK Query中間層非同步Fetch API的處理</title>
       <link href="/2022/12/01/React-Middleware/"/>
       <url>/2022/12/01/React-Middleware/</url>
@@ -204,11 +254,11 @@
     
     
     <entry>
-      <title>刷題練習 - Valid Parentheses</title>
-      <link href="/2022/09/24/code-practice/"/>
-      <url>/2022/09/24/code-practice/</url>
+      <title>刷題練習 - Merge Two Sorted Lists</title>
+      <link href="/2022/09/24/code-Merge-Two-Sorted-Lists/"/>
+      <url>/2022/09/24/code-Merge-Two-Sorted-Lists/</url>
       
-        <content type="html"><![CDATA[<p>  對於刷題總時敬而遠之，記得剛開始學習 JavaScript 時，有挑幾題來練習，看到題目後完全不知道該如何著手，甚至有些題目還要反覆看幾次才比較理解。 畢竟也踏入前端工程師近一年的時間，使用 JavaScript 也有兩年了，該是好好鑽研練習 Leetcode。</p><p>題目：<br>  Given a string s containing just the characters ‘(‘, ‘)’, ‘{‘, ‘}’, ‘[‘ and ‘]’, determine if the input string is valid.</p><p>  An input string is valid if:</p><p>  Open brackets must be closed by the same type of brackets.<br>  Open brackets must be closed in the correct order.<br>  Every close bracket has a corresponding open bracket of the same type.</p><p>  以字串帶入，並要確認傳入的字串中的大括號, 中括號等是否有兩倆配對</p><p>Example 1: </p><pre><code>Input: s = &quot;()&quot;Output: true</code></pre><pre><code>Input: s = &quot;()[]{}&quot;Output: true</code></pre><pre><code>Input: s = &quot;(]&quot;Output: false</code></pre><ol><li>製作一個物件，為括號的配對</li><li>存放括號的空物件</li><li>將字串進行迭代判斷</li></ol><pre><code>  i 會loop 此字串  &quot;([]){}&quot;  第一圈：遇到 &quot;(&quot;  stack = [ &quot;)&quot;]  第二圈：遇到 &quot;[&quot;  stack = [ &quot;)&quot;,&quot;]&quot;]  第三圈：遇到 &quot;]&quot; , 此時，stack = [ &quot;)&quot;,&quot;]&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=2 ,ch = &quot;]&quot; 互相配對，若配對成功則從陣列中刪除  第四圈：遇到 &quot;)&quot; , 此時，stack = [ &quot;)&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=3 ,ch = &quot;)&quot; 互相配對，若配對成功則從陣列中刪除  第五圈：遇到 &quot;{&quot; , 此時，stack = []  stack = [ &quot;}&quot;]  第六圈：遇到 &quot;}&quot; , 此時，stack = [ &quot;}&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=5 ,ch = &quot;}&quot; 互相配對，若配對成功則從陣列中刪除    最後跳出陣列確認 stack.length === 0 =&gt; 為 0 表示皆配對成功</code></pre><pre><code class="JavaScript">  var isValid = function (s) {    const hashMap = { &quot;(&quot;: &quot;)&quot;, &quot;{&quot;: &quot;}&quot;, &quot;[&quot;: &quot;]&quot; };    const stack = [];    for (let ch of s) {      if (hashMap[ch]) {        // ch is an opening bracket        stack.push(hashMap[ch]);      } else if (stack.length &gt; 0 &amp;&amp; stack[stack.length - 1] === ch) {        //當空陣列裡面有值且陣列的最後一個值和 key 是一樣的就從陣列中刪除        // ch is a closing bracket and top of stack matches        stack.pop();      } else {        // ch is a closing bracket and top of the stack doesn&#39;t match        return false;      }    }    return stack.length === 0;  };</code></pre>]]></content>
+        <content type="html"><![CDATA[<p>   首先要先了解 linked lists 和陣列是不一樣的！！<br>   linked lists是一種常見的資料結構，其使用node(節點)來記錄、表示、儲存資料(data)，並利用每個node中的pointer指向下一個node </p><h2 id="題目："><a href="#題目：" class="headerlink" title="題目："></a>題目：</h2><p>You are given the heads of two sorted linked lists list1 and list2.</p><p>Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.</p><p>Return the head of the merged linked list.</p><p><img src="https://i.imgur.com/I645KZq.png" alt=""></p><p>注意類似題目要設立一個 dummy 節點</p><ul><li>如何訪問list 中某個節點的 值，要從第一個節點開始，透過 next 依序訪問下一個節點重複操作直到抵達目標節點並讀取 value</li><li>訪問第一個節點為 list.val  ; 訪問第二個節點 list.next.val ; 訪問第三個節點list.next.next.val </li><li>要將兩個 list 合併的方法，每次比較兩個 而最小的數挑出，放入新的 list</li></ul><pre><code class="JavaScript">/** * Definition for singly-linked list. * function ListNode(val, next) { *     this.val = (val===undefined ? 0 : val) *     this.next = (next===undefined ? null : next) * } *//** * @param {ListNode} list1 * @param {ListNode} list2 * @return {ListNode} */  var mergeTwoLists = function (l1, l2) {    //current    const dummy = new ListNode(-Infinity)    //point dummy node    let prev = dummy;    while (l1 &amp;&amp; l2) {      if (l1.val &lt;= l2.val) {        prev.next = l1;        //移動 prev list        prev = l1        //鏈錶指針 l1 就往後移動        l1 = l1.next      } else {        prev.next = l2;        prev = l2        l2 = l2.next      }    }    //如果 l1 是 null ,就是 l2    if (!l1) prev.next = l2;    if (!l2) prev.next = l1;    return dummy.next  };  mergeTwoLists([1, 100], [3, 4, 6, 8])</code></pre>]]></content>
       
       
       <categories>
@@ -229,11 +279,11 @@
     
     
     <entry>
-      <title>刷題練習 - Merge Two Sorted Lists</title>
-      <link href="/2022/09/24/code-Merge-Two-Sorted-Lists/"/>
-      <url>/2022/09/24/code-Merge-Two-Sorted-Lists/</url>
+      <title>刷題練習 - Valid Parentheses</title>
+      <link href="/2022/09/24/code-practice/"/>
+      <url>/2022/09/24/code-practice/</url>
       
-        <content type="html"><![CDATA[<p>   首先要先了解 linked lists 和陣列是不一樣的！！<br>   linked lists是一種常見的資料結構，其使用node(節點)來記錄、表示、儲存資料(data)，並利用每個node中的pointer指向下一個node </p><h2 id="題目："><a href="#題目：" class="headerlink" title="題目："></a>題目：</h2><p>You are given the heads of two sorted linked lists list1 and list2.</p><p>Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.</p><p>Return the head of the merged linked list.</p><p><img src="https://i.imgur.com/I645KZq.png" alt=""></p><p>注意類似題目要設立一個 dummy 節點</p><ul><li>如何訪問list 中某個節點的 值，要從第一個節點開始，透過 next 依序訪問下一個節點重複操作直到抵達目標節點並讀取 value</li><li>訪問第一個節點為 list.val  ; 訪問第二個節點 list.next.val ; 訪問第三個節點list.next.next.val </li><li>要將兩個 list 合併的方法，每次比較兩個 而最小的數挑出，放入新的 list</li></ul><pre><code class="JavaScript">/** * Definition for singly-linked list. * function ListNode(val, next) { *     this.val = (val===undefined ? 0 : val) *     this.next = (next===undefined ? null : next) * } *//** * @param {ListNode} list1 * @param {ListNode} list2 * @return {ListNode} */  var mergeTwoLists = function (l1, l2) {    //current    const dummy = new ListNode(-Infinity)    //point dummy node    let prev = dummy;    while (l1 &amp;&amp; l2) {      if (l1.val &lt;= l2.val) {        prev.next = l1;        //移動 prev list        prev = l1        //鏈錶指針 l1 就往後移動        l1 = l1.next      } else {        prev.next = l2;        prev = l2        l2 = l2.next      }    }    //如果 l1 是 null ,就是 l2    if (!l1) prev.next = l2;    if (!l2) prev.next = l1;    return dummy.next  };  mergeTwoLists([1, 100], [3, 4, 6, 8])</code></pre>]]></content>
+        <content type="html"><![CDATA[<p>  對於刷題總時敬而遠之，記得剛開始學習 JavaScript 時，有挑幾題來練習，看到題目後完全不知道該如何著手，甚至有些題目還要反覆看幾次才比較理解。 畢竟也踏入前端工程師近一年的時間，使用 JavaScript 也有兩年了，該是好好鑽研練習 Leetcode。</p><p>題目：<br>  Given a string s containing just the characters ‘(‘, ‘)’, ‘{‘, ‘}’, ‘[‘ and ‘]’, determine if the input string is valid.</p><p>  An input string is valid if:</p><p>  Open brackets must be closed by the same type of brackets.<br>  Open brackets must be closed in the correct order.<br>  Every close bracket has a corresponding open bracket of the same type.</p><p>  以字串帶入，並要確認傳入的字串中的大括號, 中括號等是否有兩倆配對</p><p>Example 1: </p><pre><code>Input: s = &quot;()&quot;Output: true</code></pre><pre><code>Input: s = &quot;()[]{}&quot;Output: true</code></pre><pre><code>Input: s = &quot;(]&quot;Output: false</code></pre><ol><li>製作一個物件，為括號的配對</li><li>存放括號的空物件</li><li>將字串進行迭代判斷</li></ol><pre><code>  i 會loop 此字串  &quot;([]){}&quot;  第一圈：遇到 &quot;(&quot;  stack = [ &quot;)&quot;]  第二圈：遇到 &quot;[&quot;  stack = [ &quot;)&quot;,&quot;]&quot;]  第三圈：遇到 &quot;]&quot; , 此時，stack = [ &quot;)&quot;,&quot;]&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=2 ,ch = &quot;]&quot; 互相配對，若配對成功則從陣列中刪除  第四圈：遇到 &quot;)&quot; , 此時，stack = [ &quot;)&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=3 ,ch = &quot;)&quot; 互相配對，若配對成功則從陣列中刪除  第五圈：遇到 &quot;{&quot; , 此時，stack = []  stack = [ &quot;}&quot;]  第六圈：遇到 &quot;}&quot; , 此時，stack = [ &quot;}&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=5 ,ch = &quot;}&quot; 互相配對，若配對成功則從陣列中刪除    最後跳出陣列確認 stack.length === 0 =&gt; 為 0 表示皆配對成功</code></pre><pre><code class="JavaScript">  var isValid = function (s) {    const hashMap = { &quot;(&quot;: &quot;)&quot;, &quot;{&quot;: &quot;}&quot;, &quot;[&quot;: &quot;]&quot; };    const stack = [];    for (let ch of s) {      if (hashMap[ch]) {        // ch is an opening bracket        stack.push(hashMap[ch]);      } else if (stack.length &gt; 0 &amp;&amp; stack[stack.length - 1] === ch) {        //當空陣列裡面有值且陣列的最後一個值和 key 是一樣的就從陣列中刪除        // ch is a closing bracket and top of stack matches        stack.pop();      } else {        // ch is a closing bracket and top of the stack doesn&#39;t match        return false;      }    }    return stack.length === 0;  };</code></pre>]]></content>
       
       
       <categories>
@@ -1631,9 +1681,9 @@
             
             <tag> 切版 </tag>
             
-            <tag> animation </tag>
-            
             <tag> icon </tag>
+            
+            <tag> animation </tag>
             
         </tags>
       
