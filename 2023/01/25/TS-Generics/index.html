@@ -1,0 +1,276 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>TS - Generics 泛型</title><meta name="description" content="Front-end Engineer email:as45986@gmail.com"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="
+資料整理例如有兩個 interface 屬性一樣，差異在於 型別內容
+interface DataA {
+  key:string
+  key2:number
+}
+
+interface DataB {
+  key:string
+  key2:boolean
+}
+
+
+使用 泛型 整理
+將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定
+
+
+type GenericsObj = {  key:string  key2:T}type DataA = GenericsObj;type DataB = GenericsObj;//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣
+
+範例2：
+```typeScript
+interface KeyPair&amp;lt;T, U.."><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">TS - Generics 泛型</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#資料整理"><span class="toc-text">資料整理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#payload-應用"><span class="toc-text">payload 應用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函式的泛型"><span class="toc-text">函式的泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#type-的泛型"><span class="toc-text">type 的泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#將函式改寫為-共用的泛型型別"><span class="toc-text">將函式改寫為 共用的泛型型別</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#比較-lt-T-gt-位置差異"><span class="toc-text">比較&lt;T&gt;位置差異</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#interface-的泛型"><span class="toc-text">interface 的泛型</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/TypeScript"><i class="tag post-item-tag">TypeScript</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">TS - Generics 泛型</h1><time class="has-text-grey" datetime="2023-01-25T06:27:13.000Z">2023-01-25</time><article class="mt-2 post-content"><p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
+<h2 id="資料整理"><a href="#資料整理" class="headerlink" title="資料整理"></a>資料整理</h2><p>例如有兩個 interface 屬性一樣，差異在於 型別內容</p>
+<pre><code class="typeScript">interface DataA {
+  key:string
+  key2:number
+}
+
+interface DataB {
+  key:string
+  key2:boolean
+}
+</code></pre>
+<ul>
+<li>使用 泛型 整理</li>
+<li>將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定<pre><code class="typeScript"></code></pre>
+</li>
+</ul>
+<p>type GenericsObj<T> = {<br>  key:string<br>  key2:T<br>}<br>type DataA = GenericsObj<number>;<br>type DataB = GenericsObj<boolean>;<br>//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣</p>
+<pre><code>
+範例2：
+```typeScript
+interface KeyPair&lt;T, U&gt; {
+  key: T;
+  value: U;
+}
+
+let kp1: KeyPair&lt;number, string&gt; = { key: 1, value: &quot;str&quot;}
+let kp2: KeyPair&lt;string, number&gt; = { key: &quot;str&quot;, value: 123}
+
+let arr:number[] = [1,2,3];
+let arrTwo:Array&lt;number&gt; = [1,2,3]</code></pre><h2 id="payload-應用"><a href="#payload-應用" class="headerlink" title="payload 應用"></a>payload 應用</h2><ul>
+<li>這邊以 redux 中整理的 action 為範例</li>
+</ul>
+<pre><code class="typeScript">type userDataPayload = {
+  userId: string,
+  data:any
+}
+//負責生成 action 的函式
+const setUserDataAction = (payload:userDataPayload )=&gt;({
+  type: &#39;SET_USER_DATA&#39;,
+  payload
+})
+const resetUserDataAction =()=&gt;({
+  type: &#39;RESET_USER_DATA&#39;,
+})
+
+type CartDataPayload = {
+  product: string
+}
+const setCartDataAction =(payload:CartDataPayload)=&gt;({
+  type: &#39;SET_CART_DATA&#39;,
+  payload
+})
+
+type SetUserDataAction = {
+  type: &#39;SET_USER_DATA&#39;,
+  payload:userDataPayload
+}
+type ResetUserDataAction = {
+  type: &#39;RESET_USER_DATA&#39;
+}
+type SetCartDataAction = {
+  type: &#39;SET_CART_DATA&#39;,
+  payload:CartDataPayload
+}
+</code></pre>
+<ul>
+<li>由上可以觀察到 SetUserDataAction、ResetUserDataAction、SetCartDataAction 整理為一個</li>
+<li>將 action 的型別整理，其key為type 與 payload</li>
+</ul>
+<pre><code class="typescript">type Action&lt;T,P&gt; = {
+  type: T,
+  payload:P
+}
+type ActionWithoutPayload&lt;T&gt; = {
+  type: T
+}
+
+type SetUserDataAction = Action&lt;&#39;SET_USER_DATA&#39;,userDataPayload&gt;
+type SetCartDataAction = Action&lt;&#39;SET_CART_DATA&#39;,CartDataPayload&gt;
+type ResetUserDataAction = ActionWithoutPayload&lt;&#39;RESET_USER_DATA&#39;&gt;
+
+//可以將action 中的 type 進行聚合
+type Actions = SET_USER_DATA | SET_CART_DATA | RESET_USER_DATA;</code></pre>
+<ul>
+<li>以下，進一步再將 Action 和 ActionWithoutPayload 進行整合，他們差異在與 payload </li>
+</ul>
+<pre><code class="typeScript">type Action&lt;T, P = null&gt; = p extends {} ? {type: T, payload: P} : {type: T};</code></pre>
+<p>型別參數動態生成不同型別</p>
+<h2 id="函式的泛型"><a href="#函式的泛型" class="headerlink" title="函式的泛型"></a>函式的泛型</h2><pre><code class="typeScript">const fn = (param: string | number):(string|number)[]=&gt;[param];
+fn(1);//number 陣列 number[];
+fn(&#39;hello&#39;) //string[]</code></pre>
+<p><img src="https://i.imgur.com/QZCK4Em.png" alt=""></p>
+<pre><code class="typeScript">const fn = &lt;T&gt;(param: T):(T)[]=&gt;[param];
+fn(1);//number 陣列 number[];
+fn(&#39;hello&#39;) //string[]</code></pre>
+<p><img src="https://i.imgur.com/Yeeuum6.png" alt=""></p>
+<ul>
+<li>function 改寫方式</li>
+</ul>
+<pre><code class="typeScript">function fn&lt;T&gt;(param:T):T[]{
+  return [param]
+}</code></pre>
+<h2 id="type-的泛型"><a href="#type-的泛型" class="headerlink" title="type 的泛型"></a>type 的泛型</h2><pre><code class="typeScript">//共用模板
+type GenericList&lt;T&gt; = T[];
+
+type StrList = GenericList&lt;string&gt;;
+type BoolList = GenericList&lt;boolean&gt;;
+
+type GenericValObj&lt;T&gt; = {[key:string]:T} 
+type NumValObj = GenericValObj&lt;number&gt;
+
+const numValObj:NumValObj = {
+  img_res_200:200
+}
+</code></pre>
+<p><img src="https://i.imgur.com/sJFzEUg.png" alt=""></p>
+<p><img src="https://i.imgur.com/7P1MnFL.png" alt=""></p>
+<ul>
+<li>嘗試聚合資料</li>
+</ul>
+<pre><code class="typeScript">type GenericUnion&lt;T,U&gt; = T | U | T[] | U[];
+type strNumUnion = GenericUnion&lt;string,number&gt;
+
+const val:strNumUnion = &quot;123&quot;
+const val2:strNumUnion = [&quot;123&quot;]</code></pre>
+<p><img src="https://i.imgur.com/y5Vl8M9.png" alt=""></p>
+<h2 id="將函式改寫為-共用的泛型型別"><a href="#將函式改寫為-共用的泛型型別" class="headerlink" title="將函式改寫為 共用的泛型型別"></a>將函式改寫為 共用的泛型型別</h2><ul>
+<li>將type 拉出來獨立撰寫，可以重複使用</li>
+</ul>
+<pre><code class="typeScript">const fn = &lt;T&gt;(param: T):(T)[]=&gt;{
+  return [param]
+};
+
+//上面的函式也可以用於
+interface Props {
+  onFn: typeof fn
+}
+
+//rewrite
+type GenericFn = &lt;T&gt;(param: T) =&gt; T[]
+const fn:GenericFn = (param) =&gt; {
+  return [param]
+}
+
+//共用，如下有個 interface 其中有個屬性的型別與 GenericFn 一樣，則可以共用
+interface Props {
+  onFn:GenericFn
+}
+</code></pre>
+<pre><code class="typeScript">function fn&lt;T&gt;(param:T):T[]{
+  return [param]
+}
+
+//產生型別泛型
+type FnType = typeof fn ;</code></pre>
+<p><img src="https://i.imgur.com/yxsVm1s.png" alt=""></p>
+<p><img src="https://i.imgur.com/zYtwh7H.png" alt=""><br><img src="https://i.imgur.com/tPHEDZ7.png" alt=""></p>
+<h3 id="比較-lt-T-gt-位置差異"><a href="#比較-lt-T-gt-位置差異" class="headerlink" title="比較&lt;T&gt;位置差異"></a>比較<code>&lt;T&gt;</code>位置差異</h3><pre><code class="typeScript">type FnTypeA = &lt;T&gt;(param: T) =&gt; T[]
+type FnTypeB&lt;T&gt; = (param: T) =&gt; T[]
+
+const fn1:FnTypeA = (param) =&gt; {
+  return [param]
+}
+
+//必須指定好型別的 argument
+const fn2:FnTypeB&lt;string&gt; = (param) =&gt; {
+  return [param]
+}
+
+//兩個函式在使用上會有差異：
+fn1();
+
+fn2(&#39;Hi&#39;)
+</code></pre>
+<p><img src="https://i.imgur.com/J3zJs2Y.png" alt=""></p>
+<p><img src="https://i.imgur.com/0wxPZk9.png" alt=""></p>
+<ul>
+<li>fn1 可以填入任何內容、可以動態填入型別<br><img src="https://i.imgur.com/pwfnIjO.png" alt=""><br><img src="https://i.imgur.com/6B8gtAc.png" alt=""><br><img src="https://i.imgur.com/OgPatHZ.png" alt=""></li>
+<li>fn2 只能填入 string 內容<br><img src="https://i.imgur.com/cwmVA5b.png" alt=""></li>
+</ul>
+<pre><code class="typeScript">export type ClickFn = &lt;Event&gt;(e:Event) =&gt; any
+
+//使用 function 會無法重複使用寫好的型別
+// 引用
+const handleClick:ClickFn = (e)=&gt;{
+
+}</code></pre>
+<h2 id="interface-的泛型"><a href="#interface-的泛型" class="headerlink" title="interface 的泛型"></a>interface 的泛型</h2><pre><code class="typeScript">export interface GenericI&lt;T&gt;{
+  [key:string]: T
+} 
+type NumValObj =  GenericI&lt;number&gt;;
+const numberValObj:NumValObj = {
+  res:123
+}
+
+//type寫法也可以一樣
+export type GenericT&lt;T&gt; = {
+  [key:string]: T
+}
+
+//API 的應用！！！
+//注意：in 寫法只用於 type 中
+export type GenericKeyValObj&lt;T extends  keyof any,P&gt; = {
+  [key in T ]: P
+}
+
+//可以應用於 API 
+
+type ApiKey = &#39;user&#39; | &#39;id&#39; | &#39;password&#39;; //將欄位值設定好
+type UserApiData = GenericKeyValObj&lt;ApiKey, string&gt;
+</code></pre>
+<p><img src="https://i.imgur.com/dceV8io.png" alt=""></p>
+<ul>
+<li><p>可以很快的生成 API 的資料型別<br><img src="https://i.imgur.com/Vv3lVDC.png" alt=""></p>
+</li>
+<li><p>其他範例</p>
+</li>
+</ul>
+<pre><code class="typeScript">//類似呼叫API的函式
+//Params : 參數
+//Res result : 回傳值
+type GenericApiFn&lt;Params, Res&gt; = (params:Params)=&gt; Res
+
+//組合其他泛型使用，也可以將原本泛型參數自己使用
+interface ApiContainerProps&lt;Params, Res&gt; {
+  initData: Res;
+  onAsyncCb: GenericApiFn&lt;Params, Res&gt;
+}
+</code></pre>
+<ul>
+<li>interface 與 type 的泛型寫法</li>
+</ul>
+<pre><code class="typeScript">//interface 寫函式
+interface FnI {
+  &lt;T&gt;(param: T): T[]
+}
+//同等於
+type FnT = &lt;T&gt;(param:T)=&gt;T[]
+
+const fn:FnT = (param)=&gt;[param]</code></pre>
+<ul>
+<li><code>&lt;T&gt;</code>位置的調動</li>
+</ul>
+<pre><code class="typeScript">//&lt;T&gt; 會影響整個 interface
+interface GenericFnI&lt;T&gt; {
+  (param: T): T[]
+}
+
+const fn2: GenericFnI&lt;string&gt;= (param)=&gt;[param]</code></pre>
+<p>過去都未曾注意到泛型可以抽成共用還有 <code>&lt;T&gt;</code> 的位置所放的位置，會影響宣告，透過此次的教學，讓我對泛型可以應用於實際情況的案例，同樣未來在訂定 type 或 interface 時可以加以注意，思考是否可以改寫為泛型加以使用。</p>
+<p>參考資料<br><a href="https://www.youtube.com/watch?v=9hZbfX_Atpc&t=44s" target="_blank" rel="noopener">成為進階TS開發者的第一哩路 — 泛型簡介與基礎(1)</a><br><a href="https://www.youtube.com/watch?v=7yA4ALLoSxY" target="_blank" rel="noopener">成為進階TS開發者的第一哩路 — 泛型的函式, type和interface寫法一次說清楚！</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2023/01/28/vueTest-1/" title="Vue 單元測試 - 基礎入門"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">Previous: Vue 單元測試 - 基礎入門</span></a><a class="button is-default" href="/2023/01/25/TS-interface/" title="TypeScript - interface 使用"><span class="has-text-weight-semibold">Next: TypeScript - interface 使用</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2023</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>
