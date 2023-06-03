@@ -6,7 +6,7 @@
   <link href="https://github.com/Eva813/Eva813.github.io.git/atom.xml" rel="self"/>
   
   <link href="https://github.com/Eva813/Eva813.github.io.git/"/>
-  <updated>2023-01-28T06:58:53.481Z</updated>
+  <updated>2023-06-03T02:16:41.005Z</updated>
   <id>https://github.com/Eva813/Eva813.github.io.git/</id>
   
   <author>
@@ -15,6 +15,88 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>cypress 學習筆記 - css Locator</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2023/06/03/cypress-2/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2023/06/03/cypress-2/</id>
+    <published>2023-06-03T01:48:47.000Z</published>
+    <updated>2023-06-03T02:16:41.005Z</updated>
+    
+    <content type="html"><![CDATA[<p>有空就找找實作影片來練習一下～</p><p>而今天的實作練習，訪問 momoshop 取得搜尋框元素 -&gt; 輸入搜尋的關鍵字(“雨傘”) -&gt; 點擊搜尋 -&gt;<br>查看搜尋後的項目是否包含關鍵字。</p><pre><code class="JS">describe(&#39;CSSLocators&#39;,() =&gt; {  it(&quot;csslocators&quot;, ()=&gt;{    cy.visit(&quot;https://www.momoshop.com.tw/main/Main.jsp?momo=1&amp;gclid=CjwKCAjwpuajBhBpEiwA_ZtfhU9MqvxnVs7Kh8LTNDbmKzFsmDxY16QIaP7lci98eVgfRoNz8ychuRoCao0QAvD_BwE&quot;)    //尋找某些關鍵字    cy.get(&#39;[name=&quot;keyword&quot;]&#39;).type(&quot;雨傘&quot;)    //點擊搜尋按鈕    cy.get(&quot;[title = &#39;搜尋&#39;]&quot;).click()  //attribute    cy.get(&#39;.prdName&#39;).contains(&#39;傘&#39;)    cy.get(&#39;.prdName&#39;).contains(&#39;羽絨&#39;) //Assertion  })})</code></pre><p><img src="https://hackmd.io/_uploads/BytHdzdU2.png" alt=""></p><p>在此文章主要針對取得 <code>css Locator</code> 進行系列操作。<br>可以使用 <code>#idName</code>, <code>.cssName</code>, <code>[title = &#39;搜尋&#39;]</code>, <code>[name = &#39;search&#39;]</code> 等方式<br>其實 cypress 官方網站也滿容易讀，可以根據我們想要在網頁上進行何種操作，搜尋相應的功能。<br>例如: Assertion <a href="https://docs.cypress.io/guides/references/assertions" target="_blank" rel="noopener">cypress-assertions</a></p><p>小補充另一個取得定位的方式：<br>XPath：<br>  XPath是一種用於導航XML文件的語言，同樣也適用於HTML文件。它提供了一種根據元素在文檔層次結構中的路徑選擇元素的方法。XPath表達式非常強大且靈活，可以根據元素的屬性、文本內容等條件進行選擇。</p><p>在Cypress中，您可以使用XPath選擇器，只需將選擇器字符串以 xpath 為前綴添加到命令中。例如：</p><pre><code class="JS">  cy.xpath(&#39;//button[@id=&quot;submit-btn&quot;]&#39;).click();</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;有空就找找實作影片來練習一下～&lt;/p&gt;
+&lt;p&gt;而今天的實作練習，訪問 momoshop 取得搜尋框元素 -&amp;gt; 輸入搜尋的關鍵字(“雨傘”) -&amp;gt; 點擊搜尋 -&amp;gt;&lt;br&gt;查看搜尋後的項目是否包含關鍵字。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;JS&quot;&gt;d</summary>
+      
+    
+    
+    
+    <category term="E2E" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/E2E/"/>
+    
+    
+    <category term="test" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/test/"/>
+    
+    <category term="cypress" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/cypress/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自動化測試 E2E - cypress</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2023/05/07/cypress-1/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2023/05/07/cypress-1/</id>
+    <published>2023-05-07T04:48:47.000Z</published>
+    <updated>2023-05-07T05:15:42.870Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://i.imgur.com/AE7iJQ1.png" alt=""></p><p>每次在交付完成的任務給 PM 之前，總是會先自行反覆點擊測驗過才提能安心提供。但除了自己點擊之外，是否有其他更為簡易的方式可以進行測試呢？Cypress 是一個用於編寫端對端測試的 JavaScript 測試框架。他可以幫助我們做到基礎的自動化測試，今天就先來認識看看吧～</p><h2 id="建立專案"><a href="#建立專案" class="headerlink" title="建立專案"></a>建立專案</h2><p>在本地建立一個 cypress-project 資料夾，進入該檔案夾<br><code>npm init -y</code><br><code>npm install cypress</code></p><ul><li>安裝完後<pre><code class="javaScript">{&quot;name&quot;: &quot;cypress-project-1&quot;,&quot;version&quot;: &quot;1.0.0&quot;,&quot;description&quot;: &quot;&quot;,&quot;main&quot;: &quot;index.js&quot;,&quot;scripts&quot;: {  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;},&quot;keywords&quot;: [],&quot;author&quot;: &quot;&quot;,&quot;license&quot;: &quot;ISC&quot;,&quot;dependencies&quot;: {  &quot;cypress&quot;: &quot;^12.11.0&quot;}}</code></pre></li></ul><h2 id="實作測試功能"><a href="#實作測試功能" class="headerlink" title="實作測試功能"></a>實作測試功能</h2><ul><li>訪問 google 頁面</li><li>進行關鍵字搜尋</li></ul><p><img src="https://i.imgur.com/2FOKkBZ.png" alt=""></p><h3 id="測試語法"><a href="#測試語法" class="headerlink" title="測試語法"></a>測試語法</h3><pre><code class="javaScript">  it(&#39;google search&#39;, () =&gt; {    //visit 進入不同網站    cy.visit(&#39;https://www.google.com.tw/?hl=zh_TW&#39;)    cy.get(&#39;#APjFqb&#39;).type(&#39;what is cypress.io{Enter}&#39;)    //除了點擊搜尋按鈕之外，一般也會按下 enter鍵觸發    // cy.contains(&#39;Google 搜尋&#39;).click()  })</code></pre><h3 id="測試操作"><a href="#測試操作" class="headerlink" title="測試操作"></a>測試操作</h3><p><code>npx cypress open</code> 進入測試介面，選擇 E2E</p><p><img src="https://i.imgur.com/rmkiayJ.png" alt=""></p><ul><li>選擇要測試的檔案：</li></ul><p><img src="https://i.imgur.com/W6yP5nu.png" alt=""></p><ul><li>透過選取器可以找到相對應的元素，並針對該元素下指令<ul><li>這邊我們就是拿到 搜尋框，並進行關鍵字的輸入<br><img src="https://i.imgur.com/RZ5EjKZ.png" alt=""></li></ul></li></ul><h3 id="測試結果呈現"><a href="#測試結果呈現" class="headerlink" title="測試結果呈現"></a>測試結果呈現</h3><ul><li>會進到 google 頁面</li><li>在輸入框輸入 what is cypress.io ,點擊 Enter 搜尋</li></ul><p><img src="https://i.imgur.com/a37BYX1.png" alt=""></p><p><img src="https://i.imgur.com/8QbuLdQ.jpg" alt=""></p><p>小結：</p><p>cy.visit(url)：訪問指定網址。<br>cy.get()：使用 cy.get() 方法選擇元素。我們可以使用不同的選擇器（如：CSS 選擇器）來指向特定元素。<br>type()： 使用 type() 方法在輸入框中輸入內容。<br>click()：使用 cy.get() 定位到這些元素，然後使用 click() 方法模擬點擊操作。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/AE7iJQ1.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;每次在交付完成的任務給 PM 之前，總是會先自行反覆點擊測驗過才提能安心提供。但除了自己點擊之外，是否有其他更為簡易的方式可以進行測試呢？Cypress 是一</summary>
+      
+    
+    
+    
+    <category term="E2E" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/E2E/"/>
+    
+    
+    <category term="test" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/test/"/>
+    
+    <category term="cypress" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/cypress/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vueTest - Vue test util</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2023/01/31/vueTest-2/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2023/01/31/vueTest-2/</id>
+    <published>2023-01-31T05:45:08.000Z</published>
+    <updated>2023-01-31T05:52:06.583Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>測試 App.vue<ul><li>引入 <code>@vue/test-utils</code> 使用 shallowMount 方法</li><li>shallowMount 可以渲染出組件<h2 id="shallowMount-mount"><a href="#shallowMount-mount" class="headerlink" title="shallowMount , mount"></a>shallowMount , mount</h2>shallowMount : 只會渲染該元件當層的資料內容<br>mount : 深度渲染，會將元件內所包含的其他元件一起都渲染出</li></ul></li><li>例如以下範例: 在 App.vue 中有包含數個元件</li></ul><pre><code class="vue"> //App.vue&lt;template&gt;    &lt;img class=&quot;logo&quot; alt=&quot;Vue logo&quot; src=&quot;./assets/logo.png&quot; /&gt;    &lt;h1&gt;Test demo&lt;/h1&gt;    &lt;AddCount /&gt;    &lt;HelloWorld /&gt;    &lt;div class=&quot;itemFlex&quot;&gt;    &lt;CardBox v-for=&quot;i in 4&quot; :key=&quot;i&quot; /&gt;    &lt;/div&gt;    &lt;UserList /&gt;    &lt;PhotoItem /&gt;&lt;/template&gt;</code></pre><ul><li>測試元件</li></ul><pre><code class="javaScript">import { shallowMount, mount } from &quot;@vue/test-utils&quot;import App from &#39;@/App.vue&#39;describe(&#39;App.vue test&#39;, () =&gt; {    it(&#39;測試組件 1&#39;, () =&gt; {        //渲染出 App 元件        const wrapper = shallowMount(App);        console.log(wrapper.text())        expect(wrapper.text()).toMatch(&quot;Test demo&quot;)    });    it(&#39;測試組件2&#39;, () =&gt; {    const wrapper = mount(App);    console.log(wrapper.text())    expect(wrapper.text()).toMatch(&quot;若你是寫過 Vue 但沒有寫過單元測試的工程師&quot;)    })})</code></pre><p><img src="https://i.imgur.com/BcvGwlI.png" alt=""></p><p>get 與 find 差異</p><ul><li>抓取某個元件中 DOM 元素</li><li>兩者差異在於<ul><li>使用 get ，如果找不到元素會報錯，並且直接中斷測試的運行</li><li>使用 find 會依據 <code>exists()</code> 回傳布林值</li></ul></li></ul><p><code>&lt;button id=&quot;add&quot; class=&quot;add-btn&quot; @click=&quot;add&quot;&gt;add 按鈕&lt;/button&gt;</code></p><p><img src="https://i.imgur.com/TWuFWX3.png" alt=""></p><ul><li>測試按鈕存不存在<ul><li>exists : 驗證某元素是否存在</li><li><a href="https://test-utils.vuejs.org/api/#exists" target="_blank" rel="noopener"> exists</a></li></ul></li></ul><pre><code class="javaScript">describe(&#39;AddCount.vue&#39;, () =&gt; {    it(&#39;test 1 &#39;, () =&gt; {        const wrapper = shallowMount(AddCount);        console.log(wrapper.find(&#39;.add-btn&#39;))        expect(wrapper.find(&#39;.add-btn&#39;).exists()).toBe(true)    })})</code></pre><p><img src="https://i.imgur.com/0sBL0t6.png" alt=""></p><p><img src="https://i.imgur.com/htkF4X5.png" alt=""></p><h3 id="在情境應用"><a href="#在情境應用" class="headerlink" title="在情境應用"></a>在情境應用</h3><ul><li>在 AddCount 加入 <code>isOpen=ref(false)</code> 來判斷 button 是否在一開始要呈現</li><li>而再測試文件中就是要測試該按鈕在一開始並不會出現</li></ul><p><img src="https://i.imgur.com/YkBK6Ry.png" alt=""></p><pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;import AddCount from &#39;@/components/AddCount.vue&#39;describe(&#39;AddCount.vue&#39;, () =&gt; {    it(&#39;test 1 &#39;, () =&gt; {        const wrapper = shallowMount(AddCount);        console.log(wrapper.find(&#39;.add-btn&#39;))    // 找不到，並且回傳 false        expect(wrapper.find(&#39;.add-btn-err&#39;).exists()).toBe(false)    })})</code></pre><h2 id="find-與-findAll"><a href="#find-與-findAll" class="headerlink" title="find 與 findAll"></a>find 與 findAll</h2><p>以 v-for list 的範例</p><pre><code class="vue">&lt;script&gt;import { ref } from &quot;vue&quot;;import data from &quot;./data.json&quot;;export default {    setup() {        const employeeItem = ref(data);        return {            employeeItem,        };    },};&lt;/script&gt;&lt;template&gt;    &lt;ul class=&quot;item&quot;&gt;        &lt;li class=&quot;user_list&quot; v-for=&quot;item in employeeItem&quot; :key=&quot;item.id&quot;&gt;            &lt;div&gt;                &lt;p&gt;員工編號: {{ item.userId }}&lt;/p&gt;                &lt;p&gt;姓名: {{ item.username }}&lt;/p&gt;            &lt;/div&gt;        &lt;/li&gt;    &lt;/ul&gt;&lt;/template&gt;</code></pre><p><img src="https://i.imgur.com/dqts5eV.png" alt=""></p><p><img src="https://i.imgur.com/PXPy1as.png" alt=""></p><p>如果是要抓元件中 list 有幾筆<br><code>wrapper.findAll(&#39;.user_list&#39;)</code> : 他會是一個陣列資料，其中包含好幾個 DOM wrapper </p><p><img src="https://i.imgur.com/I5lNSRX.png" alt=""></p><p>注意：<br>    <code>TypeError: wrapper.findAll(...).text is not a function</code></p><ul><li>搭配使用 <code>at()</code> 用於找尋其中某一個物件</li></ul><pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;import UserList from &#39;@/components/UserList.vue&#39;describe(&#39;test UserList&#39;, () =&gt; {    it(&#39;test Dom&#39;, () =&gt; {        const wrapper = shallowMount(UserList);    // console.log(wrapper.findAll(&#39;.user_list&#39;).at(0).text())    expect(wrapper.findAll(&#39;.user_list&#39;).at(0).text()).toMatch(&#39;員工編號: 399&#39;)    })})</code></pre><h3 id="另也可以測試所拿到的資料長度"><a href="#另也可以測試所拿到的資料長度" class="headerlink" title="另也可以測試所拿到的資料長度"></a>另也可以測試所拿到的資料長度</h3><ul><li>測試 DOM 資料長度</li></ul><pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;import UserList from &#39;@/components/UserList.vue&#39;describe(&#39;test UserList&#39;, () =&gt; {    it(&#39;test Dom&#39;, () =&gt; {    const wrapper = shallowMount(UserList);    // console.log(wrapper.findAll(&#39;.user_list&#39;).at(0).text())    expect(wrapper.findAll(&#39;.user_list&#39;).at(0).text()).toMatch(&#39;員工編號: 399&#39;)    })    it(&#39;test List length&#39;, () =&gt; {    const wrapper = shallowMount(UserList);    console.log(wrapper.findAll(&#39;.user_list&#39;).length)    expect(wrapper.findAll(&#39;.user_list&#39;).length).toBe(6)    })})</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;測試 App.vue&lt;ul&gt;
+&lt;li&gt;引入 &lt;code&gt;@vue/test-utils&lt;/code&gt; 使用 shallowMount 方法&lt;/li&gt;
+&lt;li&gt;shallowMount 可以渲染出組件&lt;h2 id=&quot;shallowMount-mount&quot;&gt;&lt;a h</summary>
+      
+    
+    
+    
+    <category term="test" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/test/"/>
+    
+    
+    <category term="test" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/test/"/>
+    
+  </entry>
   
   <entry>
     <title>Vue 單元測試 - 基礎入門</title>
@@ -436,81 +518,6 @@
     <category term="JS" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/JS/"/>
     
     <category term="webpack" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/webpack/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>React- props / state 練習</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/05/08/react-1/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2022/05/08/react-1/</id>
-    <published>2022-05-08T07:42:36.000Z</published>
-    <updated>2022-11-04T02:36:44.420Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="https://i.imgur.com/InPScmW.png" alt=""></p><h2 id="props-state-的應用"><a href="#props-state-的應用" class="headerlink" title="props, state 的應用"></a>props, state 的應用</h2><ul><li>props 傳入參數的部分</li><li>state 讓組建本身有狀態</li></ul><h3 id="製作-計數器"><a href="#製作-計數器" class="headerlink" title="製作 計數器"></a>製作 計數器</h3><ul><li>props</li><li>製作，讓計數器的數字變化，可以同步變化到 button 上的數字<ul><li>在父層 App.vue 做一個內容的傳送</li><li>在 子元件，要自訂一個變數，作為接收父層從來的資料</li></ul></li></ul><pre><code class="jsx">import &quot;./styles.css&quot;;type BtnProps = {  btnNum: number;};const Btn: React.FC&lt;BtnProps&gt; = ({ btnNum }) =&gt; {  return (    &lt;button&gt;      add 1&lt;span&gt;目前總數：{btnNum}&lt;/span&gt;    &lt;/button&gt;  );};export default function App() {  const num = 0;  return (    &lt;div className=&quot;App&quot;&gt;      &lt;h1&gt;Counter: {num}&lt;/h1&gt;      &lt;Btn btnNum={num} /&gt;    &lt;/div&gt;  );}</code></pre><p><img src="https://i.imgur.com/OnOdTAs.png" alt=""><br><img src="https://i.imgur.com/8VkhCGp.png" alt=""></p><h3 id="進階，希望透過點擊-button-同步更改數值"><a href="#進階，希望透過點擊-button-同步更改數值" class="headerlink" title="進階，希望透過點擊 button 同步更改數值"></a>進階，希望透過點擊 button 同步更改數值</h3><ul><li><p>讓 render (react 渲染機制)，可以在變數被變動的時候順便觸發渲染機制</p><ul><li>改變變數 -&gt; 觸發渲染<h3 id="使用-state-達成上述目的"><a href="#使用-state-達成上述目的" class="headerlink" title="使用 state 達成上述目的"></a>使用 state 達成上述目的</h3></li></ul><p><strong>對組建本身引入 state 機制</strong></p></li><li><p>用 state 來做變數宣告，只要 state 變數有做變動都會觸發渲染機制</p><ul><li>當變數有涉及於頁面上的更新，就會需要使用 state</li></ul></li><li><p>Hook 本身多是 use 開頭</p></li><li><p><code>useState()</code> 是一個 function</p></li></ul><p><strong>用陣列解構來取的 return 的值</strong></p><ul><li><ol><li>當前的值</li></ol></li><li><ol start="2"><li>再回傳一個 function : 用來設定/變動 第一個數值<br><code>const [num2, setNum2] = useState(999)</code></li></ol></li></ul><p><a href="https://codesandbox.io/s/react-props-state-yuc6qv?file=/src/App.tsx" target="_blank" rel="noopener">example-1</a></p><h2 id="實現-父層數值變化，子組件隨之變化"><a href="#實現-父層數值變化，子組件隨之變化" class="headerlink" title="實現 父層數值變化，子組件隨之變化"></a>實現 父層數值變化，子組件隨之變化</h2><ul><li>應該將主要的更新動作都放置父組件</li><li>將放在父組件的事件，透過 props 方式傳給子組件，並將該變數放到按鈕的點擊事件上</li></ul><p><a href="https://codesandbox.io/s/react-props-state-2-ylm345?file=/src/App.tsx" target="_blank" rel="noopener">example-2 </a></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/InPScmW.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;props-state-的應用&quot;&gt;&lt;a href=&quot;#props-state-的應用&quot; class=&quot;headerlink&quot; title=&quot;prop</summary>
-      
-    
-    
-    
-    <category term="React" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/React/"/>
-    
-    
-    <category term="React" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/React/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vue.js 3 - Slot</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/05/07/Vue-Slot/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2022/05/07/Vue-Slot/</id>
-    <published>2022-05-07T11:41:23.000Z</published>
-    <updated>2022-11-04T02:33:50.621Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="https://i.imgur.com/NBBY8vo.png" alt=""></p><p>剛學習 vue 的時候，對 slot 完全一竅不通，不了解要如何挖空多元件，來放入資料，更是不知道他能使用的時機是什麼時候，種種因素，讓我從官方文件找些範例釐清，也找了些文章閱讀加深記憶，順手也紀錄在部落格上～</p><p>使用時機：</p><ul><li>使用同一個 元件 , 但只有內文不同。</li><li>有時候資料是靜態，不常變動，甚至需要大量重複。這情況不必要使用 props。</li></ul><ol><li><p>共用樣式<br>從 <a href="https://sfc.vuejs.org/#eyJBcHAudnVlIjoiPHNjcmlwdD5cbmltcG9ydCBGYW5jeUJ1dHRvbiBmcm9tICcuL0ZhbmN5QnV0dG9uLnZ1ZSdcbiAgXG5leHBvcnQgZGVmYXVsdCB7XG4gIGNvbXBvbmVudHM6IHsgRmFuY3lCdXR0b24gfVxufVxuPC9zY3JpcHQ+XG5cbjx0ZW1wbGF0ZT5cbiAgPEZhbmN5QnV0dG9uPlxuICAgIENsaWNrIG1lIDwhLS0gc2xvdCBjb250ZW50IC0tPlxuIFx0PC9GYW5jeUJ1dHRvbj5cbjwvdGVtcGxhdGU+IiwiaW1wb3J0LW1hcC5qc29uIjoie1xuICBcImltcG9ydHNcIjoge1xuICAgIFwidnVlXCI6IFwiaHR0cHM6Ly9zZmMudnVlanMub3JnL3Z1ZS5ydW50aW1lLmVzbS1icm93c2VyLmpzXCJcbiAgfVxufSIsIkZhbmN5QnV0dG9uLnZ1ZSI6Ijx0ZW1wbGF0ZT5cbiAgPGJ1dHRvbiBjbGFzcz1cImZhbmN5LWJ0blwiPlxuICBcdDxzbG90Lz4gPCEtLSBzbG90IG91dGxldCAtLT5cblx0PC9idXR0b24+XG48L3RlbXBsYXRlPlxuXG48c3R5bGU+XG4uZmFuY3ktYnRuIHtcbiAgY29sb3I6ICNmZmY7XG4gIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgzMTVkZWcsICM0MmQzOTIgMjUlLCAjNjQ3ZWZmKTtcbiAgYm9yZGVyOiBub25lO1xuICBwYWRkaW5nOiA1cHggMTBweDtcbiAgbWFyZ2luOiA1cHg7XG4gIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuPC9zdHlsZT4ifQ==" target="_blank" rel="noopener">官網的範例</a>可以看到，讓按鈕的文字可以彈性的變化。</p></li><li><p>named slot(具名插槽) </p></li></ol><ul><li>建立一個元件，其中含有多個slot區塊<br><a href="https://replit.com/@as45986/Named-Slots#src/App.vue" target="_blank" rel="noopener">範例連結</a></li></ul><ol start="3"><li>Scoped slots（作用域插槽）</li></ol><ul><li>把子元件的資料取出來，給父層使用</li><li>不同於前面 slot 的使用，是由父層輸入資料呈現於頁面<br><a href="https://replit.com/@as45986/Scoped-Slots#src/App.vue" target="_blank" rel="noopener">範例</a></li></ul><p>資料來源:<br><a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs</a><br><a href="https://ithelp.ithome.com.tw/articles/10273298?sc=iThomeR" target="_blank" rel="noopener">不只懂 Vue 語法：什麼是 slot？請示範 slot 的用法？</a><br><a href="https://ithelp.ithome.com.tw/articles/10194384" target="_blank" rel="noopener">用範例理解 Vue.js #18：Slot</a></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/NBBY8vo.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;剛學習 vue 的時候，對 slot 完全一竅不通，不了解要如何挖空多元件，來放入資料，更是不知道他能使用的時機是什麼時候，種種因素，讓我從官方文件找些範例釐</summary>
-      
-    
-    
-    
-    <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/Vue/"/>
-    
-    
-    <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Vue/"/>
-    
-    <category term="slot" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/slot/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>websocket 簡介與使用</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/04/02/websocket/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2022/04/02/websocket/</id>
-    <published>2022-04-02T08:49:04.000Z</published>
-    <updated>2022-09-17T00:10:00.719Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="https://i.imgur.com/piRytMY.png" alt=""></p><p>近期購買了布魯斯的 TypeScript 的課程，除了學到型別之外，還接觸到 ＷebSocket 的使用，所以就來簡單紀錄下 ＷebSocket 是什麼，在專案內可以實現什麼功能。</p><p>WebSocket是一種網路傳輸協定，讓前端與後端溝通除非有一方斷開連接，否則會一直保持聯繫</p><h2 id="情境說明"><a href="#情境說明" class="headerlink" title="情境說明"></a>情境說明</h2><ol><li>使用者上下線狀態：可以延遲幾秒鐘，可以使用 setInterval 做出輪循</li></ol><ul><li>設定每幾秒發出請求，更新狀態</li><li>使用 HTTP 協議的請求：GET\POST 等方式，做出Request\Response</li></ul><ol start="2"><li>聊天室：會希望聊天訊息是即時更新，若採用上面的方式，為了使訊息更新及時會從每幾秒改為每幾毫秒，這樣的方式會造成短時間內不斷發出請求，造成消耗後端資源</li></ol><ul><li>指建立一次連結，可以與後端持續保持聯係</li></ul><h2 id="聊天室的實際運用"><a href="#聊天室的實際運用" class="headerlink" title="聊天室的實際運用"></a>聊天室的實際運用</h2><ul><li>將在 node.js 建立 websocket 的服務，讓前端連線到node.js的服務</li><li>socket.io =&gt; 包裝 websocket 協議的 node.js 的工具包<ul><li>當使用 node.js 做開發，就可以透過 socket.io 提供的功能實現</li></ul></li></ul><h2 id="安裝-socket-io"><a href="#安裝-socket-io" class="headerlink" title="安裝 socket.io"></a>安裝 socket.io</h2><ul><li>socket.io-clinet : 在前端的部分要使用 clinet 安裝包<br><code>npm i -D socket.io socket.io-clinet</code></li></ul><h3 id="後端"><a href="#後端" class="headerlink" title="後端"></a>後端</h3><ul><li>將 socket.io 引入 node.js 的 server 端</li></ul><pre><code class="javascript">import devServer from &quot;@/server/dev&quot;;import prodServer from &quot;@/server/prod&quot;;import express from &quot;express&quot;;import { Server } from &quot;socket.io&quot;import http from &quot;http&quot;  //也可以引入http模組const port = 3000;const app = express();//透過 http 將 server 建立起來const server = http.createServer(app)const io = new Server(server)const userService = new UserService//監聽server.listen(port, () =&gt; {  console.log(`The application is running on port ${port}.`);});</code></pre><pre><code class="typescript">//建立起連接時，發出訊息//當有用戶連接到connection 就會有回呼函式io.on(&#39;connection&#39;,(socket)=&gt;{    //發出訊息    socket.emit(&#39;join&#39;, &#39;Welcom&#39;)})</code></pre><h2 id="如何在前端使用，與後端建立連線？"><a href="#如何在前端使用，與後端建立連線？" class="headerlink" title="如何在前端使用，與後端建立連線？"></a>如何在前端使用，與後端建立連線？</h2><ul><li>到前端的入口檔案</li></ul><pre><code class="typescript">//將 socket.io 的包引入前端程式這邊import { io } from &quot;socket.io-client&quot;;//1. 建立連接到 node serverconst clientIo = io();clientIo.on(&#39;join&#39;,(msg)=&gt;{    console.log(&#39;msg&#39;,msg)})</code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/piRytMY.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;近期購買了布魯斯的 TypeScript 的課程，除了學到型別之外，還接觸到 ＷebSocket 的使用，所以就來簡單紀錄下 ＷebSocket 是什麼，在專</summary>
-      
-    
-    
-    
-    
-    <category term="websocket" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/websocket/"/>
     
   </entry>
   
