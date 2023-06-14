@@ -1,0 +1,100 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>cypress 學習筆記 - Assertion</title><meta name="description" content="Front-end Engineer email:as45986@gmail.com"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="implicit assertion（隱含斷言）常用的 should 關鍵字：
+
+be.visible：確保元素在畫面上可見。
+be.hidden：確保元素在畫面上隱藏。
+be.checked：確保複選框或單選框元素被選中。
+be.disabled：確保元素被禁用。
+have.text：檢查元素的文字內容是否符合預期。
+have.value：檢查輸入元素的值是否符合預期。
+have.attr：檢查元素的特定屬性值是否符合預期。
+have.class：檢查元素是否具有特定的類名。
+contain：檢查元素是否包含指定的文字內容。
+
+可根據具體需求進行選擇和使用keywords
+這裡的練習範例，驗證當前網址（URL）的斷言方法。include：確保當前網址包含特定的子字串。
+cy.url().should(&amp;#.."><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">cypress 學習筆記 - Assertion</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#implicit-assertion（隱含斷言）"><span class="toc-text">implicit assertion（隱含斷言）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#這裡的練習範例，驗證當前網址（URL）的斷言方法。"><span class="toc-text">這裡的練習範例，驗證當前網址（URL）的斷言方法。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#explicit-assertion"><span class="toc-text">explicit assertion</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/test"><i class="tag post-item-tag">test</i></a><a href="/tags/cypress"><i class="tag post-item-tag">cypress</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">cypress 學習筆記 - Assertion</h1><time class="has-text-grey" datetime="2023-06-03T11:12:32.000Z">2023-06-03</time><article class="mt-2 post-content"><h2 id="implicit-assertion（隱含斷言）"><a href="#implicit-assertion（隱含斷言）" class="headerlink" title="implicit assertion（隱含斷言）"></a>implicit assertion（隱含斷言）</h2><p>常用的 <code>should</code> 關鍵字：</p>
+<ol>
+<li><code>be.visible</code>：確保元素在畫面上可見。</li>
+<li><code>be.hidden</code>：確保元素在畫面上隱藏。</li>
+<li><code>be.checked</code>：確保複選框或單選框元素被選中。</li>
+<li><code>be.disabled</code>：確保元素被禁用。</li>
+<li><code>have.text</code>：檢查元素的文字內容是否符合預期。</li>
+<li><code>have.value</code>：檢查輸入元素的值是否符合預期。</li>
+<li><code>have.attr</code>：檢查元素的特定屬性值是否符合預期。</li>
+<li><code>have.class</code>：檢查元素是否具有特定的類名。</li>
+<li><code>contain</code>：檢查元素是否包含指定的文字內容。</li>
+</ol>
+<p>可根據具體需求進行選擇和使用<br><a href="https://docs.cypress.io/guides/references/assertions" target="_blank" rel="noopener">keywords</a></p>
+<h3 id="這裡的練習範例，驗證當前網址（URL）的斷言方法。"><a href="#這裡的練習範例，驗證當前網址（URL）的斷言方法。" class="headerlink" title="這裡的練習範例，驗證當前網址（URL）的斷言方法。"></a>這裡的練習範例，驗證當前網址（URL）的斷言方法。</h3><p>include：確保當前網址包含特定的子字串。</p>
+<pre><code class="javascript">cy.url().should(&#39;include&#39;, &#39;/login&#39;);
+</code></pre>
+<p>eq：確保當前網址與預期值完全相等。</p>
+<pre><code class="javascript">cy.url().should(&#39;eq&#39;, &#39;https://example.com/dashboard&#39;);
+</code></pre>
+<p>contain：檢查當前網址是否包含特定的字串。</p>
+<pre><code class="javascript">cy.url().should(&#39;contain&#39;, &#39;example.com&#39;);</code></pre>
+<p>這些斷言方法可用於驗證當前網址是否符合預期，從而確保導航或操作正確導致了預期的網址變化。</p>
+<pre><code class="JS">describe(&quot;Assertion practice&quot;,()=&gt;{
+
+    it(&quot;explicit&quot;, ()=&gt;{
+
+        cy.visit(&#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+
+        //should + keyword end
+
+        cy.url().should(&#39;include&#39;, &#39;orangehrmlive.com&#39;)
+
+        cy.url().should(&#39;eq&#39;, &#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+
+        cy.url().should(&#39;contain&#39;, &#39;orangehrmlive&#39;)
+
+
+    })
+
+})
+</code></pre>
+<ul>
+<li>可以看到上述，有連續使用到 <code>url()</code></li>
+</ul>
+<pre><code class="JS">cy.url().should(&#39;include&#39;, &#39;orangehrmlive.com&#39;)
+
+.should(&#39;eq&#39;, &#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+
+.should(&#39;contain&#39;, &#39;orangehrmlive&#39;)</code></pre>
+<pre><code class="JS">    cy.url().should(&#39;include&#39;, &#39;orangehrmlive.com&#39;)
+
+    .and(&#39;eq&#39;, &#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+
+    .and(&#39;contain&#39;, &#39;orangehrmlive&#39;)</code></pre>
+<p>另外可以檢查進到頁面 logo 圖示的顯示</p>
+<pre><code class="JS">
+describe(&quot;Assertion practice&quot;,()=&gt;{
+  it(&quot;explicit&quot;, ()=&gt;{
+    cy.visit(&#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+      //check logo 呈現與否
+    cy.get(&#39;.orangehrm-login-branding &gt; img&#39;).should(&#39;be.visible&#39;)
+    .and(&#39;exist&#39;)
+  })
+})
+</code></pre>
+<ul>
+<li>使用者輸入框</li>
+</ul>
+<pre><code class="JS">
+describe(&quot;Assertion practice&quot;,()=&gt;{
+  it(&quot;explicit&quot;, ()=&gt;{
+    cy.visit(&#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+
+    //檢查 username 得輸入
+    //取得 username 的輸入框,並且確保輸入的值
+    cy.get(&quot;input[placeholder=&#39;Username&#39;]&quot;).type(&quot;Admin&quot;)
+    cy.get(&quot;input[placeholder=&#39;Username&#39;]&quot;).should(&quot;have.value&quot;, &quot;Admin&quot;)
+
+
+  })
+})
+</code></pre>
+<h2 id="explicit-assertion"><a href="#explicit-assertion" class="headerlink" title="explicit assertion"></a>explicit assertion</h2><p>（顯式斷言）」是指明確使用斷言方法來檢查特定的條件或預期結果。<br>與隱含斷言不同，顯式斷言需要您明確指定斷言方法來進行驗證。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><em></em><a class="button is-default" href="/2023/06/03/cypress-2/" title="cypress 學習筆記 - css Locator"><span class="has-text-weight-semibold">Next: cypress 學習筆記 - css Locator</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="Haojen/Claudia-theme-blog" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2023</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>
