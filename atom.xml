@@ -6,7 +6,7 @@
   <link href="https://github.com/Eva813/Eva813.github.io.git/atom.xml" rel="self"/>
   
   <link href="https://github.com/Eva813/Eva813.github.io.git/"/>
-  <updated>2023-06-14T12:03:46.282Z</updated>
+  <updated>2023-12-23T04:15:55.222Z</updated>
   <id>https://github.com/Eva813/Eva813.github.io.git/</id>
   
   <author>
@@ -15,6 +15,55 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>vueTest - Vue test util (2)</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2023/08/05/vueTest-3/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2023/08/05/vueTest-3/</id>
+    <published>2023-08-05T04:31:08.000Z</published>
+    <updated>2023-12-23T04:15:55.222Z</updated>
+    
+    <content type="html"><![CDATA[<p>延續上次介紹常用的 Vue test util 語法，今天要再多介紹幾個。</p><h2 id="text-與-html"><a href="#text-與-html" class="headerlink" title=".text() 與 .html()"></a><code>.text()</code> 與 <code>.html()</code></h2><pre><code class="javaScript">&lt;template&gt;  &lt;div class=&quot;hello&quot;&gt;    &lt;p&gt;      For a guide and recipes on how to configure / customize this project,&lt;br /&gt;      check out the      &lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;        vue-cli documentation      &lt;/a&gt;    &lt;/p&gt;  &lt;/div&gt;&lt;/template&gt;</code></pre><p>使用 <code>html</code> 若直接 console 出會將 template 呈現出來</p><pre><code>html=&gt; &lt;div class=&quot;hello&quot;&gt;      &lt;p&gt; For a guide and recipes on how to configure / customize this project,&lt;br&gt; check out the &lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;&lt;/p&gt;    &lt;/div&gt;</code></pre><p>在測試當中，可以直接抓取該斷落的內容進行比對</p><ol><li>取得該段的 html</li><li>取得該 DOM 元素，並進行 html 的比對</li></ol><pre><code class="javaScript">import { shallowMount } from &quot;@vue/test-utils&quot;;import HelloWorld from &quot;./HelloWorld.vue&quot;;describe(&quot;HelloWorld.vue&quot;, () =&gt; {  it(&quot;html &amp; text&quot;, () =&gt; {    const wrapper = shallowMount(HelloWorld);    // console.log(&quot;html=&gt;&quot;, wrapper.html());    // console.log(&quot;text=&gt;&quot;, wrapper.text());    expect(wrapper.html()).toMatch(      `&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`);    console.log(&quot;aLink_&gt;&quot;, wrapper.find(&#39;a&#39;).html())    expect(wrapper.find(&#39;a&#39;).html()).toMatch(      `&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`);  });});</code></pre><h2 id="component-的簡易測試"><a href="#component-的簡易測試" class="headerlink" title="component 的簡易測試"></a>component 的簡易測試</h2><p>如課程範例為一個卡片，裡面有一個圖片元件(ImageBox)、內文元件(Content)</p><p><img src="https://hackmd.io/_uploads/ryWgDUjoh.png" alt=""></p><pre><code class="javascript">&lt;template&gt;  &lt;div id=&quot;CardBox&quot;&gt;    &lt;ImageBox /&gt;    &lt;Content v-if=&quot;isOpenContent&quot; /&gt;  &lt;/div&gt;&lt;/template&gt;</code></pre><p>test goal: 檢查 component 是否有隨狀態而成功渲染與否。</p><h3 id="findComponent"><a href="#findComponent" class="headerlink" title="findComponent"></a>findComponent</h3><p>判斷 component 是否有存在<br>首先要如何抓元件？</p><ol><li>因頁面中是掛載組件，所以這邊使用 mount</li></ol><pre><code class="javaScript">import { mount } from &quot;@vue/test-utils&quot;;import CardBox from &quot;./index.vue&quot;;import ImageBox from &quot;./ImageBox.vue&quot;;import Content from &quot;./Content.vue&quot;;describe(&quot;CardBox.vue&quot;, () =&gt; {  it(&quot;findComponent function test&quot;, () =&gt; {    const wrapper = mount(CardBox);    expect(wrapper.findComponent(ImageBox).exists()).toBe(true);    expect(wrapper.findComponent(Content).exists()).toBe(true);  });});</code></pre><ul><li>findComponent(‘.class’)</li><li>findComponent({name: a}) 組建名稱</li><li>findComponent({ref: ‘ref’}) 組件實體：綁在 DOM 上的 ref</li><li>findComponent(component) 取得組件：抓取導入的組件</li></ul><h3 id="findAllComponents"><a href="#findAllComponents" class="headerlink" title="findAllComponents"></a>findAllComponents</h3><ul><li>此方式是會回傳陣列，要使用 <code>at()</code></li><li>不支援 ref 查找</li></ul><pre><code class="javaScript">expect(wrapper.findAllComponents(ImageBox).at(0).exists()).toBe(true);</code></pre><pre><code>Using find to search for a Component is deprecated and will be removed. Use findComponent instead. The find method will continue to work for finding elements using any valid selector（tag selectors (div, foo, bar), attribute selectors ([foo], [foo=&quot;bar&quot;])...）.</code></pre><h2 id="測試-class-and-attribute"><a href="#測試-class-and-attribute" class="headerlink" title="測試 class and attribute"></a>測試 class and attribute</h2><p>可以使用在狀態的切換或是驗證資料的對錯，可以用 class 存在與否驗證。</p><h3 id="attribute"><a href="#attribute" class="headerlink" title="attribute"></a>attribute</h3><ul><li>資料在渲染的時候，是否有正確的塞入到 attribute。</li><li>在做資料的渲然，將拿到的內容塞入 attribute 中，如 a link 的 href, img src</li></ul><p>範例題目延續上述使用得內文元件(Content)</p><pre><code class="javaScript">&lt;script&gt;import { ref } from &quot;@vue/reactivity&quot;;export default {  props: {    styleColor: {      type: String,      default: &quot;red&quot;,    },  },  setup(props) {    return {      props,    };  },};&lt;/script&gt;&lt;template&gt;  &lt;div class=&quot;content&quot;&gt;    &lt;h1 :class=&quot;[&#39;card_title&#39;, props.styleColor]&quot;&gt;      Vue  vue-test-utils    &lt;/h1&gt;    &lt;a href=&quot;javascript:;&quot;&gt;click&lt;/a&gt;    &lt;p class=&quot;card_text&quot;&gt;      Vue Test Utils (VTU) is a set of utility functions aimed to simplify testing Vue.js components. It provides some methods to mount and interact with Vue components in an isolated manner!    &lt;/p&gt;  &lt;/div&gt;&lt;/template&gt;</code></pre><p>test goal: 測試 <code>&lt;h1&gt;</code> 有沒有存在 styleColor</p><ul><li>使用 <code>class()</code> 帶入參數，就會去檢查該 class 是否存在<br>測試架構：</li></ul><ol><li>先確定該元件有被渲染出來</li><li>找到 h1 tag 並查看是否有 styleColor 傳入</li><li>元件內的 a link 放入 href</li></ol><pre><code class="javaScript">import { shallowMount } from &quot;@vue/test-utils&quot;;import Content from &quot;./Content.vue&quot;;describe(&quot;Content.vue&quot;, () =&gt; {  it(&quot;find component&quot;,()=&gt;{    const wrapper = shallowMount(Content);    expect(wrapper.find(&#39;.card_title&#39;).exists()).toBe(true)  })  it(&quot;check h1 tag have red class&quot;, ()=&gt;{    const wrapper = shallowMount(Content);    expect(wrapper.find(&#39;h1&#39;).classes(&#39;red&#39;)).toBe(true);  })  it(&quot;button is disabled attr&quot;, () =&gt; {    const wrapper = shallowMount(Content);    console.log(&#39;red&#39;, wrapper.find(&#39;a&#39;).attributes(&quot;href&quot;))    expect(wrapper.find(&#39;a&#39;).attributes(&quot;href&quot;)).toBe(&quot;javascript:;&quot;);  })});</code></pre><p>練習方式，聽完講師分享的操作之後，寫下測試目標的結構，就可以嘗試自己撰寫看看！</p><h2 id="檢查是否可見-isVisible-amp-exists"><a href="#檢查是否可見-isVisible-amp-exists" class="headerlink" title="檢查是否可見 isVisible &amp; exists"></a>檢查是否可見 isVisible &amp; exists</h2><p>前面的範例練習，就可以看檔有使用 exists<br>在 vue template 中，有使用 <code>v-if</code>, <code>v-show</code> 來處理 div 顯示與否。<br><code>v-show</code> 會存在於 DOM 上。</p><pre><code class="javaScript">import { shallowMount } from &quot;@vue/test-utils&quot;;import PhotoItem from &quot;./index.vue&quot;;describe(&quot;PhotoItem.vue&quot;, () =&gt; {  it(&quot;DOM is v-if or v-show hide&quot;, () =&gt; {    const wrapper = shallowMount(PhotoItem);    // exists 用來查看是否存在    expect(wrapper.find(&quot;#box1&quot;).exists()).toBe(false);    // isVisible 用來判斷DOM是否給 v-show 隱藏起來    expect(wrapper.find(&quot;#box2&quot;).isVisible()).toBe(false);  });});</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;延續上次介紹常用的 Vue test util 語法，今天要再多介紹幾個。&lt;/p&gt;
+&lt;h2 id=&quot;text-與-html&quot;&gt;&lt;a href=&quot;#text-與-html&quot; class=&quot;headerlink&quot; title=&quot;.text() 與 .html()&quot;&gt;&lt;/a&gt;&lt;c</summary>
+      
+    
+    
+    
+    <category term="test" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/test/"/>
+    
+    
+    <category term="test" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vue-isComponent</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2023/08/03/vue-isComponent/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2023/08/03/vue-isComponent/</id>
+    <published>2023-08-03T06:59:34.000Z</published>
+    <updated>2023-08-05T04:16:10.937Z</updated>
+    
+    <content type="html"><![CDATA[<p>因工作需求研究 Tab 切換，要使用 router 或是 製作組件 <code>v-if</code>, <code>v-else</code> 切換。<br>這裡的範例，建議可以使用 <code>isComponent</code> 方式，透過點擊頁籤按鈕執行元件的改變，並且使用 <code>keep-alive</code> 儲存資料</p><p>資料來源：<a href="https://dev.to/reynoldadade/dynamic-components-a-vuejs-superpower-2olk" target="_blank" rel="noopener">https://dev.to/reynoldadade/dynamic-components-a-vuejs-superpower-2olk</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;因工作需求研究 Tab 切換，要使用 router 或是 製作組件 &lt;code&gt;v-if&lt;/code&gt;, &lt;code&gt;v-else&lt;/code&gt; 切換。&lt;br&gt;這裡的範例，建議可以使用 &lt;code&gt;isComponent&lt;/code&gt; 方式，透過點擊頁籤按鈕執行元件的改變，</summary>
+      
+    
+    
+    
+    <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/Vue/"/>
+    
+    
+    <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Vue/"/>
+    
+  </entry>
   
   <entry>
     <title>cypress 學習筆記 - Assertion</title>
@@ -98,11 +147,11 @@
   </entry>
   
   <entry>
-    <title>vueTest - Vue test util</title>
+    <title>vueTest - Vue test util (1)</title>
     <link href="https://github.com/Eva813/Eva813.github.io.git/2023/01/31/vueTest-2/"/>
     <id>https://github.com/Eva813/Eva813.github.io.git/2023/01/31/vueTest-2/</id>
     <published>2023-01-31T05:45:08.000Z</published>
-    <updated>2023-01-31T05:52:06.583Z</updated>
+    <updated>2023-08-05T04:31:50.302Z</updated>
     
     <content type="html"><![CDATA[<ul><li>測試 App.vue<ul><li>引入 <code>@vue/test-utils</code> 使用 shallowMount 方法</li><li>shallowMount 可以渲染出組件<h2 id="shallowMount-mount"><a href="#shallowMount-mount" class="headerlink" title="shallowMount , mount"></a>shallowMount , mount</h2>shallowMount : 只會渲染該元件當層的資料內容<br>mount : 深度渲染，會將元件內所包含的其他元件一起都渲染出</li></ul></li><li>例如以下範例: 在 App.vue 中有包含數個元件</li></ul><pre><code class="vue"> //App.vue&lt;template&gt;    &lt;img class=&quot;logo&quot; alt=&quot;Vue logo&quot; src=&quot;./assets/logo.png&quot; /&gt;    &lt;h1&gt;Test demo&lt;/h1&gt;    &lt;AddCount /&gt;    &lt;HelloWorld /&gt;    &lt;div class=&quot;itemFlex&quot;&gt;    &lt;CardBox v-for=&quot;i in 4&quot; :key=&quot;i&quot; /&gt;    &lt;/div&gt;    &lt;UserList /&gt;    &lt;PhotoItem /&gt;&lt;/template&gt;</code></pre><ul><li>測試元件</li></ul><pre><code class="javaScript">import { shallowMount, mount } from &quot;@vue/test-utils&quot;import App from &#39;@/App.vue&#39;describe(&#39;App.vue test&#39;, () =&gt; {    it(&#39;測試組件 1&#39;, () =&gt; {        //渲染出 App 元件        const wrapper = shallowMount(App);        console.log(wrapper.text())        expect(wrapper.text()).toMatch(&quot;Test demo&quot;)    });    it(&#39;測試組件2&#39;, () =&gt; {    const wrapper = mount(App);    console.log(wrapper.text())    expect(wrapper.text()).toMatch(&quot;若你是寫過 Vue 但沒有寫過單元測試的工程師&quot;)    })})</code></pre><p><img src="https://i.imgur.com/BcvGwlI.png" alt=""></p><p>get 與 find 差異</p><ul><li>抓取某個元件中 DOM 元素</li><li>兩者差異在於<ul><li>使用 get ，如果找不到元素會報錯，並且直接中斷測試的運行</li><li>使用 find 會依據 <code>exists()</code> 回傳布林值</li></ul></li></ul><p><code>&lt;button id=&quot;add&quot; class=&quot;add-btn&quot; @click=&quot;add&quot;&gt;add 按鈕&lt;/button&gt;</code></p><p><img src="https://i.imgur.com/TWuFWX3.png" alt=""></p><ul><li>測試按鈕存不存在<ul><li>exists : 驗證某元素是否存在</li><li><a href="https://test-utils.vuejs.org/api/#exists" target="_blank" rel="noopener"> exists</a></li></ul></li></ul><pre><code class="javaScript">describe(&#39;AddCount.vue&#39;, () =&gt; {    it(&#39;test 1 &#39;, () =&gt; {        const wrapper = shallowMount(AddCount);        console.log(wrapper.find(&#39;.add-btn&#39;))        expect(wrapper.find(&#39;.add-btn&#39;).exists()).toBe(true)    })})</code></pre><p><img src="https://i.imgur.com/0sBL0t6.png" alt=""></p><p><img src="https://i.imgur.com/htkF4X5.png" alt=""></p><h3 id="在情境應用"><a href="#在情境應用" class="headerlink" title="在情境應用"></a>在情境應用</h3><ul><li>在 AddCount 加入 <code>isOpen=ref(false)</code> 來判斷 button 是否在一開始要呈現</li><li>而再測試文件中就是要測試該按鈕在一開始並不會出現</li></ul><p><img src="https://i.imgur.com/YkBK6Ry.png" alt=""></p><pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;import AddCount from &#39;@/components/AddCount.vue&#39;describe(&#39;AddCount.vue&#39;, () =&gt; {    it(&#39;test 1 &#39;, () =&gt; {        const wrapper = shallowMount(AddCount);        console.log(wrapper.find(&#39;.add-btn&#39;))    // 找不到，並且回傳 false        expect(wrapper.find(&#39;.add-btn-err&#39;).exists()).toBe(false)    })})</code></pre><h2 id="find-與-findAll"><a href="#find-與-findAll" class="headerlink" title="find 與 findAll"></a>find 與 findAll</h2><p>以 v-for list 的範例</p><pre><code class="vue">&lt;script&gt;import { ref } from &quot;vue&quot;;import data from &quot;./data.json&quot;;export default {    setup() {        const employeeItem = ref(data);        return {            employeeItem,        };    },};&lt;/script&gt;&lt;template&gt;    &lt;ul class=&quot;item&quot;&gt;        &lt;li class=&quot;user_list&quot; v-for=&quot;item in employeeItem&quot; :key=&quot;item.id&quot;&gt;            &lt;div&gt;                &lt;p&gt;員工編號: {{ item.userId }}&lt;/p&gt;                &lt;p&gt;姓名: {{ item.username }}&lt;/p&gt;            &lt;/div&gt;        &lt;/li&gt;    &lt;/ul&gt;&lt;/template&gt;</code></pre><p><img src="https://i.imgur.com/dqts5eV.png" alt=""></p><p><img src="https://i.imgur.com/PXPy1as.png" alt=""></p><p>如果是要抓元件中 list 有幾筆<br><code>wrapper.findAll(&#39;.user_list&#39;)</code> : 他會是一個陣列資料，其中包含好幾個 DOM wrapper </p><p><img src="https://i.imgur.com/I5lNSRX.png" alt=""></p><p>注意：<br>    <code>TypeError: wrapper.findAll(...).text is not a function</code></p><ul><li>搭配使用 <code>at()</code> 用於找尋其中某一個物件</li></ul><pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;import UserList from &#39;@/components/UserList.vue&#39;describe(&#39;test UserList&#39;, () =&gt; {    it(&#39;test Dom&#39;, () =&gt; {        const wrapper = shallowMount(UserList);    // console.log(wrapper.findAll(&#39;.user_list&#39;).at(0).text())    expect(wrapper.findAll(&#39;.user_list&#39;).at(0).text()).toMatch(&#39;員工編號: 399&#39;)    })})</code></pre><h3 id="另也可以測試所拿到的資料長度"><a href="#另也可以測試所拿到的資料長度" class="headerlink" title="另也可以測試所拿到的資料長度"></a>另也可以測試所拿到的資料長度</h3><ul><li>測試 DOM 資料長度</li></ul><pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;import UserList from &#39;@/components/UserList.vue&#39;describe(&#39;test UserList&#39;, () =&gt; {    it(&#39;test Dom&#39;, () =&gt; {    const wrapper = shallowMount(UserList);    // console.log(wrapper.findAll(&#39;.user_list&#39;).at(0).text())    expect(wrapper.findAll(&#39;.user_list&#39;).at(0).text()).toMatch(&#39;員工編號: 399&#39;)    })    it(&#39;test List length&#39;, () =&gt; {    const wrapper = shallowMount(UserList);    console.log(wrapper.findAll(&#39;.user_list&#39;).length)    expect(wrapper.findAll(&#39;.user_list&#39;).length).toBe(6)    })})</code></pre>]]></content>
     
@@ -474,51 +523,6 @@
     
     
     <category term="Leetcode" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/09/17/hello-world/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2022/09/17/hello-world/</id>
-    <published>2022-09-17T00:10:00.716Z</published>
-    <updated>2022-09-17T00:10:00.716Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>React- 元件 / props</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/09/04/react-useState/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2022/09/04/react-useState/</id>
-    <published>2022-09-04T07:42:36.000Z</published>
-    <updated>2022-11-04T02:36:58.907Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="https://i.imgur.com/InPScmW.png" alt=""></p><p>之前曾快速的學習了React 資料的建立與傳遞方式，並寫了篇文章，最近因為六角讀書會活動也再次更深入一些的學習 React ，並將一些 React Hook 反覆使用練習。<br>因為目前工作主要還是以 Vue 進行開發，所以有時候會提一下兩者框架使用的相同或不同之處。 </p><h2 id="component-元件化"><a href="#component-元件化" class="headerlink" title="component 元件化"></a>component 元件化</h2><p>在 Vue 的撰寫中，也是會嘗試將頁面中的不同區塊做拆分。與 Vue 一樣，元件的的命名會以 大寫 為開頭。<br>透過減少重複為用意來建立元件化。</p><p><img src="https://i.imgur.com/T26krQk.png" alt=""><br><a href="https://codepen.io/Eva-go/pen/zYjxvev" target="_blank" rel="noopener">codepen-Component</a></p><h3 id="多個資料，傳遞給單一元件"><a href="#多個資料，傳遞給單一元件" class="headerlink" title="多個資料，傳遞給單一元件"></a>多個資料，傳遞給單一元件</h3><ul><li>建立兩個元件 component1 , component2</li><li>建立共通元件 Board ，此元件可以各別放入兩個元件要傳入的資料(props)</li></ul><p><a href="https://codepen.io/Eva-go/pen/poVjVaB" target="_blank" rel="noopener">codepen-共用元件</a></p><h3 id="共同資料，傳遞給不同元件"><a href="#共同資料，傳遞給不同元件" class="headerlink" title="共同資料，傳遞給不同元件"></a>共同資料，傳遞給不同元件</h3><p><a href="https://codepen.io/Eva-go/pen/ExLVRXX?editors=1010" target="_blank" rel="noopener">codepen-共用資料</a></p><h3 id="條件-render"><a href="#條件-render" class="headerlink" title="條件 render"></a>條件 render</h3><ul><li>這部分在官方文件就有清楚介紹，可以依據使用條件來顯示元件資料</li><li>使用條件判斷時，若不複雜，可以使用三元運算方式<ul><li><code>isLoggedIn ? &lt;UserGreeting /&gt; : &lt;GuestGreeting /&gt;</code></li></ul></li><li><a href="https://zh-hant.reactjs.org/docs/conditional-rendering.html" target="_blank" rel="noopener">conditional-rendering</a></li></ul><h2 id="元件資料傳遞"><a href="#元件資料傳遞" class="headerlink" title="元件資料傳遞"></a>元件資料傳遞</h2><h3 id="子傳父"><a href="#子傳父" class="headerlink" title="子傳父"></a>子傳父</h3><ul><li>範例將以 input 為範例</li><li>此方式的資料傳遞，有點類似於 Vue 中的 <code>v-model</code> 資料雙向綁定</li><li><a href="https://ithelp.ithome.com.tw/articles/10268187" target="_blank" rel="noopener">使用 v-model 實現父子元件傳遞資料</a></li><li>在 React 可以將 useState 中設訂的值綁在元件上作為傳遞</li><li>在下方的圖示</li><li>在父層有 value , setValue</li></ul><p>-&gt; 其中 setValue 方法提供給子元件，同時就會讓子元件也產生改變 value 的能力（也就是可以使用父元件的方法）</p><ul><li>要實現子傳父，就在父層掛一個 hook<br><img src="https://i.imgur.com/Qb3dUeX.png" alt=""><br><img src="https://i.imgur.com/WbKvlT2.png" alt=""></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/InPScmW.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;之前曾快速的學習了React 資料的建立與傳遞方式，並寫了篇文章，最近因為六角讀書會活動也再次更深入一些的學習 React ，並將一些 React Hook </summary>
-      
-    
-    
-    
-    <category term="React" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/React/"/>
-    
-    
-    <category term="React" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/React/"/>
     
   </entry>
   
