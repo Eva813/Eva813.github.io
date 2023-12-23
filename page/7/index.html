@@ -1,107 +1,1589 @@
-<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Eva's blog</title><meta name="description" content="Front-end Engineer email:as45986@gmail.com"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
-<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
-</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/3LBdMiU.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/15/js-musicPlayer/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/3LBdMiU.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/append"><i class="tag post-item-tag">append</i></a><a href="/tags/jQuery%20"><i class="tag post-item-tag">jQuery </i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/15/js-musicPlayer/">JS實作- musicPlayer</a></h2><time class="has-text-grey" datetime="2021-01-15T13:51:43.000Z">2021-01-15</time><p class="is-flex-grow-2 mt-2">觀察須製作的功能成品
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-播放器API的樣式
-
-&amp;lt;audio&amp;gt;: The Embed Audio element
-
-播放時，左方的圓型圖示會旋轉。
-
-
-先於css檔案製作符合動畫的class
-在js時，依照符合的情況加入該class
-
-
-
-播放時，上方會跳出播放歌曲的名稱。
+<link rel="stylesheet" href="/css/main.css">
 
 
-先於css檔案製作符合動畫的class，設定opacity1或0，translateY位置的移動
-在js時，依照符合的情況加入該class
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Let&#39;s Code">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/page/7/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Eva Chan">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/Eva813/Eva813.github.io.git/page/7/">
 
 
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
 
-左右按鍵可以更換曲目，同時圖片會更換
-
-
-設定陣列，使歌曲與圖片相符
-並讓前後的跳轉鍵，依照順序或條件來變化
-
-
-
-html部分跳轉按鍵
-播放鍵、前/後跳轉的按鈕 
-
-&amp;lt;div class=&amp;quot;nav&amp;quot;&amp;gt;
-        &amp;lt;button id=..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/15/js-musicPlayer/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/Vhxlk8D.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/13/form-validator/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/Vhxlk8D.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/13/form-validator/">JS實作- 表單驗證</a></h2><time class="has-text-grey" datetime="2021-01-13T01:17:11.000Z">2021-01-13</time><p class="is-flex-grow-2 mt-2">
-觀察功能
-製作一個會員申請的表單
-帳號
-email
-密碼
-
-
-輸入框的顏色變化
-判斷條件的設置
-
-任務拆解抓出要互動的元素const form = document.querySelector(&amp;#39;#form&amp;#39;);
-const username = document.querySelector(&amp;#39;#username&amp;#39;);
-const email = document.querySelector(&amp;#39;#email&amp;#39;);
-const password = document.querySelector(&amp;#39;#password&amp;#39;);
-const password2 = document.querySelector(&amp;#39;#password2&amp;#39;)..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/13/form-validator/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/qCvmh4b.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/10/localstorage/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/qCvmh4b.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/LocalStorage"><i class="tag post-item-tag">LocalStorage</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/10/localstorage/">認識什麼是LocalStorage</a></h2><time class="has-text-grey" datetime="2021-01-10T02:36:26.000Z">2021-01-10</time><p class="is-flex-grow-2 mt-2">
-認識 Web Storage：HTML5 的 Web Storage 是一種可讓網頁將資料儲存於本地端的技術，其作用如同 cookie。
-Cookie 儲存空間很小，最多僅能儲存4KB的資料。HTML5 Web Storage 的儲存空間則大得多(儲存資料容量至少5MB以上)。
-
-localStorage 與  sessionStorageWeb Storage 提供兩個物件可以將資料存在 client 端，一種是 localStorage，另一種是 sessionStorage
-
-localStorage:可以跨瀏覽器分頁（tab）存取，且資料存取沒有期限，除非手動從本地端清除。
-sessionStorage:生命週期較短，每次分頁或瀏覽器關掉後就會清除。
-
-基本操作：
-
-設置資料：localStora..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/10/localstorage/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/VSjpRSa.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/10/js-expenseTracker/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/VSjpRSa.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/local%20storage"><i class="tag post-item-tag">local storage</i></a><a href="/tags/forEach"><i class="tag post-item-tag">forEach</i></a><a href="/tags/append"><i class="tag post-item-tag">append</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/10/js-expenseTracker/">JS實作- expense tracker 記帳簿</a></h2><time class="has-text-grey" datetime="2021-01-10T02:08:01.000Z">2021-01-10</time><p class="is-flex-grow-2 mt-2">完成後的成品
-觀察須製作的功能
-重新整理網頁後，保有過去執行的狀態：localstorage
-實作內有使用:
-localstorage:setItem,getItem
-jason.stringfy/jason.parse
+  <title>Let's Code</title>
+  
 
 
 
 
 
 
-在new transation輸入資料後，會將資料傳入history中
-add transation之後，頁面不會刷新(spa)(e.preventdefault)
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Code</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-摸到history中的項目，會出現刪除符號，點擊後刪除
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
 
 
 
-輸入的金額，會顯示於上方income、expense，並且計算總額
-有正負值
-計算收入、花費
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/01/15/js-musicPlayer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/15/js-musicPlayer/" class="post-title-link" itemprop="url">JS實作- musicPlayer</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-15 21:51:43" itemprop="dateCreated datePublished" datetime="2021-01-15T21:51:43+08:00">2021-01-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="觀察須製作的功能"><a href="#觀察須製作的功能" class="headerlink" title="觀察須製作的功能"></a>觀察須製作的功能</h2><p><a href="https://eva813.github.io/Eva_portfolio/musicPlayer/musicPlayer.html" target="_blank" rel="noopener">成品</a></p>
+<ol>
+<li>播放器API的樣式</li>
+</ol>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio" target="_blank" rel="noopener">&lt;audio&gt;: The Embed Audio element</a></p>
+<ol start="2">
+<li>播放時，左方的圓型圖示會旋轉。</li>
+</ol>
+<ul>
+<li>先於css檔案製作符合動畫的class</li>
+<li>在js時，依照符合的情況加入該class</li>
+</ul>
+<p><img src="https://i.imgur.com/3LBdMiU.png" alt=""></p>
+<ol start="3">
+<li>播放時，上方會跳出播放歌曲的名稱。</li>
+</ol>
+<ul>
+<li>先於css檔案製作符合動畫的class，設定<code>opacity</code>1或0，<code>translateY</code>位置的移動</li>
+<li>在js時，依照符合的情況加入該class</li>
+</ul>
+<p><img src="https://i.imgur.com/U3dx7yG.png" alt=""></p>
+<ol start="4">
+<li>左右按鍵可以更換曲目，同時圖片會更換</li>
+</ol>
+<ul>
+<li>設定陣列，使歌曲與圖片相符</li>
+<li>並讓前後的跳轉鍵，依照順序或條件來變化</li>
+</ul>
+<p><img src="https://i.imgur.com/NuxfsOb.png" alt=""></p>
+<hr>
+<h2 id="html部分"><a href="#html部分" class="headerlink" title="html部分"></a>html部分</h2><h3 id="跳轉按鍵"><a href="#跳轉按鍵" class="headerlink" title="跳轉按鍵"></a>跳轉按鍵</h3><ul>
+<li>播放鍵、前/後跳轉的按鈕 </li>
+</ul>
+<pre><code class="html">&lt;div class=&quot;nav&quot;&gt;
+        &lt;button id=&quot;prev&quot; class=&quot;action-btn&quot;&gt;
+          &lt;i class=&quot;fas fa-backward&quot;&gt;&lt;/i&gt;
+        &lt;/button&gt;
+
+        &lt;button id=&quot;play&quot; class=&quot;action-btn  action-btn-big&quot;&gt;
+          &lt;i class=&quot;fas fa-play&quot;&gt;&lt;/i&gt;
+        &lt;/button&gt;
+
+        &lt;button id=&quot;next&quot; class=&quot;action-btn&quot;&gt;
+          &lt;i class=&quot;fas fa-forward&quot;&gt;&lt;/i&gt;
+        &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+<p><img src="https://i.imgur.com/w1bpDjr.png" alt=""></p>
+<h2 id="css部分"><a href="#css部分" class="headerlink" title="css部分"></a>css部分</h2><h3 id="背景顏色"><a href="#背景顏色" class="headerlink" title="背景顏色"></a>背景顏色</h3><p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient()" target="_blank" rel="noopener">linear-gradient()</a></p>
+<pre><code class="css">/* 傾斜度\顏色、從哪個位置開始 */
+  background-image:linear-gradient(0deg
+  ,rgb(247, 247, 247,1) 23.8%,
+  rgba(252,221,221,1) 92% );</code></pre>
+<p><img src="https://i.imgur.com/Xb5PpmY.png" alt=""></p>
+<h2 id="圖片圓形以及旋轉"><a href="#圖片圓形以及旋轉" class="headerlink" title="圖片圓形以及旋轉"></a>圖片圓形以及旋轉</h2><pre><code class="css">.img-container{
+  position: relative;
+  width: 110px;
+}
+/*圖片圓形*/
+.img-container img{
+  border-radius: 50%;
+  object-fit: cover;
+/*填滿元素的寬度及高度(維持原比例)，通常會剪掉部分的物件*/
+ height: 110px;
+ width: inherit; /*繼承自父層的寬度屬性值。*/
+ position:absolute;
+ bottom: 0;
+ left: 0;
+
+ animation: rotate 3s linear infinite;
+ animation-play-state: paused;
+}
+
+/* 播放class的製作 */
+.music-container.play .img-container img{
+ animation-play-state:running;
+
+}
+@keyframes rotate{
+  from{
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}</code></pre>
+<ul>
+<li>使用animation@keyframe<br><a href="https://wcc723.github.io/development/2020/10/11/img-cover/" target="_blank" rel="noopener">新手前端也不該犯的錯：圖片變形</a></li>
+</ul>
+<p><img src="https://i.imgur.com/RfUz8Pk.png" alt=""></p>
+<ul>
+<li>在圖片中間加入圓形點，以看起來像光碟樣式</li>
+</ul>
+<pre><code class="css">.img-container::after{
+  content: &#39;&#39;;
+  border-radius: 50%;
+  background-color: #fff;
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 25px;
+  height: 25px;
+  transform: translate(-50%,50%);
+}</code></pre>
+<p><img src="https://i.imgur.com/HlnWKJb.png" alt=""></p>
+<h3 id="播放進度條的製作"><a href="#播放進度條的製作" class="headerlink" title="播放進度條的製作"></a>播放進度條的製作</h3><ol>
+<li>標題<pre><code class="css">.music-info{
+background-color: rgba(255,255,255,.5);
+border-radius:15px 15px 0 0 ;
+position: absolute;
+top: 0;
+left: 20px;
+opacity: 0;
+transform: translateY(0%);
+transition: transform 0.3s ease-in,opacity 0.3s ease-in;
+z-index: 0;
+}
+</code></pre>
+</li>
+</ol>
+<p>.music-container.play .music-info{<br>  opacity: 1;<br>   transform: translateY(-100%);<br>}</p>
+<pre><code>* 將曲目標題設置背景、圓角
+* 利用 transfor、opacity來呈現位置的變化
+
+![](https://i.imgur.com/icBK0qt.png)
+
+* 修改標題位置
+
+```css=
+ /*放入.music-info之中*/
+ width: calc(100% - 40px);
+  padding: 10px 10px 10px 150px;</code></pre><h4 id="calc"><a href="#calc" class="headerlink" title="calc()"></a><code>calc()</code></h4><p>calc() 的運算式一樣是按照先乘除後加減進行計算<br> width: calc(100% - 40px);<br>/* 意思是 100% 的寬度 - 去 40px */<br><a href="https://5xruby.tw/posts/css-calc/" target="_blank" rel="noopener">CSS： calc() 數值運算</a></p>
+<p><img src="https://i.imgur.com/er3G6Wd.png" alt=""></p>
+<pre><code class="css">.music-info h4{
+margin: 0;
+}
+</code></pre>
+<p><img src="https://i.imgur.com/qiWmxmu.png" alt=""></p>
+<p>2.進度條（progress）</p>
+<pre><code class="css">.progress-container{
+  background-color: #fff;
+  border-radius: 5px;
+  height: 4px;
+  width: 100%;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.progress{
+  background-color: #fe8daa;
+ border-radius: 5px;
+  height: 4px;
+  width: 0%;
+  transition: width .1s linear ;
+}
+</code></pre>
+<p><img src="https://i.imgur.com/uPUHWcM.png" alt=""></p>
+<h2 id="js部分"><a href="#js部分" class="headerlink" title="js部分"></a>js部分</h2><h3 id="1-音樂播放鍵-播放與停止"><a href="#1-音樂播放鍵-播放與停止" class="headerlink" title="1.音樂播放鍵(播放與停止)"></a>1.音樂播放鍵(播放與停止)</h3><ul>
+<li>分別有兩個函式：<code>playMusic()</code> 、<code>pauseMusic()</code></li>
+<li>在css設定<code>.play</code>的css，並於js綁定事件，加入css的效果(使圖片如同轉盤，會旋轉)</li>
+<li>在icon的部分：在播放時：為暫停鍵圖示;在暫停時：為播放鍵的圖示</li>
+<li>透過play()、pause()，讓音源播放與暫停</li>
+</ul>
+<h3 id="play-、pause"><a href="#play-、pause" class="headerlink" title="play()、pause()"></a><code>play()</code>、<code>pause()</code></h3><p>因為play()、pause()是DOM元素，不是jQuery的function，而要用jQuery取得DOM元素<br><code>$(&#39;#audio&#39;).get(0).play()</code> =&gt;<code>$(&#39;#audio&#39;)[0].play()</code><br><code>$(&#39;#audio&#39;).get(0).pause()</code> =&gt;<code>$(&#39;#audio&#39;)[0].pause()</code></p>
+<p>參考資料：<br><a href="https://learn.jquery.com/using-jquery-core/faq/how-do-i-pull-a-native-dom-element-from-a-jquery-object/" target="_blank" rel="noopener">How do I pull a native DOM element from a jQuery object?</a><br><a href="https://stackoverflow.com/questions/4646998/play-pause-html-5-video-using-jquery" target="_blank" rel="noopener">Play/pause HTML 5 video using JQuery</a></p>
+<pre><code class="javascript">//播放音樂
+function playMusic() {
+
+  $(&#39;.music-container&#39;).addClass(&#39;play&#39;);
+  $(&#39;#play&#39;).find(&#39;i&#39;).removeClass(&#39;fa-play&#39;);
+  $(&#39;#play&#39;).find(&#39;i&#39;).addClass(&#39;fa-pause&#39;);
+  $(&#39;#audio&#39;).get(0).play();
+
+};</code></pre>
+<pre><code class="javascript">//停止音樂
+function pauseMusic() {
+  $(&#39;.music-container&#39;).removeClass(&#39;play&#39;);
+  $(&#39;#play&#39;).find(&#39;i&#39;).addClass(&#39;fa-play&#39;);
+  $(&#39;#play&#39;).find(&#39;i&#39;).removeClass(&#39;fa-pause&#39;);
+  $(&#39;#audio&#39;).get(0).pause();
+}</code></pre>
+<ul>
+<li><h4 id="綁定事件："><a href="#綁定事件：" class="headerlink" title="綁定事件："></a>綁定事件：</h4>如果音樂是播放狀態的話，就執行<code>pauseMusic()</code>，反之，音樂不處於波方時，執行<code>playMusic()</code><pre><code class="javascript">$(&#39;#play&#39;).click(function (e) {
+  var hasPlay = $(&#39;#music-container&#39;).hasClass(&#39;play&#39;);
+  //var a = $(&#39;#audio&#39;).paused;
+  if (hasPlay) {
+    pauseMusic();
+  } else {
+    playMusic();
+  }
+});
+</code></pre>
+</li>
+</ul>
+<pre><code>
 
 
 
+### 2.載入音樂
 
-呈現完整語法$(document).ready(function () {
+* 將歌曲名稱建立陣列，並將此回傳到建立的函式中
+* 設定預設的索引`let songIndex = 1`
+* 使用 attr( 屬性名, 屬性值 )，獲取屬性的值，在這部分，透過歌曲名稱來取得歌曲與照片
+
+```javascript
+var songs_name = [&#39;hey&#39;, &#39;summer&#39;, &#39;ukulele&#39;];
+let songIndex = 1;
+
+function loadSongs(song) {
+  //console.log(song);
+  $(&#39;#title&#39;).text(song);
+
+  $(&#39;#audio&#39;).attr(&#39;src&#39;, `music/${song}.mp3`);
+  $(&#39;#cover&#39;).attr(&#39;src&#39;, `img/${song}.jpg`);
+}
+
+// Initially load song details into DOM
+loadSongs(songs_name[songIndex]);</code></pre><h4 id="綁定於下一首、前一首的圖示被點擊時"><a href="#綁定於下一首、前一首的圖示被點擊時" class="headerlink" title="綁定於下一首、前一首的圖示被點擊時"></a>綁定於下一首、前一首的圖示被點擊時</h4><pre><code class="javascript">$(&#39;#next&#39;).click(nextSong)
+  $(&#39;#prev&#39;).click(function () { prevSong();
+  });</code></pre>
+<ul>
+<li><p>查看函式回傳</p>
+<pre><code class="javascript">loadSongs(songs_name);</code></pre>
+<p><img src="https://i.imgur.com/je9hXJY.png" alt=""></p>
+</li>
+<li><p>要抓取到該索引</p>
+<pre><code class="javascript">loadSongs(songs_name[songIndex]);</code></pre>
+<p><img src="https://i.imgur.com/5not1Ji.png" alt=""><br>此段落執行時，出現問題：<br><img src="https://i.imgur.com/dj4H5hb.png" alt=""></p>
+</li>
+<li><p>搜尋到的處理方式：在html的<code>head</code><link rel="shortcut icon" href="#"><br><a href="https://stackoverflow.com/questions/31075893/im-getting-favicon-ico-error/31329574" target="_blank" rel="noopener">I’m getting favicon.ico error
+</a></p>
+</li>
+</ul>
+<p>參考資料：<br><a href="https://iter01.com/470327.html" target="_blank" rel="noopener">jquery prop和attr的區別</a><br><a href="https://cythilya.github.io/2017/09/10/jquery-attr-vs-prop/" target="_blank" rel="noopener">jQuery .attr() vs .prop()</a></p>
+<h3 id="3-左右鍵的跳轉"><a href="#3-左右鍵的跳轉" class="headerlink" title="3.左右鍵的跳轉"></a>3.左右鍵的跳轉</h3><ul>
+<li>下一首歌曲，與跳至前一首歌曲，兩個函式的撰寫有異曲同工之妙，只有在設條條件上的差異。</li>
+<li><code>nextSong()</code>:設定條件為歌曲索引<code>songIndex</code>比 歌曲陣列長度-1<code>songs_name.length - 1</code>還要小，我們就要將索引+1。<ul>
+<li>例如這裏預設的索引為1，所以在點擊當下，判斷&lt;<code>songs_name.length - 1</code>，所以需加1，索引變成2，跳至下一首 ‘ukulele’</li>
+</ul>
+</li>
+<li>prevSong()：設定條件為歌曲索引<code>songIndex</code>比0大，就要索引-1，跳轉至上一首歌曲。若沒符合的話，索引就等於<code>songs_name.length - 1</code></li>
+</ul>
+<pre><code class="javascript">//歌曲的索引，如果比歌曲總數-1還小，就將索引加1，跳轉下一首
+function nextSong() {
+
+  if (songIndex &lt; songs_name.length - 1) { songIndex += 1; } else {
+    songIndex = 0
+  };
+  loadSongs(songs_name[songIndex]);
+  playMusic();
+}
+
+
+//跳轉前一首
+
+
+function prevSong() {
+  //如果索引沒有大於0。就會播索引[2]
+  if (songIndex &gt; 0) { songIndex -= 1; } else {
+    songIndex = songs_name.length - 1;
+  };
+  loadSongs(songs_name[songIndex]);
+  playMusic();
+}</code></pre>
+<p>參考資料：<br><a href="https://www.geeksforgeeks.org/create-a-music-player-using-javascript/" target="_blank" rel="noopener">Create a Music Player using JavaScript</a></p>
+<h3 id="4-點擊進度條，可以跳轉音樂位置"><a href="#4-點擊進度條，可以跳轉音樂位置" class="headerlink" title="4.點擊進度條，可以跳轉音樂位置"></a>4.點擊進度條，可以跳轉音樂位置</h3><h4 id="1-顯示粉色進度條"><a href="#1-顯示粉色進度條" class="headerlink" title="(1).顯示粉色進度條"></a>(1).顯示粉色進度條</h4><ul>
+<li>duration：音源的時間(一樣是使用get方式取得)</li>
+<li>currentTime：音樂播放的當前位置（以秒計）</li>
+<li>progressBar：進度條</li>
+<li>計算百分比：<code>(currentTime / duration) * 100</code></li>
+</ul>
+<pre><code class="javascript">//顯示進度條
+//為何取[0]
+function handleProgress() {
+  var duration = $(&#39;#audio&#39;).get(0).duration;
+  //console.log(duration)
+  var currentTime = $(&#39;#audio&#39;)[0].currentTime;
+  //console.log(currentTime)
+  const progressBar = $(&#39;#progress&#39;);
+  const progressPercent = (currentTime / duration) * 100;
+
+  //currentTime目前播放時間去與影片長度duration轉換成百分比，即可得到目前播放時間的百分比
+
+  progressBar.css(&#39;width&#39;, `${progressPercent}%`);
+};
+</code></pre>
+<h4 id="2-點擊進度條，會跳轉到該位置播放"><a href="#2-點擊進度條，會跳轉到該位置播放" class="headerlink" title="(2).點擊進度條，會跳轉到該位置播放"></a>(2).點擊進度條，會跳轉到該位置播放</h4><ul>
+<li>width:獲取該進度條容器的寬度</li>
+<li>抓取點擊位置：<ul>
+<li>e.pageX:取得滑鼠在頁面裡的位置</li>
+<li>elm.offset().left:絕對座標X軸</li>
+</ul>
+</li>
+<li>將（點擊位置除以進度條的總長）乘以 音樂的時間長度，就可以取得點擊的時間位置<code>theTime = ((xPos / width))* duration;</code></li>
+<li>最後現在時間設為，計算好的點擊時間</li>
+</ul>
+<pre><code class="javascript">//點擊進度條
+
+//https://ithelp.ithome.com.tw/articles/10194871
+//https://tools.wingzero.tw/article/sn/102
+
+
+$(&#39;#progress-container&#39;).click(function (e) {
+  const width = $(&#39;#progress-container&#39;).width(); //216.25
+  //console.log(width);
+  //取得點擊位置
+  var elm = $(this);
+  var xPos = e.pageX - elm.offset().left;
+
+  //console.log(xPos);
+
+  var duration = $(&#39;#audio&#39;)[0].duration;
+  var theTime = ((xPos / width))
+    * duration;
+  //console.log(theTime);
+  $(&#39;#audio&#39;)[0].currentTime = theTime;
+});
+</code></pre>
+<p>執行過程，利用console來查看</p>
+<pre><code class="javascript">console.log(e.pageX);
+console.log(elm.offset().left);
+console.log(xPos)</code></pre>
+<p>參考資料：<br><a href="https://tools.wingzero.tw/article/sn/102" target="_blank" rel="noopener">取得滑鼠位置、元素位置與區塊內的相對位置</a></p>
+<h3 id="5-歌曲播完後，換下一首"><a href="#5-歌曲播完後，換下一首" class="headerlink" title="5.歌曲播完後，換下一首"></a>5.歌曲播完後，換下一首</h3><pre><code class="javascript">  $(&#39;#audio&#39;).on(&#39;ended&#39;,nextSong);</code></pre>
+<p>參考資料：<br><a href="https://stackoverflow.com/questions/39325637/audio-auto-play-next-song-when-previous-is-finished/52228798" target="_blank" rel="noopener">audio auto play next song when previous is finished</a></p>
+<h2 id="6-增加隨機的變換背景色彩"><a href="#6-增加隨機的變換背景色彩" class="headerlink" title="6.增加隨機的變換背景色彩"></a>6.增加隨機的變換背景色彩</h2><ul>
+<li>色彩為0-256;而因為想取的較亮的色系，所以取64-256<ul>
+<li><code>Math.random()</code> 會回傳一個偽隨機小數 (pseudo-random) 介於0到1之間(包含 0，不包含1) </li>
+<li><code>Math.floor()</code>會將所有的小數無條件捨去到比自身小的最大整數</li>
+<li><code>Math.floor(Math.random() * 255) + 64</code>就會取得64 to 256</li>
+</ul>
+</li>
+<li>宣告變數<code>bgColor</code>為rdba(red,green,blue,a)</li>
+<li>最後將此函式，放入<code>loadSongs()</code>函式當中，每次播放、跳轉歌曲，同時背景顏色也會改變<br><img src="https://i.imgur.com/piYCbc5.png" alt=""></li>
+</ul>
+<pre><code class="javascript">function random_bg_color() {
+  // Get a random number between 64 to 256 
+
+  // (for getting lighter colors) 
+  let red = Math.floor(Math.random() * 255) + 64;
+  let green = Math.floor(Math.random() * 255) + 64;
+  let blue = Math.floor(Math.random() * 255) + 64;
+  let a = 0.5
+
+  // Construct a color withe the given values 
+  let bgColor = &quot;rgba(&quot; + red + &quot;, &quot; + green + &quot;, &quot; + blue + &quot;, &quot; + a + &quot;)&quot;;
+
+  var bg = $(document.body).css(&#39;background&#39;, `${bgColor}`);
+  // Set the background to the new color 
+  bg = bgColor;
+  console.log(bg)
+
+} </code></pre>
+<p>參考資料：<br><a href="https://www.geeksforgeeks.org/create-a-music-player-using-javascript/" target="_blank" rel="noopener">Create a Music Player using JavaScript</a><br><a href="https://stackoverflow.com/questions/20790579/wont-math-floormath-random-255-generate-uneven-probabilities" target="_blank" rel="noopener">Won’t Math.floor(Math.random() * 255) generate uneven probabilities?
+</a><a href="https://ithelp.ithome.com.tw/articles/10197904" target="_blank" rel="noopener">[筆記][JavaScript]用Math.random()取得亂數的技巧</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/01/13/form-validator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/13/form-validator/" class="post-title-link" itemprop="url">JS實作- 表單驗證</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-13 09:17:11" itemprop="dateCreated datePublished" datetime="2021-01-13T09:17:11+08:00">2021-01-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/Vhxlk8D.png" alt=""></p>
+<h2 id="觀察功能"><a href="#觀察功能" class="headerlink" title="觀察功能"></a>觀察功能</h2><ol>
+<li>製作一個會員申請的表單<ul>
+<li>帳號</li>
+<li>email</li>
+<li>密碼</li>
+</ul>
+</li>
+<li>輸入框的顏色變化</li>
+<li>判斷條件的設置</li>
+</ol>
+<h2 id="任務拆解"><a href="#任務拆解" class="headerlink" title="任務拆解"></a>任務拆解</h2><h3 id="抓出要互動的元素"><a href="#抓出要互動的元素" class="headerlink" title="抓出要互動的元素"></a>抓出要互動的元素</h3><pre><code class="javascript">const form = document.querySelector(&#39;#form&#39;);
+const username = document.querySelector(&#39;#username&#39;);
+const email = document.querySelector(&#39;#email&#39;);
+const password = document.querySelector(&#39;#password&#39;);
+const password2 = document.querySelector(&#39;#password2&#39;);</code></pre>
+<ul>
+<li>獲取物件層次中的父物件</li>
+<li>針對指定元素取得或設置指定的class</li>
+</ul>
+<pre><code class="javascript">//show input error message
+function showError(input, message) {
+  const formControl = input.parentElement;
+  formControl.className = &#39;form-control error&#39;;
+}
+
+
+form.addEventListener(&#39;submit&#39;, function (e) {
+  e.preventDefault();
+  if (username.value === &#39;&#39;) {
+    showError(username, &#39;Username is required&#39;);
+  } else {
+    showSuccess(username);
+  }
+})
+</code></pre>
+<pre><code class="javascript">const small = formControl.querySelector(&#39;small&#39;);
+  small.innerText = &#39;Username is required&#39;;</code></pre>
+<ul>
+<li>修改顯示文字</li>
+</ul>
+<p><img src="https://i.imgur.com/NvhXJk8.png" alt=""></p>
+<h4 id="成功輸入"><a href="#成功輸入" class="headerlink" title="成功輸入"></a>成功輸入</h4><pre><code class="javascript">//show success outline
+function showSuccess(input) {
+  const formControl = input.parentElement;
+  formControl.className = &#39;form-control success&#39;;
+}</code></pre>
+<h3 id="複製相同條件判斷"><a href="#複製相同條件判斷" class="headerlink" title="複製相同條件判斷"></a>複製相同條件判斷</h3><ul>
+<li>事件為點擊送出之後，會進行條件判斷</li>
+</ul>
+<pre><code class="javascript">//event listener
+form.addEventListener(&#39;submit&#39;, function (e) {
+  e.preventDefault();
+
+  if (username.value === &#39;&#39;) {
+    showError(username, &#39;Username is required&#39;);
+  } else {
+    showSuccess(username);
+  };
+
+  if (email.value === &#39;&#39;) {
+    showError(email, &#39;Email is required&#39;);
+  } else {
+    showSuccess(email);
+  };
+
+  if (password.value === &#39;&#39;) {
+    showError(password, &#39;Password is required&#39;);
+  } else {
+    showSuccess(password);
+  };
+
+  if (password2.value === &#39;&#39;) {
+    showError(password2, &#39;Password 2 is required&#39;);
+  } else {
+    showSuccess(password2);
+  };
+})
+</code></pre>
+<p><img src="https://i.imgur.com/shKtSSS.png" alt=""></p>
+<h3 id="設定符合的驗證"><a href="#設定符合的驗證" class="headerlink" title="設定符合的驗證"></a>設定符合的驗證</h3><ul>
+<li>email的輸入應有規範樣式</li>
+<li>使用正則表達式</li>
+</ul>
+<p><img src="https://i.imgur.com/vVVWyGG.png" alt=""></p>
+<pre><code class="javascript">//check email is valid
+//js email regex
+//https://ithelp.ithome.com.tw/articles/10094951
+
+function isValiEmail(email) {
+  const re = /^(([^&lt;&gt;()[\]\\.,;:\s@&quot;]+(\.[^&lt;&gt;()[\]\\.,;:\s@&quot;]+)*)|(&quot;.+&quot;))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
+//
+ if (email.value === &#39;&#39;) {
+    showError(email, &#39;Email is required&#39;);
+  } else if (!isValiEmail(email.value)) {
+    showError(email, &#39;Email is not valid&#39;);
+  }
+  else {
+    showSuccess(email);
+  };
+</code></pre>
+<p><img src="https://i.imgur.com/gdkHO9O.png" alt=""></p>
+<h4 id="整合簡化-gt-forEach"><a href="#整合簡化-gt-forEach" class="headerlink" title="整合簡化 =&gt;forEach"></a>整合簡化 =&gt;forEach</h4><pre><code class="javascript">//Check required fields
+function checkRequired(inputArr) {
+  inputArr.forEach(function (input) {
+    if (input.value.trim() === &#39;&#39;) {
+      showError(input, &#39;is required&#39;);
+    } else {
+      showSuccess(input);
+    }
+  });
+
+}</code></pre>
+<ul>
+<li>修改showError，套入名稱</li>
+</ul>
+<pre><code class="javascript">if (input.value.trim() === &#39;&#39;) {
+      //console.log(input.id);//會顯示input的所有id
+      showError(input, `${input.id}is required`);</code></pre>
+<h3 id="將getFieldName-function拉出"><a href="#將getFieldName-function拉出" class="headerlink" title="將getFieldName() function拉出"></a>將getFieldName() function拉出</h3><ul>
+<li>製作訊息的第一個字母大寫</li>
+</ul>
+<pre><code class="javascript">//Check required fields
+function checkRequired(inputArr) {
+  inputArr.forEach(function (input) {
+    if (input.value.trim() === &#39;&#39;) {
+      //console.log(input.id);//會顯示input的所有id
+      showError(input, `${getFieldName(input)} is required`);
+    } else {
+      showSuccess(input);
+    }
+  });
+
+}
+
+
+//getFieldName
+function getFieldName(input) {
+  return input.id.charAt(0).toUpperCase() + input.id.slice(1);
+  //將第一個字charAt(0)，變大寫，並再接續後面的字slice(1)
+}
+</code></pre>
+<ul>
+<li>charAt()从一个字符串中返回指定的字符,<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/charAt" target="_blank" rel="noopener">String.prototype.charAt()</a></li>
+</ul>
+<h2 id="長度檢查"><a href="#長度檢查" class="headerlink" title="長度檢查"></a>長度檢查</h2><pre><code class="javascript">
+// Check input length
+function checkLength(input, min, max) {
+  if (input.value.length &lt; min) {
+    showError(
+      input,
+      `${getFieldName(input)} must be at least ${min} characters`
+    );
+  } else if (input.value.length &gt; max) {
+    showError(
+      input,
+      `${getFieldName(input)} must be less than ${max} characters`
+    );
+  } else {
+    showSuccess(input);
+  }
+}</code></pre>
+<p><img src="https://i.imgur.com/sAvU95T.png" alt=""></p>
+<h3 id="密碼檢查"><a href="#密碼檢查" class="headerlink" title="密碼檢查"></a>密碼檢查</h3><pre><code class="javascript">// check password match
+function checkPasswordMatch(input1, input2) {
+  if (input1.value !== input2.value) {
+    showError(input2, &#39;Password do not match&#39;)
+  }
+}</code></pre>
+<p><img src="https://i.imgur.com/62UwLS7.png" alt=""></p>
+<p>參考資料：<br><a href="https://medium.com/change-or-die/javascript%E5%88%9D%E5%AD%B8-dom%E5%B8%B8%E7%94%A8%E5%B1%AC%E6%80%A7%E8%88%87%E6%96%B9%E6%B3%95-ef851afdb65a" target="_blank" rel="noopener">JavaScript初學：DOM常用屬性與方法</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/01/10/localstorage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/10/localstorage/" class="post-title-link" itemprop="url">認識什麼是LocalStorage</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-10 10:36:26" itemprop="dateCreated datePublished" datetime="2021-01-10T10:36:26+08:00">2021-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/qCvmh4b.png" alt=""></p>
+<h2 id="認識-Web-Storage："><a href="#認識-Web-Storage：" class="headerlink" title="認識 Web Storage："></a>認識 Web Storage：</h2><p>HTML5 的 Web Storage 是一種可讓網頁將資料儲存於本地端的技術，其作用如同 cookie。</p>
+<p>Cookie 儲存空間很小，最多僅能儲存4KB的資料。<br>HTML5 Web Storage 的儲存空間則大得多(儲存資料容量至少5MB以上)。</p>
+<p><img src="https://i.imgur.com/tq8wugy.png" alt=""></p>
+<h2 id="localStorage-與-sessionStorage"><a href="#localStorage-與-sessionStorage" class="headerlink" title="localStorage 與  sessionStorage"></a>localStorage 與  sessionStorage</h2><p>Web Storage 提供兩個物件可以將資料存在 client 端，一種是 localStorage，另一種是 sessionStorage</p>
+<ul>
+<li>localStorage:可以跨瀏覽器分頁（tab）存取，且資料存取沒有期限，除非手動從本地端清除。</li>
+<li>sessionStorage:生命週期較短，每次分頁或瀏覽器關掉後就會清除。</li>
+</ul>
+<p>基本操作：</p>
+<ul>
+<li>設置資料：<code>localStorage.setItem(key, value)</code></li>
+<li>取得資料：<code>let storageValue = localStorage.getItem(key, value)</code></li>
+<li>清除資料：<code>localStorage.removeItem(key)</code></li>
+<li>清除全部資料：<code>localStorage.clear()</code><blockquote>
+<p>只要將localStorage替換sessionStorage即可</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h3><p>儲存在本地端的資料，格式為 key : value，需注意的是「value 的型態只有 String」!</p>
+<h2 id="找到儲存的資料"><a href="#找到儲存的資料" class="headerlink" title="找到儲存的資料"></a>找到儲存的資料</h2><ul>
+<li>在 DevTools console </li>
+</ul>
+<p><img src="https://i.imgur.com/jZNIas5.png" alt=""></p>
+<p><img src="https://i.imgur.com/7SkvJ8q.png" alt=""></p>
+<p><img src="https://i.imgur.com/ZoLQ4yV.png" alt=""></p>
+<h2 id="JSON-字串轉換"><a href="#JSON-字串轉換" class="headerlink" title="JSON 字串轉換"></a>JSON 字串轉換</h2><pre><code class="javascript=">var arr = [&#39;1&#39;,&#39;2&#39;,&#39;c&#39;];
+
+console.log( arr + &quot; is &quot; + typeof(arr));
+// 1,2,c is object</code></pre>
+<h4 id="1-轉換成字串-JSON-stringify"><a href="#1-轉換成字串-JSON-stringify" class="headerlink" title="1.轉換成字串 JSON.stringify"></a>1.轉換成字串 JSON.stringify</h4><pre><code class="javascript=">var arrToStr = JSON.stringify(arr);</code></pre>
+<p><img src="https://i.imgur.com/0lfiqLV.png" alt=""></p>
+<h4 id="2-轉換回原本格式-JSON-parse"><a href="#2-轉換回原本格式-JSON-parse" class="headerlink" title="2.轉換回原本格式 JSON.parse"></a>2.轉換回原本格式 JSON.parse</h4><ul>
+<li>會把一個JSON字串轉換成 JavaScript的數值或是物件</li>
+</ul>
+<pre><code class="javascript">var parse = JSON.parse(arrToStr);</code></pre>
+<p><img src="https://i.imgur.com/3chwLJF.png" alt=""></p>
+<p>參考資料：<br><a href="https://medium.com/%E9%BA%A5%E5%85%8B%E7%9A%84%E5%8D%8A%E8%B7%AF%E5%87%BA%E5%AE%B6%E7%AD%86%E8%A8%98/javascript-localstorage-%E7%9A%84%E4%BD%BF%E7%94%A8-e0da6f402453" target="_blank" rel="noopener">[JavaScript] localStorage 的使用</a><br><a href="https://yakimhsu.com/project/project_w7_storage.html" target="_blank" rel="noopener">[第七週] 瀏覽器資料儲存 - Cookie、LocalStorage、SessionStorage</a><br><a href="https://ithelp.ithome.com.tw/articles/10223253" target="_blank" rel="noopener">[Day16] JavaScript - 前端資料存</a><br><a href="https://tools.wingzero.tw/article/sn/28" target="_blank" rel="noopener">HTML5 的 Web Storage- local storage 與 session storage</a><br><a href="https://ithelp.ithome.com.tw/articles/10203525" target="_blank" rel="noopener">Day20 localStorage、sessionStorage</a><br><a href="https://medium.com/itsems-frontend/javascript-json-stringify-and-json-parse-7a1251d3824c" target="_blank" rel="noopener">[JavaScript] JSON.stringify() and JSON.parse()：變 JSON 和變物件</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/01/10/js-expenseTracker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/10/js-expenseTracker/" class="post-title-link" itemprop="url">JS實作- expense tracker 記帳簿</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-10 10:08:01" itemprop="dateCreated datePublished" datetime="2021-01-10T10:08:01+08:00">2021-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>完成後的<a href="https://eva813.github.io/Eva_portfolio/expenseTracker/expenseTracker.html" target="_blank" rel="noopener">成品</a><br><img src="https://i.imgur.com/VSjpRSa.png" alt=""></p>
+<h1 id="觀察須製作的功能"><a href="#觀察須製作的功能" class="headerlink" title="觀察須製作的功能"></a>觀察須製作的功能</h1><ol>
+<li>重新整理網頁後，保有過去執行的狀態：localstorage<ul>
+<li>實作內有使用:</li>
+<li>localstorage:setItem,getItem</li>
+<li>jason.stringfy/jason.parse</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://i.imgur.com/abUVHGM.png" alt=""></p>
+<p><img src="https://i.imgur.com/c53IDMj.png" alt=""></p>
+<ol start="2">
+<li>在new transation輸入資料後，會將資料傳入history中<ul>
+<li>add transation之後，頁面不會刷新(spa)(e.preventdefault)</li>
+</ul>
+</li>
+<li>摸到history中的項目，會出現刪除符號，點擊後刪除</li>
+</ol>
+<p><img src="https://i.imgur.com/X06EsA4.png" alt=""></p>
+<ol start="4">
+<li>輸入的金額，會顯示於上方income、expense，並且計算總額<ul>
+<li>有正負值</li>
+<li>計算收入、花費<br><img src="https://i.imgur.com/uofQVuf.png" alt=""></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="呈現完整語法"><a href="#呈現完整語法" class="headerlink" title="呈現完整語法"></a>呈現完整語法</h1><pre><code class="javascript">$(document).ready(function () {
   //預設值的設置，取得存在本地的資料或是空陣列
-  var tran..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/10/js-expenseTracker/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/cu80NjP.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/10/js-exchangeRate/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/cu80NjP.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/ajax"><i class="tag post-item-tag">ajax</i></a><a href="/tags/input"><i class="tag post-item-tag">input</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/10/js-exchangeRate/">JS實作- exchangeRate匯率轉換器</a></h2><time class="has-text-grey" datetime="2021-01-10T01:50:30.000Z">2021-01-10</time><p class="is-flex-grow-2 mt-2">實作需求分析
+  var transactions = JSON.parse(localStorage.getItem(&#39;Transactions&#39;)) || [];
 
-抓取api提供的匯率資料：使用jQuery,ajax
-選擇不同幣別，進行匯率換算
-swap按鈕，使幣別交換
+  //陣列初始
+  if (transactions.length &gt; 0) {
+    initHistory(transactions);
+  }
+  //點擊按鈕的事件
+  $(&#39;.btn&#39;).click(function (e) {
+    e.preventDefault();
+    //console.log(&#39;click&#39;);
+    //取得表格中的值
+    const text_val = $(&#39;#text&#39;).val();
+    const amount_val = $(&#39;#amount&#39;).val();
+    let id = generateID();
 
-完成後的成品jQuery.ajax 使用
-參考資料：jQuery.ajax()
+    addTransactions(id, text_val, amount_val, transactions);
+
+    //推入陣列
+    transactions.push({
+      id: id,
+      name: text_val,
+      amount: amount_val
+    })
 
 
-$.ajax({
-  method: &amp;quot;get&amp;quot;,
-  url: &amp;quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&amp;quot;,
+    localStorage.setItem(&#39;Transactions&#39;, JSON.stringify(transactions));
+
+
+  })
+  updateValue(transactions);
+
+});
+
+
+//在list中插入
+function addTransactions(id, name, amount, transactions) {
+  console.log(&#39;amount:&#39;, amount);
+
+  const Transaction_str = $(&#39;&lt;li&gt;&lt;/li&gt;&#39;).appendTo(&#39;#list&#39;);
+
+  Transaction_str.addClass(amount &lt; 0 ? &#39;minus&#39; : &#39;plus&#39;);
+  Transaction_str.html(`${name}&lt;span&gt; ${amount}&lt;/span&gt;&lt;button class=&quot;delete-btn&quot;  data-id=&quot;${id}&quot;&gt;x&lt;/button&gt;`);
+  $(&#39;#list&#39;).append(Transaction_str);
+
+
+  $(&#39;#text&#39;).val(&#39;&#39;);
+  $(&#39;#amount&#39;).val(&#39;&#39;);
+
+  //刪除鈕 要交易交出後再綁事件
+  $(&#39;.delete-btn&#39;).last().click(function () {
+    $(this).parent().remove();
+    let id = $(this).data(&#39;id&#39;);
+    //console.log(id);
+    deleteFromLocalstorage(transactions, id); //要記得傳入id
+
+  });
+
+}
+//從localstorage刪除
+//要記得在參數放入id
+function deleteFromLocalstorage(transactions, id) {
+  transactions.forEach(function (item, index, arr) {
+    //console.log(&#39;item&#39;, item);
+    //console.log(&#39;index&#39;, index);
+    //console.log(&#39;arr&#39;, arr);
+    if (item.id === id) {
+      arr.splice(index, 1);
+    }
+  });
+  //迴圈刪除後，要儲存到localStorage才有確實刪去
+  localStorage.setItem(&#39;Transactions&#39;, JSON.stringify(transactions));
+}
+
+
+// Generate random ID
+function generateID() {
+  return Math.floor(Math.random() * 100000000);
+}
+
+
+//數值更新計算
+function updateValue(transactions) {
+  const amounts_arr = transactions.map(function (transaction) {
+    return transaction.amount
+  })
+
+  console.log(amounts_arr);
+
+  //計算加總 
+  var total = 0;
+  $.each(amounts_arr, function () { total += parseFloat((this)) || 0; });
+  //傳回YOUR BALANCE
+  $(&#39;#balance&#39;).text(`$${total}`);
+  console.log(total);
+
+
+  //*************************** */
+  //從陣列找出&gt;0的值，放置income
+  //console.log(amounts)
+  var income = amounts_arr.filter(
+    function (item) {
+      return item &gt; 0
+    }
+  )
+  console.log(income);
+
+  var totalIncome = 0;
+  $.each(income, function () { totalIncome += parseFloat((this)) || 0; });
+
+  console.log(totalIncome); //回傳220
+  //傳回到income
+  $(&#39;#money-plus&#39;).text(`$${totalIncome}`);
+  //***************************** */
+  //從陣列找出&lt;0的值，放置income
+  var expense = amounts_arr.filter(
+    function (item) {
+      return item &lt; 0
+    }
+  )
+  console.log(expense);
+
+  var totalExpense = 0;
+  $.each(expense, function () { totalExpense += parseFloat((this)) || 0; });
+
+  console.log(totalExpense);
+  //傳回到expense
+  $(&#39;#money-minus&#39;).text(`$${totalExpense}`)
+
+
+}
+
+//init
+function initHistory(transactions) {
+  transactions.forEach(transaction =&gt; {
+    addTransactions(transaction.id, transaction.name, transaction.amount, transactions);
+  });
+  updateValue(transactions);
+
+}
+
+</code></pre>
+<h1 id="各項目拆解："><a href="#各項目拆解：" class="headerlink" title="各項目拆解："></a>各項目拆解：</h1><h2 id="add-transations按下去之後，頁面不刷新，直接將資料傳入紀錄中"><a href="#add-transations按下去之後，頁面不刷新，直接將資料傳入紀錄中" class="headerlink" title="add transations按下去之後，頁面不刷新，直接將資料傳入紀錄中"></a><code>add transations</code>按下去之後，頁面不刷新，直接將資料傳入紀錄中</h2><pre><code class="javascript">$(document).ready(function () {
+  $(&#39;.btn&#39;).click(function () {
+    console.log(&#39;click&#39;);
+  })
+});
+//點擊後，有印出click，但很快的刷新頁面</code></pre>
+<ul>
+<li>加入<code>e.preventDefault();</code> 用來阻止預設動作的發生</li>
+</ul>
+<p><img src="https://i.imgur.com/4y0J1vA.png" alt=""></p>
+<h2 id="讓transation輸入後顯示"><a href="#讓transation輸入後顯示" class="headerlink" title="讓transation輸入後顯示"></a>讓transation輸入後顯示</h2><pre><code class="javascript">$(document).ready(function () {
+  $(&#39;.btn&#39;).click(function (e) {
+    e.preventDefault();
+    console.log(&#39;click&#39;);
+    addTransactions(&#39;cash&#39;, &#39;200&#39;);
+  })
+});
+
+
+function addTransactions(name, amount) {
+  var Transaction_str = `&lt;li class=&#39;plus&#39; &gt;${name}&lt;span&gt; ${amount}&lt;/span&gt;&lt;button class=&quot;delete-btn&quot;&gt;x&lt;/button&gt;&lt;/li&gt;`
+  $(&#39;#list&#39;).append(Transaction_str);
+}
+
+//</code></pre>
+<p><img src="https://i.imgur.com/Vh9uPvJ.png" alt=""></p>
+<ul>
+<li>提交之後清空<ul>
+<li>選擇該輸入框，並利用<code>val()</code>，使內部的值清空</li>
+</ul>
+</li>
+</ul>
+<pre><code class="javascript"> $(&#39;#text&#39;).val(&#39;&#39;);
+  $(&#39;#amount&#39;).val(&#39;&#39;);
+</code></pre>
+<p><img src="https://i.imgur.com/uKnX7fd.png" alt=""></p>
+<h2 id="從表格中取得值"><a href="#從表格中取得值" class="headerlink" title="從表格中取得值"></a>從表格中取得值</h2><ul>
+<li><p>製作按鈕的點擊事件，取得表格中的值</p>
+</li>
+<li><p>將值傳入函式的參數<code>addTransactions(text_val, amount_val);</code></p>
+<pre><code class="javascript">$(document).ready(function () {
+$(&#39;.btn&#39;).click(function (e) {
+  e.preventDefault();
+  console.log(&#39;click&#39;);
+
+  //取得表格中的值
+  const text_val = $(&#39;#text&#39;).val();
+  const amount_val = $(&#39;#amount&#39;).val();
+  addTransactions(text_val, amount_val);
+})
+</code></pre>
+</li>
+</ul>
+<p>});</p>
+<pre><code>
+## 製作刪除紐
+* 原本的撰寫方式，為選到最後一個刪除鈕，並點擊加以刪除
+* 此方式造成，無法確實刪除資料
+
+```javascript
+$(&#39;.delete-btn&#39;).last().click(function () {
+    console.log(&#39;del&#39;);
+  })
+}</code></pre><p><img src="https://i.imgur.com/v7n8t3L.png" alt=""></p>
+<ul>
+<li><p>修改方式，只能綁定一筆transatin或是綁定最後一筆<br><img src="https://i.imgur.com/lhqdwYA.png" alt=""></p>
+</li>
+<li><p>查看若實現點擊後刪除，是會刪除什麼？</p>
+<pre><code class="javascript">$(&#39;.delete-btn&#39;).last().click(function () {
+  console.log(this);
+})
+}</code></pre>
+<p><img src="https://i.imgur.com/9dYre8g.png" alt=""></p>
+</li>
+<li><p>要刪除的是整筆資料，所以要去尋找他鄰近的元素</p>
+<pre><code class="javascript">$(&#39;.delete-btn&#39;).last().click(function () {
+  $(this).parent().remove();
+})</code></pre>
+</li>
+</ul>
+<h2 id="localstorage-執行"><a href="#localstorage-執行" class="headerlink" title="localstorage 執行"></a>localstorage 執行</h2><p>筆記補充：<a href="https://eva813.github.io/2021/01/10/localstorage/" target="_blank" rel="noopener">LocalStorage介紹</a></p>
+<p>從此實作，可以看到它是一個陣列，裡面是物件</p>
+<ul>
+<li>設置一個空陣列</li>
+<li>並將物件push進去</li>
+</ul>
+<pre><code class="javascript">//預設值的設置，取得存在本地的資料或是空陣列
+  var transactions = JSON.parse(localStorage.getItem(&#39;Transactions&#39;)) || [];
+
+   //推入陣列
+    transactions.push({
+      name: text_val,
+      amount: amount_val
+    })
+    localStorage.setItem(&#39;Transactions&#39;, JSON.stringify(transactions));
+</code></pre>
+<p><img src="https://i.imgur.com/HC2XCpT.png" alt=""></p>
+<p><img src="https://i.imgur.com/0b4mWW6.png" alt=""></p>
+<ul>
+<li>增加初始function<pre><code class="javascript">//init
+function initHistory(transactions) {
+transactions.forEach(transaction =&gt; {
+  addTransactions(transaction.name, transaction.amount);
+});
+</code></pre>
+</li>
+</ul>
+<p>}</p>
+<p>//將此函式放於 $(document).ready()之中</p>
+<p>//陣列初始<br>  if (transactions.length &gt; 0) {<br>    initHistory(transactions);<br>  }</p>
+<pre><code>
+![](https://i.imgur.com/dH3nJ6K.png)
+
+## 將transation刪除後，並沒有完全從localstorage刪除
+運用id來刪除
+* 從此段落：[localstorage 執行](#localstorage-執行)，圖片中的存取陣列可以看到，沒有設置id
+
+* id是在addTransactions使用
+```javascript
+// Generate random ID
+function generateID() {
+  return Math.floor(Math.random() * 100000000);
+}
+
+//floor：無條件捨去
+//ceil：無條件進位
+</code></pre><ul>
+<li><p>在創造的陣列中\物件，都加入id</p>
+<pre><code class="javascript"> const id = generateID();
+  addTransactions(id, text_val, amount_val);
+
+  //推入陣列
+  transactions.push({
+    id: id,
+    name: text_val,
+    amount: amount_val
+  })
+</code></pre>
+</li>
+</ul>
+<pre><code>* 在addTransactions的函式中也要加入id
+```javascript
+function addTransactions(id, name, amount) {
+
+  console.log(id, name, amount);}
+</code></pre><p><img src="https://i.imgur.com/sMtoogJ.png" alt=""></p>
+<ul>
+<li>在button加入data-id</li>
+</ul>
+<p>和資料有關的時候：data-原來欄位名稱</p>
+<pre><code class="javascript">const Transaction_str = `&lt;li class=&#39;plus&#39; &gt;${name}&lt;span&gt; ${amount}&lt;/span&gt;&lt;button class=&quot;delete-btn&quot;  data-id=&quot;${id}&quot;&gt;x&lt;/button&gt;&lt;/li&gt;`</code></pre>
+<p><img src="https://i.imgur.com/cmamimU.png" alt=""></p>
+<p><img src="https://i.imgur.com/v8TQspA.png" alt=""></p>
+<ul>
+<li><p>確定點擊刪除鈕的時後，是有抓到該id</p>
+<pre><code class="javascript">
+$(&#39;.delete-btn&#39;).last().click(function () {
+  $(this).parent().remove();
+  let id = $(this).data(&#39;id&#39;);
+  console.log(id);
+})</code></pre>
+</li>
+<li><p><code>let id = $(this).data(); 查看id時</code> 取得的是物件<br><img src="https://i.imgur.com/BeBkXAN.png" alt=""></p>
+</li>
+<li><p>應改為<br><img src="https://i.imgur.com/snvF7AX.png" alt=""></p>
+</li>
+</ul>
+<p>此時還沒有真正刪除id，只是確定有抓到id :point_up_2: </p>
+<p>jquery <code>data()</code>： 自定義屬性 (data attributes)，讓我們可以任意讀寫資料在元素上，而且不會影響頁面的 layout<br><a href="https://www.fooish.com/jquery/data.html" target="_blank" rel="noopener">jQuery Data</a></p>
+<ul>
+<li><h4 id="利用forEach、splice-刪除陣列內的資料"><a href="#利用forEach、splice-刪除陣列內的資料" class="headerlink" title="利用forEach、splice()刪除陣列內的資料"></a>利用forEach、splice()刪除陣列內的資料</h4><pre><code class="javascript">function deleteFromLocalstorage(transactions, id) {
+transactions.forEach(function (item, index, arr) {
+  //console.log(&#39;item&#39;, item);
+  //console.log(&#39;index&#39;, index);
+  //console.log(&#39;arr&#39;, arr);
+  if (item.id === id) {
+    arr.splice(index, 1);
+  }
+});
+//迴圈刪除後，要儲存到localStorage才有確實刪去
+localStorage.setItem(&#39;Transactions&#39;, JSON.stringify(transactions));
+}</code></pre>
+</li>
+</ul>
+<ul>
+<li>查看迴圈的資料<br><img src="https://i.imgur.com/FexS5lt.png" alt=""></li>
+</ul>
+<ul>
+<li>確實刪除存在localstorage的資料<pre><code class="javascript">localStorage.setItem(&#39;Transactions&#39;, JSON.stringify(transactions));</code></pre>
+</li>
+</ul>
+<h3 id="判斷輸入的數字大小，並給予class"><a href="#判斷輸入的數字大小，並給予class" class="headerlink" title="判斷輸入的數字大小，並給予class"></a>判斷輸入的數字大小，並給予class</h3><ul>
+<li>放在addTransactions()函式之中</li>
+</ul>
+<pre><code class="javascript">const Transaction_str = $(&#39;&lt;li&gt;&lt;/li&gt;&#39;).appendTo(&#39;#list&#39;);
+
+  Transaction_str.addClass(amount &lt; 0 ? &#39;minus&#39; : &#39;plus&#39;);
+  Transaction_str.html(`${name}&lt;span&gt; ${amount}&lt;/span&gt;&lt;button class=&quot;delete-btn&quot;  data-id=&quot;${id}&quot;&gt;x&lt;/button&gt;`);
+  $(&#39;#list&#39;).append(Transaction_str);
+</code></pre>
+<p><img src="https://i.imgur.com/NYXCDtS.png" alt=""></p>
+<h3 id="數值的更新"><a href="#數值的更新" class="headerlink" title="數值的更新"></a>數值的更新</h3><p><img src="https://i.imgur.com/EdCN1cd.png" alt=""></p>
+<pre><code class="javascript">function updateValue(transactions) {
+  const amounts_arr = transactions.map(function (transaction) {
+    return transaction.amount
+  })
+
+  console.log(amounts_arr);
+
+  //計算加總 
+  var total = 0;
+  $.each(amounts_arr, function () { total += parseFloat((this)) || 0; });
+  //傳回YOUR BALANCE
+  $(&#39;#balance&#39;).text(`$${total}`);
+  console.log(total);
+
+
+  //*************************** */
+  //從陣列找出&gt;0的值，放置income
+  //console.log(amounts)
+  var income = amounts_arr.filter(
+    function (item) {
+      return item &gt; 0
+    }
+  )
+  console.log(income);
+  var totalIncome = 0;
+  $.each(income, function () { totalIncome += parseFloat((this)) || 0; });
+
+  //console.log(totalIncome); //回傳220
+  //傳回到income
+  $(&#39;#money-plus&#39;).text(`$${totalIncome}`);
+  //***************************** */
+  //從陣列找出&lt;0的值，放置income
+  var expense = amounts_arr.filter(
+    function (item) {
+      return item &lt; 0
+    }
+  )
+  console.log(expense);
+
+  var totalExpense = 0;
+  $.each(expense, function () { totalExpense += parseFloat((this)) || 0; });
+
+  console.log(totalExpense);
+  //傳回到expense
+  $(&#39;#money-minus&#39;).text(`$${totalExpense}`)
+
+
+}</code></pre>
+<ul>
+<li>創造一個amount的陣列</li>
+</ul>
+<pre><code class="javascript">  const amounts_arr = transactions.map(function (transaction) {
+    return transaction.amount
+  })
+  console.log(amounts_arr);
+</code></pre>
+<p><img src="https://i.imgur.com/sG0YS9J.png" alt=""></p>
+<ul>
+<li>計算加總數值<pre><code class="javascript">var total = 0;
+$.each(amounts_arr, function () { total += parseFloat((this)) || 0; });
+//傳回YOUR BALANCE
+$(&#39;#balance&#39;).text(`$${total}`);
+console.log(total);
+</code></pre>
+</li>
+</ul>
+<pre><code>
+![](https://i.imgur.com/7c2MqFo.png)
+
+![](https://i.imgur.com/CCXAirK.png)
+
+* income 收入加總計算
+
+```javascript
+//從陣列找出&gt;0的值，放置income
+  //console.log(amounts)
+  var income = amounts_arr.filter(
+    function (item) {
+      return item &gt; 0
+    }
+  )
+  console.log(income);
+  var totalIncome = 0;
+  $.each(income, function () { totalIncome += parseFloat((this)) || 0; });
+
+  //console.log(totalIncome); //回傳220
+  //傳回到income
+  $(&#39;#money-plus&#39;).text(`$${totalIncome}`);</code></pre><p><img src="https://i.imgur.com/9d8Hx3Y.png" alt=""></p>
+<p><img src="https://i.imgur.com/KXRi18A.png" alt=""></p>
+<ul>
+<li>expense支出加總</li>
+</ul>
+<pre><code class="javascript">//從陣列找出&lt;0的值，放置expense
+  var expense = amounts_arr.filter(
+    function (item) {
+      return item &lt; 0
+    }
+  )
+  console.log(expense);
+
+  var totalExpense = 0;
+  $.each(expense, function () { totalExpense += parseFloat((this)) || 0; });
+
+  console.log(totalExpense);
+  //傳回到expense
+  $(&#39;#money-minus&#39;).text(`$${totalExpense}`)
+</code></pre>
+<p><img src="https://i.imgur.com/AaIZORC.png" alt=""></p>
+<p><img src="https://i.imgur.com/TM4EQrH.png" alt=""></p>
+<hr>
+<p>錯誤修正：</p>
+<ul>
+<li>調換推入陣列以及<code>addTransactions</code>的順序<br><img src="https://i.imgur.com/7jdJ7kO.png" alt=""></li>
+</ul>
+<pre><code class="javascript">//點擊按鈕的事件
+  $(&#39;.btn&#39;).click(function (e) {
+    e.preventDefault();
+    //console.log(&#39;click&#39;);
+    //取得表格中的值
+    const text_val = $(&#39;#text&#39;).val();
+    const amount_val = $(&#39;#amount&#39;).val();
+    let id = generateID();
+
+    //推入陣列
+    transactions.push({
+      id: id,
+      name: text_val,
+      amount: amount_val
+    });
+
+    addTransactions(id, text_val, amount_val, transactions);
+
+
+
+
+    localStorage.setItem(&#39;Transactions&#39;, JSON.stringify(transactions));
+
+    updateValue(transactions);
+  })</code></pre>
+<ul>
+<li>將updateValue()放入事件中</li>
+</ul>
+<pre><code class="javascript">//刪除鈕 要交易交出後再綁事件
+  $(&#39;.delete-btn&#39;).last().click(function () {
+    $(this).parent().remove();
+    let id = $(this).data(&#39;id&#39;);
+    //console.log(id);
+    deleteFromLocalstorage(transactions, id); //要記得傳入id
+    updateValue(transactions);
+  });</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/01/10/js-exchangeRate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/10/js-exchangeRate/" class="post-title-link" itemprop="url">JS實作- exchangeRate匯率轉換器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-10 09:50:30" itemprop="dateCreated datePublished" datetime="2021-01-10T09:50:30+08:00">2021-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="實作需求分析"><a href="#實作需求分析" class="headerlink" title="實作需求分析"></a>實作需求分析</h2><p><img src="https://i.imgur.com/cu80NjP.png" alt=""></p>
+<ul>
+<li>抓取api提供的匯率資料：使用jQuery,ajax</li>
+<li>選擇不同幣別，進行匯率換算</li>
+<li>swap按鈕，使幣別交換</li>
+</ul>
+<h4 id="完成後的成品"><a href="#完成後的成品" class="headerlink" title="完成後的成品"></a>完成後的<a href="https://eva813.github.io/Eva_portfolio/exchangeRate/exchangeRate.html" target="_blank" rel="noopener">成品</a></h4><h2 id="jQuery-ajax-使用"><a href="#jQuery-ajax-使用" class="headerlink" title="jQuery.ajax 使用"></a>jQuery.ajax 使用</h2><ul>
+<li>參考資料：<a href="https://api.jquery.com/jquery.ajax/" target="_blank" rel="noopener">jQuery.ajax()
+</a></li>
+</ul>
+<pre><code class="javascript">$.ajax({
+  method: &quot;get&quot;,
+  url: &quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&quot;,
 
 })
   .done(function( some_data ) {
@@ -109,255 +1591,1783 @@ $.ajax({
     //成功抓到值的話，就會印出抓取到的資料
   }).fail(function(){
 
+  })</code></pre>
+<p><img src="https://i.imgur.com/S1kOYmH.png" alt=""></p>
+<ul>
+<li>應用於exchangeRate:<pre><code class="javascript">$.ajax({
+  url: `https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/${currency_one}`,  //注意符號
+  method: &#39;get&#39;,//get,post,put
+  dataType: &#39;json&#39;,
+  success: function (data) {
+    //console.log(data);
+    const rate = data.conversion_rates[currency_two];
+    //console.log(rate);
+    $(&#39;#rate&#39;).text(`1 ${currency_one} = ${rate} ${currency_two}`);
+    $(&#39;#amount-two&#39;).val((amountOne * rate).toFixed(2));
+  }
+})
+</code></pre>
+</li>
+</ul>
+<pre><code>* #### 詳細說明可以參照內文：[計算匯率calculate函式](#計算匯率calculate-函式)
+
+
+
+#### 其他參考資料：
+
+[[ Alex 宅開發 ] 👨‍💻從 jQuery 入門到認識 JavaScript #5 Ajax 與非同步功能操作與原始碼探索](https://www.youtube.com/watch?v=z-hN7GY5K7g)
+</code></pre><ul>
+<li><code>url</code>:來源，api的位置在哪裏</li>
+<li><code>type</code>:api的呼叫方式</li>
+<li><code>dataType</code>:它回給你的資料類型</li>
+<li><code>data</code>:你要傳給它什麼<pre><code></code></pre></li>
+</ul>
+<pre><code class="javascript">
+
+$.ajax({
+  url: data.json,
+  type: &#39;get&#39;,//get,post,put,path,delete
+  dataType: &#39;json&#39;, //html,xml,text,jsonp
+  data: {}
+
+}).then(function (res) {
+  //response &lt;-&gt; request
+  console.log(res);
+  return def.resolve();
+}), function (err) {
+  console.log(err);
+  return def.reject();
+}
+</code></pre>
+<h2 id="計算匯率calculate-函式"><a href="#計算匯率calculate-函式" class="headerlink" title="計算匯率calculate 函式"></a>計算匯率calculate 函式</h2><ul>
+<li>此函式為抓取匯率api的資料並帶入計算匯率</li>
+</ul>
+<pre><code class="javascript">function calculate() {
+
+  var currency_one = $(&quot;#currency-one&quot;).val();
+  var currency_two = $(&#39;#currency-two&#39;).val();
+  var amountOne = $(&#39;#amount-one&#39;).val();
+  var amountTwo = $(&#39;#amount-two&#39;).val();
+
+  //https://app.exchangerate-api.com/dashboard/confirmed
+
+  $.ajax({
+    url: `https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/${currency_one}`,//注意符號
+    method: &#39;get&#39;,//抓取值
+    dataType: &#39;json&#39;,
+    success: function (data) {
+      //console.log(data);  //查看抓到的物件
+
+      const rate = data.conversion_rates[currency_two];
+      //console.log(rate);
+
+      $(&#39;#rate&#39;).text(`1 ${currency_one} = ${rate} ${currency_two}`);
+
+      //將值帶入
+      $(&#39;#amount-two&#39;).val((amountOne * rate).toFixed(2));
+    }
   })
 
 
-應用於exchangeR..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/10/js-exchangeRate/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/NdO4OR5.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/28/js-browser/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/NdO4OR5.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/DOM%22"><i class="tag post-item-tag">DOM&quot;</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/28/js-browser/">JS-browser</a></h2><time class="has-text-grey" datetime="2020-12-28T10:47:58.000Z">2020-12-28</time><p class="is-flex-grow-2 mt-2">
-1. DOM 與樹狀結構
+}</code></pre>
+<h3 id="函式說明"><a href="#函式說明" class="headerlink" title="函式說明:"></a>函式說明:</h3><h4 id="1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量"><a href="#1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量" class="headerlink" title="1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量"></a>1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量</h4><h4 id="2-串接資料"><a href="#2-串接資料" class="headerlink" title="2.串接資料"></a>2.串接資料</h4><p> (1). 抓取資料的位置<br><code>url: https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/${currency_one}</code></p>
+<p>注意網址：<br><code>&quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&quot;</code><br>注意網址後面有修改，要抓取會變動的變數： ${currency_one}</p>
+<p> (2) 檢查是否有抓到要的資料：</p>
+<ul>
+<li>宣告：<code>const rate = data.conversion_rates[currency_two];</code></li>
+<li>console.log(rate); </li>
+</ul>
+<p><img src="https://i.imgur.com/LKGiCmN.png" alt=""></p>
+<ul>
+<li>確定抓取的值是否正確：<code>console.log($(&#39;#amount-two&#39;).val());</code></li>
+</ul>
+<p><img src="https://i.imgur.com/r9Nx25o.png" alt=""></p>
+<ul>
+<li>將計算匯率帶入<br><code>$(&#39;#amount-two&#39;).val((amountOne * rate).toFixed(2));</code></li>
+</ul>
+<p><img src="https://i.imgur.com/oMBuNFV.png" alt=""></p>
+<h2 id="其他輸入值的抓取與連動"><a href="#其他輸入值的抓取與連動" class="headerlink" title="其他輸入值的抓取與連動"></a>其他輸入值的抓取與連動</h2><ul>
+<li><h4 id="currency-one的改變，會連動上面的函式計算結果"><a href="#currency-one的改變，會連動上面的函式計算結果" class="headerlink" title="#currency-one的改變，會連動上面的函式計算結果"></a><code>#currency-one的改變</code>，會連動上面的函式計算結果</h4></li>
+</ul>
+<pre><code class="javascript">$(&quot;#currency-one&quot;).change(function () {
+  $(&quot;#rate&quot;).html(&quot;&quot;); 
+  calculate();
+})</code></pre>
+<pre><code class="javascript">
+//抓取amountone
+$(&quot;#amount-one&quot;).on(&quot;input&quot;, function () {
+  $(&quot;#rate&quot;).html(&quot;&quot;);
+  calculate();
+})
 
-DOM: document:網頁內部
-KURO 老師:DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。
+$(&quot;#currency-two&quot;).change(function () {
+  $(&quot;#rate&quot;).html(&quot;&quot;);
+  calculate();
+})
 
+//抓取amountTwo
+$(&quot;#amount-two&quot;).on(&quot;input&quot;, function () {
+  $(&quot;#rate&quot;).html(&quot;&quot;);
+  calculate();
+})</code></pre>
+<ul>
+<li><h4 id="發現使用-append-，會出現累積div文字的問題"><a href="#發現使用-append-，會出現累積div文字的問題" class="headerlink" title="發現使用.append()，會出現累積div文字的問題"></a>發現使用<code>.append()</code>，會出現累積div文字的問題</h4></li>
+<li><p>(1) 清除函式<code>.append()</code>，累積div文字呈現的問題<br><code>$(&quot;#rate&quot;).html(&quot;&quot;);</code></p>
+</li>
+<li><p>(2) 將原本使用<code>.append()</code>的地方，修改為<code>.text()</code>, <code>$(&#39;#rate&#39;).text(`1 ${currency_one} = ${rate} ${currency_two}`);</code></p>
+<ul>
+<li>位置：<a href="#計算匯率calculate-函式">計算匯率calculate函式</a></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/GTMuXY0.png" alt=""></p>
+<p><img src="https://i.imgur.com/TvspVAq.png" alt=""></p>
+<h2 id="swap按鈕-（使幣別交換）"><a href="#swap按鈕-（使幣別交換）" class="headerlink" title="swap按鈕 （使幣別交換）"></a>swap按鈕 （使幣別交換）</h2><ul>
+<li>宣告一個變數，紀錄交換前的幣別<code>let temp = $(&quot;#currency-one&quot;).val();</code></li>
+<li>確認是否宣告正確：<code>console.log(temp);</code></li>
+</ul>
+<p><img src="https://i.imgur.com/gkYsHxQ.png" alt=""></p>
+<p><img src="https://i.imgur.com/fAZmC0Q.png" alt=""></p>
+<pre><code class="javascript">//swap按鈕
+$(&#39;#swap&#39;).click(function () {
+  let temp = $(&quot;#currency-one&quot;).val();//設一個變數來存放currency-one
+  $(&quot;#currency-one&quot;).val($(&quot;#currency-two&quot;).val());
+  $(&quot;#currency-two&quot;).val(temp);
+  calculate();
+})
 
+calculate(); //放於最後</code></pre>
+<ul>
+<li><code>console.log($(&quot;#currency-one&quot;).val());</code></li>
+<li><code>console.log($(&quot;#currency-two&quot;).val());</code></li>
+</ul>
+<p><img src="https://i.imgur.com/o4JLcIF.png" alt=""></p>
+<hr>
+<p>參考資料：<br><a href="https://ithelp.ithome.com.tw/articles/10192175" target="_blank" rel="noopener">重新認識 JavaScript: Day 16 那些你知道與不知道的事件們</a></p>
 
+      
+    </div>
 
-Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西 
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
-API (Application Programming Interface)
-應用程式 編程 介面
-document 物件 API 文件
-getElementsByTagName : 抓取html中某tag的元素&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
-&amp;lt;body&amp;gt;
-&amp;lt;div&amp;gt;
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2020/12/28/js-browser/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/28/js-browser/" class="post-title-link" itemprop="url">JS-browser</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-28 18:47:58" itemprop="dateCreated datePublished" datetime="2020-12-28T18:47:58+08:00">2020-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/NdO4OR5.png" alt=""></p>
+<h2 id="1-DOM-與樹狀結構"><a href="#1-DOM-與樹狀結構" class="headerlink" title="1. DOM 與樹狀結構"></a>1. DOM 與樹狀結構</h2><p><img src="https://i.imgur.com/uZDTql8.png" alt=""></p>
+<ul>
+<li>DOM: document:網頁內部<blockquote>
+<p>KURO 老師:<br>DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西<br> <img src="https://i.imgur.com/tPHGSL4.png" alt=""></p>
+</blockquote>
+<h3 id="API-Application-Programming-Interface"><a href="#API-Application-Programming-Interface" class="headerlink" title="API (Application Programming Interface)"></a>API (Application Programming Interface)</h3><ul>
+<li><p>應用程式 編程 介面</p>
+<h2 id="document-物件-API-文件"><a href="#document-物件-API-文件" class="headerlink" title="document 物件 API 文件"></a>document 物件 API 文件</h2></li>
+<li><h4 id="getElementsByTagName-抓取html中某tag的元素"><a href="#getElementsByTagName-抓取html中某tag的元素" class="headerlink" title="getElementsByTagName : 抓取html中某tag的元素"></a><code>getElementsByTagName</code> : 抓取html中某tag的元素</h4><pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;body&gt;
+&lt;div&gt;
   hello~
 
-&amp;lt;/div&amp;gt;
-&amp;lt;div&amp;gt;
-..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/28/js-browser/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/44kqCRM.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/27/js-array/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/44kqCRM.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/Array"><i class="tag post-item-tag">Array</i></a><a href="/tags/Object"><i class="tag post-item-tag">Object</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/27/js-array/">JS基本功- 物件與陣列</a></h2><time class="has-text-grey" datetime="2020-12-27T13:17:13.000Z">2020-12-27</time><p class="is-flex-grow-2 mt-2">
-程式柴
-Function、array都屬於物件
+&lt;/div&gt;
+&lt;div&gt;
+  yo!
+&lt;/div&gt;
+&lt;script&gt;
 
-物件的例子var person = {
-      name: [&amp;#39;Bob&amp;#39;, &amp;#39;Smith&amp;#39;],
+  const elements = document.getElementsByTagName(&#39;div&#39;);
+  console.log(elements);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p><img src="https://i.imgur.com/hSmfZ9u.png" alt=""></p>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/yNOOK2m.png" alt=""></p>
+<ul>
+<li><h4 id="getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取"><a href="#getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取" class="headerlink" title="getElementsByClassName: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)"></a><code>getElementsByClassName</code>: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)</h4></li>
+</ul>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;h1&gt;DOM
+  &lt;/h1&gt;
+  &lt;div class=&quot;block1&quot;&gt;
+    hello~
+
+  &lt;/div&gt;
+  &lt;div&gt;
+    yo!
+  &lt;/div&gt;
+  &lt;script&gt;
+
+    const elements = document.getElementsByClassName(&#39;block1&#39;);
+    console.log(elements);
+  &lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+<p><img src="https://i.imgur.com/d7ZlZnr.png" alt=""></p>
+<ul>
+<li><h4 id="getElementById-注意：getElement-沒有加s！這是用來抓取指定ID"><a href="#getElementById-注意：getElement-沒有加s！這是用來抓取指定ID" class="headerlink" title="getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID"></a><code>getElementById</code> : 注意：getElement 沒有加s！這是用來抓取指定ID</h4><pre><code class="html">&lt;body&gt;
+&lt;h1&gt;DOM
+&lt;/h1&gt;
+&lt;div class=&quot;block1&quot;&gt;
+  hello~
+
+&lt;/div&gt;
+&lt;div id=&quot;myyo&quot;&gt;
+  yo!
+&lt;/div&gt;
+&lt;script&gt;
+  const elements = document.getElementById(&#39;myyo&#39;);
+  console.log(elements);
+&lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+</li>
+</ul>
+<pre><code>![](https://i.imgur.com/1ouq4WA.png)
+
+* #### `querySelector`: 後面接的是css選擇器
+* 只會針對元素的第一筆資料，其他並不會被選入這時候可以使用
+
+    * 選擇tag標籤：(&#39;div&#39;)：注意：使用此方式當html有多個div，他只會選擇到第一個符合的
+    * 選擇cass : (&#39;.calssName&#39;)
+    * 選擇id : (&#39;#idName&#39;)
+
+![](https://i.imgur.com/QzoOo6r.png)
+
+![](https://i.imgur.com/pSMPFCJ.png)
+
+* 也可以選區某一tag下的tag
+    * `querySelector(&#39;div &gt; a&#39;)`
+```html
+&lt;body&gt;
+  &lt;h1&gt;DOM
+  &lt;/h1&gt;
+  &lt;div class=&quot;block1&quot;&gt;
+    hello~
+
+  &lt;/div&gt;
+  &lt;div id=&quot;myyo&quot;&gt;
+    yo!
+    &lt;a href=&quot;#&quot;&gt;hello&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+
+    const elements = document.querySelector(&#39;div &gt; a&#39;);
+    console.log(elements);
+  &lt;/script&gt;
+&lt;/body&gt;</code></pre><p><img src="https://i.imgur.com/I9qr8LD.png" alt=""></p>
+<ul>
+<li><h4 id="querySelectorAll-可以選取多個元素"><a href="#querySelectorAll-可以選取多個元素" class="headerlink" title="querySelectorAll: 可以選取多個元素"></a><code>querySelectorAll</code>: 可以選取多個元素</h4></li>
+</ul>
+<pre><code class="html">&lt;body&gt;
+  &lt;h1&gt;DOM
+  &lt;/h1&gt;
+  &lt;div class=&quot;block1&quot;&gt;
+    hello~
+
+  &lt;/div&gt;
+  &lt;div id=&quot;myyo&quot;&gt;
+    yo!
+    &lt;a href=&quot;#&quot;&gt;hello&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+
+    const elements = document.querySelectorAll(&#39;div&#39;);
+    console.log(elements);
+  &lt;/script&gt;</code></pre>
+<p><img src="https://i.imgur.com/jFPYIO0.png" alt="Eloquent JavaScript, 3rd Edition"></p>
+<h3 id="順利選則元素之後，嘗試做些改變"><a href="#順利選則元素之後，嘗試做些改變" class="headerlink" title="順利選則元素之後，嘗試做些改變"></a>順利選則元素之後，嘗試做些改變</h3><p>可以看看，js如何與瀏覽器互動 -&gt;<a href="https://hackmd.io/yGiTI8qVRLWmDCpD1w7HcA?view" target="_blank" rel="noopener">JavaScript 與瀏覽器的溝通</a></p>
+<h3 id="BOM-與-window-物件"><a href="#BOM-與-window-物件" class="headerlink" title="BOM 與 window 物件"></a>BOM 與 window 物件</h3><ul>
+<li>BOM (Browser Object Model，瀏覽器物件模型)，是瀏覽器所有功能的核心，與網頁的內容無關。<ul>
+<li>window是瀏覽器的根物件，也是BOM的瀏覽器模型</li>
+</ul>
+</li>
+<li>window.location.hrrf =&gt; 可以知道現在網址<br><img src="https://i.imgur.com/8EeLLGQ.png" alt=""></li>
+<li>window.history.back(); =&gt; 回到網頁瀏覽的上一頁<br><img src="https://i.imgur.com/kBtDslP.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/jyPOjvH.png" alt=""></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a href="https://ithelp.ithome.com.tw/articles/10202689" target="_blank" rel="noopener">Day03-深入理解網頁架構：DOM</a><br><a href="https://hsuchihting.github.io/javascript/20200615/1316819935/" target="_blank" rel="noopener">JS 筆記 - 認識 DOM 文件物件模型</a><br><a href="https://developer.mozilla.org/zh-TW/docs/Web/API/Document" target="_blank" rel="noopener">MDN-Document</a><br><a href="https://www.w3schools.com/jsref/dom_obj_document.asp" target="_blank" rel="noopener">The HTML DOM Document Object</a><br><a href="https://ithelp.ithome.com.tw/articles/10211614" target="_blank" rel="noopener">JavaScript 基礎知識-querySelectorAll</a><br><a href="https://eloquentjavascript.net/14_dom.html" target="_blank" rel="noopener">The Document Object Model</a><br><a href="https://www.happycoding.today/posts/43" target="_blank" rel="noopener">JavaScript入門系列：BOM和DOM筆記</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-array/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/js-array/" class="post-title-link" itemprop="url">JS基本功- 物件與陣列</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-27 21:17:13" itemprop="dateCreated datePublished" datetime="2020-12-27T21:17:13+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>程式柴<br><img src="https://i.imgur.com/44kqCRM.png" alt=""></p>
+<h3 id="Function、array都屬於物件"><a href="#Function、array都屬於物件" class="headerlink" title="Function、array都屬於物件"></a>Function、array都屬於物件</h3><p><img src="https://i.imgur.com/1bYo7eM.png" alt=""></p>
+</blockquote>
+<h2 id="物件的例子"><a href="#物件的例子" class="headerlink" title="物件的例子"></a>物件的例子</h2><pre><code class="javascript">var person = {
+      name: [&#39;Bob&#39;, &#39;Smith&#39;],
       age: 32,
-      gender: &amp;#39;male&amp;#39;,
-      interest: [&amp;#39;music&amp;#39;, &amp;#39;movie&amp;#39;],
+      gender: &#39;male&#39;,
+      interest: [&#39;music&#39;, &#39;movie&#39;],
       greeting: function () {
-        console.log(&amp;#39;hi I\&amp;#39;m&amp;#39; + this.name[0] + &amp;#39;.&amp;#39;);
+        console.log(&#39;hi I\&#39;m&#39; + this.name[0] + &#39;.&#39;);
+      }
+    }</code></pre>
+<h2 id="物件的創建"><a href="#物件的創建" class="headerlink" title="物件的創建"></a>物件的創建</h2><p><code>var x={}</code></p>
+<ul>
+<li><p>有一隻狗,其名字、年齡，函式</p>
+<pre><code class="javascript">var dog = {
+    name: &#39;tracy&#39;,
+    age: 20,
+
+    bow: function () {
+      console.log(&#39;bow!bow!&#39;);
+    }
+  }</code></pre>
+</li>
+<li><p>用.呼叫屬性，或是dog[‘key’] :point_down:<br><img src="https://i.imgur.com/OgrYwjF.png" alt=""></p>
+</li>
+<li><p>物件內的函式<br><img src="https://i.imgur.com/jOWuwxQ.png" alt=""></p>
+</li>
+</ul>
+<h2 id="添加屬性至物件上"><a href="#添加屬性至物件上" class="headerlink" title="添加屬性至物件上"></a>添加屬性至物件上</h2><ul>
+<li><h4 id="增加值的方式"><a href="#增加值的方式" class="headerlink" title="增加值的方式"></a>增加值的方式</h4><ul>
+<li><code>dog.color = &#39;white&#39;;</code></li>
+<li><code>dog[&#39;size&#39;] = &#39;small&#39;;</code> =&gt;較常用</li>
+</ul>
+</li>
+<li><h4 id="增加函式-gt-一樣用-的方式"><a href="#增加函式-gt-一樣用-的方式" class="headerlink" title="增加函式 =&gt; 一樣用.的方式"></a>增加函式 =&gt; 一樣用.的方式</h4><ul>
+<li><code>dog.bowbow = function () {
+console.log(&#39;bow!bow!～～&#39;) }</code></li>
+</ul>
+</li>
+</ul>
+<pre><code class="javascript"> var dog = {
+      name: &#39;tracy&#39;,
+      age: 7,
+      bow: function () {
+        console.log(&#39;bow!&#39;);
       }
     }
-物件的創建var x={}
 
-有一隻狗,其名字、年齡，函式
-var dog = {
-    name: ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/27/js-array/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/qRxqi5e.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/27/js-function/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/qRxqi5e.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/parseInt"><i class="tag post-item-tag">parseInt</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/27/js-function/">JS基本功- function函式</a></h2><time class="has-text-grey" datetime="2020-12-27T10:55:19.000Z">2020-12-27</time><p class="is-flex-grow-2 mt-2">
-使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。//為什麼我們需要function
-    //DRY -&amp;gt; Don&amp;#39;t repeat yourself
+    //增加值的方式
+    //1
+    dog.color = &#39;white&#39;;
+    dog.eyes = &#39;big&#39;;
+    //2
+    dog[&#39;size&#39;] = &#39;small&#39;;
+    //增加函式
+    dog.bowbow = function () {
+      console.log(&#39;bow!bow!～～&#39;)
+    }</code></pre>
+<p><img src="https://i.imgur.com/4qqgZRy.png" alt=""></p>
+<h2 id="陣列"><a href="#陣列" class="headerlink" title="陣列"></a>陣列</h2><blockquote>
+<p>程式柴<br><img src="https://i.imgur.com/FdH3fty.png" alt=""></p>
+</blockquote>
+<ul>
+<li><p>陣列用 中括號<code>[ ]</code></p>
+</li>
+<li><p>陣列的計算是從零開始（取陣列的索引）</p>
+<ul>
+<li>呼應for 迴圈，從0開始，從索引第一個<pre><code class="javascript">arr = [111, 222, 333]
+console.log(arr);
+console.log(arr[1]); //222
+//呼應for 迴圈，從0開始，從索引第一個</code></pre>
+</li>
+</ul>
+</li>
+<li><p>陣列中的東西都是相同屬性，比較好操作</p>
+<pre><code class="javascript">arr2 = [&#39;dog&#39;, &#39;cat&#39;, &#39;sth&#39;]
+  console.log(arr.length); //3
+arr3 = [111, &#39;cat&#39;, &#39;sth&#39;]</code></pre>
+<p><img src="https://i.imgur.com/2WztSsO.png" alt=""></p>
+</li>
+<li><p>練習：要紀錄10位學生的分數，並加總</p>
+<pre><code class="javascript=">var score = [1, 3, 4, 5, 100];
+  console.log(score);</code></pre>
+<h3 id="陣列基本操作-gt-pop-與push-較常用"><a href="#陣列基本操作-gt-pop-與push-較常用" class="headerlink" title="陣列基本操作 -&gt; pop 與push 較常用"></a>陣列基本操作 -&gt; <code>pop</code> 與<code>push</code> 較常用</h3></li>
+<li><p><code>score.push(1000)</code> -&gt; 新增元素到現有陣列中，加入尾端</p>
+</li>
+<li><p><code>score.unshift(888)</code> -&gt; 加入陣列最前面</p>
+</li>
+<li><p>pop:從最末端抽走元素<br><img src="https://i.imgur.com/e55Oxbz.png" alt=""></p>
+</li>
+</ul>
+<pre><code class="javascript">var myHeros=[&#39;孫悟空&#39;, &#39;佐助&#39;, &#39;女超人&#39;, &#39;美國隊長&#39;];
+//從最末端抽走元素
+myHeros.pop();
+
+//從頭抽走元素
+myHeros.shift();
+console.log(myHeros);</code></pre>
+<h3 id="陣列替換元素"><a href="#陣列替換元素" class="headerlink" title="陣列替換元素"></a>陣列替換元素</h3><ul>
+<li>在原本陣列中，選取要取代的該元素，後面加=，並輸入內容</li>
+</ul>
+<p><img src="https://i.imgur.com/gnVybmt.png" alt=""></p>
+<h2 id="陣列取得最後一個元素"><a href="#陣列取得最後一個元素" class="headerlink" title="陣列取得最後一個元素"></a>陣列取得最後一個元素</h2><ul>
+<li>該陣列長度-1，就可以取得最後一個元素<ul>
+<li>長度為七，最後一個的索引是6 :point_down:<br><img src="https://i.imgur.com/Ytlzihy.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="用-indexOf-取得元素的索引"><a href="#用-indexOf-取得元素的索引" class="headerlink" title="用 indexOf 取得元素的索引"></a>用 indexOf 取得元素的索引</h2><ul>
+<li>Of的o要大寫</li>
+</ul>
+<pre><code class="javascript">var myHeros=[&#39;孫悟空&#39;, &#39;佐助&#39;, &#39;女超人&#39;, &#39;美國隊長&#39;];
+//檢查誰誰誰有在陣列中嗎
+console.log(myHeros.indexOf(&#39;達爾&#39;)); //印出-1，意指此元素不存在陣列中
+console.log(myHeros.indexOf(&#39;美國隊長&#39;)); //印出3（在陣列中第幾個索引</code></pre>
+<h3 id="切片-slice-與方法"><a href="#切片-slice-與方法" class="headerlink" title="切片 slice 與方法"></a>切片 slice 與方法</h3><p><img src="https://i.imgur.com/h3ltQ3Q.png" alt=""></p>
+<pre><code class="javascript"> var arr = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;, &#39;g&#39;];
+    //用索引
+    console.log(arr.slice(2, 4));//不包含最後一個
+    console.log(arr.slice(2, 5));</code></pre>
+<p><img src="https://i.imgur.com/bzKmwQi.png" alt=""></p>
+<ul>
+<li>複製陣列<pre><code class="javascript">var shallowCopy = fruits.slice(); // 這就是複製陣列的方式
+// [&quot;Strawberry&quot;, &quot;Mango&quot;]</code></pre>
+</li>
+</ul>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank" rel="noopener">MDN slice</a><br><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">MDN array</a><br><a href="https://www.oxxostudio.tw/articles/201908/js-array.html" target="_blank" rel="noopener">JavaScript Array 陣列操作方法大全 ( 含 ES6 )</a></p>
+<h2 id="陣列與物件"><a href="#陣列與物件" class="headerlink" title="陣列與物件"></a>陣列與物件</h2><ul>
+<li><p>例子：被老師要求要記錄，學生的名字,分數,地址…</p>
+</li>
+<li><p>以陣列的想法，會將各類別分類，放入同屬性的結果</p>
+<ul>
+<li>學生的分數,名字個一個陣列<br><img src="https://i.imgur.com/6DP47iL.png" alt=""></li>
+<li>要取得同一位學生的所有資料，要個別從矩陣中拿取<br><img src="https://i.imgur.com/5q4VitE.png" alt=""></li>
+</ul>
+</li>
+<li><p>一個資料集合，就能代表一個學生 –&gt;物件</p>
+<ul>
+<li>以下面的資料結構來代表學生的一些屬性<br><img src="https://i.imgur.com/Gk5T01w.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h3><ul>
+<li>物件與陣列，與等號的關係,理解<ul>
+<li>下方的結果都是false<br><img src="https://i.imgur.com/6L0AI2n.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<p>因為：</p>
+<ul>
+<li><code>var obj=[a:1]</code>，會將它放在某一個記憶體位置</li>
+<li><code>var obj2=[a:1]</code>，會將它放在另一個記憶體位置</li>
+</ul>
+<p>PS:即便內容,數值一樣，但js判斷的是記憶體位置不一樣</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2020/12/27/js-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/27/js-function/" class="post-title-link" itemprop="url">JS基本功- function函式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-27 18:55:19" itemprop="dateCreated datePublished" datetime="2020-12-27T18:55:19+08:00">2020-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/qRxqi5e.png" alt=""></p>
+<h3 id="使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。"><a href="#使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。" class="headerlink" title="使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。"></a>使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。</h3><pre><code class="javascript">//為什麼我們需要function
+    //DRY -&gt; Don&#39;t repeat yourself
     function echoSheep(index) {
-      console.log(&amp;#39;第&amp;#39; + i + &amp;#39;隻綿羊&amp;#39;)
+      console.log(&#39;第&#39; + i + &#39;隻綿羊&#39;)
     }
-    for (var i = 1; i &amp;lt; 11; i++) {
+    for (var i = 1; i &lt; 11; i++) {
       echoSheep(i)
+    }</code></pre>
+<ul>
+<li><h4 id="與過去所學結合"><a href="#與過去所學結合" class="headerlink" title="與過去所學結合"></a>與過去所學結合</h4></li>
+</ul>
+<p><img src="https://i.imgur.com/O6BuNU9.png" alt=""></p>
+<ul>
+<li>也可以return後面接物件 <ul>
+<li>回傳結果為20<br><img src="https://i.imgur.com/ln90sd9.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="簡單練習題"><a href="#簡單練習題" class="headerlink" title="簡單練習題"></a>簡單練習題</h3><ul>
+<li>創建空陣列，並於陣列中放數1,2,3,…10</li>
+</ul>
+<p><img src="https://i.imgur.com/9tTJ3uL.png" alt=""><br>要放入return，否則會出現undefined<br><img src="https://i.imgur.com/TGCWt71.png" alt=""><br><img src="https://i.imgur.com/lRysWNO.png" alt=""></p>
+<ul>
+<li>也可以將參數改成兩個數</li>
+</ul>
+<pre><code class="javascript">function generateArray(a, b) {  //a,b 可以改為 from,to
+      var result = [];
+      for (var i = a; i &lt;= b; i++) {
+        result.push(i);
+      }
+      return result;
+    }
+    console.log(generateArray(3, 10))</code></pre>
+<p><img src="https://i.imgur.com/12sURMh.png" alt=""></p>
+<h3 id="return"><a href="#return" class="headerlink" title="return"></a>return</h3><ul>
+<li><p>函式中一放進return，在函式，return後面的部分就不會運行了</p>
+</li>
+<li><p>不需要知道結果<br><img src="https://i.imgur.com/4oPINY3.png" alt=""></p>
+</li>
+<li><p>需要回傳值<br><img src="https://i.imgur.com/yb0arjk.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li>參數：函式後面要傳入的值</li>
+<li>引數：真正傳進去的東西</li>
+</ul>
+<p><img src="https://i.imgur.com/n66mD1K.png" alt=""></p>
+<ul>
+<li>Arguments:為類陣列，屬於物件</li>
+</ul>
+<h2 id="表達式-Expression-與陳述句-Statement-的差異"><a href="#表達式-Expression-與陳述句-Statement-的差異" class="headerlink" title="表達式(Expression)與陳述句(Statement)的差異"></a>表達式(Expression)與陳述句(Statement)的差異</h2><ul>
+<li>表達式：會回傳值</li>
+<li>陳述句：不會回傳值 (if…else,switch，等控制流程)</li>
+</ul>
+<h2 id="使用函式陳述式-Function-Statement-與函式表達式-Function-Expression"><a href="#使用函式陳述式-Function-Statement-與函式表達式-Function-Expression" class="headerlink" title="使用函式陳述式(Function Statement)與函式表達式(Function Expression)"></a>使用函式陳述式(Function Statement)與函式表達式(Function Expression)</h2><ul>
+<li>函式陳述式(Function Statement):在使用函式之前，放入helloFunctionStatement();是可以執行</li>
+</ul>
+<pre><code class="javascript">//helloFunctionStatement();  放在前面沒關係
+function helloFunctionStatement() {
+      console.log(&#39;this is Function Statement &#39;);
+
     }
 
-與過去所學結合
+    helloFunctionStatement();</code></pre>
+<ul>
+<li><p>函式表達式(Function Expression):反之，要放在宣告之後</p>
+<pre><code class="javascript">//helloFunctionExpression(); 放前面，會出現錯誤
+var helloFunctionExpression = function () {
+    console.log(&#39;this is Function Expression &#39;);
 
+  }
+  helloFunctionExpression();</code></pre>
+<p>:::warning<br>因為hoisting(變數提升)的關係<br>:::</p>
+</li>
+</ul>
+<p><a href="https://ithelp.ithome.com.tw/articles/10218937" target="_blank" rel="noopener">JS 原力覺醒 Day07 - 陳述式 表達式</a></p>
+<h2 id="變數能夠影響的範圍作用域-Scope-作用域：變數可以影響的範圍"><a href="#變數能夠影響的範圍作用域-Scope-作用域：變數可以影響的範圍" class="headerlink" title="變數能夠影響的範圍作用域( Scope 作用域：變數可以影響的範圍 )"></a>變數能夠影響的範圍作用域( Scope 作用域：變數可以影響的範圍 )</h2><ul>
+<li>在function中，所宣告的 var a = 50;，範圍就只有涵蓋在函式中，不會影響到外面</li>
+</ul>
+<pre><code class="javascript"> var a = 100;
+    function helloWorld() {
+      var a = 50;
+      console.log(a);
+    }
+    helloWorld();
+    console.log(a);</code></pre>
+<p><img src="https://i.imgur.com/16xE1No.png" alt=""></p>
+<ul>
+<li>如果函式中，宣吿某變數，沒有加var/let，該變數就會影響外部<pre><code class="javascript">var a = 100;
+  function helloWorld() {
+    a = 50;
+    console.log(&#39;function:&#39;, a);
+  }
+  helloWorld();
+  console.log(&#39;外部:&#39;, a);</code></pre>
+<img src="https://i.imgur.com/tJTnR9W.png" alt=""></li>
+</ul>
+<h3 id="全域變數與區域變數"><a href="#全域變數與區域變數" class="headerlink" title="全域變數與區域變數"></a>全域變數與區域變數</h3><ul>
+<li><h4 id="使用var-let-const，來宣告"><a href="#使用var-let-const，來宣告" class="headerlink" title="使用var,let,const，來宣告"></a>使用var,let,const，來宣告</h4></li>
+<li><h4 id="全域變數：在瀏覽器中，沒有在fuction裡，直接進行宣告"><a href="#全域變數：在瀏覽器中，沒有在fuction裡，直接進行宣告" class="headerlink" title="全域變數：在瀏覽器中，沒有在fuction裡，直接進行宣告"></a>全域變數：在瀏覽器中，沒有在fuction裡，直接進行宣告</h4><ul>
+<li>也可以用window來存取</li>
+<li>window，是瀏覽器上的根物件<br><img src="https://i.imgur.com/TNAMSWA.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<pre><code class="javascript="> var y = 1;  //在外面宣告為 全域變數
+    function abc() {
+      //var,let,const
+      var x = 1
+    }</code></pre>
+<ul>
+<li><h4 id="區域變數：在function中進行宣告"><a href="#區域變數：在function中進行宣告" class="headerlink" title="區域變數：在function中進行宣告"></a>區域變數：在function中進行宣告</h4><pre><code class="javascript=">function abc() {
+    //var,let,const
+    var x = 1
+  }</code></pre>
+</li>
+<li><h4 id="不是變數-gt-全域的屬性"><a href="#不是變數-gt-全域的屬性" class="headerlink" title="不是變數 =&gt; 全域的屬性"></a>不是變數 =&gt; 全域的屬性</h4><ul>
+<li>z=1;</li>
+<li>也可以用window來存取</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/eMBkGKy.png" alt=""></p>
+<h2 id="回呼函數-Callback-Function"><a href="#回呼函數-Callback-Function" class="headerlink" title="回呼函數 Callback Function"></a>回呼函數 Callback Function</h2><ul>
+<li>把函數做為參數傳遞</li>
+<li>當檔案讀取完畢時，請來執行這個 function，並且把結果傳進來</li>
+<li>heyFunc(console.log)-&gt;console.log 可以替換別的</li>
+</ul>
+<pre><code class="javascript"> function heyFunc(myFunction) {
+      myFunction(&#39;hi&#39;);
+      myFunction(&#39;hi&#39;);
+    }
+    heyFunc(console.log);</code></pre>
+<p><img src="https://i.imgur.com/imMi0vS.png" alt=""></p>
+<ul>
+<li>非同步（Asynchronous）:回呼常用來延續非同步行動完成後的程式執行</li>
+</ul>
+<h3 id="其他介紹-超入門-JavaScript-教學-13-回呼函式-callback"><a href="#其他介紹-超入門-JavaScript-教學-13-回呼函式-callback" class="headerlink" title="其他介紹 超入門 JavaScript 教學 13 - 回呼函式 callback"></a>其他介紹 <a href="https://www.youtube.com/watch?v=U0YbyCaG93k" target="_blank" rel="noopener">超入門 JavaScript 教學 13 - 回呼函式 callback</a></h3><ul>
+<li><p>以下範例：讓cb接到shout這個函式<br><img src="https://i.imgur.com/zMT2p0j.png" alt=""></p>
+<pre><code class="javascript">function shout() {
+   console.log(&#39;hello,i am done&#39;)
+ }
+ function countToSeven(cb) {
+   for (var i = 1; i &lt;= 7; i++) {
+     console.log(i);
+   }
+   if (typeof cb === &#39;fuction&#39;)
+     cb(); //啟動shout函式
+ }
+ countToSeven(); //會數1-7
+ //要數完七之後，說&#39;hello,i am done
+ countToSeven(shout);
+ countToSeven(1);//1不是函式，所以在if判斷句終止
 
+ //每隔一段時間，幫我做一次
+ setInterval(shout, 2 * 1000);//每隔兩秒執行sout
+ //在多少時間之後，幫我執行
+ setTimeout(shout, 1 * 1000)</code></pre>
+<h3 id="js內建函式"><a href="#js內建函式" class="headerlink" title="js內建函式"></a>js內建函式</h3><ul>
+<li>每隔一段時間，幫我做一次<br><code>setInterval(shout, 2 * 1000);</code>//每隔兩秒執行sout</li>
+<li>在多少時間之後，幫我執行<br><code>setTimeout(shout, 1 * 1000)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="參考資料："><a href="#參考資料：" class="headerlink" title="參考資料："></a>參考資料：</h3><p><a href="https://ithelp.ithome.com.tw/articles/10192739" target="_blank" rel="noopener">重新認識 JavaScript: Day 18 Callback Function 與 IIFE</a><br><a href="https://blog.techbridge.cc/2019/10/05/javascript-async-sync-and-callback/" target="_blank" rel="noopener">JavaScript 中的同步與非同步（上）：先成為 callback 大師吧！</a><br><a href="https://whien.medium.com/js20min-day-18-%E9%97%9C%E6%96%BC%E5%9B%9E%E5%91%BC%E7%94%9F%E6%B4%BB%E5%8C%96-callback-1a112db1a788" target="_blank" rel="noopener">JS20min Day — 18 關於回呼生活化 (Callback)</a></p>
+<h2 id="匿名函式"><a href="#匿名函式" class="headerlink" title="匿名函式"></a>匿名函式</h2><ul>
+<li><p>heyFunc裡面的function沒有名稱</p>
+<pre><code class="javascript">function heyFunc(myFunction) {
+    myFunction(&#39;hi&#39;);
 
-也可以return後面接物件 
-回傳結果為20
+  }
+  heyFunc(function (message) {
+    console.log(&#39;message is:&#39;, message);
+  });
+//message is:hi
+&lt;/script&gt;</code></pre>
+</li>
+</ul>
+<h2 id="立即函式-IIFE"><a href="#立即函式-IIFE" class="headerlink" title="立即函式(IIFE)"></a>立即函式(IIFE)</h2><blockquote>
+<p>Luka<br><img src="https://i.imgur.com/sriaR2r.png" alt=""></p>
+</blockquote>
+<ul>
+<li>它是沒有名字的函式，要立即調用<ul>
+<li>不讓函式內的變數污染到外面的東係</li>
+<li>讓jquery的＄＄變成是jquery使用<pre><code class="javascript">(function (name) {
+  var str = &#39;Hi &#39; + name + &#39;!&#39;;
+  console.log(str);
+})(&#39;Sam&#39;);
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* 一般常見寫法
+```javascript
+    var sayHi = function (name) {
+      var str = &#39;Hi &#39; + name + &#39;!&#39;;
+      console.log(str);
+    }(&#39;Peter&#39;)//在後面立即執行
+      // sayHi(&quot;Peter&quot;);</code></pre><p><a href="https://pjchender.blogspot.com/2016/05/javascriptiifesimmediately-invoked.html" target="_blank" rel="noopener">[筆記] 談談JavaScript中的IIFEs(Immediately Invoked Functions Expressions)</a><br><a href="https://pjchender.blogspot.com/2016/05/iifesimmediately-invoked-functions.html" target="_blank" rel="noopener">[筆記] 為什麼我們要用IIFEs(Immediately Invoked Functions Expressions)
+</a></p>
+<h2 id="hoisting-變數提升淺談"><a href="#hoisting-變數提升淺談" class="headerlink" title="hoisting 變數提升淺談"></a>hoisting 變數提升淺談</h2><ul>
+<li><p>js的變數與函式的宣告提升</p>
+</li>
+<li><p>不管在哪一行使用了變數，都視為第一行宣告</p>
+<blockquote>
+<p>比較好的流程 By 彭彭<br><img src="https://i.imgur.com/DcnsGsL.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<p>但在js有hoisting 變數提升</p>
+<ul>
+<li>就算把變數宣告放在後面，依然可以運作(會將<code>var x</code>提升到最前面)<blockquote>
+<p><img src="https://i.imgur.com/VmUcFV3.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<p>進一步細節…</p>
+<blockquote>
+<p><img src="https://i.imgur.com/vBfQGUk.png" alt=""><br>電腦解讀如下 </p>
+</blockquote>
+<ul>
+<li><code>var x</code>會提升<blockquote>
+<p><img src="https://i.imgur.com/0qjf9j8.png" alt=""><br>結果會印出undefined</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="在函示fuction的變數提升"><a href="#在函示fuction的變數提升" class="headerlink" title="在函示fuction的變數提升"></a>在函示fuction的變數提升</h3><ul>
+<li>先宣告函式，在能呼叫函式執行<blockquote>
+<p><img src="https://i.imgur.com/jSAAaWN.png" alt=""></p>
+</blockquote>
+</li>
+<li>在js先呼叫，依然可以運作<blockquote>
+<p><img src="https://i.imgur.com/vKZ9eXh.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<p>其他狀況…(把函式裝到變數中當作資料)</p>
+<ul>
+<li>在此情形，它會出現錯誤，回報test不是一個函式<blockquote>
+<p><img src="https://i.imgur.com/k2ANLPn.png" alt=""></p>
+</blockquote>
+</li>
+<li>程式的解讀 :point_down: </li>
+<li>只有var test被提升<blockquote>
+<p><img src="https://i.imgur.com/ZOasHkk.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>程式柴<br><img src="https://i.imgur.com/WuqIKWR.png" alt=""></p>
+</blockquote>
+<blockquote>
+<ul>
+<li>沒有宣告</li>
+<li><img src="https://i.imgur.com/tlctwnQ.png" alt=""></li>
+</ul>
+</blockquote>
+<h2 id="常用的內建函式"><a href="#常用的內建函式" class="headerlink" title="常用的內建函式"></a>常用的內建函式</h2><h3 id="Number類型"><a href="#Number類型" class="headerlink" title="Number類型"></a>Number類型</h3><ul>
+<li><h4 id="字串轉數字"><a href="#字串轉數字" class="headerlink" title="字串轉數字"></a>字串轉數字</h4></li>
+</ul>
+<p><img src="https://i.imgur.com/SKn9IWm.png" alt=""></p>
+<ul>
+<li>parseInt 是取整數，若遇到如20.35，就只會取到20</li>
+</ul>
+<p><img src="https://i.imgur.com/MwOQLxK.png" alt=""></p>
+<ul>
+<li>遇到小數點且要保留的時候，使用parseFloat<ul>
+<li>結果為30.35</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/fVqNBhR.png" alt=""></p>
+<p><img src="https://i.imgur.com/xct9oPf.png" alt=""></p>
+<ul>
+<li><code>Math.ceil()</code>=&gt; 無條件進位</li>
+<li><code>Math.floor()</code>=&gt; 無條件捨去</li>
+<li><code>Math.round()</code> =&gt; 四捨五入</li>
+<li><code>Math.sqrt()</code> =&gt; 開根號</li>
+<li><code>Math.pow()</code> =&gt; 次方</li>
+<li><code>Math.radom()</code> =&gt; 產生隨機數(0-1，不包含1)</li>
+<li><code>toString()</code> =&gt; 數字轉字串<ul>
+<li>或是加空字串</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/3TGrI7J.png" alt=""></p>
+<p><img src="https://i.imgur.com/u9axhKX.png" alt=""></p>
+<h3 id="String類型"><a href="#String類型" class="headerlink" title="String類型"></a>String類型</h3><ul>
+<li><p><code>toUpperCase</code>=&gt; 轉大寫</p>
+</li>
+<li><p><code>toLowerCase</code> =&gt; 轉小寫</p>
+</li>
+<li><p><code>indexOf</code> =&gt; 找出字串中，單字的索引（用於檢查某字是否存在字串中）<br><img src="https://i.imgur.com/u51AqqO.png" alt=""></p>
+</li>
+<li><p><code>replace()</code> =&gt; 取代</p>
+<ul>
+<li>用正規表達式來選擇 某些字<br><img src="https://i.imgur.com/AboC56u.png" alt=""><br><img src="https://i.imgur.com/JQ5KHBI.png" alt=""></li>
+</ul>
+</li>
+<li><p><code>split()</code> =&gt; 切字串</p>
+<pre><code class="javascript">//split較常使用的情形
+  //當資料為一連串字串，利用逗號切割 變成陣列，比較好運用
+  var str = &#39;data1,data2,data3,data4&#39;;
+  console.log(str.split(&#39;,&#39;));</code></pre>
+<p><img src="https://i.imgur.com/XA193Oc.png" alt=""></p>
+</li>
+<li><p><code>trim()</code> =&gt;從一個字符串的两端刪除空白字符</p>
+<pre><code class="javascript">const greeting = &#39;   Hello world!   &#39;;
+</code></pre>
+</li>
+</ul>
+<p>console.log(greeting);<br>// expected output: “   Hello world!   “;</p>
+<p>console.log(greeting.trim());<br>// expected output: “Hello world!”;</p>
+<pre><code>
+### Array 類型
+* [Array.prototype.join()](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/join) 
+* 方法會將陣列（或一個類陣列（array-like）物件）中所有的元素連接、合併成一個 &#39;字串&#39;，並回傳此字串(在陣列中每個元素間插入設定的東西)
+```javascript
+const elements = [&#39;Fire&#39;, &#39;Air&#39;, &#39;Water&#39;];
 
+console.log(elements.join());
+// expected output: &quot;Fire,Air,Water&quot; //會變成字串
 
+console.log(elements.join(&#39;&#39;));
+// expected output: &quot;FireAirWater&quot;
 
-簡單練習題
-創建空陣列..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/27/js-function/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/kpTOWx4.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/26/js-Control-Flow/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/kpTOWx4.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/switch"><i class="tag post-item-tag">switch</i></a><a href="/tags/%E8%BF%B4%E5%9C%88"><i class="tag post-item-tag">迴圈</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/26/js-Control-Flow/">JS基本功- 控制流程 Control Flow</a></h2><time class="has-text-grey" datetime="2020-12-26T10:42:57.000Z">2020-12-26</time><p class="is-flex-grow-2 mt-2">簡易控制流程的撰寫var str = &amp;#39;只被當一科&amp;#39;;
-    if (str === &amp;#39;all pass&amp;#39;) {
-      console.log(&amp;#39;帶你去歐洲玩&amp;#39;);
-    } else if (str === &amp;#39;只被當一科&amp;#39;) {
-      console.log(&amp;#39;帶你去宜蘭玩&amp;#39;);
+console.log(elements.join(&#39;-&#39;));
+// expected output: &quot;Fire-Air-Water&quot;</code></pre><ul>
+<li><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank" rel="noopener">Array.prototype.map()</a></li>
+<li>建立一個新的陣列，其內容為原陣列的每一個元素經由回呼函式運算後所回傳的結果之集合。<pre><code class="javascript">var arr = [1, 2, 3];
+  console.log(
+    arr.map(function (x) {
+      return x * -1
+    })
+  )</code></pre>
+<img src="https://i.imgur.com/0FKeOro.png" alt=""></li>
+</ul>
+<pre><code class="javascript=">//也可以接著寫下去
+    var arr = [1, 2, 3];
+    console.log(
+      arr
+        .map(function (x) {
+          return x * -1
+        })
+        .map(function (x) {
+          return x * 2
+        })
+    )</code></pre>
+<p><img src="https://i.imgur.com/FrkeTMZ.png" alt=""></p>
+<ul>
+<li><p><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" target="_blank" rel="noopener">Array.prototype.filter()</a></p>
+</li>
+<li><p>過濾</p>
+<pre><code class="javascript">var arr = [1, 2, 3, -5, 3, -2];
+  console.log(
+    arr
+      .map(function (x) {
+        return x * 2
+      })
+      .filter(function (x) {
+        return x &gt; 0
+      })
+      //把負數過濾掉，留下正數
+  )</code></pre>
+<p><img src="https://i.imgur.com/G8TKP1k.png" alt=""></p>
+</li>
+<li><p><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank" rel="noopener">Array.prototype.slice()</a></p>
+</li>
+<li><p><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank" rel="noopener">Array.prototype.splice()</a></p>
+<ul>
+<li>splice 1.插入元素<pre><code class="javascript">const months = [&#39;Jan&#39;, &#39;March&#39;, &#39;April&#39;, &#39;June&#39;];
+months.splice(1, 0, &#39;Feb&#39;);
+// inserts at index 1
+console.log(months);
+// expected output: Array [&quot;Jan&quot;, &quot;Feb&quot;, &quot;March&quot;, &quot;April&quot;, &quot;June&quot;]
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p>months.splice(4, 1, ‘May’);<br>// replaces 1 element at index 4<br>console.log(months);<br>// expected output: Array [“Jan”, “Feb”, “March”, “April”, “May”]</p>
+<pre><code>* splice 2.刪除元素
+```javascript
+var myFish = [&#39;angel&#39;, &#39;clown&#39;, &#39;drum&#39;, &#39;mandarin&#39;, &#39;sturgeon&#39;];
+var removed = myFish.splice(3, 1);
+
+// removed 為 [&quot;mandarin&quot;]
+// myFish 為 [&quot;angel&quot;, &quot;clown&quot;, &quot;drum&quot;, &quot;sturgeon&quot;]</code></pre><ul>
+<li><a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/sort" target="_blank" rel="noopener">Array.prototype.sort()</a><pre><code class="javascript">const months = [&#39;March&#39;, &#39;Jan&#39;, &#39;Feb&#39;, &#39;Dec&#39;];
+months.sort();
+console.log(months);
+// expected output: Array [&quot;Dec&quot;, &quot;Feb&quot;, &quot;Jan&quot;, &quot;March&quot;] //按照第一個字母順序排列
+</code></pre>
+</li>
+</ul>
+<p>const array1 = [1, 30, 4, 21, 100000];<br>array1.sort();<br>console.log(array1);<br>// expected output: Array [1, 100000, 21, 30, 4] //是一字串，以第一個數字來排列</p>
+<pre><code>* 依照數字大小排列
+```javascript
+   var arr = [1, 30, 4, 2];
+    arr.sort(function (a, b) {
+      if (a === b) return 0;
+      if (b &gt; a) return -1; //不換
+      return 1; //正數，換位置
+    })
+    console.log(arr);</code></pre><p><img src="https://i.imgur.com/dMAXe66.png" alt=""></p>
+<h4 id="「回傳」與「印出」的差異"><a href="#「回傳」與「印出」的差異" class="headerlink" title="「回傳」與「印出」的差異"></a>「回傳」與「印出」的差異</h4><ul>
+<li>函式可以透過 return 回傳函式運算完的結果<blockquote>
+<p> 述程式碼的執行：</p>
+</blockquote>
+</li>
+</ul>
+<p>1.<code>console.log(add(1, 2))</code> =&gt; 帶入functoin，<code>console.log(a, b);</code> =&gt; 印出1,2<br>2.往下，到return undefined; 然後進入add(1, 2)的回傳值，就會是undefined</p>
+<pre><code class="javascript">function add(a, b) {
+      console.log(a, b);
+      return undefined;  //不加return，預設會是undefined
+    }
+
+    console.log(add(1, 2))
+
+</code></pre>
+<ul>
+<li>以為 <code>add(1, 2)</code> 的回傳值是 3，但不是，那是因為它在裡面 console.log() 所以把結果印出來了。  <pre><code class="javascript">function add(a, b) {
+ console.log(a + b)
+}
+add(1, 2)</code></pre>
+</li>
+<li>如果真的要有回傳值的話要這樣寫：<pre><code class="javascript">function add(a, b) {
+ return a + b
+}
+console.log(add(1, 2))</code></pre>
+</li>
+</ul>
+<p>參考資料： <a href="https://ithelp.ithome.com.tw/articles/10214256" target="_blank" rel="noopener">JavaScript 初心者筆記: 函式實際運作 - 回傳值與函式間互相傳遞</a><br>,<a href="https://ithelp.ithome.com.tw/articles/10214364" target="_blank" rel="noopener">後設鐵人 Day4：請幫我簽個名好嗎？</a></p>
+<h3 id="Immutable-觀念-不可變"><a href="#Immutable-觀念-不可變" class="headerlink" title="Immutable 觀念 (不可變)"></a>Immutable 觀念 (不可變)</h3><ul>
+<li><p>除了物件、陣列以外，其他都是不可變的</p>
+</li>
+<li><p>沒辦法改它，就只能回傳新的</p>
+<pre><code class="javascript">var a = &#39;hello&#39;;
+  a.toUpperCase;
+  console.log(a);
+  //印出：hello，沒有改變原本變數的內容</code></pre>
+<pre><code class="javascript"> var a = &#39;hello&#39;;
+  a = a.toUpperCase(); //要回傳給a，把原本的a值蓋掉
+  console.log(a);
+
+  //或是增設一個新變數
+  var a = &#39;hello&#39;;
+  var b = a.toUpperCase(); 
+  console.log(b);
+</code></pre>
+</li>
+</ul>
+<pre><code></code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2020/12/26/js-Control-Flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/26/js-Control-Flow/" class="post-title-link" itemprop="url">JS基本功- 控制流程 Control Flow</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-26 18:42:57" itemprop="dateCreated datePublished" datetime="2020-12-26T18:42:57+08:00">2020-12-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="簡易控制流程的撰寫"><a href="#簡易控制流程的撰寫" class="headerlink" title="簡易控制流程的撰寫"></a>簡易控制流程的撰寫</h2><pre><code class="javascript">var str = &#39;只被當一科&#39;;
+    if (str === &#39;all pass&#39;) {
+      console.log(&#39;帶你去歐洲玩&#39;);
+    } else if (str === &#39;只被當一科&#39;) {
+      console.log(&#39;帶你去宜蘭玩&#39;);
     } else {
-      console.log(&amp;#39;禁足&amp;#39;);
+      console.log(&#39;禁足&#39;);
     }
     //帶你去宜蘭玩
+</code></pre>
+<h2 id="使用switch來撰寫-太多如果的話可以改用switch"><a href="#使用switch來撰寫-太多如果的話可以改用switch" class="headerlink" title="使用switch來撰寫(太多如果的話可以改用switch)"></a>使用switch來撰寫(太多如果的話可以改用switch)</h2><ul>
+<li><p>使用break，是用來跳出swich迴圈（換句話說，沒有寫break的話會使程式一直往下跑）</p>
+<pre><code class="javascript">//用switch 改寫 if else
+  var key = &#39;all pass&#39;;
+  switch (key) {
+    case &#39;all pass&#39;:
+      console.log(&#39;帶你去歐洲玩&#39;);
+      break;
+    case &#39;只被當一科&#39;:
+      console.log(&#39;帶你去宜蘭玩&#39;);
+      break;
 
-使用switch來撰寫(太多如果的話可以改用switch)
-使用break，是用來跳出swich迴圈（換句話說，沒有寫break的話會使程式一直往下跑）
-//用switch 改寫 if else
-  va..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/26/js-Control-Flow/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/42eMxRa.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/26/js-operator/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/42eMxRa.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/parseInt"><i class="tag post-item-tag">parseInt</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/26/js-operator/">JS基本功- 運算元與運算子</a></h2><time class="has-text-grey" datetime="2020-12-26T10:35:07.000Z">2020-12-26</time><p class="is-flex-grow-2 mt-2">
-比較運算子
-運算符號，使用&amp;gt;,&amp;lt;,=來做判斷
+    default:
+      console.log(&#39;禁足&#39;);
+      break;
+  }
+ // 帶你去歐洲玩</code></pre>
+</li>
+</ul>
+<h2 id="迴圈基本介紹"><a href="#迴圈基本介紹" class="headerlink" title="迴圈基本介紹"></a>迴圈基本介紹</h2><p>loop：一直做一樣的事情<br>無窮迴圈，發生的情形：沒有設終止條件，或是終止條件設錯 （<code>control+c</code> 終止它）</p>
+<ul>
+<li>可在程式最前面，加入debugger<br><img src="https://i.imgur.com/kpTOWx4.png" alt=""></li>
+</ul>
+<h2 id="1-迴圈for"><a href="#1-迴圈for" class="headerlink" title="1.迴圈for"></a>1.迴圈for</h2><blockquote>
+<p>彭彭的課程<br><img src="https://i.imgur.com/JYayJeg.png" alt=""></p>
+</blockquote>
+<h3 id="用-for-迴圈數綿羊數到一百隻，直到睡著"><a href="#用-for-迴圈數綿羊數到一百隻，直到睡著" class="headerlink" title="用 for 迴圈數綿羊數到一百隻，直到睡著"></a>用 for 迴圈數綿羊數到一百隻，直到睡著</h3><ul>
+<li><p><code>var</code>後面宣告的變數，可以替換不同字母</p>
+<pre><code class="javascript">// for(初始值;終止條件;每次執行的語句)
+  for (var i = 0; i &lt; 100; i++) {
+    console.log(&quot;第&quot; + (i + 1) + &quot;隻綿羊&quot;);
 
-
-三個等於與兩個等於 有什麼不一樣
-只有一個等於：var x=1; -&amp;gt; 賦值運算子
-所以比較運算值的時候，會使用兩個等於以上
-
-兩個等於
-不是嚴格的比較
-轉換過的值是相同的，就會符合
-
-
-三個等於
-實務常用，且較為嚴謹
-字串需經過轉換為數值，進行比較  
-
-
-算數運算子
-+,-, * ,/
-先乘除後加減
-parseInt(10/3) -&amp;gt;取整數
-除了取整數外，也將文字轉數值
-
-
-
-
-餘數與被除數
-取餘數：5%3 –&amp;gt;2 指5對3取餘數為2
-重新認識 JavaScript: Day 06 運算式與運算子 | MDN運算式與運算子
-
-邏輯運算子
-用於結合流程判斷：兩件事同時發生，要兩個都符合、或是達成其中之一
-
-AND (&amp;amp..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/26/js-operator/">Read more</a></section></article><section class="paginator is-flex is-justify-content-flex-end is-flex-wrap-wrap mt-5"><a class="extend prev" rel="prev" href="/page/6/"><i class="iconfont icon-prev has-text-grey"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="iconfont icon-next has-text-grey"></i></a></section></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><style>.search-widget .search-input {
-    border: none;
-    outline: none;
-    background: transparent;
-    color: var(--second-text-color);
-}
-.search-widget .search-content {
-    position: absolute;
-    left: 0;
-    top: calc(100% - 3px);
-    z-index: 2;
-
-    width: 100%;
-    height: 0;
-    max-height: 550px;
-
-    overflow: auto;
-    box-sizing: border-box;
-
-    background: var(--top-bar-bg-color);
-    backdrop-filter: blur(var(--backdropFilter));
-    -webkit-backdrop-filter: blur(var(--backdropFilter));
-
-    border-bottom-left-radius: var(--borderRadius);
-    border-bottom-right-radius: var(--borderRadius);
-    box-shadow: 0 12px 15px rgba(0, 0, 0, 0.08);
-}
-
-.search-widget .search-content a:hover h5 {
-    color: #3273dc!important;
-}
-</style><main class="aside-card-container search-widget is-relative"><label for="searchInput"><div class="is-flex px-4" id="searchButton"><i class="iconfont icon--search1 mr-1"></i><input class="search-input is-flex-grow-1" id="searchInput" placeholder="Search everything.."></div></label><section class="search-content content" id="searchContent"></section></main><script>var searchDatabase = []
-var searchInputEl = document.getElementById('searchInput')
-var searchButtonEl = document.getElementById('searchButton')
-var searchResultEl = document.getElementById('searchContent')
-
-searchInputEl.oninput = function (evt) {
-    var searchValue = evt.srcElement.value
-    var haveSearchValue = Boolean(searchValue.trim())
-    if (!haveSearchValue) {
-        searchResultEl.style.height = 0
-        searchResultEl.innerHTML = null
-        return
+  }
+  //會印出1~9
+  //i++ 意思指 i+=1 ，也是i=i+1</code></pre>
+<h3 id="用-for-迴圈倒著數綿羊"><a href="#用-for-迴圈倒著數綿羊" class="headerlink" title="用 for 迴圈倒著數綿羊"></a>用 for 迴圈倒著數綿羊</h3><pre><code class="javascript">for (var k = 100; k &gt; 0; k--) {
+    console.log(&quot;第&quot; + k + &quot;隻綿羊&quot;);
+    if (k === 1) {
+      console.log(&#39;睡著了!&#39;);
+    }
+  }</code></pre>
+<h3 id="用-for-迴圈-數到第-31-隻綿羊就睡著了！-break"><a href="#用-for-迴圈-數到第-31-隻綿羊就睡著了！-break" class="headerlink" title="用 for 迴圈 數到第 31 隻綿羊就睡著了！ (break)"></a>用 for 迴圈 數到第 31 隻綿羊就睡著了！ (break)</h3><pre><code class="javascript">for (var i = 1; i &lt;= 100; i++) {
+    console.log(&quot;第&quot; + i + &quot;隻綿羊&quot;);
+    if (i === 31) {
+      console.log(&#39;睡著了！&#39;);
+      break;
+    }
+     if (i === 10) {
+      console.log(&#39;覺得想睡了！&#39;); //到10不會停止
+    }
+  }</code></pre>
+<h3 id="用-for-迴圈-跳著數"><a href="#用-for-迴圈-跳著數" class="headerlink" title="用 for 迴圈 跳著數"></a>用 for 迴圈 跳著數</h3></li>
+<li><h4 id="奇數-gt-對2取於數為1者"><a href="#奇數-gt-對2取於數為1者" class="headerlink" title="奇數 -&gt; 對2取於數為1者"></a>奇數 -&gt; 對2取於數為1者</h4><pre><code class="javascript">for (var i = 1; i &lt;= 10; i++) {
+    if (i % 2 === 1) {
+      console.log(&quot;第&quot; + i + &quot;隻綿羊&quot;);
     }
 
-    var searchResults = searching(searchValue)
+  }</code></pre>
+</li>
+<li><h4 id="印出1-4-7-10"><a href="#印出1-4-7-10" class="headerlink" title="印出1,4,7,10"></a>印出1,4,7,10</h4><pre><code class="javascript">for (var i = 1; i &lt;= 10; i++) {
+    if (i % 3 === 1)
+      console.log(&quot;第&quot; + i + &quot;隻綿羊&quot;);
 
-    if (searchResults.length > 0) {
-        renderSearchResults(searchResults)
+  }</code></pre>
+</li>
+</ul>
+<h3 id="用-for-迴圈-我只想跳過第四隻綿羊"><a href="#用-for-迴圈-我只想跳過第四隻綿羊" class="headerlink" title="用 for 迴圈 我只想跳過第四隻綿羊"></a>用 for 迴圈 我只想跳過第四隻綿羊</h3><ul>
+<li>使用<code>continue</code>:會跳過一次(跳過設定的條件)，然後繼續下一次迴圈</li>
+<li>注意語法的順序，如果console.log()在if..continue之前，會變成先讀取所有的i，不會跳過指定位置</li>
+</ul>
+<pre><code class="javascript">for (var i = 1; i &lt;= 10; i++) {
+      if (i === 4) {
+        continue
+      }
+      console.log(&quot;第&quot; + i + &quot;隻綿羊&quot;);
+
+    }</code></pre>
+<p><img src="https://i.imgur.com/1lzSCxs.png" alt=""></p>
+<h3 id="for與陣列的搭配"><a href="#for與陣列的搭配" class="headerlink" title="for與陣列的搭配"></a>for與陣列的搭配</h3><ul>
+<li>i是依照索引來計算，故應該是要0,1,2,3,4 =&gt; &lt;5<ul>
+<li>最後一個索引值是4(第5個沒有值)</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/HgTnl9r.png" alt=""></p>
+<p><img src="https://i.imgur.com/UHUvq5n.png" alt=""></p>
+<h2 id="2-迴圈while"><a href="#2-迴圈while" class="headerlink" title="2.迴圈while"></a>2.迴圈while</h2><h4 id="透過彭彭的課程來認識迴圈while"><a href="#透過彭彭的課程來認識迴圈while" class="headerlink" title="透過彭彭的課程來認識迴圈while"></a>透過彭彭的課程來認識迴圈while</h4><p><img src="https://i.imgur.com/pJbuHEp.png" alt=""></p>
+<h3 id="迴圈思考方式："><a href="#迴圈思考方式：" class="headerlink" title="迴圈思考方式："></a>迴圈思考方式：</h3><blockquote>
+<p>彭彭的課程</p>
+<pre><code class="javascript">//1+2+...+50 的運算流程 
+var sum=0;
+var n=1;
+while (n&lt;=50){
+sum=sum+n;
+ n++
+}
+alert(sum);</code></pre>
+</blockquote>
+<h3 id="方式："><a href="#方式：" class="headerlink" title="方式："></a>方式：</h3><p>和迴圈相關的變數追蹤(sum,n)</p>
+<p>第0次迴圈:先判斷n是否&lt;=50<br>   sum:0 ,n:1<br>第1次迴圈：<br>   sum:1,n:2<br>第2次迴圈：先判斷n是否&lt;=50 (根據上一個n是2)<br>   sum:(1+2)=3,n:3<br>第3次迴圈：<br>   sum:(3+3)=6,n:4<br>…<br>…</p>
+<p>第50次迴圈：<br>   sum:1275,n:51<br>第51次迴圈：因大於50，故跳離回圈結束</p>
+<h3 id="延續上面的思考，加入continue"><a href="#延續上面的思考，加入continue" class="headerlink" title="延續上面的思考，加入continue"></a>延續上面的思考，加入continue</h3><pre><code> ```javascript
+ var x=0;
+  for(var i=0;i&lt;100;i++){
+  if(1%2= = =0){continue}
+  x++
+ }
+ alert(x)
+ ```</code></pre><pre><code>變數追蹤(x,i)
+0:
+  x:0,i:0
+1: 
+  x:0 (i為0，對2取餘數為0，進入continue，然後重新開始回圈，沒有進入x++), i:1
+2: 
+  x:1(i為1，對2取餘數不為0，所以沒有執行continue，直接進入x++),i:2
+
+3:
+  x:1,i:3
+4:
+  x:2,i:4
+...
+100:
+  x:50,i:100
+</code></pre><h3 id="用-while-也可以達到相同的屬羊效果"><a href="#用-while-也可以達到相同的屬羊效果" class="headerlink" title="用 while 也可以達到相同的屬羊效果"></a>用 while 也可以達到相同的屬羊效果</h3><ul>
+<li>印出0~10</li>
+<li>相對for囉唆一點</li>
+</ul>
+<pre><code class="javascript">  let x = 0;
+    while (x &lt; 10) {
+      console.log(x);
+      x++;
+    }</code></pre>
+<p><img src="https://i.imgur.com/dl0l82W.png" alt=""></p>
+<ul>
+<li><h4 id="利用console來debug"><a href="#利用console來debug" class="headerlink" title="利用console來debug"></a>利用console來debug</h4><pre><code class="javascript">let x = 0;
+  while (x &lt; 10) {
+    //利用console來debug
+    console.log(x)
+    x++;
+    console.log(&quot;第&quot; + x + &quot;隻綿羊&quot;);
+
+  }</code></pre>
+<p><img src="https://i.imgur.com/f347W4t.png" alt=""></p>
+</li>
+<li><h4 id="搭配continue"><a href="#搭配continue" class="headerlink" title="搭配continue"></a>搭配continue</h4><pre><code class="javascript">let x = 0;
+  while (x &lt; 10) {
+    //利用console來debug
+    console.log(x)
+    x++;
+    if (x == 4)
+      continue;
+    console.log(&quot;第&quot; + x + &quot;隻綿羊&quot;);
+
+  }</code></pre>
+</li>
+<li><h4 id="搭配break"><a href="#搭配break" class="headerlink" title="搭配break"></a>搭配break</h4><pre><code class="javascript">let k = 0;
+  while (k &lt; 10) {
+
+    k++;
+    console.log(&quot;第&quot; + k + &quot;隻綿羊&quot;);
+    if (k == 5)
+      break;
+
+</code></pre>
+</li>
+</ul>
+<pre><code>}</code></pre><pre><code>
+## 3.迴圈 do..while
+* `()`放條件，`{}`放區塊
+```javascript
+let i = 0;
+    do {
+      i++
+      console.log(&#39;第&#39; + i + &#39;隻綿羊&#39;)
+    } while (i &lt; 10)
+</code></pre><h3 id="與while的不同"><a href="#與while的不同" class="headerlink" title="與while的不同"></a>與while的不同</h3><ul>
+<li><p>因為<code>i&lt;10</code>的條件在最後面，所以他會先跑完do，再到while終止</p>
+<ul>
+<li>i++完之後，跑到<code>while(11&gt;10)</code>，跳出迴圈，執行console.log<pre><code class="javascript">let i = 10;
+do {
+i++
+console.log(&#39;第&#39; + i + &#39;隻綿羊&#39;)
+} while (i &lt; = 10);
+console.log(&#39;i=&#39;,i); //i=11</code></pre>
+</li>
+</ul>
+</li>
+<li><p>另一種寫法</p>
+<pre><code class="javascript">let i = 10;
+  do {
+    i++
+    console.log(&#39;第&#39; + i + &#39;隻綿羊&#39;)
+    if (i&gt;10){
+       break    //同等於終止條件
     }
-}
 
-function renderSearchResults(results) {
-    searchResultEl.innerHTML = null
-    var fragment = document.createDocumentFragment()
+  } while (true);  //如果沒有if條件，這裡又設true，此狀況下會形成無限迴圈
+  console.log(&#39;i=&#39;,i); //11</code></pre>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/31WqBwO.png" alt=""></p>
+<ul>
+<li>同樣放入while回圈，結果就不會顯示，因為一開始k=10，進入比較，就不符合條件<pre><code class="javascript=">let k = 10;
+  while (k &lt; 10) {
+    k++;
+    console.log(&#39;第&#39; + k + &#39;隻綿羊&#39;)
+  }</code></pre>
+</li>
+</ul>
+<h2 id="雙層回圈"><a href="#雙層回圈" class="headerlink" title="雙層回圈"></a>雙層回圈</h2><h3 id="用-99-乘法表學雙層迴圈"><a href="#用-99-乘法表學雙層迴圈" class="headerlink" title="用 99 乘法表學雙層迴圈"></a>用 99 乘法表學雙層迴圈</h3><pre><code class="javascript">//有兩層，需數2次
+    for (i = 1; i &lt; 10; i++) {
 
-    results.forEach(function (item) {
-        var link = document.createElement('a')
-        var title = document.createElement('h5')
-        var content = document.createElement('p')
+      for (k = 1; k &lt; 10; k++) {
 
-        title.className = 'mb-1'
-        title.innerText = item.title
-        content.innerText = item.content
+        console.log(&quot;i:&quot; + i, &quot;k:&quot; + k);
+        // console.log(i + &#39;*&#39; + k + &#39;=&#39; + (i * k));
+        let result = i * k;
+        let str = i + &quot;x&quot; + k + &quot;=&quot; + result;
+        console.log(str);
+      }
 
-        link.href = item.link
-        link.appendChild(title)
-        link.appendChild(content)
-        link.className = 'p-4 is-block'
+    }</code></pre>
+<hr>
+<p>參考資料：<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/continue" target="_blank" rel="noopener">MDN continue</a><br><a href="https://ithelp.ithome.com.tw/articles/10191453" target="_blank" rel="noopener">重新認識 JavaScript: Day 09 流程判斷與迴圈</a><br><a href="https://blog.csdn.net/XXJ19950917/article/details/78310346" target="_blank" rel="noopener">JS跳出循环的三种方法(break, return, continue)
+</a></p>
 
-        fragment.appendChild(link)
-    })
+      
+    </div>
 
-    searchResultEl.appendChild(fragment)
-    searchResultEl.style.height = 'auto'
-}
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
-function searching(inputText) {
-    var inputTexts = inputText.split(' ')
-    var searchResults = []
-    inputTexts.forEach(function (searchKey) {
-        var haveSearchValue = Boolean(searchKey.trim())
-        if (!haveSearchValue) return
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2020/12/26/js-operator/">
 
-        var key = searchKey.toLowerCase()
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
 
-        for (var entry of searchDatabase) {
-            var title = entry.getElementsByTagName('title')[0].textContent
-            var link = entry.getElementsByTagName('link')[0].getAttribute('href')
-            var contentWithTags = entry.getElementsByTagName('content')[0].textContent
-            var rawContent = contentWithTags.trim().replace(/<[^>]+>/g, '').toLowerCase()
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/26/js-operator/" class="post-title-link" itemprop="url">JS基本功- 運算元與運算子</a>
+        </h2>
 
-            var LENGTH = 80
-            var finalContent = ''
-            var contentLength = rawContent.length
-            var searchResultIdx = rawContent.indexOf(key)
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
 
-            var startIdx = searchResultIdx - 20,
-                endIdx = startIdx + LENGTH
+              <time title="Created: 2020-12-26 18:35:07" itemprop="dateCreated datePublished" datetime="2020-12-26T18:35:07+08:00">2020-12-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
 
-            if (startIdx < 0) {
-                startIdx = 0
-                endIdx = 100
-            }
+          
 
-            endIdx > contentLength && (endIdx = contentLength)
+        </div>
+      </header>
 
-            finalContent = rawContent.substring(startIdx, endIdx)
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
-            if (title.indexOf(key) > -1 || searchResultIdx > -1) {
-                searchResults.push({
-                    link: link,
-                    title: title,
-                    content: finalContent
-                })
-            }
-        }
-    })
-    return searchResults
-}
+      
+          <p><img src="https://i.imgur.com/42eMxRa.png" alt=""></p>
+<h2 id="比較運算子"><a href="#比較運算子" class="headerlink" title="比較運算子"></a>比較運算子</h2><ul>
+<li>運算符號，使用<code>&gt;</code>,<code>&lt;</code>,<code>=</code>來做判斷</li>
+</ul>
+<p><img src="https://i.imgur.com/XPfa6QC.png" alt=""></p>
+<h3 id="三個等於與兩個等於-有什麼不一樣"><a href="#三個等於與兩個等於-有什麼不一樣" class="headerlink" title="三個等於與兩個等於 有什麼不一樣"></a>三個等於與兩個等於 有什麼不一樣</h3><ul>
+<li>只有一個等於：<code>var x=1;</code> -&gt; 賦值運算子</li>
+<li>所以比較運算值的時候，會使用兩個等於以上</li>
+</ul>
+<h4 id="兩個等於"><a href="#兩個等於" class="headerlink" title="兩個等於"></a>兩個等於</h4><ul>
+<li>不是嚴格的比較</li>
+<li>轉換過的值是相同的，就會符合</li>
+</ul>
+<p><img src="https://i.imgur.com/aXRMO9v.png" alt=""></p>
+<h4 id="三個等於"><a href="#三個等於" class="headerlink" title="三個等於"></a>三個等於</h4><ul>
+<li>實務常用，且較為嚴謹</li>
+<li>字串需經過轉換為數值，進行比較  </li>
+</ul>
+<p><img src="https://i.imgur.com/qFnbPBt.png" alt=""></p>
+<h2 id="算數運算子"><a href="#算數運算子" class="headerlink" title="算數運算子"></a>算數運算子</h2><ul>
+<li><code>+</code>,<code>-</code>, <code>*</code> ,<code>/</code></li>
+<li>先乘除後加減</li>
+<li><code>parseInt(10/3)</code> -&gt;取整數<ul>
+<li>除了取整數外，也將文字轉數值</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/GDNiVIa.png" alt=""></p>
+<h3 id="餘數與被除數"><a href="#餘數與被除數" class="headerlink" title="餘數與被除數"></a>餘數與被除數</h3><ul>
+<li>取餘數：<code>5%3</code> –&gt;2 指5對3取餘數為2</li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10191180" target="_blank" rel="noopener">重新認識 JavaScript: Day 06 運算式與運算子</a> | <a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Expressions_and_Operators" target="_blank" rel="noopener">MDN運算式與運算子</a></li>
+</ul>
+<h2 id="邏輯運算子"><a href="#邏輯運算子" class="headerlink" title="邏輯運算子"></a>邏輯運算子</h2><ul>
+<li><h4 id="用於結合流程判斷：兩件事同時發生，要兩個都符合、或是達成其中之一"><a href="#用於結合流程判斷：兩件事同時發生，要兩個都符合、或是達成其中之一" class="headerlink" title="用於結合流程判斷：兩件事同時發生，要兩個都符合、或是達成其中之一"></a>用於結合流程判斷：兩件事同時發生，要兩個都符合、或是達成其中之一</h4></li>
+</ul>
+<h3 id="AND-amp-amp"><a href="#AND-amp-amp" class="headerlink" title="AND (&amp;&amp;)"></a>AND (&amp;&amp;)</h3><p>運算式1 <code>&amp;&amp;</code> 運算式2</p>
+<ul>
+<li>假如 運算式1 可以被轉換成 false的話，回傳 運算式1; 否則，回傳 運算式2。 因此，<code>&amp;&amp;</code>只有在 兩個運算元都是True 時才會回傳 True，否則回傳 false。</li>
+</ul>
+<h3 id="OR"><a href="#OR" class="headerlink" title="OR(||)"></a>OR(<code>||</code>)</h3><p>運算式1 || 運算式2</p>
+<ul>
+<li>假如 運算式1 可以被轉換成 true的話，回傳 運算式1; 否則，回傳 運算式2。 因此，||在 兩個運算元有任一個是True 時就會回傳 True，否則回傳 false。</li>
+</ul>
+<ul>
+<li>以布林值為例<br>在OR中，只要有其中一個為true，就會回傳true</li>
+</ul>
+<p><img src="https://i.imgur.com/MVdrWHD.png" alt=""></p>
+<ul>
+<li>運算子的判斷 </li>
+</ul>
+<p><img src="https://i.imgur.com/QrVIaVk.png" alt=""></p>
+<ul>
+<li><code>x-y</code> 是正確的，再往下執行<code>(y-1)</code> 回傳1<code>(2-1)</code></li>
+</ul>
+<p><img src="https://i.imgur.com/ePTB51j.png" alt=""></p>
+<ul>
+<li>執行<code>x-y</code>時，就確定它有值了，所以先行回傳3 </li>
+</ul>
+<p><img src="https://i.imgur.com/jDgoWtM.png" alt=""></p>
+<ul>
+<li>在運算式中第一個值為false，於<code>&amp;&amp;</code>,<code>||</code></li>
+</ul>
+<p><img src="https://i.imgur.com/ozAgEpK.png" alt=""></p>
+<ul>
+<li>其他範例： </li>
+</ul>
+<p>z沒有設定值，就會被設定一個預設值 -&gt;變數沒有值的時候，給他預設值<br>n已經有值，就會回傳他自己的值</p>
+<p><img src="https://i.imgur.com/GCQrL1J.png" alt=""></p>
+<h3 id="NOT"><a href="#NOT" class="headerlink" title="NOT (!)"></a>NOT (!)</h3><p><img src="https://i.imgur.com/AgVDowW.png" alt=""></p>
+<p>清楚介紹：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Expressions_and_Operators#%E9%82%8F%E8%BC%AF%E9%81%8B%E7%AE%97%E5%AD%90" target="_blank" rel="noopener">MDN</a></p>
+<h2 id="三元運算子"><a href="#三元運算子" class="headerlink" title="三元運算子"></a>三元運算子</h2><ul>
+<li>有三個運算元</li>
+<li>如果 ？ 我就 ： 不然 (如果我有1千萬 ? 我就 ： 否則)<ul>
+<li><code>1&gt;=3</code>是false，所以回傳b </li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/zx1ABJ0.png" alt=""></p>
+<p><img src="https://i.imgur.com/kWSDA5Q.png" alt=""></p>
+<ul>
+<li>也同等於if else</li>
+</ul>
+<p><img src="https://i.imgur.com/e4e2VMo.png" alt=""></p>
+<h2 id="賦值運算子與次方-系列"><a href="#賦值運算子與次方-系列" class="headerlink" title="賦值運算子與次方(+= 系列)"></a>賦值運算子與次方(+= 系列)</h2><ul>
+<li><h3 id="運算"><a href="#運算" class="headerlink" title="+=運算"></a>+=運算</h3></li>
+</ul>
+<pre><code class="javascript"> console.log(&#39;賦值運算子&#39;)
+    var x = 1;
+    console.log(&#39;x=&#39;, x); //1
+    x += 1;
+    console.log(&#39;x+=1 等於&#39;, x); //2
+    //x=x+1
+    var y = 10;
+    y -= 2;
+    //y=y-2
+    console.log(y);
+    x *= 5;
+    console.log(&#39;x*=5 等於&#39;, x); //10
+    x /= 2;
+    //x=x/2
+    console.log(&#39;x/=2等於&#39;, x) //5
+    ////////////////////////
+    var z = 35;
+    z %= 10;
+    // z = z % 10;
+    console.log(&#39;z %=10&#39;, z);</code></pre>
+<ul>
+<li><h3 id="次方運算"><a href="#次方運算" class="headerlink" title="次方運算"></a>次方運算</h3></li>
+</ul>
+<pre><code class="javascript">   //次方
+    /////////
+    var a = 2;
+    console.log(&#39;a **5&#39;, a ** 5); //2的5次方＝32</code></pre>
+<ul>
+<li><h3 id="給預設值"><a href="#給預設值" class="headerlink" title="給預設值"></a>給預設值</h3><pre><code class="javascript">var b;
+  b ||= 10;
+  console.log(&#39;給預設值 b&#39;, b); //回傳10
 
-searchButtonEl.onclick = function () {
-    if (searchDatabase.length > 0) return;
+  var c = 555;
+  c ||= 10;
+  console.log(&#39;給預設值 c&#39;, c); //回傳555 ; 因為c有宣告，所以c適用原本給的值</code></pre>
+</li>
+</ul>
 
-    fetch(window.location.href + '/search.xml').then(res => res.text()).then(res => {
-        var domparser = new DOMParser
-        var doc = domparser.parseFromString(res, 'application/xml')
-        searchDatabase = doc.getElementsByTagName('search')[0].children
-    })
-}</script><main class="aside-card-container profile-widget"><!-- todo: 使用取色工具动态阴影--><section class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center"><section class="is-flex is-justify-content-center avatar is-clipped skeleton"><!-- debug images "https://api.ixiaowai.cn/gqapi/gqapi.php"--><img class="js-img-fadeIn" src="/images/eva-round.png" alt="user avatar"></section><h3 class="user-name">Eva</h3><blockquote class="has-text-centered is-relative"><span style="margin-bottom: 5px;">Front-end Engineer email:as45986@gmail.com</span></blockquote></section><section class="sns-container is-flex is-justify-content-center is-align-items-center"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section></main><main class="aside-card-container categories-widget category-page"><h3>Categories</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Ajax-%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/">Ajax 實作練習</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSS%E7%B7%B4%E7%BF%92/">CSS練習</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E2E/">E2E</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/">JS實作練習</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Leetcode/">Leetcode</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-%E6%B8%AC%E8%A9%A6/">React 測試</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TypeScript/">TypeScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">3</span></li></ul></section></main><main class="aside-card-container archives-widget"><h3>Archives</h3><section><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li></ul></section></main><main class="aside-card-container tag-widget"><h3>Tags</h3><section><a href="/tags/Ajax"><span class="tag post-item-tag" style="margin-bottom: 5px;">Ajax</span></a><a href="/tags/API"><span class="tag post-item-tag" style="margin-bottom: 5px;">API</span></a><a href="/tags/udemy"><span class="tag post-item-tag" style="margin-bottom: 5px;">udemy</span></a><a href="/tags/CSS"><span class="tag post-item-tag" style="margin-bottom: 5px;">CSS</span></a><a href="/tags/transform"><span class="tag post-item-tag" style="margin-bottom: 5px;">transform</span></a><a href="/tags/JavaScript"><span class="tag post-item-tag" style="margin-bottom: 5px;">JavaScript</span></a><a href="/tags/TypeScript"><span class="tag post-item-tag" style="margin-bottom: 5px;">TypeScript</span></a><a href="/tags/Nuxt"><span class="tag post-item-tag" style="margin-bottom: 5px;">Nuxt</span></a><a href="/tags/Command%20Line"><span class="tag post-item-tag" style="margin-bottom: 5px;">Command Line</span></a><a href="/tags/Algorithm"><span class="tag post-item-tag" style="margin-bottom: 5px;">Algorithm</span></a><a href="/tags/React"><span class="tag post-item-tag" style="margin-bottom: 5px;">React</span></a><a href="/tags/Leetcode"><span class="tag post-item-tag" style="margin-bottom: 5px;">Leetcode</span></a><a href="/tags/Vue"><span class="tag post-item-tag" style="margin-bottom: 5px;">Vue</span></a><a href="/tags/slot"><span class="tag post-item-tag" style="margin-bottom: 5px;">slot</span></a><a href="/tags/v-for"><span class="tag post-item-tag" style="margin-bottom: 5px;">v-for</span></a><a href="/tags/%E5%88%87%E7%89%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">切版</span></a><a href="/tags/test"><span class="tag post-item-tag" style="margin-bottom: 5px;">test</span></a><a href="/tags/cypress"><span class="tag post-item-tag" style="margin-bottom: 5px;">cypress</span></a><a href="/tags/flex"><span class="tag post-item-tag" style="margin-bottom: 5px;">flex</span></a><a href="/tags/footer"><span class="tag post-item-tag" style="margin-bottom: 5px;">footer</span></a><a href="/tags/float"><span class="tag post-item-tag" style="margin-bottom: 5px;">float</span></a><a href="/tags/animation"><span class="tag post-item-tag" style="margin-bottom: 5px;">animation</span></a><a href="/tags/icon"><span class="tag post-item-tag" style="margin-bottom: 5px;">icon</span></a><a href="/tags/box-sizing"><span class="tag post-item-tag" style="margin-bottom: 5px;">box-sizing</span></a><a href="/tags/JS"><span class="tag post-item-tag" style="margin-bottom: 5px;">JS</span></a><a href="/tags/Git"><span class="tag post-item-tag" style="margin-bottom: 5px;">Git</span></a><a href="/tags/HTML"><span class="tag post-item-tag" style="margin-bottom: 5px;">HTML</span></a><a href="/tags/switch"><span class="tag post-item-tag" style="margin-bottom: 5px;">switch</span></a><a href="/tags/%E8%BF%B4%E5%9C%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">迴圈</span></a><a href="/tags/drag&amp;drop"><span class="tag post-item-tag" style="margin-bottom: 5px;">drag&amp;drop</span></a><a href="/tags/Array"><span class="tag post-item-tag" style="margin-bottom: 5px;">Array</span></a><a href="/tags/Object"><span class="tag post-item-tag" style="margin-bottom: 5px;">Object</span></a><a href="/tags/DOM%22"><span class="tag post-item-tag" style="margin-bottom: 5px;">DOM&quot;</span></a><a href="/tags/jQuery"><span class="tag post-item-tag" style="margin-bottom: 5px;">jQuery</span></a><a href="/tags/setInterval"><span class="tag post-item-tag" style="margin-bottom: 5px;">setInterval</span></a><a href="/tags/ajax"><span class="tag post-item-tag" style="margin-bottom: 5px;">ajax</span></a><a href="/tags/input"><span class="tag post-item-tag" style="margin-bottom: 5px;">input</span></a><a href="/tags/local%20storage"><span class="tag post-item-tag" style="margin-bottom: 5px;">local storage</span></a><a href="/tags/forEach"><span class="tag post-item-tag" style="margin-bottom: 5px;">forEach</span></a><a href="/tags/append"><span class="tag post-item-tag" style="margin-bottom: 5px;">append</span></a><a href="/tags/jQuery%20"><span class="tag post-item-tag" style="margin-bottom: 5px;">jQuery </span></a><a href="/tags/random"><span class="tag post-item-tag" style="margin-bottom: 5px;">random</span></a><a href="/tags/parseInt"><span class="tag post-item-tag" style="margin-bottom: 5px;">parseInt</span></a><a href="/tags/ajax%20"><span class="tag post-item-tag" style="margin-bottom: 5px;">ajax </span></a><a href="/tags/setTimeout"><span class="tag post-item-tag" style="margin-bottom: 5px;">setTimeout</span></a><a href="/tags/toggleClass"><span class="tag post-item-tag" style="margin-bottom: 5px;">toggleClass</span></a><a href="/tags/variable"><span class="tag post-item-tag" style="margin-bottom: 5px;">variable</span></a><a href="/tags/webpack"><span class="tag post-item-tag" style="margin-bottom: 5px;">webpack</span></a><a href="/tags/LocalStorage"><span class="tag post-item-tag" style="margin-bottom: 5px;">LocalStorage</span></a><a href="/tags/grid"><span class="tag post-item-tag" style="margin-bottom: 5px;">grid</span></a><a href="/tags/%E5%A4%9A%E9%87%8D%E8%83%8C%E6%99%AF"><span class="tag post-item-tag" style="margin-bottom: 5px;">多重背景</span></a><a href="/tags/opacity"><span class="tag post-item-tag" style="margin-bottom: 5px;">opacity</span></a><a href="/tags/GitHub"><span class="tag post-item-tag" style="margin-bottom: 5px;">GitHub</span></a><a href="/tags/SCSS"><span class="tag post-item-tag" style="margin-bottom: 5px;">SCSS</span></a><a href="/tags/websocket"><span class="tag post-item-tag" style="margin-bottom: 5px;">websocket</span></a><a href="/tags/Vuex"><span class="tag post-item-tag" style="margin-bottom: 5px;">Vuex</span></a></section></main></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+      
+    </div>
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2023</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></body></html>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

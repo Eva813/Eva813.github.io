@@ -1,81 +1,1503 @@
-<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Eva's blog</title><meta name="description" content="Front-end Engineer email:as45986@gmail.com"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
-<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
-</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Vue"><i class="tag post-item-tag">Vue</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/12/23/signaturePad-component/">製作簽名面板元件</a></h2><time class="has-text-grey" datetime="2023-12-23T04:49:11.000Z">2023-12-23</time><p class="is-flex-grow-2 mt-2">因工作需求需要製作簽名面板，查看套件使用度較高 signature_pad
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-在專案內安裝 signature_pad 套件 npm i signature_pad
-嘗試將引入的簽名套件包成可以重複使用的元件。
+<link rel="stylesheet" href="/css/main.css">
 
-initializeSignaturePad : 進行初始化，如尺寸大小、筆的顏色、畫布背景色等。這邊將這些設置放在 props 讓使用時可以保有一些彈性空間。resizeCanvas : 用於調整畫布的大小，目的是確保畫布的大小能夠適應不同的設備和螢幕解析度。saveSignature\ clearSignature: 顧名思義就是儲存、清除簽名注意：因為將簽名功能包成元件，使用 emit 將儲存的簽名傳到外層。
-&amp;lt;template&amp;gt;
-  &amp;lt;div
-    class=&amp;quo..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/12/23/signaturePad-component/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://hackmd.io/_uploads/ryWgDUjoh.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2023/08/05/vueTest-3/"><img class="post-cover-img js-img-fadeIn" src="https://hackmd.io/_uploads/ryWgDUjoh.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/test"><i class="tag post-item-tag">test</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/08/05/vueTest-3/">vueTest - Vue test util (2)</a></h2><time class="has-text-grey" datetime="2023-08-05T04:31:08.000Z">2023-08-05</time><p class="is-flex-grow-2 mt-2">延續上次介紹常用的 Vue test util 語法，今天要再多介紹幾個。
-.text() 與 .html()&amp;lt;template&amp;gt;
-  &amp;lt;div class=&amp;quot;hello&amp;quot;&amp;gt;
-    &amp;lt;p&amp;gt;
-      For a guide and recipes on how to configure / customize this project,&amp;lt;br /&amp;gt;
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Let&#39;s Code">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Eva Chan">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/Eva813/Eva813.github.io.git/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Let's Code</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Code</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/12/23/signaturePad-component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/12/23/signaturePad-component/" class="post-title-link" itemprop="url">製作簽名面板元件</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-12-23 12:49:11 / Modified: 13:13:14" itemprop="dateCreated datePublished" datetime="2023-12-23T12:49:11+08:00">2023-12-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>因工作需求需要製作簽名面板，查看套件使用度較高 <a href="https://www.npmjs.com/package/signature_pad" target="_blank" rel="noopener">signature_pad</a></p>
+<ol>
+<li>在專案內安裝 signature_pad 套件 <code>npm i signature_pad</code></li>
+<li>嘗試將引入的簽名套件包成可以重複使用的元件。</li>
+</ol>
+<p>initializeSignaturePad : 進行初始化，如尺寸大小、筆的顏色、畫布背景色等。這邊將這些設置放在 props 讓使用時可以保有一些彈性空間。<br>resizeCanvas : 用於調整畫布的大小，目的是確保畫布的大小能夠適應不同的設備和螢幕解析度。<br>saveSignature\ clearSignature: 顧名思義就是儲存、清除簽名<br>注意：因為將簽名功能包成元件，使用 emit 將儲存的簽名傳到外層。</p>
+<pre><code class="vue">&lt;template&gt;
+  &lt;div
+    class=&quot;signature-pad&quot;
+    :style=&quot;{ width: props.width, height: props.height }&quot;
+  &gt;
+    &lt;canvas ref=&quot;canvas&quot;&gt;&lt;/canvas&gt;
+    &lt;slot&gt;
+      &lt;button @click=&quot;clearSignature&quot;&gt;清除簽名&lt;/button&gt;
+      &lt;button @click=&quot;saveSignature&quot;&gt;儲存簽名&lt;/button&gt;
+    &lt;/slot&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { onMounted, ref, watch, onUnmounted } from &quot;vue&quot;;
+import SignaturePad from &quot;signature_pad&quot;;
+
+const props = defineProps({
+  width: { type: String, default: &quot;100%&quot; },
+  height: { type: String, default: &quot;300px&quot; },
+  penColor: { type: String, default: &quot;black&quot; },
+  backgroundColor: { type: String, default: &quot;white&quot; },
+  options: { type: Object, default: () =&gt; ({}) },
+});
+
+const canvas = ref(null);
+let signaturePad = null;
+
+const initializeSignaturePad = () =&gt; {
+  if (canvas.value) {
+    signaturePad = new SignaturePad(canvas.value, {
+      ...props.options,
+      penColor: props.penColor,
+      backgroundColor: props.backgroundColor,
+    });
+  }
+};
+
+const resizeCanvas = () =&gt; {
+  //window.devicePixelRatio 來獲取設備的像素密度，如果無法獲取到，則將ratio設為1。
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  //根據畫布元素的寬度和高度，乘以ratio，來設定畫布的寬度和高度。為了確保畫布在高像素密度的設備上顯示正確。
+  canvas.value.width = canvas.value.offsetWidth * ratio;
+  canvas.value.height = canvas.value.offsetHeight * ratio;
+  //獲取畫布的2D繪圖上下文，並使用scale方法將繪圖上下文的縮放比例設為ratio。
+  canvas.value.getContext(&quot;2d&quot;).scale(ratio, ratio);
+  signaturePad.clear(); // Clears any existing drawing
+};
+
+const emit = defineEmits([&quot;clear&quot;, &quot;save&quot;]);
+
+const saveSignature = () =&gt; {
+  if (signaturePad) {
+    const signatureImage = signaturePad.toDataURL();
+    emit(&quot;save&quot;, signatureImage);
+  }
+  return null;
+};
+
+const clearSignature = () =&gt; {
+  if (signaturePad) {
+    signaturePad.clear();
+    emit(&quot;clear&quot;); // 發射清除事件
+  }
+};
+
+// Initialize and resize canvas
+onMounted(() =&gt; {
+  initializeSignaturePad();
+  window.addEventListener(&quot;resize&quot;, resizeCanvas);
+  resizeCanvas();
+});
+
+onUnmounted(() =&gt; {
+  window.removeEventListener(&quot;resize&quot;, resizeCanvas);
+});
+
+// Watch for prop changes
+watch(
+  () =&gt; [props.penColor, props.backgroundColor, props.options],
+  () =&gt; {
+    initializeSignaturePad();
+  },
+  { deep: true }
+);
+&lt;/script&gt;</code></pre>
+<h3 id="參考資料："><a href="#參考資料：" class="headerlink" title="參考資料："></a>參考資料：</h3><p><a href="https://github.com/WangShayne/vue3-signature">https://github.com/WangShayne/vue3-signature</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/08/05/vueTest-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/05/vueTest-3/" class="post-title-link" itemprop="url">vueTest - Vue test util (2)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-05 12:31:08" itemprop="dateCreated datePublished" datetime="2023-08-05T12:31:08+08:00">2023-08-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-12-23 12:47:18" itemprop="dateModified" datetime="2023-12-23T12:47:18+08:00">2023-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>延續上次介紹常用的 Vue test util 語法，今天要再多介紹幾個。</p>
+<h2 id="text-與-html"><a href="#text-與-html" class="headerlink" title=".text() 與 .html()"></a><code>.text()</code> 與 <code>.html()</code></h2><pre><code class="javaScript">&lt;template&gt;
+  &lt;div class=&quot;hello&quot;&gt;
+    &lt;p&gt;
+      For a guide and recipes on how to configure / customize this project,&lt;br /&gt;
       check out the
-      &amp;lt;a href=&amp;quot;https://cli.vuejs.org&amp;quot; target=&amp;quot;_blank&amp;quot; rel=&amp;quot;noopener&amp;quot;&amp;gt;
-        vue-cli docu..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/08/05/vueTest-3/">Read more</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Vue"><i class="tag post-item-tag">Vue</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/08/03/vue-isComponent/">vue-isComponent</a></h2><time class="has-text-grey" datetime="2023-08-03T06:59:34.000Z">2023-08-03</time><p class="is-flex-grow-2 mt-2">因工作需求研究 Tab 切換，要使用 router 或是 製作組件 v-if, v-else 切換。這裡的範例，建議可以使用 isComponent 方式，透過點擊頁籤按鈕執行元件的改變，並且使用 keep-alive 儲存資料
-資料來源：https://dev.to/reynoldadade/dynamic-components-a-vuejs-superpower-2olk
-</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/08/03/vue-isComponent/">Read more</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/test"><i class="tag post-item-tag">test</i></a><a href="/tags/cypress"><i class="tag post-item-tag">cypress</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/06/03/assert/">cypress 學習筆記 - Assertion</a></h2><time class="has-text-grey" datetime="2023-06-03T11:12:32.000Z">2023-06-03</time><p class="is-flex-grow-2 mt-2">implicit assertion（隱含斷言）常用的 should 關鍵字：
+      &lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;
+        vue-cli documentation
+      &lt;/a&gt;
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p>使用 <code>html</code> 若直接 console 出會將 template 呈現出來</p>
+<pre><code>html=&gt; &lt;div class=&quot;hello&quot;&gt;
+      &lt;p&gt; For a guide and recipes on how to configure / customize this project,&lt;br&gt; check out the &lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;&lt;/p&gt;
+    &lt;/div&gt;</code></pre><p>在測試當中，可以直接抓取該斷落的內容進行比對</p>
+<ol>
+<li>取得該段的 html</li>
+<li>取得該 DOM 元素，並進行 html 的比對</li>
+</ol>
+<pre><code class="javaScript">import { shallowMount } from &quot;@vue/test-utils&quot;;
+import HelloWorld from &quot;./HelloWorld.vue&quot;;
 
-be.visible：確保元素在畫面上可見。
-be.hidden：確保元素在畫面上隱藏。
-be.checked：確保複選框或單選框元素被選中。
-be.disabled：確保元素被禁用。
-have.text：檢查元素的文字內容是否符合預期。
-have.value：檢查輸入元素的值是否符合預期。
-have.attr：檢查元素的特定屬性值是否符合預期。
-have.class：檢查元素是否具有特定的類名。
-contain：檢查元素是否包含指定的文字內容。
+describe(&quot;HelloWorld.vue&quot;, () =&gt; {
+  it(&quot;html &amp; text&quot;, () =&gt; {
+    const wrapper = shallowMount(HelloWorld);
+    // console.log(&quot;html=&gt;&quot;, wrapper.html());
+    // console.log(&quot;text=&gt;&quot;, wrapper.text());
+    expect(wrapper.html()).toMatch(
+      `&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`);
+    console.log(&quot;aLink_&gt;&quot;, wrapper.find(&#39;a&#39;).html())
+    expect(wrapper.find(&#39;a&#39;).html()).toMatch(
+      `&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`);
+  });
+});</code></pre>
+<h2 id="component-的簡易測試"><a href="#component-的簡易測試" class="headerlink" title="component 的簡易測試"></a>component 的簡易測試</h2><p>如課程範例為一個卡片，裡面有一個圖片元件(ImageBox)、內文元件(Content)</p>
+<p><img src="https://hackmd.io/_uploads/ryWgDUjoh.png" alt=""></p>
+<pre><code class="javascript">&lt;template&gt;
+  &lt;div id=&quot;CardBox&quot;&gt;
+    &lt;ImageBox /&gt;
+    &lt;Content v-if=&quot;isOpenContent&quot; /&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p>test goal: 檢查 component 是否有隨狀態而成功渲染與否。</p>
+<h3 id="findComponent"><a href="#findComponent" class="headerlink" title="findComponent"></a>findComponent</h3><p>判斷 component 是否有存在<br>首先要如何抓元件？</p>
+<ol>
+<li>因頁面中是掛載組件，所以這邊使用 mount</li>
+</ol>
+<pre><code class="javaScript">import { mount } from &quot;@vue/test-utils&quot;;
+import CardBox from &quot;./index.vue&quot;;
+import ImageBox from &quot;./ImageBox.vue&quot;;
+import Content from &quot;./Content.vue&quot;;
 
-可根據具體需求進行選擇和使用keywords
-這裡的練習範例，驗證當前網址（URL）的斷言方法。include：確保當前網址包含特定的子字串。
-cy.url().should(&amp;#..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/06/03/assert/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://hackmd.io/_uploads/BytHdzdU2.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2023/06/03/cypress-2/"><img class="post-cover-img js-img-fadeIn" src="https://hackmd.io/_uploads/BytHdzdU2.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/test"><i class="tag post-item-tag">test</i></a><a href="/tags/cypress"><i class="tag post-item-tag">cypress</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/06/03/cypress-2/">cypress 學習筆記 - css Locator</a></h2><time class="has-text-grey" datetime="2023-06-03T01:48:47.000Z">2023-06-03</time><p class="is-flex-grow-2 mt-2">有空就找找實作影片來練習一下～
-而今天的實作練習，訪問 momoshop 取得搜尋框元素 -&amp;gt; 輸入搜尋的關鍵字(“雨傘”) -&amp;gt; 點擊搜尋 -&amp;gt;查看搜尋後的項目是否包含關鍵字。
-describe(&amp;#39;CSSLocators&amp;#39;,() =&amp;gt; {
-  it(&amp;quot;csslocators&amp;quot;, ()=&amp;gt;{
-    cy.visit(&amp;quot;https://www.momoshop.com.tw/main/Main.jsp?momo=1&amp;amp;gclid=CjwKCAjwpuajBhBpEiwA_ZtfhU9MqvxnVs7Kh8LTNDbmKzFsmDxY16QIaP7lci98eVgfRoNz8ychuRoCao0QAvD_BwE&amp;quot;)
+describe(&quot;CardBox.vue&quot;, () =&gt; {
+  it(&quot;findComponent function test&quot;, () =&gt; {
+    const wrapper = mount(CardBox);
 
-..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/06/03/cypress-2/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/AE7iJQ1.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2023/05/07/cypress-1/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/AE7iJQ1.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/test"><i class="tag post-item-tag">test</i></a><a href="/tags/cypress"><i class="tag post-item-tag">cypress</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/05/07/cypress-1/">自動化測試 E2E - cypress</a></h2><time class="has-text-grey" datetime="2023-05-07T04:48:47.000Z">2023-05-07</time><p class="is-flex-grow-2 mt-2">
-每次在交付完成的任務給 PM 之前，總是會先自行反覆點擊測驗過才提能安心提供。但除了自己點擊之外，是否有其他更為簡易的方式可以進行測試呢？Cypress 是一個用於編寫端對端測試的 JavaScript 測試框架。他可以幫助我們做到基礎的自動化測試，今天就先來認識看看吧～
-建立專案在本地建立一個 cypress-project 資料夾，進入該檔案夾npm init -ynpm install cypress
+    expect(wrapper.findComponent(ImageBox).exists()).toBe(true);
+    expect(wrapper.findComponent(Content).exists()).toBe(true);
+  });
+});
+</code></pre>
+<ul>
+<li>findComponent(‘.class’)</li>
+<li>findComponent({name: a}) 組建名稱</li>
+<li>findComponent({ref: ‘ref’}) 組件實體：綁在 DOM 上的 ref</li>
+<li>findComponent(component) 取得組件：抓取導入的組件</li>
+</ul>
+<h3 id="findAllComponents"><a href="#findAllComponents" class="headerlink" title="findAllComponents"></a>findAllComponents</h3><ul>
+<li>此方式是會回傳陣列，要使用 <code>at()</code></li>
+<li>不支援 ref 查找</li>
+</ul>
+<pre><code class="javaScript">expect(wrapper.findAllComponents(ImageBox).at(0).exists()).toBe(true);</code></pre>
+<pre><code>Using find to search for a Component is deprecated and will be removed. Use findComponent instead. The find method will continue to work for finding elements using any valid selector（tag selectors (div, foo, bar), attribute selectors ([foo], [foo=&quot;bar&quot;])...）.</code></pre><h2 id="測試-class-and-attribute"><a href="#測試-class-and-attribute" class="headerlink" title="測試 class and attribute"></a>測試 class and attribute</h2><p>可以使用在狀態的切換或是驗證資料的對錯，可以用 class 存在與否驗證。</p>
+<h3 id="attribute"><a href="#attribute" class="headerlink" title="attribute"></a>attribute</h3><ul>
+<li>資料在渲染的時候，是否有正確的塞入到 attribute。</li>
+<li>在做資料的渲然，將拿到的內容塞入 attribute 中，如 a link 的 href, img src</li>
+</ul>
+<p>範例題目延續上述使用得內文元件(Content)</p>
+<pre><code class="javaScript">&lt;script&gt;
+import { ref } from &quot;@vue/reactivity&quot;;
 
-安裝完後{
-&amp;quot;name&amp;quot;: &amp;quot;cypress-project-1&amp;quot;,
-&amp;quot;version&amp;quot;: &amp;quot;1.0.0&amp;quot;,
-&amp;quot;description&amp;quot;: &amp;quot;&amp;quot;,
-&amp;quot;main&amp;quot;..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/05/07/cypress-1/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/BcvGwlI.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2023/01/31/vueTest-2/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/BcvGwlI.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/test"><i class="tag post-item-tag">test</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/01/31/vueTest-2/">vueTest - Vue test util (1)</a></h2><time class="has-text-grey" datetime="2023-01-31T05:45:08.000Z">2023-01-31</time><p class="is-flex-grow-2 mt-2">
-測試 App.vue
-引入 @vue/test-utils 使用 shallowMount 方法
-shallowMount 可以渲染出組件shallowMount , mountshallowMount : 只會渲染該元件當層的資料內容mount : 深度渲染，會將元件內所包含的其他元件一起都渲染出
+export default {
+  props: {
+    styleColor: {
+      type: String,
+      default: &quot;red&quot;,
+    },
+  },
+  setup(props) {
+    return {
+      props,
+    };
+  },
+};
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;h1 :class=&quot;[&#39;card_title&#39;, props.styleColor]&quot;&gt;
+      Vue  vue-test-utils
+    &lt;/h1&gt;
+    &lt;a href=&quot;javascript:;&quot;&gt;click&lt;/a&gt;
+    &lt;p class=&quot;card_text&quot;&gt;
+      Vue Test Utils (VTU) is a set of utility functions aimed to simplify testing Vue.js components. It provides some methods to mount and interact with Vue components in an isolated manner!
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p>test goal: 測試 <code>&lt;h1&gt;</code> 有沒有存在 styleColor</p>
+<ul>
+<li>使用 <code>class()</code> 帶入參數，就會去檢查該 class 是否存在<br>測試架構：</li>
+</ul>
+<ol>
+<li>先確定該元件有被渲染出來</li>
+<li>找到 h1 tag 並查看是否有 styleColor 傳入</li>
+<li>元件內的 a link 放入 href</li>
+</ol>
+<pre><code class="javaScript">import { shallowMount } from &quot;@vue/test-utils&quot;;
+import Content from &quot;./Content.vue&quot;;
+
+describe(&quot;Content.vue&quot;, () =&gt; {
+  it(&quot;find component&quot;,()=&gt;{
+    const wrapper = shallowMount(Content);
+
+    expect(wrapper.find(&#39;.card_title&#39;).exists()).toBe(true)
+  })
+  it(&quot;check h1 tag have red class&quot;, ()=&gt;{
+    const wrapper = shallowMount(Content);
+
+    expect(wrapper.find(&#39;h1&#39;).classes(&#39;red&#39;)).toBe(true);
+  })
+  it(&quot;button is disabled attr&quot;, () =&gt; {
+    const wrapper = shallowMount(Content);
+    console.log(&#39;red&#39;, wrapper.find(&#39;a&#39;).attributes(&quot;href&quot;))
+    expect(wrapper.find(&#39;a&#39;).attributes(&quot;href&quot;)).toBe(&quot;javascript:;&quot;);
+  })
+});</code></pre>
+<p>練習方式，聽完講師分享的操作之後，寫下測試目標的結構，就可以嘗試自己撰寫看看！</p>
+<h2 id="檢查是否可見-isVisible-amp-exists"><a href="#檢查是否可見-isVisible-amp-exists" class="headerlink" title="檢查是否可見 isVisible &amp; exists"></a>檢查是否可見 isVisible &amp; exists</h2><p>前面的範例練習，就可以看檔有使用 exists<br>在 vue template 中，有使用 <code>v-if</code>, <code>v-show</code> 來處理 div 顯示與否。<br><code>v-show</code> 會存在於 DOM 上。</p>
+<pre><code class="javaScript">import { shallowMount } from &quot;@vue/test-utils&quot;;
+import PhotoItem from &quot;./index.vue&quot;;
+
+describe(&quot;PhotoItem.vue&quot;, () =&gt; {
+  it(&quot;DOM is v-if or v-show hide&quot;, () =&gt; {
+    const wrapper = shallowMount(PhotoItem);
+
+    // exists 用來查看是否存在
+    expect(wrapper.find(&quot;#box1&quot;).exists()).toBe(false);
+    // isVisible 用來判斷DOM是否給 v-show 隱藏起來
+    expect(wrapper.find(&quot;#box2&quot;).isVisible()).toBe(false);
+  });
+
+});</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/08/03/vue-isComponent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/03/vue-isComponent/" class="post-title-link" itemprop="url">vue-isComponent</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-03 14:59:34" itemprop="dateCreated datePublished" datetime="2023-08-03T14:59:34+08:00">2023-08-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-05 12:16:10" itemprop="dateModified" datetime="2023-08-05T12:16:10+08:00">2023-08-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>因工作需求研究 Tab 切換，要使用 router 或是 製作組件 <code>v-if</code>, <code>v-else</code> 切換。<br>這裡的範例，建議可以使用 <code>isComponent</code> 方式，透過點擊頁籤按鈕執行元件的改變，並且使用 <code>keep-alive</code> 儲存資料</p>
+<p>資料來源：<a href="https://dev.to/reynoldadade/dynamic-components-a-vuejs-superpower-2olk" target="_blank" rel="noopener">https://dev.to/reynoldadade/dynamic-components-a-vuejs-superpower-2olk</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/06/03/assert/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/03/assert/" class="post-title-link" itemprop="url">cypress 學習筆記 - Assertion</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-03 19:12:32" itemprop="dateCreated datePublished" datetime="2023-06-03T19:12:32+08:00">2023-06-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-06-14 20:03:46" itemprop="dateModified" datetime="2023-06-14T20:03:46+08:00">2023-06-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/E2E/" itemprop="url" rel="index"><span itemprop="name">E2E</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="implicit-assertion（隱含斷言）"><a href="#implicit-assertion（隱含斷言）" class="headerlink" title="implicit assertion（隱含斷言）"></a>implicit assertion（隱含斷言）</h2><p>常用的 <code>should</code> 關鍵字：</p>
+<ol>
+<li><code>be.visible</code>：確保元素在畫面上可見。</li>
+<li><code>be.hidden</code>：確保元素在畫面上隱藏。</li>
+<li><code>be.checked</code>：確保複選框或單選框元素被選中。</li>
+<li><code>be.disabled</code>：確保元素被禁用。</li>
+<li><code>have.text</code>：檢查元素的文字內容是否符合預期。</li>
+<li><code>have.value</code>：檢查輸入元素的值是否符合預期。</li>
+<li><code>have.attr</code>：檢查元素的特定屬性值是否符合預期。</li>
+<li><code>have.class</code>：檢查元素是否具有特定的類名。</li>
+<li><code>contain</code>：檢查元素是否包含指定的文字內容。</li>
+</ol>
+<p>可根據具體需求進行選擇和使用<br><a href="https://docs.cypress.io/guides/references/assertions" target="_blank" rel="noopener">keywords</a></p>
+<h3 id="這裡的練習範例，驗證當前網址（URL）的斷言方法。"><a href="#這裡的練習範例，驗證當前網址（URL）的斷言方法。" class="headerlink" title="這裡的練習範例，驗證當前網址（URL）的斷言方法。"></a>這裡的練習範例，驗證當前網址（URL）的斷言方法。</h3><p>include：確保當前網址包含特定的子字串。</p>
+<pre><code class="javascript">cy.url().should(&#39;include&#39;, &#39;/login&#39;);
+</code></pre>
+<p>eq：確保當前網址與預期值完全相等。</p>
+<pre><code class="javascript">cy.url().should(&#39;eq&#39;, &#39;https://example.com/dashboard&#39;);
+</code></pre>
+<p>contain：檢查當前網址是否包含特定的字串。</p>
+<pre><code class="javascript">cy.url().should(&#39;contain&#39;, &#39;example.com&#39;);</code></pre>
+<p>這些斷言方法可用於驗證當前網址是否符合預期，從而確保導航或操作正確導致了預期的網址變化。</p>
+<pre><code class="JS">describe(&quot;Assertion practice&quot;,()=&gt;{
+
+    it(&quot;explicit&quot;, ()=&gt;{
+
+        cy.visit(&#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+
+        //should + keyword end
+
+        cy.url().should(&#39;include&#39;, &#39;orangehrmlive.com&#39;)
+
+        cy.url().should(&#39;eq&#39;, &#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+
+        cy.url().should(&#39;contain&#39;, &#39;orangehrmlive&#39;)
 
 
-例如以下範例: 在 App.vue 中有包含數個元件
+    })
 
- //App.vue
-&amp;lt;template&amp;gt;
+})
+</code></pre>
+<ul>
+<li>可以看到上述，有連續使用到 <code>url()</code></li>
+</ul>
+<pre><code class="JS">cy.url().should(&#39;include&#39;, &#39;orangehrmlive.com&#39;)
 
-    &amp;lt;img class=&amp;quot;logo&amp;quot; alt=&amp;quot;Vue logo&amp;quot; src=&amp;quot;./assets/logo.png&amp;quot; /&amp;gt;
+.should(&#39;eq&#39;, &#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
 
-    &amp;lt;h1&amp;gt;Test demo&amp;lt;/h1&amp;gt;
+.should(&#39;contain&#39;, &#39;orangehrmlive&#39;)</code></pre>
+<pre><code class="JS">    cy.url().should(&#39;include&#39;, &#39;orangehrmlive.com&#39;)
 
-    &amp;lt;Ad..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/01/31/vueTest-2/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/xhxaYa1.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2023/01/28/vueTest-1/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/xhxaYa1.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/test"><i class="tag post-item-tag">test</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/01/28/vueTest-1/">Vue 單元測試 - 基礎入門</a></h2><time class="has-text-grey" datetime="2023-01-28T06:50:37.000Z">2023-01-28</time><p class="is-flex-grow-2 mt-2">為了不斷建立以及加深自己的技能，即便目前工作上未能使用，還是可以提前做些準備，之前看到 Mike 老師推出的 vue 單元測試，就先入手～趁近期有空先來奠定下測試的基礎，未來可以在專案內練習撰寫！
+    .and(&#39;eq&#39;, &#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
 
-專案創建若一開始專案沒有選擇 jest 或加入測試 要如何在現有專案加入？
+    .and(&#39;contain&#39;, &#39;orangehrmlive&#39;)</code></pre>
+<p>另外可以檢查進到頁面 logo 圖示的顯示</p>
+<pre><code class="JS">
+describe(&quot;Assertion practice&quot;,()=&gt;{
+  it(&quot;explicit&quot;, ()=&gt;{
+    cy.visit(&#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+      //check logo 呈現與否
+    cy.get(&#39;.orangehrm-login-branding &gt; img&#39;).should(&#39;be.visible&#39;)
+    .and(&#39;exist&#39;)
+  })
+})
+</code></pre>
+<ul>
+<li>使用者輸入框</li>
+</ul>
+<pre><code class="JS">
+describe(&quot;Assertion practice&quot;,()=&gt;{
+  it(&quot;explicit&quot;, ()=&gt;{
+    cy.visit(&#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
 
-可以進入該專案進行安裝vue add unit-jest
-
-這裡創建的專案是使用 vue-cli 創建，並且在自選項目加入 unit test 
-vue create my-project執行 testnpm run test:unit
-更改預設的測試檔案位置component 與 測試的檔案，可以放在同一個資料夾中，以方便找尋
-
-建立 jest.config.js 來設定 jest 
+    //檢查 username 得輸入
+    //取得 username 的輸入框,並且確保輸入的值
+    cy.get(&quot;input[placeholder=&#39;Username&#39;]&quot;).type(&quot;Admin&quot;)
+    cy.get(&quot;input[placeholder=&#39;Username&#39;]&quot;).should(&quot;have.value&quot;, &quot;Admin&quot;)
 
 
-testMatch: 指定從 src 資料夾..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/01/28/vueTest-1/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/xGK5aDO.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2023/01/25/TS-Generics/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/xGK5aDO.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/TypeScript"><i class="tag post-item-tag">TypeScript</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/01/25/TS-Generics/">TS - Generics 泛型</a></h2><time class="has-text-grey" datetime="2023-01-25T06:27:13.000Z">2023-01-25</time><p class="is-flex-grow-2 mt-2">
-資料整理例如有兩個 interface 屬性一樣，差異在於 型別內容
-interface DataA {
+  })
+})
+</code></pre>
+<h2 id="explicit-assertion"><a href="#explicit-assertion" class="headerlink" title="explicit assertion"></a>explicit assertion</h2><p>（顯式斷言）」是指明確使用斷言方法來檢查特定的條件或預期結果。<br>與隱含斷言不同，顯式斷言需要您明確指定斷言方法來進行驗證。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/06/03/cypress-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/03/cypress-2/" class="post-title-link" itemprop="url">cypress 學習筆記 - css Locator</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-06-03 09:48:47 / Modified: 10:16:41" itemprop="dateCreated datePublished" datetime="2023-06-03T09:48:47+08:00">2023-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/E2E/" itemprop="url" rel="index"><span itemprop="name">E2E</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>有空就找找實作影片來練習一下～</p>
+<p>而今天的實作練習，訪問 momoshop 取得搜尋框元素 -&gt; 輸入搜尋的關鍵字(“雨傘”) -&gt; 點擊搜尋 -&gt;<br>查看搜尋後的項目是否包含關鍵字。</p>
+<pre><code class="JS">describe(&#39;CSSLocators&#39;,() =&gt; {
+  it(&quot;csslocators&quot;, ()=&gt;{
+    cy.visit(&quot;https://www.momoshop.com.tw/main/Main.jsp?momo=1&amp;gclid=CjwKCAjwpuajBhBpEiwA_ZtfhU9MqvxnVs7Kh8LTNDbmKzFsmDxY16QIaP7lci98eVgfRoNz8ychuRoCao0QAvD_BwE&quot;)
+
+    //尋找某些關鍵字
+    cy.get(&#39;[name=&quot;keyword&quot;]&#39;).type(&quot;雨傘&quot;)
+    //點擊搜尋按鈕
+    cy.get(&quot;[title = &#39;搜尋&#39;]&quot;).click()  //attribute
+    cy.get(&#39;.prdName&#39;).contains(&#39;傘&#39;)
+    cy.get(&#39;.prdName&#39;).contains(&#39;羽絨&#39;) //Assertion
+  })
+})</code></pre>
+<p><img src="https://hackmd.io/_uploads/BytHdzdU2.png" alt=""></p>
+<p>在此文章主要針對取得 <code>css Locator</code> 進行系列操作。<br>可以使用 <code>#idName</code>, <code>.cssName</code>, <code>[title = &#39;搜尋&#39;]</code>, <code>[name = &#39;search&#39;]</code> 等方式<br>其實 cypress 官方網站也滿容易讀，可以根據我們想要在網頁上進行何種操作，搜尋相應的功能。<br>例如: Assertion <a href="https://docs.cypress.io/guides/references/assertions" target="_blank" rel="noopener">cypress-assertions</a></p>
+<p>小補充另一個取得定位的方式：<br>XPath：<br>  XPath是一種用於導航XML文件的語言，同樣也適用於HTML文件。它提供了一種根據元素在文檔層次結構中的路徑選擇元素的方法。XPath表達式非常強大且靈活，可以根據元素的屬性、文本內容等條件進行選擇。</p>
+<p>在Cypress中，您可以使用XPath選擇器，只需將選擇器字符串以 xpath 為前綴添加到命令中。例如：</p>
+<pre><code class="JS">  cy.xpath(&#39;//button[@id=&quot;submit-btn&quot;]&#39;).click();</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/05/07/cypress-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/05/07/cypress-1/" class="post-title-link" itemprop="url">自動化測試 E2E - cypress</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-05-07 12:48:47 / Modified: 13:15:42" itemprop="dateCreated datePublished" datetime="2023-05-07T12:48:47+08:00">2023-05-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/E2E/" itemprop="url" rel="index"><span itemprop="name">E2E</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/AE7iJQ1.png" alt=""></p>
+<p>每次在交付完成的任務給 PM 之前，總是會先自行反覆點擊測驗過才提能安心提供。但除了自己點擊之外，是否有其他更為簡易的方式可以進行測試呢？Cypress 是一個用於編寫端對端測試的 JavaScript 測試框架。他可以幫助我們做到基礎的自動化測試，今天就先來認識看看吧～</p>
+<h2 id="建立專案"><a href="#建立專案" class="headerlink" title="建立專案"></a>建立專案</h2><p>在本地建立一個 cypress-project 資料夾，進入該檔案夾<br><code>npm init -y</code><br><code>npm install cypress</code></p>
+<ul>
+<li>安裝完後<pre><code class="javaScript">{
+&quot;name&quot;: &quot;cypress-project-1&quot;,
+&quot;version&quot;: &quot;1.0.0&quot;,
+&quot;description&quot;: &quot;&quot;,
+&quot;main&quot;: &quot;index.js&quot;,
+&quot;scripts&quot;: {
+  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+},
+&quot;keywords&quot;: [],
+&quot;author&quot;: &quot;&quot;,
+&quot;license&quot;: &quot;ISC&quot;,
+&quot;dependencies&quot;: {
+  &quot;cypress&quot;: &quot;^12.11.0&quot;
+}
+}</code></pre>
+</li>
+</ul>
+<h2 id="實作測試功能"><a href="#實作測試功能" class="headerlink" title="實作測試功能"></a>實作測試功能</h2><ul>
+<li>訪問 google 頁面</li>
+<li>進行關鍵字搜尋</li>
+</ul>
+<p><img src="https://i.imgur.com/2FOKkBZ.png" alt=""></p>
+<h3 id="測試語法"><a href="#測試語法" class="headerlink" title="測試語法"></a>測試語法</h3><pre><code class="javaScript">  it(&#39;google search&#39;, () =&gt; {
+    //visit 進入不同網站
+    cy.visit(&#39;https://www.google.com.tw/?hl=zh_TW&#39;)
+
+    cy.get(&#39;#APjFqb&#39;).type(&#39;what is cypress.io{Enter}&#39;)
+    //除了點擊搜尋按鈕之外，一般也會按下 enter鍵觸發
+    // cy.contains(&#39;Google 搜尋&#39;).click()
+  })</code></pre>
+<h3 id="測試操作"><a href="#測試操作" class="headerlink" title="測試操作"></a>測試操作</h3><p><code>npx cypress open</code> 進入測試介面，選擇 E2E</p>
+<p><img src="https://i.imgur.com/rmkiayJ.png" alt=""></p>
+<ul>
+<li>選擇要測試的檔案：</li>
+</ul>
+<p><img src="https://i.imgur.com/W6yP5nu.png" alt=""></p>
+<ul>
+<li>透過選取器可以找到相對應的元素，並針對該元素下指令<ul>
+<li>這邊我們就是拿到 搜尋框，並進行關鍵字的輸入<br><img src="https://i.imgur.com/RZ5EjKZ.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="測試結果呈現"><a href="#測試結果呈現" class="headerlink" title="測試結果呈現"></a>測試結果呈現</h3><ul>
+<li>會進到 google 頁面</li>
+<li>在輸入框輸入 what is cypress.io ,點擊 Enter 搜尋</li>
+</ul>
+<p><img src="https://i.imgur.com/a37BYX1.png" alt=""></p>
+<p><img src="https://i.imgur.com/8QbuLdQ.jpg" alt=""></p>
+<p>小結：</p>
+<p>cy.visit(url)：訪問指定網址。<br>cy.get()：使用 cy.get() 方法選擇元素。我們可以使用不同的選擇器（如：CSS 選擇器）來指向特定元素。<br>type()： 使用 type() 方法在輸入框中輸入內容。<br>click()：使用 cy.get() 定位到這些元素，然後使用 click() 方法模擬點擊操作。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/01/31/vueTest-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/31/vueTest-2/" class="post-title-link" itemprop="url">vueTest - Vue test util (1)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-31 13:45:08" itemprop="dateCreated datePublished" datetime="2023-01-31T13:45:08+08:00">2023-01-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-05 12:31:50" itemprop="dateModified" datetime="2023-08-05T12:31:50+08:00">2023-08-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>測試 App.vue<ul>
+<li>引入 <code>@vue/test-utils</code> 使用 shallowMount 方法</li>
+<li>shallowMount 可以渲染出組件<h2 id="shallowMount-mount"><a href="#shallowMount-mount" class="headerlink" title="shallowMount , mount"></a>shallowMount , mount</h2>shallowMount : 只會渲染該元件當層的資料內容<br>mount : 深度渲染，會將元件內所包含的其他元件一起都渲染出</li>
+</ul>
+</li>
+<li>例如以下範例: 在 App.vue 中有包含數個元件</li>
+</ul>
+<pre><code class="vue"> //App.vue
+&lt;template&gt;
+
+    &lt;img class=&quot;logo&quot; alt=&quot;Vue logo&quot; src=&quot;./assets/logo.png&quot; /&gt;
+
+    &lt;h1&gt;Test demo&lt;/h1&gt;
+
+    &lt;AddCount /&gt;
+
+    &lt;HelloWorld /&gt;
+
+    &lt;div class=&quot;itemFlex&quot;&gt;
+
+    &lt;CardBox v-for=&quot;i in 4&quot; :key=&quot;i&quot; /&gt;
+
+    &lt;/div&gt;
+
+    &lt;UserList /&gt;
+
+    &lt;PhotoItem /&gt;
+
+&lt;/template&gt;</code></pre>
+<ul>
+<li>測試元件</li>
+</ul>
+<pre><code class="javaScript">import { shallowMount, mount } from &quot;@vue/test-utils&quot;
+
+import App from &#39;@/App.vue&#39;
+
+
+
+describe(&#39;App.vue test&#39;, () =&gt; {
+
+    it(&#39;測試組件 1&#39;, () =&gt; {
+
+        //渲染出 App 元件
+
+        const wrapper = shallowMount(App);
+
+        console.log(wrapper.text())
+
+        expect(wrapper.text()).toMatch(&quot;Test demo&quot;)
+
+    });
+
+    it(&#39;測試組件2&#39;, () =&gt; {
+
+    const wrapper = mount(App);
+
+    console.log(wrapper.text())
+
+    expect(wrapper.text()).toMatch(&quot;若你是寫過 Vue 但沒有寫過單元測試的工程師&quot;)
+
+    })
+
+})</code></pre>
+<p><img src="https://i.imgur.com/BcvGwlI.png" alt=""></p>
+<p>get 與 find 差異</p>
+<ul>
+<li>抓取某個元件中 DOM 元素</li>
+<li>兩者差異在於<ul>
+<li>使用 get ，如果找不到元素會報錯，並且直接中斷測試的運行</li>
+<li>使用 find 會依據 <code>exists()</code> 回傳布林值</li>
+</ul>
+</li>
+</ul>
+<p><code>&lt;button id=&quot;add&quot; class=&quot;add-btn&quot; @click=&quot;add&quot;&gt;add 按鈕&lt;/button&gt;</code></p>
+<p><img src="https://i.imgur.com/TWuFWX3.png" alt=""></p>
+<ul>
+<li>測試按鈕存不存在<ul>
+<li>exists : 驗證某元素是否存在</li>
+<li><a href="https://test-utils.vuejs.org/api/#exists" target="_blank" rel="noopener"> exists</a></li>
+</ul>
+</li>
+</ul>
+<pre><code class="javaScript">describe(&#39;AddCount.vue&#39;, () =&gt; {
+
+    it(&#39;test 1 &#39;, () =&gt; {
+
+        const wrapper = shallowMount(AddCount);
+
+        console.log(wrapper.find(&#39;.add-btn&#39;))
+
+        expect(wrapper.find(&#39;.add-btn&#39;).exists()).toBe(true)
+
+    })
+
+
+})</code></pre>
+<p><img src="https://i.imgur.com/0sBL0t6.png" alt=""></p>
+<p><img src="https://i.imgur.com/htkF4X5.png" alt=""></p>
+<h3 id="在情境應用"><a href="#在情境應用" class="headerlink" title="在情境應用"></a>在情境應用</h3><ul>
+<li>在 AddCount 加入 <code>isOpen=ref(false)</code> 來判斷 button 是否在一開始要呈現</li>
+<li>而再測試文件中就是要測試該按鈕在一開始並不會出現</li>
+</ul>
+<p><img src="https://i.imgur.com/YkBK6Ry.png" alt=""></p>
+<pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;
+
+import AddCount from &#39;@/components/AddCount.vue&#39;
+
+
+
+describe(&#39;AddCount.vue&#39;, () =&gt; {
+
+    it(&#39;test 1 &#39;, () =&gt; {
+
+        const wrapper = shallowMount(AddCount);
+
+        console.log(wrapper.find(&#39;.add-btn&#39;))
+    // 找不到，並且回傳 false
+        expect(wrapper.find(&#39;.add-btn-err&#39;).exists()).toBe(false)
+
+    })
+
+
+
+})</code></pre>
+<h2 id="find-與-findAll"><a href="#find-與-findAll" class="headerlink" title="find 與 findAll"></a>find 與 findAll</h2><p>以 v-for list 的範例</p>
+<pre><code class="vue">&lt;script&gt;
+
+import { ref } from &quot;vue&quot;;
+
+import data from &quot;./data.json&quot;;
+
+export default {
+
+    setup() {
+
+        const employeeItem = ref(data);
+
+        return {
+
+            employeeItem,
+
+        };
+
+    },
+
+};
+
+&lt;/script&gt;
+
+
+
+&lt;template&gt;
+
+    &lt;ul class=&quot;item&quot;&gt;
+
+        &lt;li class=&quot;user_list&quot; v-for=&quot;item in employeeItem&quot; :key=&quot;item.id&quot;&gt;
+
+            &lt;div&gt;
+
+                &lt;p&gt;員工編號: {{ item.userId }}&lt;/p&gt;
+
+                &lt;p&gt;姓名: {{ item.username }}&lt;/p&gt;
+
+            &lt;/div&gt;
+
+        &lt;/li&gt;
+
+    &lt;/ul&gt;
+
+&lt;/template&gt;</code></pre>
+<p><img src="https://i.imgur.com/dqts5eV.png" alt=""></p>
+<p><img src="https://i.imgur.com/PXPy1as.png" alt=""></p>
+<p>如果是要抓元件中 list 有幾筆<br><code>wrapper.findAll(&#39;.user_list&#39;)</code> : 他會是一個陣列資料，其中包含好幾個 DOM wrapper </p>
+<p><img src="https://i.imgur.com/I5lNSRX.png" alt=""></p>
+<p>注意：<br>    <code>TypeError: wrapper.findAll(...).text is not a function</code></p>
+<ul>
+<li>搭配使用 <code>at()</code> 用於找尋其中某一個物件</li>
+</ul>
+<pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;
+
+import UserList from &#39;@/components/UserList.vue&#39;
+
+
+describe(&#39;test UserList&#39;, () =&gt; {
+
+    it(&#39;test Dom&#39;, () =&gt; {
+
+        const wrapper = shallowMount(UserList);
+
+    // console.log(wrapper.findAll(&#39;.user_list&#39;).at(0).text())
+
+    expect(wrapper.findAll(&#39;.user_list&#39;).at(0).text()).toMatch(&#39;員工編號: 399&#39;)
+
+    })
+
+})</code></pre>
+<h3 id="另也可以測試所拿到的資料長度"><a href="#另也可以測試所拿到的資料長度" class="headerlink" title="另也可以測試所拿到的資料長度"></a>另也可以測試所拿到的資料長度</h3><ul>
+<li>測試 DOM 資料長度</li>
+</ul>
+<pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;
+
+import UserList from &#39;@/components/UserList.vue&#39;
+
+
+describe(&#39;test UserList&#39;, () =&gt; {
+
+    it(&#39;test Dom&#39;, () =&gt; {
+
+    const wrapper = shallowMount(UserList);
+
+    // console.log(wrapper.findAll(&#39;.user_list&#39;).at(0).text())
+
+    expect(wrapper.findAll(&#39;.user_list&#39;).at(0).text()).toMatch(&#39;員工編號: 399&#39;)
+
+    })
+
+    it(&#39;test List length&#39;, () =&gt; {
+
+    const wrapper = shallowMount(UserList);
+
+    console.log(wrapper.findAll(&#39;.user_list&#39;).length)
+
+    expect(wrapper.findAll(&#39;.user_list&#39;).length).toBe(6)
+
+    })
+
+})</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/01/28/vueTest-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/28/vueTest-1/" class="post-title-link" itemprop="url">Vue 單元測試 - 基礎入門</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-01-28 14:50:37 / Modified: 14:58:53" itemprop="dateCreated datePublished" datetime="2023-01-28T14:50:37+08:00">2023-01-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>為了不斷建立以及加深自己的技能，即便目前工作上未能使用，還是可以提前做些準備，之前看到 Mike 老師推出的 vue 單元測試，就先入手～<br>趁近期有空先來奠定下測試的基礎，未來可以在專案內練習撰寫！</p>
+<p><img src="https://i.imgur.com/xhxaYa1.jpg" alt=""></p>
+<h2 id="專案創建"><a href="#專案創建" class="headerlink" title="專案創建"></a>專案創建</h2><p>若一開始專案沒有選擇 jest 或加入測試 要如何在現有專案加入？</p>
+<ul>
+<li>可以進入該專案進行安裝<br><code>vue add unit-jest</code></li>
+</ul>
+<p>這裡創建的專案是使用 vue-cli 創建，並且在自選項目加入 unit test </p>
+<pre><code>vue create my-project</code></pre><h2 id="執行-test"><a href="#執行-test" class="headerlink" title="執行 test"></a>執行 test</h2><p><code>npm run test:unit</code></p>
+<h2 id="更改預設的測試檔案位置"><a href="#更改預設的測試檔案位置" class="headerlink" title="更改預設的測試檔案位置"></a>更改預設的測試檔案位置</h2><p>component 與 測試的檔案，可以放在同一個資料夾中，以方便找尋</p>
+<ol>
+<li>建立 <code>jest.config.js</code> 來設定 jest </li>
+</ol>
+<ul>
+<li>testMatch: 指定從 src 資料夾開始找尋與 spec 相關的檔案</li>
+</ul>
+<pre><code class="javaScript">
+module.exports = {
+
+  preset: &quot;@vue/cli-plugin-unit-jest&quot;,
+
+  testMatch: [&quot;**/src/**/*.spec.[jt]s?(x)&quot;],
+
+};
+</code></pre>
+<p>**`</p>
+<h2 id="測試的基本架構"><a href="#測試的基本架構" class="headerlink" title="測試的基本架構"></a>測試的基本架構</h2><ul>
+<li>describe : 類似群組概念，可以包一個或多個相關的測試。</li>
+<li>it 與 test 一樣：其內容為測試的單位，裏面撰寫測試內容</li>
+<li>第一個參數，用來表示該測試的敘述（”Test to do list”, “Test to do 1”, “Test to do 2” ）</li>
+</ul>
+<pre><code class="javaScript">
+describe(&quot;Test to do list&quot;, () =&gt; {
+
+
+  it(&quot;Test to do 1&quot;, () =&gt; {
+
+  });
+
+
+  test(&quot;Test to do 2&quot;, () =&gt; {
+
+  });
+
+});
+
+</code></pre>
+<ul>
+<li>it 也可以單獨另外撰寫</li>
+</ul>
+<pre><code class="javaScript">it(&#39;這是test case&#39;,()=&gt;{
+
+})</code></pre>
+<ul>
+<li>執行測試呈現的樣子</li>
+</ul>
+<pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;
+
+import HelloWorld from &#39;@/components/HelloWorld.vue&#39;
+
+describe(&#39;HelloWorld.vue&#39;, () =&gt; {
+
+    it(&#39;renders props.msg when passed&#39;, () =&gt; {
+
+        const msg = &#39;new message&#39;
+
+        const wrapper = shallowMount(HelloWorld, {
+
+        props: { msg }
+
+    })
+
+        expect(wrapper.text()).toMatch(msg)
+        //
+    })
+
+})</code></pre>
+<ul>
+<li>wrapper 是指 HelloWorld 這個 component</li>
+<li>wrapper.text() : 會顯示此元件中所包含的文字</li>
+<li><code>expect(wrapper.text()).toMatch(msg)</code>: <ul>
+<li>toMatch 有合乎</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/ejvXWQF.png" alt=""></p>
+<h2 id="expext-與斷言"><a href="#expext-與斷言" class="headerlink" title="expext 與斷言"></a>expext 與斷言</h2><pre><code class="javaScript">
+
+describe(&quot;Test to do list&quot;, () =&gt; {
+
+
+  it(&quot;Test to do 1&quot;, () =&gt; {
+
+    expect(1 + 1).toBe(2);
+
+  });
+
+
+  it(&quot;Test to do 2&quot;, () =&gt; {
+
+    expect(4 - 1).toBe(3);
+
+  });
+
+});
+
+</code></pre>
+<ul>
+<li>expect: 預期需要匹配的項目，如放入變數、component、function</li>
+<li>toBe(百分之百準確): 斷言，用什麼方式來匹配，這裡使用 toBe 函式</li>
+</ul>
+<h2 id="其他備註"><a href="#其他備註" class="headerlink" title="其他備註"></a>其他備註</h2><p>而官方網站已建議若要創建新專案可以使用 vite 為基礎的專案。所以新開的專案都是使用 Vitest (之後有機會再使用新專案來開看看)。<br>這邊因先根據教學來進行，故先使用 vue-test-utils + jest </p>
+<p><img src="https://i.imgur.com/yrD2UW0.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/01/25/TS-Generics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/25/TS-Generics/" class="post-title-link" itemprop="url">TS - Generics 泛型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-25 14:27:13" itemprop="dateCreated datePublished" datetime="2023-01-25T14:27:13+08:00">2023-01-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-01-27 13:15:30" itemprop="dateModified" datetime="2023-01-27T13:15:30+08:00">2023-01-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
+<h2 id="資料整理"><a href="#資料整理" class="headerlink" title="資料整理"></a>資料整理</h2><p>例如有兩個 interface 屬性一樣，差異在於 型別內容</p>
+<pre><code class="typeScript">interface DataA {
   key:string
   key2:number
 }
@@ -84,178 +1506,663 @@ interface DataB {
   key:string
   key2:boolean
 }
-
-
-使用 泛型 整理
-將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定
-
-
-type GenericsObj = {  key:string  key2:T}type DataA = GenericsObj;type DataB = GenericsObj;//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣
-
+</code></pre>
+<ul>
+<li>使用 泛型 整理</li>
+<li>將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定<pre><code class="typeScript"></code></pre>
+</li>
+</ul>
+<p>type GenericsObj<T> = {<br>  key:string<br>  key2:T<br>}<br>type DataA = GenericsObj<number>;<br>type DataB = GenericsObj<boolean>;<br>//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣</p>
+<pre><code>
 範例2：
 ```typeScript
-interface KeyPair&amp;lt;T, U..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/01/25/TS-Generics/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/xGK5aDO.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2023/01/25/TS-interface/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/xGK5aDO.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/TypeScript"><i class="tag post-item-tag">TypeScript</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2023/01/25/TS-interface/">TypeScript - interface 使用</a></h2><time class="has-text-grey" datetime="2023-01-25T05:34:04.000Z">2023-01-25</time><p class="is-flex-grow-2 mt-2">
-最近在複習使用 TypeScript 發現還有些部分可以做紀錄並且重新回憶的區塊，藉此再紀錄於部落格。
-TS interface的基礎宣告
-將複雜系統簡化的結果叫做介面
-介面一般首字母大寫
+interface KeyPair&lt;T, U&gt; {
+  key: T;
+  value: U;
+}
 
-interface Person {
+let kp1: KeyPair&lt;number, string&gt; = { key: 1, value: &quot;str&quot;}
+let kp2: KeyPair&lt;string, number&gt; = { key: &quot;str&quot;, value: 123}
+
+let arr:number[] = [1,2,3];
+let arrTwo:Array&lt;number&gt; = [1,2,3]</code></pre><h2 id="payload-應用"><a href="#payload-應用" class="headerlink" title="payload 應用"></a>payload 應用</h2><ul>
+<li>這邊以 redux 中整理的 action 為範例</li>
+</ul>
+<pre><code class="typeScript">type userDataPayload = {
+  userId: string,
+  data:any
+}
+//負責生成 action 的函式
+const setUserDataAction = (payload:userDataPayload )=&gt;({
+  type: &#39;SET_USER_DATA&#39;,
+  payload
+})
+const resetUserDataAction =()=&gt;({
+  type: &#39;RESET_USER_DATA&#39;,
+})
+
+type CartDataPayload = {
+  product: string
+}
+const setCartDataAction =(payload:CartDataPayload)=&gt;({
+  type: &#39;SET_CART_DATA&#39;,
+  payload
+})
+
+type SetUserDataAction = {
+  type: &#39;SET_USER_DATA&#39;,
+  payload:userDataPayload
+}
+type ResetUserDataAction = {
+  type: &#39;RESET_USER_DATA&#39;
+}
+type SetCartDataAction = {
+  type: &#39;SET_CART_DATA&#39;,
+  payload:CartDataPayload
+}
+</code></pre>
+<ul>
+<li>由上可以觀察到 SetUserDataAction、ResetUserDataAction、SetCartDataAction 整理為一個</li>
+<li>將 action 的型別整理，其key為type 與 payload</li>
+</ul>
+<pre><code class="typescript">type Action&lt;T,P&gt; = {
+  type: T,
+  payload:P
+}
+type ActionWithoutPayload&lt;T&gt; = {
+  type: T
+}
+
+type SetUserDataAction = Action&lt;&#39;SET_USER_DATA&#39;,userDataPayload&gt;
+type SetCartDataAction = Action&lt;&#39;SET_CART_DATA&#39;,CartDataPayload&gt;
+type ResetUserDataAction = ActionWithoutPayload&lt;&#39;RESET_USER_DATA&#39;&gt;
+
+//可以將action 中的 type 進行聚合
+type Actions = SET_USER_DATA | SET_CART_DATA | RESET_USER_DATA;</code></pre>
+<ul>
+<li>以下，進一步再將 Action 和 ActionWithoutPayload 進行整合，他們差異在與 payload </li>
+</ul>
+<pre><code class="typeScript">type Action&lt;T, P = null&gt; = p extends {} ? {type: T, payload: P} : {type: T};</code></pre>
+<p>型別參數動態生成不同型別</p>
+<h2 id="函式的泛型"><a href="#函式的泛型" class="headerlink" title="函式的泛型"></a>函式的泛型</h2><pre><code class="typeScript">const fn = (param: string | number):(string|number)[]=&gt;[param];
+fn(1);//number 陣列 number[];
+fn(&#39;hello&#39;) //string[]</code></pre>
+<p><img src="https://i.imgur.com/QZCK4Em.png" alt=""></p>
+<pre><code class="typeScript">const fn = &lt;T&gt;(param: T):(T)[]=&gt;[param];
+fn(1);//number 陣列 number[];
+fn(&#39;hello&#39;) //string[]</code></pre>
+<p><img src="https://i.imgur.com/Yeeuum6.png" alt=""></p>
+<ul>
+<li>function 改寫方式</li>
+</ul>
+<pre><code class="typeScript">function fn&lt;T&gt;(param:T):T[]{
+  return [param]
+}</code></pre>
+<h2 id="type-的泛型"><a href="#type-的泛型" class="headerlink" title="type 的泛型"></a>type 的泛型</h2><pre><code class="typeScript">//共用模板
+type GenericList&lt;T&gt; = T[];
+
+type StrList = GenericList&lt;string&gt;;
+type BoolList = GenericList&lt;boolean&gt;;
+
+type GenericValObj&lt;T&gt; = {[key:string]:T} 
+type NumValObj = GenericValObj&lt;number&gt;
+
+const numValObj:NumValObj = {
+  img_res_200:200
+}
+</code></pre>
+<p><img src="https://i.imgur.com/sJFzEUg.png" alt=""></p>
+<p><img src="https://i.imgur.com/7P1MnFL.png" alt=""></p>
+<ul>
+<li>嘗試聚合資料</li>
+</ul>
+<pre><code class="typeScript">type GenericUnion&lt;T,U&gt; = T | U | T[] | U[];
+type strNumUnion = GenericUnion&lt;string,number&gt;
+
+const val:strNumUnion = &quot;123&quot;
+const val2:strNumUnion = [&quot;123&quot;]</code></pre>
+<p><img src="https://i.imgur.com/y5Vl8M9.png" alt=""></p>
+<h2 id="將函式改寫為-共用的泛型型別"><a href="#將函式改寫為-共用的泛型型別" class="headerlink" title="將函式改寫為 共用的泛型型別"></a>將函式改寫為 共用的泛型型別</h2><ul>
+<li>將type 拉出來獨立撰寫，可以重複使用</li>
+</ul>
+<pre><code class="typeScript">const fn = &lt;T&gt;(param: T):(T)[]=&gt;{
+  return [param]
+};
+
+//上面的函式也可以用於
+interface Props {
+  onFn: typeof fn
+}
+
+//rewrite
+type GenericFn = &lt;T&gt;(param: T) =&gt; T[]
+const fn:GenericFn = (param) =&gt; {
+  return [param]
+}
+
+//共用，如下有個 interface 其中有個屬性的型別與 GenericFn 一樣，則可以共用
+interface Props {
+  onFn:GenericFn
+}
+</code></pre>
+<pre><code class="typeScript">function fn&lt;T&gt;(param:T):T[]{
+  return [param]
+}
+
+//產生型別泛型
+type FnType = typeof fn ;</code></pre>
+<p><img src="https://i.imgur.com/yxsVm1s.png" alt=""></p>
+<p><img src="https://i.imgur.com/zYtwh7H.png" alt=""><br><img src="https://i.imgur.com/tPHEDZ7.png" alt=""></p>
+<h3 id="比較-lt-T-gt-位置差異"><a href="#比較-lt-T-gt-位置差異" class="headerlink" title="比較&lt;T&gt;位置差異"></a>比較<code>&lt;T&gt;</code>位置差異</h3><pre><code class="typeScript">type FnTypeA = &lt;T&gt;(param: T) =&gt; T[]
+type FnTypeB&lt;T&gt; = (param: T) =&gt; T[]
+
+const fn1:FnTypeA = (param) =&gt; {
+  return [param]
+}
+
+//必須指定好型別的 argument
+const fn2:FnTypeB&lt;string&gt; = (param) =&gt; {
+  return [param]
+}
+
+//兩個函式在使用上會有差異：
+fn1();
+
+fn2(&#39;Hi&#39;)
+</code></pre>
+<p><img src="https://i.imgur.com/J3zJs2Y.png" alt=""></p>
+<p><img src="https://i.imgur.com/0wxPZk9.png" alt=""></p>
+<ul>
+<li>fn1 可以填入任何內容、可以動態填入型別<br><img src="https://i.imgur.com/pwfnIjO.png" alt=""><br><img src="https://i.imgur.com/6B8gtAc.png" alt=""><br><img src="https://i.imgur.com/OgPatHZ.png" alt=""></li>
+<li>fn2 只能填入 string 內容<br><img src="https://i.imgur.com/cwmVA5b.png" alt=""></li>
+</ul>
+<pre><code class="typeScript">export type ClickFn = &lt;Event&gt;(e:Event) =&gt; any
+
+//使用 function 會無法重複使用寫好的型別
+// 引用
+const handleClick:ClickFn = (e)=&gt;{
+
+}</code></pre>
+<h2 id="interface-的泛型"><a href="#interface-的泛型" class="headerlink" title="interface 的泛型"></a>interface 的泛型</h2><pre><code class="typeScript">export interface GenericI&lt;T&gt;{
+  [key:string]: T
+} 
+type NumValObj =  GenericI&lt;number&gt;;
+const numberValObj:NumValObj = {
+  res:123
+}
+
+//type寫法也可以一樣
+export type GenericT&lt;T&gt; = {
+  [key:string]: T
+}
+
+//API 的應用！！！
+//注意：in 寫法只用於 type 中
+export type GenericKeyValObj&lt;T extends  keyof any,P&gt; = {
+  [key in T ]: P
+}
+
+//可以應用於 API 
+
+type ApiKey = &#39;user&#39; | &#39;id&#39; | &#39;password&#39;; //將欄位值設定好
+type UserApiData = GenericKeyValObj&lt;ApiKey, string&gt;
+</code></pre>
+<p><img src="https://i.imgur.com/dceV8io.png" alt=""></p>
+<ul>
+<li><p>可以很快的生成 API 的資料型別<br><img src="https://i.imgur.com/Vv3lVDC.png" alt=""></p>
+</li>
+<li><p>其他範例</p>
+</li>
+</ul>
+<pre><code class="typeScript">//類似呼叫API的函式
+//Params : 參數
+//Res result : 回傳值
+type GenericApiFn&lt;Params, Res&gt; = (params:Params)=&gt; Res
+
+//組合其他泛型使用，也可以將原本泛型參數自己使用
+interface ApiContainerProps&lt;Params, Res&gt; {
+  initData: Res;
+  onAsyncCb: GenericApiFn&lt;Params, Res&gt;
+}
+</code></pre>
+<ul>
+<li>interface 與 type 的泛型寫法</li>
+</ul>
+<pre><code class="typeScript">//interface 寫函式
+interface FnI {
+  &lt;T&gt;(param: T): T[]
+}
+//同等於
+type FnT = &lt;T&gt;(param:T)=&gt;T[]
+
+const fn:FnT = (param)=&gt;[param]</code></pre>
+<ul>
+<li><code>&lt;T&gt;</code>位置的調動</li>
+</ul>
+<pre><code class="typeScript">//&lt;T&gt; 會影響整個 interface
+interface GenericFnI&lt;T&gt; {
+  (param: T): T[]
+}
+
+const fn2: GenericFnI&lt;string&gt;= (param)=&gt;[param]</code></pre>
+<p>過去都未曾注意到泛型可以抽成共用還有 <code>&lt;T&gt;</code> 的位置所放的位置，會影響宣告，透過此次的教學，讓我對泛型可以應用於實際情況的案例，同樣未來在訂定 type 或 interface 時可以加以注意，思考是否可以改寫為泛型加以使用。</p>
+<p>參考資料<br><a href="https://www.youtube.com/watch?v=9hZbfX_Atpc&t=44s" target="_blank" rel="noopener">成為進階TS開發者的第一哩路 — 泛型簡介與基礎(1)</a><br><a href="https://www.youtube.com/watch?v=7yA4ALLoSxY" target="_blank" rel="noopener">成為進階TS開發者的第一哩路 — 泛型的函式, type和interface寫法一次說清楚！</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/01/25/TS-interface/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/25/TS-interface/" class="post-title-link" itemprop="url">TypeScript - interface 使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-25 13:34:04" itemprop="dateCreated datePublished" datetime="2023-01-25T13:34:04+08:00">2023-01-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-01-26 13:04:49" itemprop="dateModified" datetime="2023-01-26T13:04:49+08:00">2023-01-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
+<p>最近在複習使用 TypeScript 發現還有些部分可以做紀錄並且重新回憶的區塊，藉此再紀錄於部落格。</p>
+<h2 id="TS-interface的基礎宣告"><a href="#TS-interface的基礎宣告" class="headerlink" title="TS interface的基礎宣告"></a>TS interface的基礎宣告</h2><ul>
+<li>將複雜系統簡化的結果叫做介面</li>
+<li>介面一般首字母大寫</li>
+</ul>
+<pre><code class="typescript">interface Person {
   name: string;
   age: number;
 }
 
 let Eva: Person = {
-    name: &amp;#39;Eva&amp;#39;,
+    name: &#39;Eva&#39;,
     age: 25
-};
-函式與介面
-以下範例宣告 AddFunction 的介面
-並將此型別應用於 add 這個變數的方法中
-
-interface AddFunction {
+};</code></pre>
+<h2 id="函式與介面"><a href="#函式與介面" class="headerlink" title="函式與介面"></a>函式與介面</h2><ul>
+<li>以下範例宣告 AddFunction 的介面</li>
+<li>並將此型別應用於 add 這個變數的方法中</li>
+</ul>
+<pre><code class="typescript">interface AddFunction {
   (a: number, b: number): number;
 }
 
-let add: AddFunction = function(a, ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2023/01/25/TS-interface/">Read more</a></section></article><section class="paginator is-flex is-justify-content-flex-end is-flex-wrap-wrap mt-5"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-next has-text-grey"></i></a></section></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><style>.search-widget .search-input {
-    border: none;
-    outline: none;
-    background: transparent;
-    color: var(--second-text-color);
-}
-.search-widget .search-content {
-    position: absolute;
-    left: 0;
-    top: calc(100% - 3px);
-    z-index: 2;
+let add: AddFunction = function(a, b) { return a + b; };
+</code></pre>
+<h2 id="class與介面"><a href="#class與介面" class="headerlink" title="class與介面"></a>class與介面</h2><pre><code class="typescript">interface CatInterface {
+    //普通成員變數的規格
+    name: string;
+    breed: string;
+    noise: string;
 
-    width: 100%;
-    height: 0;
-    max-height: 550px;
+    //普通成員方法的規格，使用函式型別格式
+    makeNoise(): void;
+    feed(something: string): void
+}</code></pre>
+<ul>
+<li>若類別想要實踐此介面，必須用 <code>implements</code> 這個關鍵字</li>
+<li>如果類別實踐介面的規格中，任何一個成員不見或沒有實踐時，會出現提醒訊息。</li>
+</ul>
+<pre><code class="typescript">class Cat implements CatInterface{
+    public name: string;
+    public breed: string;
+    public noise: string = &#39;Meow meow!&#39;;
 
-    overflow: auto;
-    box-sizing: border-box;
-
-    background: var(--top-bar-bg-color);
-    backdrop-filter: blur(var(--backdropFilter));
-    -webkit-backdrop-filter: blur(var(--backdropFilter));
-
-    border-bottom-left-radius: var(--borderRadius);
-    border-bottom-right-radius: var(--borderRadius);
-    box-shadow: 0 12px 15px rgba(0, 0, 0, 0.08);
-}
-
-.search-widget .search-content a:hover h5 {
-    color: #3273dc!important;
-}
-</style><main class="aside-card-container search-widget is-relative"><label for="searchInput"><div class="is-flex px-4" id="searchButton"><i class="iconfont icon--search1 mr-1"></i><input class="search-input is-flex-grow-1" id="searchInput" placeholder="Search everything.."></div></label><section class="search-content content" id="searchContent"></section></main><script>var searchDatabase = []
-var searchInputEl = document.getElementById('searchInput')
-var searchButtonEl = document.getElementById('searchButton')
-var searchResultEl = document.getElementById('searchContent')
-
-searchInputEl.oninput = function (evt) {
-    var searchValue = evt.srcElement.value
-    var haveSearchValue = Boolean(searchValue.trim())
-    if (!haveSearchValue) {
-        searchResultEl.style.height = 0
-        searchResultEl.innerHTML = null
-        return
+  constructor(name:string, breed:string){
+        this.name = name;
+        this.breed = breed;
     }
 
-    var searchResults = searching(searchValue)
-
-    if (searchResults.length > 0) {
-        renderSearchResults(searchResults)
+  public makeNoise(){
+        console.log(this.noise);
     }
+
+   public feed(something: string){
+         console.log(`${this.name} is eating ${something}...`)
+     }
+
+}</code></pre>
+<h2 id="搭配-interface-常用的方法"><a href="#搭配-interface-常用的方法" class="headerlink" title="搭配 interface 常用的方法"></a>搭配 interface 常用的方法</h2><ol>
+<li>extends</li>
+</ol>
+<ul>
+<li>以 <code>PersonalInfo</code> 為例</li>
+</ul>
+<pre><code class="typescript">interface PersonalInfo{
+    name: string;
+    age: number;
+    interesting: string[];
+}</code></pre>
+<ul>
+<li>假設今天想宣告一個新的使用者帳戶的介面為 <code>UserAccount</code><ul>
+<li>除了有一些和客戶相關的規格屬性外，還要包含介面 <code>PersonalInfo</code> 裡的規格</li>
+</ul>
+</li>
+</ul>
+<pre><code class="typescript">interface UserAccount extends PersonalInfo{
+    email: string;
+    password: string;
+    subscribed: boolean;
+
+}</code></pre>
+<ul>
+<li>上面的撰寫方式，等同於</li>
+<li>透過使用 extends 延展可以將功用的屬性、型別整理一起</li>
+</ul>
+<pre><code class="typescript">interface UserAccount{
+    email: string;
+    password: string;
+    subscribed: boolean;
+
+    //從PersonalInfo延展而來
+    name: string;
+    age: number;
+    interesting: string[];
+
+}</code></pre>
+<p>另外若需要再合併新的型別，也可以透過逗號方式加以延伸</p>
+<ul>
+<li>此外還能再多新增 <code>SocialLinks</code></li>
+</ul>
+<pre><code class="typescript">interface SocialLinks {
+    facebook?: string;
+    twitter?: string;
+    linkedin?: string;
+    website?: ({name:string; url:string})[]
+
+}</code></pre>
+<ul>
+<li>同時延展:透過逗號再加入新的</li>
+</ul>
+<pre><code class="typescript">interface UserAccount extends PersonalInfo, SocialLinks{
+    //...
+}</code></pre>
+<h2 id="pick"><a href="#pick" class="headerlink" title="pick"></a>pick</h2><p>Picking Items with <code>Pick&lt;Type, Keys&gt;</code></p>
+<ul>
+<li>挑選想要的屬性(key)做使用</li>
+<li>注意 pick 只能在 type 宣告使用</li>
+</ul>
+<pre><code class="typescript">interface Todo {
+  title: string;
+  description: string;
+  completed: boolean;
 }
 
-function renderSearchResults(results) {
-    searchResultEl.innerHTML = null
-    var fragment = document.createDocumentFragment()
+type TodoPreview = Pick&lt;Todo, &quot;title&quot; | &quot;completed&quot;&gt;;
 
-    results.forEach(function (item) {
-        var link = document.createElement('a')
-        var title = document.createElement('h5')
-        var content = document.createElement('p')
+const todo: TodoPreview = {
+  title: &quot;Clean room&quot;,
+  completed: false,
+};
 
-        title.className = 'mb-1'
-        title.innerText = item.title
-        content.innerText = item.content
+console.log(todo.title); // &quot;Clean room&quot;
+console.log(todo.description); // undefined
 
-        link.href = item.link
-        link.appendChild(title)
-        link.appendChild(content)
-        link.className = 'p-4 is-block'
-
-        fragment.appendChild(link)
-    })
-
-    searchResultEl.appendChild(fragment)
-    searchResultEl.style.height = 'auto'
+</code></pre>
+<ul>
+<li>注意 pick 只能在 type 宣告使用<pre><code class="typescript">interface todo = Pick&lt;Todo, &quot;title&quot; | &quot;completed&quot;&gt;;
+// &#39;Pick&#39; only refers to a type, but is being used as a value here.</code></pre>
+</li>
+</ul>
+<h2 id="omit"><a href="#omit" class="headerlink" title="omit"></a>omit</h2><p><code>Omit&lt;Type, Keys&gt;</code></p>
+<pre><code class="typeScript">interface Todo {
+  title: string;
+  description: string;
+  completed: boolean;
+  createdAt: number;
 }
 
-function searching(inputText) {
-    var inputTexts = inputText.split(' ')
-    var searchResults = []
-    inputTexts.forEach(function (searchKey) {
-        var haveSearchValue = Boolean(searchKey.trim())
-        if (!haveSearchValue) return
+type TodoPreview = Omit&lt;Todo, &quot;description&quot;&gt;;
 
-        var key = searchKey.toLowerCase()
+const todo: TodoPreview = {
+  title: &quot;Clean room&quot;,
+  completed: false,
+  createdAt: 1615544252770,
+};
+</code></pre>
+<p>參考資料<br><a href="https://refine.dev/blog/typescript-pick-utility-type/" target="_blank" rel="noopener">A Detailed Guide on TypeScript Pick Type</a></p>
 
-        for (var entry of searchDatabase) {
-            var title = entry.getElementsByTagName('title')[0].textContent
-            var link = entry.getElementsByTagName('link')[0].getAttribute('href')
-            var contentWithTags = entry.getElementsByTagName('content')[0].textContent
-            var rawContent = contentWithTags.trim().replace(/<[^>]+>/g, '').toLowerCase()
+      
+    </div>
 
-            var LENGTH = 80
-            var finalContent = ''
-            var contentLength = rawContent.length
-            var searchResultIdx = rawContent.indexOf(key)
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
-            var startIdx = searchResultIdx - 20,
-                endIdx = startIdx + LENGTH
 
-            if (startIdx < 0) {
-                startIdx = 0
-                endIdx = 100
-            }
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
-            endIdx > contentLength && (endIdx = contentLength)
 
-            finalContent = rawContent.substring(startIdx, endIdx)
 
-            if (title.indexOf(key) > -1 || searchResultIdx > -1) {
-                searchResults.push({
-                    link: link,
-                    title: title,
-                    content: finalContent
-                })
-            }
-        }
-    })
-    return searchResults
-}
+          </div>
+          
 
-searchButtonEl.onclick = function () {
-    if (searchDatabase.length > 0) return;
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
-    fetch(window.location.href + '/search.xml').then(res => res.text()).then(res => {
-        var domparser = new DOMParser
-        var doc = domparser.parseFromString(res, 'application/xml')
-        searchDatabase = doc.getElementsByTagName('search')[0].children
-    })
-}</script><main class="aside-card-container profile-widget"><!-- todo: 使用取色工具动态阴影--><section class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center"><section class="is-flex is-justify-content-center avatar is-clipped skeleton"><!-- debug images "https://api.ixiaowai.cn/gqapi/gqapi.php"--><img class="js-img-fadeIn" src="/images/eva-round.png" alt="user avatar"></section><h3 class="user-name">Eva</h3><blockquote class="has-text-centered is-relative"><span style="margin-bottom: 5px;">Front-end Engineer email:as45986@gmail.com</span></blockquote></section><section class="sns-container is-flex is-justify-content-center is-align-items-center"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section></main><main class="aside-card-container categories-widget category-page"><h3>Categories</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Ajax-%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/">Ajax 實作練習</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSS%E7%B7%B4%E7%BF%92/">CSS練習</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E2E/">E2E</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/">JS實作練習</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Leetcode/">Leetcode</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-%E6%B8%AC%E8%A9%A6/">React 測試</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TypeScript/">TypeScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">3</span></li></ul></section></main><main class="aside-card-container archives-widget"><h3>Archives</h3><section><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li></ul></section></main><main class="aside-card-container tag-widget"><h3>Tags</h3><section><a href="/tags/Ajax"><span class="tag post-item-tag" style="margin-bottom: 5px;">Ajax</span></a><a href="/tags/API"><span class="tag post-item-tag" style="margin-bottom: 5px;">API</span></a><a href="/tags/udemy"><span class="tag post-item-tag" style="margin-bottom: 5px;">udemy</span></a><a href="/tags/CSS"><span class="tag post-item-tag" style="margin-bottom: 5px;">CSS</span></a><a href="/tags/transform"><span class="tag post-item-tag" style="margin-bottom: 5px;">transform</span></a><a href="/tags/JavaScript"><span class="tag post-item-tag" style="margin-bottom: 5px;">JavaScript</span></a><a href="/tags/TypeScript"><span class="tag post-item-tag" style="margin-bottom: 5px;">TypeScript</span></a><a href="/tags/Nuxt"><span class="tag post-item-tag" style="margin-bottom: 5px;">Nuxt</span></a><a href="/tags/Command%20Line"><span class="tag post-item-tag" style="margin-bottom: 5px;">Command Line</span></a><a href="/tags/Algorithm"><span class="tag post-item-tag" style="margin-bottom: 5px;">Algorithm</span></a><a href="/tags/React"><span class="tag post-item-tag" style="margin-bottom: 5px;">React</span></a><a href="/tags/Leetcode"><span class="tag post-item-tag" style="margin-bottom: 5px;">Leetcode</span></a><a href="/tags/Vue"><span class="tag post-item-tag" style="margin-bottom: 5px;">Vue</span></a><a href="/tags/slot"><span class="tag post-item-tag" style="margin-bottom: 5px;">slot</span></a><a href="/tags/v-for"><span class="tag post-item-tag" style="margin-bottom: 5px;">v-for</span></a><a href="/tags/%E5%88%87%E7%89%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">切版</span></a><a href="/tags/test"><span class="tag post-item-tag" style="margin-bottom: 5px;">test</span></a><a href="/tags/cypress"><span class="tag post-item-tag" style="margin-bottom: 5px;">cypress</span></a><a href="/tags/flex"><span class="tag post-item-tag" style="margin-bottom: 5px;">flex</span></a><a href="/tags/footer"><span class="tag post-item-tag" style="margin-bottom: 5px;">footer</span></a><a href="/tags/float"><span class="tag post-item-tag" style="margin-bottom: 5px;">float</span></a><a href="/tags/animation"><span class="tag post-item-tag" style="margin-bottom: 5px;">animation</span></a><a href="/tags/icon"><span class="tag post-item-tag" style="margin-bottom: 5px;">icon</span></a><a href="/tags/box-sizing"><span class="tag post-item-tag" style="margin-bottom: 5px;">box-sizing</span></a><a href="/tags/JS"><span class="tag post-item-tag" style="margin-bottom: 5px;">JS</span></a><a href="/tags/Git"><span class="tag post-item-tag" style="margin-bottom: 5px;">Git</span></a><a href="/tags/HTML"><span class="tag post-item-tag" style="margin-bottom: 5px;">HTML</span></a><a href="/tags/switch"><span class="tag post-item-tag" style="margin-bottom: 5px;">switch</span></a><a href="/tags/%E8%BF%B4%E5%9C%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">迴圈</span></a><a href="/tags/drag&amp;drop"><span class="tag post-item-tag" style="margin-bottom: 5px;">drag&amp;drop</span></a><a href="/tags/Array"><span class="tag post-item-tag" style="margin-bottom: 5px;">Array</span></a><a href="/tags/Object"><span class="tag post-item-tag" style="margin-bottom: 5px;">Object</span></a><a href="/tags/DOM%22"><span class="tag post-item-tag" style="margin-bottom: 5px;">DOM&quot;</span></a><a href="/tags/jQuery"><span class="tag post-item-tag" style="margin-bottom: 5px;">jQuery</span></a><a href="/tags/setInterval"><span class="tag post-item-tag" style="margin-bottom: 5px;">setInterval</span></a><a href="/tags/ajax"><span class="tag post-item-tag" style="margin-bottom: 5px;">ajax</span></a><a href="/tags/input"><span class="tag post-item-tag" style="margin-bottom: 5px;">input</span></a><a href="/tags/local%20storage"><span class="tag post-item-tag" style="margin-bottom: 5px;">local storage</span></a><a href="/tags/forEach"><span class="tag post-item-tag" style="margin-bottom: 5px;">forEach</span></a><a href="/tags/append"><span class="tag post-item-tag" style="margin-bottom: 5px;">append</span></a><a href="/tags/jQuery%20"><span class="tag post-item-tag" style="margin-bottom: 5px;">jQuery </span></a><a href="/tags/random"><span class="tag post-item-tag" style="margin-bottom: 5px;">random</span></a><a href="/tags/parseInt"><span class="tag post-item-tag" style="margin-bottom: 5px;">parseInt</span></a><a href="/tags/ajax%20"><span class="tag post-item-tag" style="margin-bottom: 5px;">ajax </span></a><a href="/tags/setTimeout"><span class="tag post-item-tag" style="margin-bottom: 5px;">setTimeout</span></a><a href="/tags/toggleClass"><span class="tag post-item-tag" style="margin-bottom: 5px;">toggleClass</span></a><a href="/tags/variable"><span class="tag post-item-tag" style="margin-bottom: 5px;">variable</span></a><a href="/tags/webpack"><span class="tag post-item-tag" style="margin-bottom: 5px;">webpack</span></a><a href="/tags/LocalStorage"><span class="tag post-item-tag" style="margin-bottom: 5px;">LocalStorage</span></a><a href="/tags/grid"><span class="tag post-item-tag" style="margin-bottom: 5px;">grid</span></a><a href="/tags/%E5%A4%9A%E9%87%8D%E8%83%8C%E6%99%AF"><span class="tag post-item-tag" style="margin-bottom: 5px;">多重背景</span></a><a href="/tags/opacity"><span class="tag post-item-tag" style="margin-bottom: 5px;">opacity</span></a><a href="/tags/GitHub"><span class="tag post-item-tag" style="margin-bottom: 5px;">GitHub</span></a><a href="/tags/SCSS"><span class="tag post-item-tag" style="margin-bottom: 5px;">SCSS</span></a><a href="/tags/websocket"><span class="tag post-item-tag" style="margin-bottom: 5px;">websocket</span></a><a href="/tags/Vuex"><span class="tag post-item-tag" style="margin-bottom: 5px;">Vuex</span></a></section></main></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
+  <aside class="sidebar">
+    <div class="sidebar-inner">
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2023</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></body></html>
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

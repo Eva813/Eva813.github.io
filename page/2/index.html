@@ -1,268 +1,2462 @@
-<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Eva's blog</title><meta name="description" content="Front-end Engineer email:as45986@gmail.com"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
-<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
-</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/0khxyek.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/12/21/rotate-image/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/0khxyek.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Leetcode"><i class="tag post-item-tag">Leetcode</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/12/21/rotate-image/">Leetcode rotate-image</a></h2><time class="has-text-grey" datetime="2022-12-21T01:46:00.000Z">2022-12-21</time><p class="is-flex-grow-2 mt-2">一開始看到題目，看到2維陣列就會有些緊張，想著是否要拆開，或是要如何從圖示去轉陣列，寫得很亂又雜還是解不出來。看完其他教學才知道可以從斜對角開始調換，最後再將左右做調換。
-You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).
-You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-var rotate = f..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/12/21/rotate-image/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/FROBvmD.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/12/01/React-Middleware/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/FROBvmD.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/12/01/React-Middleware/">Redux Toolkit - RTK Query中間層非同步Fetch API的處理</a></h2><time class="has-text-grey" datetime="2022-12-01T04:55:30.000Z">2022-12-01</time><p class="is-flex-grow-2 mt-2">當發起 dispatch 到 UI 更新之間做什麼事情
-
-希望 dispath 有能力可以再去做其他事情（所以會在過程中去做一些邏輯）
-
-希望過程中可以再做些事情（UI 從 dispatch 到真正渲染之間）
-Middleware
-
-實際上是一個 function
-
-next 是 dispatch 的意思，next 所代表的是傳入 action ，會調用下一個 dispatch 來執行所傳入的這個 action 
+<link rel="stylesheet" href="/css/main.css">
 
 
-以官網範例：
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-他是 3 個函式包在一起
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-const logger = store =&amp;gt; nextDispatch =&amp;gt; action =&amp;gt; {  
-    console.log(&amp;#39;dispatching&amp;#39;, action)  
-    let resul..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/12/01/React-Middleware/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/41RnyWT.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/12/01/ReduxToolkit/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/41RnyWT.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/12/01/ReduxToolkit/">Redux Toolkit</a></h2><time class="has-text-grey" datetime="2022-12-01T04:03:04.000Z">2022-12-01</time><p class="is-flex-grow-2 mt-2">安裝：官網安裝
-此範例來自 Bruce 前端課程，使用 todoList 來練習
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Let&#39;s Code">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/page/2/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Eva Chan">
+<meta name="twitter:card" content="summary">
 
-從官網學習基礎設定
-
-
-建立 store 同時，撰寫 reducer(會自動產生出對應 reducer 的 action)
-action 如同 dispatch 所送出的包裹
-reducer 會去拆解包裹，以了解用戶想做的事應用於 todo-list
+<link rel="canonical" href="https://github.com/Eva813/Eva813.github.io.git/page/2/">
 
 
-store 中會存有幾條備忘錄，幾條 todo視像要做
-建立資料夾 src / slice ，此 slice 中包含 reducer, actionTS-設立tool-kit建立 store 的方式，要先建立 reducer
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
 
-src / slice / todo.ts
-建立 slice，並注意要傳入三個參數
-name : slice 的名字
-initialState 初始..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/12/01/ReduxToolkit/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/VykOAkm.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/11/22/react-component/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/VykOAkm.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/11/22/react-component/">React - 建立元件</a></h2><time class="has-text-grey" datetime="2022-11-22T02:36:50.000Z">2022-11-22</time><p class="is-flex-grow-2 mt-2">
-前段時間練習了一些 React 的基礎，對於 JSX 以及一些 hook 的用法比較有概念，所以就以 Bruce 的 React 課程實作再來練習，樣式部分以 Tailwind 為主此外也搭配 TS 來撰寫。
-1. Header
-製作 IGHeader 元件，因為到不同頁面都會有 header 存在，所以可以將它放在外面的共用元件。
+  <title>Let's Code</title>
+  
 
-const IGHeader: React.FC = () =&amp;gt; {
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Code</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/12/21/rotate-image/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/21/rotate-image/" class="post-title-link" itemprop="url">Leetcode rotate-image</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-12-21 09:46:00 / Modified: 17:56:31" itemprop="dateCreated datePublished" datetime="2022-12-21T09:46:00+08:00">2022-12-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index"><span itemprop="name">Leetcode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一開始看到題目，看到2維陣列就會有些緊張，想著是否要拆開，或是要如何從圖示去轉陣列，寫得很亂又雜還是解不出來。<br>看完其他教學才知道可以從斜對角開始調換，最後再將左右做調換。</p>
+<p>You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).</p>
+<p>You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.</p>
+<p> <img src="https://i.imgur.com/0khxyek.png" alt=""></p>
+<p><img src="https://i.imgur.com/LjKoWWh.jpg" alt=""></p>
+<pre><code class="javascript">var rotate = function (matrix) {
+  //斜對角
+  for (let i = 0; i &lt; matrix.length; i++) {
+    for (let j = 0; j &lt; matrix.length; j++) {
+      let temp = matrix[i][j];
+      matrix[i][j] = matrix[j][i];
+      matrix[j][i] = temp;
+    }
+  }
+  //reverse
+  // Secondly Make Reflected Image Of Matrix
+  for (let i = 0; i &lt; matrix.length; i++) {
+      //最左和最右調換，為兩兩調換，所以j的長度為matrix長度除以2
+    for (let j = 0; j &lt; matrix.length / 2; j++) {
+      var Temp = matrix[i][j]
+      //右側最後的值為長度-1
+      matrix[i][j] = matrix[i][matrix.length - 1 - j]
+      matrix[i][matrix.length - 1 - j] = Temp
+    }
+  }
+  return matrix;
+};
+</code></pre>
+<p>參考資料：<br><a href="https://www.youtube.com/watch?v=swlO6KKh8yk" target="_blank" rel="noopener">Rotate Image - LeetCode 48 - JavaScript</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/12/01/React-Middleware/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/01/React-Middleware/" class="post-title-link" itemprop="url">Redux Toolkit - RTK Query中間層非同步Fetch API的處理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-12-01 12:55:30 / Modified: 21:08:43" itemprop="dateCreated datePublished" datetime="2022-12-01T12:55:30+08:00">2022-12-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>當發起 dispatch 到 UI 更新之間做什麼事情</p>
+<ul>
+<li><p>希望 dispath 有能力可以再去做其他事情（所以會在過程中去做一些邏輯）</p>
+</li>
+<li><p>希望過程中可以再做些事情（UI 從 dispatch 到真正渲染之間）</p>
+<p><img src="https://i.imgur.com/FROBvmD.png" alt=""><br><a href="https://redux.js.org/understanding/history-and-design/middleware" target="_blank" rel="noopener">Middleware</a></p>
+</li>
+<li><p>實際上是一個 function</p>
+</li>
+<li><p>next 是 dispatch 的意思，next 所代表的是傳入 action ，會調用下一個 dispatch 來執行所傳入的這個 action </p>
+</li>
+</ul>
+<p>以官網範例：</p>
+<ul>
+<li>他是 3 個函式包在一起</li>
+</ul>
+<pre><code class="javaScript">const logger = store =&gt; nextDispatch =&gt; action =&gt; {  
+    console.log(&#39;dispatching&#39;, action)  
+    let result = nextDispatch(action)  
+    console.log(&#39;next state&#39;, store.getState())  
+    return result  
+}</code></pre>
+<p>在專案建立<br>位置：src / middleware</p>
+<h3 id="簡易說明"><a href="#簡易說明" class="headerlink" title="簡易說明"></a>簡易說明</h3><p>在 return 最後的 function 之前，第二個 function 就是將原有的 dispatch 丟到最後的 function 中，再 return 出去。<br>在取的 dispatch 之前，會再拿到 store 也是使用 api 時候會回傳進來的東西。<br>當 middleware 建立好之後，要到 store 當案進行宣告</p>
+<h3 id="combineReducers"><a href="#combineReducers" class="headerlink" title="combineReducers"></a>combineReducers</h3><ul>
+<li>建立的 slice夾中可能會有多個 reducer，例如 todoReducer, friendReducer, phoneReduce…</li>
+</ul>
+<p>Middleware 與 store 的建立<br><img src="https://i.imgur.com/H7EOAfX.png" alt=""></p>
+<p>在 middleware 去寫功能的時後，主要分為兩個部分</p>
+<ol>
+<li>在 dispach 之前要做什麼事情</li>
+<li>在 dispach 之後要做什麼事情</li>
+</ol>
+<h2 id="RTK-Query"><a href="#RTK-Query" class="headerlink" title="RTK Query"></a>RTK Query</h2><p>使用 middileware 去定義我們的 reducers 會分成多個階段</p>
+<ul>
+<li>pedding</li>
+<li>success</li>
+<li>error<br>針對每一次 API 取資料，加入到  reducers 中，此方式會使得 reducer 變得龐大、複雜。<br>RTK Query 協助將所有關於 call API 或是 獲取資料過程的功能，將他包裝成一個攻能，並且完全獨立於 reducer 或 redux 的邏輯</li>
+<li>可以使用 RTK Query 中的 hook 去獲取當前 data , error 狀態等<br><a href="https://redux-toolkit.js.org/rtk-query/overview" target="_blank" rel="noopener">官方文件</a></li>
+</ul>
+<h2 id="建立-api"><a href="#建立-api" class="headerlink" title="建立 api"></a>建立 api</h2><p>educerPath =&gt; 最後會產生 reducer ，所包含內容會有 pedding, success,error 等狀態<br>baseQuery =&gt; 就是放入 baseUrl<br>endpoint =&gt; 放入 query 資訊<br>    any : 表示會回傳一個 any 結果<br>    string : 需要傳入 string 的 input </p>
+<p>json placeholder</p>
+<p><img src="https://i.imgur.com/40MQaiu.png" alt=""></p>
+<pre><code class="javascript">import { createApi, fetchBaseQuery } from &#39;@reduxjs/toolkit/query/react&#39;
+
+export const todoApiService = createApi({
+
+        reducerPath: &#39;todoApi&#39;,
+
+        baseQuery: fetchBaseQuery({ baseUrl: &#39;https://jsonplaceholder.typicode.com/&#39; }),
+
+        endpoints: (builder) =&gt; ({
+
+        // getPokemonByName: builder.query&lt;Pokemon, string&gt;({
+
+        // query: (name) =&gt; `pokemon/${name}`,
+
+        // }),
+
+        getTodoApi: builder.query&lt;any, string&gt;({
+
+        query: (id) =&gt; `todos/${id}`,
+
+    })
+
+    }),
+
+})
+// Export hooks for usage in functional components, which are  
+// auto-generated based on the defined endpoints 
+// 以下會自動對應產生
+export const { useGetTodoApiQuery } = todoApiService</code></pre>
+<h2 id="至-store-新增-todoAPI"><a href="#至-store-新增-todoAPI" class="headerlink" title="至  store 新增 todoAPI"></a>至  store 新增 todoAPI</h2><p><img src="https://i.imgur.com/ChMTJOz.png" alt=""></p>
+<h2 id="引用-API-hook"><a href="#引用-API-hook" class="headerlink" title="引用 API hook"></a>引用 API hook</h2><p><code>import { useGetTodoApiQuery } from &#39;./services/todoApi&#39;;</code></p>
+<pre><code class="jsx">import &#39;./App.css&#39;;
+import styled from &#39;styled-components&#39;
+import { useAppSelector, useAppDispatch } from &#39;./hooks&#39;;
+import { addTodo, addTimestamp } from &#39;./slice/todo&#39;
+import React, { useState } from &#39;react&#39;;
+import { useGetTodoApiQuery } from &#39;./services/todoApi&#39;;
+
+const Wrapper = styled.div`
+  padding: 1.5rem;
+`
+
+const Title = styled.h2`
+  font-weight: 900;
+  margin-top: 2rem;
+`
+
+const NoteInput = styled.input`
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  padding-left: .5rem;
+  box-sizing: border-box;
+`
+
+const SubmitBtn = styled.button`
+  width: 100%;
+  box-sizing: border-box;
+  height: 40px;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  border-radius: 10px;
+  border: 0;
+  font-weight: 900;
+  margin-top: 1rem;
+
+  :active {
+    background: #000000be;
+  }
+`
+
+const Item = styled.div`
+  margin-top: 1rem;
+
+  &gt; b {
+    margin-right: .5rem;
+  }
+`
+
+
+function App() {
+  const todoReducer = useAppSelector(state =&gt; state.todoReducer)
+  const todoList = todoReducer.todoList
+  const dispatch = useAppDispatch()
+  const [text, setText] = useState(&quot;&quot;)
+  const { data, error, isLoading } = useGetTodoApiQuery(&#39;1&#39;)
+  //api 獲取資料
+  console.log(&#39;data:&#39;, data)
+  console.log(&#39;error:&#39;, error)
+  console.log(&#39;isLoading:&#39;, isLoading)
+
+  //處裡 data 可能 undefined 的問題
+  const { userId = &#39;N/A&#39;, title = &#39;N/A&#39; } = data || {}
+
+  return (
+    &lt;Wrapper&gt;
+      &lt;Title&gt;TODO LIST&lt;/Title&gt;
+      &lt;NoteInput type=&quot;text&quot; value={text} onChange={(e: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+        setText(e.target.value)
+      }} /&gt;
+      &lt;SubmitBtn onClick={() =&gt; {
+        if (text === &#39;&#39;) {
+          alert(&#39;請輸入TODO內容&#39;)
+          return
+        }
+        dispatch(addTodo(text))
+        setText(&#39;&#39;)
+      }}&gt;
+        Submit
+      &lt;/SubmitBtn&gt;
+      &lt;SubmitBtn onClick={() =&gt; {
+        dispatch(addTimestamp())
+      }}&gt;
+        Record Timestamp
+      &lt;/SubmitBtn&gt;
+      &lt;Title&gt;List&lt;/Title&gt;
+      {
+        todoList.map((todo, index) =&gt; {
+          return &lt;Item key={todo}&gt;
+            &lt;b&gt;{index + 1}&lt;/b&gt;
+            {todo}
+          &lt;/Item&gt;
+        })
+      }
+      &lt;Title&gt;List2&lt;/Title&gt;
+      {
+        isLoading &amp;&amp; &lt;p&gt; 正在載入資料...&lt;/p&gt;
+      }
+      {
+        !isLoading &amp;&amp;
+        (
+          &lt;div&gt;
+            {/* &lt;p&gt;User ID:{data?.userId}&lt;/p&gt;
+            &lt;p&gt;Usr Title:{data?.title}&lt;/p&gt; */}
+            &lt;p&gt;User ID:{userId}&lt;/p&gt;
+            &lt;p&gt;Usr Title:{title}&lt;/p&gt;
+
+          &lt;/div&gt;
+        )
+
+
+      }
+    &lt;/Wrapper&gt;
+  );
+}
+
+export default App;
+</code></pre>
+<p>若是使用 react thunk </p>
+<ul>
+<li>這裡的 middleware 的 reducer 中的 status 要自己去定義</li>
+<li>優點：可以完全掌控自己 reducer 的內容</li>
+<li>但相對也會較為繁瑣</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/12/01/ReduxToolkit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/01/ReduxToolkit/" class="post-title-link" itemprop="url">Redux Toolkit</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-12-01 12:03:04 / Modified: 21:07:07" itemprop="dateCreated datePublished" datetime="2022-12-01T12:03:04+08:00">2022-12-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>安裝：<br><a href="https://redux.js.org/introduction/installation" target="_blank" rel="noopener">官網安裝</a></p>
+<p>此範例來自 Bruce 前端課程，使用 todoList 來練習</p>
+<ul>
+<li>從官網學習基礎設定</li>
+</ul>
+<ol>
+<li>建立 store 同時，撰寫 reducer(會自動產生出對應 reducer 的 action)<ol>
+<li>action 如同 dispatch 所送出的包裹</li>
+<li>reducer 會去拆解包裹，以了解用戶想做的事<br>應用於 todo-list</li>
+</ol>
+</li>
+<li>store 中會存有幾條備忘錄，幾條 todo視像要做</li>
+<li>建立資料夾 src / slice ，此 slice 中包含 reducer, action<br><a href="https://redux.js.org/tutorials/typescript-quick-start" target="_blank" rel="noopener">TS-設立tool-kit</a><br>建立 store 的方式，要先建立 reducer</li>
+</ol>
+<h3 id="src-slice-todo-ts"><a href="#src-slice-todo-ts" class="headerlink" title="src / slice / todo.ts"></a>src / slice / todo.ts</h3><ul>
+<li>建立 slice，並注意要傳入三個參數<ul>
+<li>name : slice 的名字</li>
+<li>initialState 初始化的 state，建立初始狀態得值以及型別</li>
+</ul>
+</li>
+</ul>
+<pre><code class="javaScript">import { createSlice } from &#39;@reduxjs/toolkit&#39;
+// Define a type for the slice state  
+interface todoState {  
+  todoList: Array&lt;string&gt;
+}
+const initialState: todoState = {  
+  todoList: []  
+}
+export const todoSlice = createSlice({  
+    name:&#39;todo&#39;,
+    initialState,
+    reducers:{
+        //state:當下狀態
+        //action:對應的動作
+        addTodo: (state,action)=&gt;{
+            state.todoList.push(action.payload)
+        },
+        addTimestamp:(state)=&gt;{
+            state.todoList.push(Date.now().toString())
+        }
+
+    }
+}  
+})</code></pre>
+<p>在此範例中會有兩個 dispatch</p>
+<ol>
+<li>submit</li>
+<li>record timestamp</li>
+</ol>
+<ul>
+<li>dispatch 會發出上面兩個 action </li>
+<li>reducer 要兩個事件接收<br>最後的 export todoSlice</li>
+<li>todoSlice 中會包含 actions , reducer , 以及其他 API</li>
+</ul>
+<h2 id="建立-store"><a href="#建立-store" class="headerlink" title="建立 store"></a>建立 store</h2><ol>
+<li>位置 src / store.ts<pre><code class="javascript">import { configureStore } from &#39;@reduxjs/toolkit&#39;</code></pre>
+</li>
+</ol>
+<p><img src="https://i.imgur.com/41RnyWT.png" alt=""></p>
+<p>從上面過程，可以看到我們 store, action , reducer 都撰寫完成</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ul>
+<li>回到 UI 觸發狀態改變的地方 </li>
+<li><ol>
+<li>index.tsx 裝入 store<ul>
+<li>像是 context 的概念作為 context provider 的內容</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<pre><code class="javaScript">import { Provider } from &quot;react-redux&quot;;
+import store from &#39;./store&#39;
+ReactDOM.render(
+
+    &lt;React.StrictMode&gt;
+
+        &lt;Provider store={store}&gt;
+
+            &lt;App /&gt;
+
+        &lt;/Provider&gt;
+
+    &lt;/React.StrictMode&gt;,
+
+    document.getElementById(&#39;root&#39;)
+
+);</code></pre>
+<p>拿到 store 中的 todoList 來使用渲染於畫面</p>
+<ul>
+<li>要如何拿到 store ? 使用 useSelector</li>
+<li>在這裡要注意因為使用 TS 所以會有類型定義問題！<ul>
+<li>src / hooks.tsx</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>型別首先要來自於 store 檔案</li>
+</ol>
+<ul>
+<li>ReturnType: 幫我們將 store 中的內容，直接導出對應的 type</li>
+</ul>
+<p><code>export type RootState = ReturnType&lt;typeof store.getState&gt;</code></p>
+<ol start="2">
+<li>回到 hooks 建立定義好型別的 API</li>
+</ol>
+<pre><code class="javaScript">export const useAppSelector: TypedUseSelectorHook&lt;RootState&gt; = useSelector</code></pre>
+<ol start="3">
+<li>可以 到 App 檔案或相關的子組件都可以調用 store 的內容<ul>
+<li>可以拿到預設的 state </li>
+</ul>
+</li>
+</ol>
+<pre><code class="javascript">import { useAppSelector } from &#39;./hooks&#39;;
+function App() {
+
+const todoReducer = useAppSelector(state =&gt; state.todoReducer)
+
+const todoList = todoReducer.todoList
+
+
+return (
+
+&lt;Wrapper&gt;
+
+    &lt;Title&gt;TODO LIST&lt;/Title&gt;
+
+    &lt;NoteInput type=&quot;text&quot; /&gt;
+
+    &lt;SubmitBtn&gt;
+
+        Submit
+
+    &lt;/SubmitBtn&gt;
+
+    &lt;SubmitBtn&gt;
+
+        Record Timestamp
+
+    &lt;/SubmitBtn&gt;
+
+    &lt;Title&gt;List&lt;/Title&gt;
+
+    {
+
+    todoList.map((todo, index) =&gt; {
+
+        return &lt;Item key={todo}&gt;
+
+            &lt;b&gt;{index + 1}&lt;/b&gt;
+
+            {todo}
+
+        &lt;/Item&gt;
+
+        })
+
+    }
+
+&lt;/Wrapper&gt;
+
+);
+
+}
+
+
+
+export default App;</code></pre>
+<h3 id="狀態更新"><a href="#狀態更新" class="headerlink" title="狀態更新"></a>狀態更新</h3><ul>
+<li>使用 dispatch 一些 action</li>
+<li>定義 useDispatch </li>
+</ul>
+<ol>
+<li>hooks<pre><code class="javascript">import { TypedUseSelectorHook, useDispatch, useSelector } from &#39;react-redux&#39;
+</code></pre>
+</li>
+</ol>
+<p>import type { RootState, AppDispatch } from ‘./store’</p>
+<p>//自定義 hook</p>
+<p>// Use throughout your app instead of plain <code>useDispatch</code> and <code>useSelector</code></p>
+<p>export const useAppDispatch: () =&gt; AppDispatch = useDispatch</p>
+<p>export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector</p>
+<pre><code>2. store.ts
+
+```javascript
+import { configureStore } from &#39;@reduxjs/toolkit&#39;
+
+import todoReducer from &#39;./slice/todo&#39;
+
+const store = configureStore({
+
+    reducer: {
+
+        todoReducer
+
+        }
+
+})
+
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+
+//匯出對應的類型
+export type RootState = ReturnType&lt;typeof store.getState&gt;
+
+export type AppDispatch = typeof store.dispatch
+
+export default store</code></pre><p>到 App.tsx 使用 dispatch</p>
+<ul>
+<li>宣告 dispatch</li>
+<li>設置 setState 的值</li>
+<li>綁定於 input 並讓 input onchange 時去觸發值得改變</li>
+</ul>
+<pre><code class="javascript">import &#39;./App.css&#39;;
+
+import styled from &#39;styled-components&#39;
+
+import { useAppSelector, useAppDispatch } from &#39;./hooks&#39;;
+
+import { addTodo, addTimestamp } from &#39;./slice/todo&#39;
+
+import React, { useState } from &#39;react&#39;;
+
+
+function App() {
+
+const todoReducer = useAppSelector(state =&gt; state.todoReducer)
+
+const todoList = todoReducer.todoList
+
+const dispatch = useAppDispatch()
+
+const [text, setText] = useState(&quot;&quot;)
+
+return (
+
+&lt;Wrapper&gt;
+
+    &lt;Title&gt;TODO LIST&lt;/Title&gt;
+
+    &lt;NoteInput type=&quot;text&quot; value={text} onChange={(e: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+
+    setText(e.target.value)
+
+    }} /&gt;
+
+    &lt;SubmitBtn onClick={() =&gt; {
+
+        if (text === &#39;&#39;) {
+
+        alert(&#39;請輸入TODO內容&#39;)
+
+        return
+
+        }
+
+        dispatch(addTodo(text))
+
+        setText(&#39;&#39;)
+
+    }}&gt;
+
+        Submit
+
+    &lt;/SubmitBtn&gt;
+
+    &lt;SubmitBtn onClick={() =&gt; {
+
+        dispatch(addTimestamp())
+
+    }}&gt;
+
+        Record Timestamp
+
+    &lt;/SubmitBtn&gt;
+
+    &lt;Title&gt;List&lt;/Title&gt;
+
+    {
+
+        todoList.map((todo, index) =&gt; {
+
+        return &lt;Item key={todo}&gt;
+
+            &lt;b&gt;{index + 1}&lt;/b&gt;
+
+            {todo}
+
+        &lt;/Item&gt;
+
+    })
+
+    }
+
+&lt;/Wrapper&gt;
+
+);
+
+}
+
+
+
+export default App;</code></pre>
+<h2 id="總結步驟"><a href="#總結步驟" class="headerlink" title="總結步驟"></a>總結步驟</h2><ol>
+<li>定義 slice 中的內容，其中包含 初始的資料定義、 reducers<ol>
+<li>reducers 會透過 toolkit 這工具，將對應得 action 產生出來</li>
+<li>action 可以在 dispatch 做發送時帶出去</li>
+</ol>
+</li>
+<li>定義 provider 作為將 store 資料傳入的橋樑</li>
+<li>store 的產生：來自於將 slice 中的 reducers 建立好之後可以隨之建立的內容</li>
+<li>建立 hooks ：撰寫自定義的 hook ，將原本內建的 hook 進行重新包裝</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/11/22/react-component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/22/react-component/" class="post-title-link" itemprop="url">React - 建立元件</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-22 10:36:50" itemprop="dateCreated datePublished" datetime="2022-11-22T10:36:50+08:00">2022-11-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-26 18:15:38" itemprop="dateModified" datetime="2022-11-26T18:15:38+08:00">2022-11-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/VykOAkm.png" alt=""></p>
+<p>前段時間練習了一些 React 的基礎，對於 JSX 以及一些 hook 的用法比較有概念，所以就以 Bruce 的 React 課程實作再來練習，樣式部分以 Tailwind 為主此外也搭配 TS 來撰寫。</p>
+<h2 id="1-Header"><a href="#1-Header" class="headerlink" title="1. Header"></a>1. Header</h2><ul>
+<li>製作 IGHeader 元件，因為到不同頁面都會有 header 存在，所以可以將它放在外面的共用元件。</li>
+</ul>
+<pre><code class="tsx">const IGHeader: React.FC = () =&gt; {
   const go = useNavigate()
   return (
-    &amp;lt;header className=&amp;quot;sticky top-0 border-b-[1px] bg-white border-gray-300 &amp;quot;&amp;gt;
-      &amp;lt;div cla..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/11/22/react-component/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/T2y5qLa.jpg" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/11/10/leetcode-Majority-Element/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/T2y5qLa.jpg" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Leetcode"><i class="tag post-item-tag">Leetcode</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/11/10/leetcode-Majority-Element/">刷題練習 - Majority Element</a></h2><time class="has-text-grey" datetime="2022-11-10T02:36:50.000Z">2022-11-10</time><p class="is-flex-grow-2 mt-2">Given an array nums of size n, return the majority element.
-The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
-Example 1:
-Input: nums = [3,2,3]
-Output: 3Example 2:
-Input: nums = [2,2,1,1,1,2,2]
-Output: 2在一開始觀察題目，會直覺想說要找出陣列中出現最多次的元素，此外也注意到題目說明有提及運用 n/2 與陣列長度比較出現次數。在一..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/11/10/leetcode-Majority-Element/">Read more</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Leetcode"><i class="tag post-item-tag">Leetcode</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/11/07/Rotate-array/">刷題練習 - Rotate Array</a></h2><time class="has-text-grey" datetime="2022-11-07T09:13:53.398Z">2022-11-07</time><p class="is-flex-grow-2 mt-2">Given an array, rotate the array to the right by k steps, where k is non-negative.
-Example 1:
-Input: nums = [1,2,3,4,5,6,7], k = 3
+    &lt;header className=&quot;sticky top-0 border-b-[1px] bg-white border-gray-300 &quot;&gt;
+      &lt;div className=&quot;flex justify-between items-center h-[60px] px-2 lg:max-w-[1024px] lg:mx-auto lg:px-0&quot;&gt;
+        &lt;img
+          className=&quot;w-[100px] cursor-pointer&quot;
+          src=&quot;/images/logo.svg&quot;
+        /&gt;
+        &lt;div className=&quot;flex&quot;&gt;
+          &lt;svg
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+            className=&quot;h-6 w-6 mr-4 cursor-pointer&quot;
+            fill=&quot;none&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            stroke=&quot;currentColor&quot;
+            onClick={() =&gt; go(&#39;/&#39;)}
+          &gt;
+            &lt;path
+              strokeLinecap=&quot;round&quot;
+              strokeLinejoin=&quot;round&quot;
+              strokeWidth={2}
+              d=&quot;M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6&quot;
+            /&gt;
+          &lt;/svg&gt;
+          &lt;svg
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+            className=&quot;h-6 w-6 mr-4 cursor-pointer&quot;
+            fill=&quot;none&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            stroke=&quot;currentColor&quot;
+            onClick={() =&gt; go(&#39;/following&#39;)}
+          &gt;
+            &lt;path
+              strokeLinecap=&quot;round&quot;
+              strokeLinejoin=&quot;round&quot;
+              strokeWidth={2}
+              d=&quot;M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z&quot;
+            /&gt;
+          &lt;/svg&gt;
+          &lt;div className=&quot; h-6 w-6 text-white  bg-gray-900  font-bold flex  rounded-full justify-center items-center&quot;&gt;
+            E
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  )
+}</code></pre>
+<h2 id="2-IGContainer"><a href="#2-IGContainer" class="headerlink" title="2. IGContainer"></a>2. IGContainer</h2><p>頁面佈局設定，除了 限時動態頁面會呈現外，在追蹤者頁面也會使用到</p>
+<ul>
+<li>使用 Tailwind 設定左右版面以及當螢幕不同尺寸的設定</li>
+<li>將樣式寫在(style.div 裏面)，作為一個組件 export 出去</li>
+</ul>
+<h2 id="3-限時動態列表（IGStory）"><a href="#3-限時動態列表（IGStory）" class="headerlink" title="3. 限時動態列表（IGStory）"></a>3. 限時動態列表（IGStory）</h2><p> <img src="https://i.imgur.com/jzE9sAZ.png" alt=""></p>
+<ul>
+<li>因隸屬於 home 裡面的位置，所以可以將檔案，放在 home 資料夾中，屬於 home 中的組件<br>//通常在一份專案中不用引入兩個 css 框架<br>實作：<ol start="2">
+<li>List Container 的容器<br><a href="https://tailwindcss.com/docs/overflow#scrolling-horizontally-if-needed" target="_blank" rel="noopener">文件</a></li>
+</ol>
+<ul>
+<li>在組建內部要使用 JS 相關的邏輯的寫法，要在要面用大括號刮起來</li>
+<li>每一個小圖都是一個 item ，所以可以先製作組件</li>
+</ul>
+</li>
+</ul>
+<h3 id="限時動態-item-組件"><a href="#限時動態-item-組件" class="headerlink" title="限時動態 item 組件"></a>限時動態 item 組件</h3><ul>
+<li>此組件建立其中的小項目</li>
+</ul>
+<pre><code class="javascript">import React from &#39;react&#39;
+
+type ItemProps = {
+  name: string;
+  avatar: string;
+}
+
+const Item: React.FC&lt;ItemProps&gt; = ({ name, avatar }) =&gt; {
+  return (
+    &lt;div className=&quot; text-center &quot;&gt;
+      &lt;div className=&quot; rounded-full w-[56px] h-[56px] ring-2 border-2 border-white ring-red-500 mx-[11px] p-[3px] &quot;
+        style={{
+          backgroundImage: `url(${avatar})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}&gt;
+      &lt;/div&gt;
+      &lt;p className=&quot;text-xs mt-1&quot;&gt;{name}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Item</code></pre>
+<h3 id="外層"><a href="#外層" class="headerlink" title="外層"></a>外層</h3><ul>
+<li>在外層的主要檔案，就是將模板建立好，讓 item 可以 map 進去</li>
+</ul>
+<pre><code class="jsx">const IGStory: React.FC = () =&gt; {
+  const storyData = [
+    {
+      &quot;id&quot;: 1,
+      &quot;name&quot;: &quot;bruce_fe&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a1.png&quot;
+    },
+    {
+      &quot;id&quot;: 2,
+      &quot;name&quot;: &quot;max&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a2.png&quot;
+    },
+    {
+      &quot;id&quot;: 3,
+      &quot;name&quot;: &quot;fm&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a3.png&quot;
+    },
+    {
+      &quot;id&quot;: 4,
+      &quot;name&quot;: &quot;joanne&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a4.png&quot;
+    },
+    {
+      &quot;id&quot;: 5,
+      &quot;name&quot;: &quot;focus&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a5.png&quot;
+    },
+    {
+      &quot;id&quot;: 6,
+      &quot;name&quot;: &quot;louis&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a6.png&quot;
+    },
+    {
+      &quot;id&quot;: 7,
+      &quot;name&quot;: &quot;alvin&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a7.png&quot;
+    },
+    {
+      &quot;id&quot;: 8,
+      &quot;name&quot;: &quot;grace&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a8.png&quot;
+    },
+    {
+      &quot;id&quot;: 9,
+      &quot;name&quot;: &quot;rance&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a9.png&quot;
+    },
+    {
+      &quot;id&quot;: 10,
+      &quot;name&quot;: &quot;bruce_fe&quot;,
+      &quot;avatar&quot;: &quot;/images/avatars/a10.png&quot;
+    }
+  ]
+  return (
+    &lt;div className=&#39;w-full flex items-center h-[110px] box-border overflow-x-auto overflow-y-hidden no-scrollbar  shadow-md lg:my-8&#39;&gt;
+      {/* &lt;Item name=&quot;Mike&quot; avatar=&#39;/images/avatars/a1.png&#39; /&gt; */}
+      {
+        storyData?.map((item) =&gt; {
+          const { id, name, avatar } = item
+          return &lt;Item key={id} name={name} avatar={avatar} /&gt;
+        })
+      }
+    &lt;/div&gt;
+  )
+}
+
+export default IGStory</code></pre>
+<h2 id="3-User-組件"><a href="#3-User-組件" class="headerlink" title="3. User 組件"></a>3. User 組件</h2><ul>
+<li>使用者資訊表，在不同區塊都有重複出現，所以可以抽成共用組件</li>
+<li>現定義好 props 的型別</li>
+<li>依照藥的版型來切出樣貌，將變數帶入</li>
+</ul>
+<pre><code class="tsx">type IGUserProps = {
+  size?: &quot;medium&quot; | &quot;small&quot;;
+  showFollow?: boolean;
+  isFollowing?: boolean;
+  account?: string;
+  location?: string;
+  avatar?: string;
+  id?: number;
+}
+
+const IGUser: React.FC&lt;IGUserProps&gt; = ({
+  size = &quot;small&quot;,
+  showFollow = false,
+  isFollowing = false,
+  account,
+  location,
+  avatar,
+  id,
+}) =&gt; {
+  return (
+
+    &lt;div className=&quot;flex h-[70px] items-center box-border px-4 &quot;&gt;
+      &lt;div className={`${size === &quot;small&quot; ? &quot;w-[40px] h-[40px]&quot; : &quot;w-[60px] h-[60px]&quot;} overflow-hidden rounded-full `}
+        style={{
+          backgroundImage: `url(${avatar})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      &gt;&lt;/div&gt;
+      &lt;div className=&quot;ml-4&quot;&gt;
+        &lt;p className=&quot;text-sm font-bold&quot;&gt;{account}&lt;/p&gt;
+        &lt;p className=&quot;text-gray-400&quot;&gt;{location}&lt;/p&gt;
+      &lt;/div&gt;
+      {showFollow &amp;&amp; (
+        &lt;p
+          className={`${isFollowing ? &quot;text-gray-700&quot; : &quot;text-blue-400&quot;} text-xs ml-auto cursor-pointer font-bold`}
+        &gt; {isFollowing ? &quot;FOLLOWING&quot; : &quot;FOLLOW&quot;}&lt;/p&gt;
+      )
+
+      }
+    &lt;/div&gt;
+  )
+}</code></pre>
+<ul>
+<li>memo 對於重複渲染，效能優化使用</li>
+</ul>
+<p><a href="https://ithelp.ithome.com.tw/articles/10252827" target="_blank" rel="noopener">border-box</a></p>
+<p><img src="https://i.imgur.com/x16ZQBu.png" alt=""></p>
+<h2 id="post-組件"><a href="#post-組件" class="headerlink" title="post 組件"></a>post 組件</h2><p> <img src="https://i.imgur.com/HMvp7dy.jpg" alt=""></p>
+<ul>
+<li>分為三個部分</li>
+</ul>
+<ol>
+<li>user</li>
+</ol>
+<ul>
+<li>可以使用前面所製作的 user 組件</li>
+</ul>
+<ol start="2">
+<li>img</li>
+</ol>
+<ul>
+<li>直接放入該項圖片</li>
+</ul>
+<ol start="3">
+<li>評論區</li>
+</ol>
+<ul>
+<li>也可以製作成小組件，最後再放入 post 組件</li>
+<li>注意傳入 props 要先設定好傳入的型別</li>
+</ul>
+<pre><code class="jsx">import React from &#39;react&#39;
+
+type CommentsProps = {
+  likes: number;
+  description: string;
+  hashTags: string;
+  createTime: string;
+  account: string;
+}
+
+const Comments: React.FC&lt;CommentsProps&gt; = (
+  {
+    likes,
+    description,
+    hashTags,
+    createTime,
+    account,
+  }) =&gt; {
+  return (
+    &lt;div className=&#39;px-4&#39;&gt;
+      &lt;div className=&#39;flex items-center justify-between box-border my-4&#39;&gt;
+        &lt;div className=&#39;flex py-1&#39;&gt;
+          // svg
+      &lt;/div&gt;
+      &lt;p className=&#39;text-sm font-bold&#39;&gt;{likes} likes&lt;/p&gt;
+      &lt;p className=&#39;text-sm font-bold&#39;&gt;{description} &lt;/p&gt;
+      &lt;p className=&#39;text-blue-400 font-bold&#39;&gt;{hashTags} &lt;/p&gt;
+      &lt;p className=&#39;text-gray-400 font-[500] text-xs mt-2&#39;&gt;View all 999 comments &lt;/p&gt;
+      &lt;p className=&quot;text-gray-400 text-[10px] mt-1&quot;&gt;{createTime}&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+
+</code></pre>
+<h2 id="profile-區塊"><a href="#profile-區塊" class="headerlink" title="profile 區塊"></a>profile 區塊</h2><ul>
+<li><p>實作快速，直接做出簡易的版面</p>
+</li>
+<li><p>套用前面所做的 IGUser 即可以使用</p>
+<p><img src="https://i.imgur.com/0nIA31V.png" alt=""></p>
+</li>
+</ul>
+<pre><code class="jsx">import IGUser from &quot;components/IGUser&quot;
+
+const IGProfile = () =&gt; {
+  const followingList = [
+    {
+      id: 1,
+      location: &quot;Singapore&quot;,
+      account: &quot;max_999&quot;,
+      isFollowing: true,
+      avatar: &quot;/images/avatars/a1.png&quot;,
+    },
+    {
+      id: 2,
+      location: &quot;Singapore&quot;,
+      account: &quot;fm_999&quot;,
+      isFollowing: true,
+      avatar: &quot;/images/avatars/a2.png&quot;,
+    },
+    {
+      id: 3,
+      location: &quot;Singapore&quot;,
+      account: &quot;joanne_999&quot;,
+      isFollowing: true,
+      avatar: &quot;/images/avatars/a3.png&quot;,
+    },
+    {
+      id: 4,
+      location: &quot;Singapore&quot;,
+      account: &quot;focus_999&quot;,
+      isFollowing: true,
+      avatar: &quot;/images/avatars/a4.png&quot;,
+    },]
+
+  return (
+    &lt;div className=&quot;mt-8 ml-6 border-box shadow-md px-4&quot;&gt;
+      &lt;div&gt;
+        &lt;IGUser size=&#39;medium&#39; account=&#39;Tmommy_0814&#39; avatar=&quot;/images/avatar.png&quot; /&gt;
+      &lt;/div&gt;
+      &lt;p className=&quot;text-gray-400 px-4 mt-2&quot;&gt;You are Following&lt;/p&gt;
+      &lt;div &gt;
+        {
+          followingList?.map((item) =&gt; {
+            const { location, account, isFollowing, avatar, id } = item
+            return &lt;IGUser location={location} account={account} isFollowing={isFollowing} avatar={avatar} key={id} showFollow /&gt;
+          })
+        }
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default IGProfile
+</code></pre>
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>此次練習在使用 Tailwind 有些不習慣，主要是在於要稍微記得他的關鍵字並去文件查找屬性來應用，待使用到第三的區塊切版時就變得快速些～<br>另外，使用在課程中 Bruce 也會去說明每個區塊的切割以及重用性，可以將檔案分別放在哪個檔案，以利未來維護。<br>過去可能拿版面並未想太多，或是沒有多餘時間分析每一頁面的某些區塊是否有重複，我們可以依據建立開關或傳入的資料區紹維變動下版面，就可以達到一起使用 component 的效果。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/11/10/leetcode-Majority-Element/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/10/leetcode-Majority-Element/" class="post-title-link" itemprop="url">刷題練習 - Majority Element</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-11-10 10:36:50 / Modified: 14:42:28" itemprop="dateCreated datePublished" datetime="2022-11-10T10:36:50+08:00">2022-11-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index"><span itemprop="name">Leetcode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Given an array nums of size n, return the majority element.</p>
+<p>The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.</p>
+<p>Example 1:</p>
+<pre><code>Input: nums = [3,2,3]
+Output: 3</code></pre><p>Example 2:</p>
+<pre><code>Input: nums = [2,2,1,1,1,2,2]
+Output: 2</code></pre><p>在一開始觀察題目，會直覺想說要找出陣列中出現最多次的元素，此外也注意到題目說明有提及運用 n/2 與陣列長度比較出現次數。<br>在一開始會傾向使用 雜湊表 來進行解題，如同找出陣列為一值的方式找出答案。</p>
+<pre><code class="javaScript">var majorityElement = function (nums) {
+  let newObj = {}
+  for (let num of nums) {
+    // console.log(num)
+    (!newObj[num]) ? newObj[num] = 1 : newObj[num]++
+  }
+  // console.log(newObj)
+  let nNum = nums.length / 2
+  // console.log(&#39;nNum&#39;, nNum)
+  for (let key in newObj) {
+    if (newObj[key] &gt; nNum) return key
+  }
+
+};</code></pre>
+<p>另外也發現可以使用，Boyer–Moore majority vote algorithm(摩爾投票算法)來解題。<br>宣告變數 result , 以及計算變數。<br>將陣列loop ，判斷陣列元素有無出現進行 count 的加減<br>以 <code>majorityElement2([4, 5, 5, 4, 4])</code> 為範例：<br>第一個元素 4 ，因為 count === 0 , result === 4。<br>進入第二個元素 5，因為 result === 4 進入判斷式 else =&gt; count– 。 所以 count === 0 。<br>進入第三個元素 5，因為 result === 5 進入判斷式 result === elem  =&gt; count++。 所以 count === 1 。<br>進入第四個元素 4，因為 result === 5 進入判斷式 else =&gt; count– 。 所以 count === 0 。<br>進入第五個元素 4，因為 result === 4 進入判斷式 result === elem  =&gt; count++。 所以 count === 1 。</p>
+<p>在迴圈的最後元素 4 ，為目前 count 為 1</p>
+<pre><code class="javaScript">
+var majorityElement2 = function (nums) {
+  let result;
+  let count = 0;
+
+  for (let elem of nums) {
+    if (count === 0) {
+      result = elem;
+    }
+    if (result === elem) {
+      count++;
+    } else {
+      count--;
+    }
+  }
+
+  return result;
+
+};
+</code></pre>
+<hr>
+<ol start="229">
+<li>Majority Element II<br>此題也是使用摩爾投票法進行解題</li>
+</ol>
+<p>Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.</p>
+<p>Example 1:</p>
+<pre><code>Input: nums = [3,2,3]
+Output: [3]</code></pre><p>Example 2:</p>
+<pre><code>Input: nums = [1]
+Output: [1]</code></pre><p>Example 3:</p>
+<pre><code>Input: nums = [1,2]
+Output: [1,2]</code></pre><pre><code class="javaScript">var majorityElement = function (nums) {
+  // 只要是 &gt; n/3 就進入陣列
+  let candidate1 = null;
+  let candidate2 = null;
+  let count1 = 0;
+  let count2 = 0;
+
+  for (let num of nums) {
+
+    if (candidate1 === num) {
+      count1++
+    } else if (candidate2 === num) {
+      count2++
+    } else if (count1 === 0) {
+      candidate1 = num;
+      count1++
+    } else if (count2 === 0) {
+      candidate2 = num;
+      count2++
+    } else {
+      count1--;
+      count2--;
+    }
+  }
+
+  console.log(&#39;data:&#39;, candidate1, candidate2)
+  count1 = 0;
+  count2 = 0;
+  const res = [];
+
+  limit = Math.floor(nums.length / 3)
+
+  for (let num of nums) {
+    if (candidate1 === num) count1++;
+    else if (candidate2 === num) {
+      count2++;
+    }
+  }
+  if (count1 &gt; limit) res.push(candidate1)
+  if (count2 &gt; limit) res.push(candidate2)
+  console.log(res, count1, count2)
+  return res
+
+};
+majorityElement([1, 2])</code></pre>
+<p><img src="https://i.imgur.com/T2y5qLa.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/11/07/Rotate-array/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/07/Rotate-array/" class="post-title-link" itemprop="url">刷題練習 - Rotate Array</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-07 17:13:53" itemprop="dateCreated datePublished" datetime="2022-11-07T17:13:53+08:00">2022-11-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-10 11:02:33" itemprop="dateModified" datetime="2022-11-10T11:02:33+08:00">2022-11-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index"><span itemprop="name">Leetcode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Given an array, rotate the array to the right by k steps, where k is non-negative.</p>
+<p>Example 1:</p>
+<pre><code>Input: nums = [1,2,3,4,5,6,7], k = 3
 Output: [5,6,7,1,2,3,4]
 Explanation:
 rotate 1 steps to the right: [7,1,2,3,4,5,6]
 rotate 2 steps to the right: [6,7,1,2,3,4,5]
-rotate 3 steps to the right: [5,6,7,1,2,3,4]Example 2:
+rotate 3 steps to the right: [5,6,7,1,2,3,4]</code></pre><pre><code>Example 2:
 
 Input: nums = [-1,-100,3,99], k = 2
-Output: ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/11/07/Rotate-array/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/4Pw5JTD.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/11/02/rect-test-2/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/4Pw5JTD.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/11/02/rect-test-2/">React 測試 - 以登入元件練習</a></h2><time class="has-text-grey" datetime="2022-11-02T12:49:15.000Z">2022-11-02</time><p class="is-flex-grow-2 mt-2">想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。
-建立 login 檔案
-login.js : 製作登入元件
+Output: [3,99,-1,-100]
+Explanation: 
+rotate 1 steps to the right: [99,-1,-100,3]
+rotate 2 steps to the right: [3,99,-1,-100]</code></pre><p>1.由上述範例可以觀察到，根據 k 值進行抓取最後的元素至最前面，以此類推下去。<br>當 k 為某值的時後，會由陣列最後方取的該數目元素。<br>以下為直覺解法:</p>
+<pre><code class="javaScript">//會有 問題：Time Limit Exceeded
+const rotateArray1 = function (nums, k) {
+  //unshift 將給入的元素值放到最前面
+  for (let i = 0; i &lt; k; i++) {
+    console.log(&#39;nums.pop()&#39;, nums.pop())
+    nums.unshift(nums.pop());
+  }
+  console.log(&#39;num&#39;, nums)
+  return nums;
+}
+</code></pre>
+<p>2.也可以先將陣列進行反轉 reverse ,再依據 k 值 來進行前後段區分，來進行反轉</p>
+<pre><code class="javaScript">const revNum = (nums, start, end) =&gt; {
+  while (start &lt; end) {
 
-login.test.js : 撰寫測試
+    [nums[start], nums[end]] = [nums[end], nums[start]]
+    console.log(&#39;[nums[start], nums[end]]&#39;, [nums[start], nums[end]])
+    start++;
+    end--;
+  }
+  console.log(nums)
+}
+// revNum([1, 2, 3, 4], 0, 3)
 
+const rotateArray2 = function (nums, k) {
+  k = k % nums.length
+  //先整個陣列 reverse
+  nums.reverse()
+  revNum(nums, 0, k - 1)
+  revNum(nums, k, nums.length - 1)
+}
+</code></pre>
 
+      
+    </div>
 
-確認 輸入框 有渲染至文件
-使用 getByPlaceholderText 取得輸入框元素
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
- &amp;lt;form&amp;gt;
-        &amp;lt;input
-          type=&amp;quot;text&amp;quot;
-          placeholder=&amp;quot;username&amp;quot;
-          value=&amp;#39;&amp;#39;
-        /&amp;gt;
-        &amp;lt;input
-          type=&amp;quot;password&amp;quot;
-          placeho..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/11/02/rect-test-2/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/IT8leGK.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/11/02/rect-test-1/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/IT8leGK.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/11/02/rect-test-1/">React 測試</a></h2><time class="has-text-grey" datetime="2022-11-02T07:43:21.000Z">2022-11-02</time><p class="is-flex-grow-2 mt-2">使用 JavaSript 要進行測試最常使用的就是使用 Jest ，另外依據使用的前端框架來搭配使用進行測試。以下內文就先以一些範例來直接學習
-testing-library
-當使創建一個 react 檔案，會預設加入的測試範例檔
-test(&amp;#39;renders learn react link&amp;#39;, () =&amp;gt; {
-const linkElement = screen.getByText(/learn react/i);
-expect(linkElement).toBeInTheDocument();
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/11/02/rect-test-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/02/rect-test-2/" class="post-title-link" itemprop="url">React 測試 - 以登入元件練習</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-02 20:49:15" itemprop="dateCreated datePublished" datetime="2022-11-02T20:49:15+08:00">2022-11-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:37:05" itemprop="dateModified" datetime="2022-11-04T10:37:05+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-%E6%B8%AC%E8%A9%A6/" itemprop="url" rel="index"><span itemprop="name">React 測試</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。</p>
+<h3 id="建立-login-檔案"><a href="#建立-login-檔案" class="headerlink" title="建立 login 檔案"></a>建立 login 檔案</h3><ul>
+<li><p>login.js : 製作登入元件</p>
+</li>
+<li><p>login.test.js : 撰寫測試</p>
+<p><img src="https://i.imgur.com/4Pw5JTD.png" alt=""></p>
+</li>
+</ul>
+<h3 id="確認-輸入框-有渲染至文件"><a href="#確認-輸入框-有渲染至文件" class="headerlink" title="確認 輸入框 有渲染至文件"></a>確認 輸入框 有渲染至文件</h3><ul>
+<li>使用 <code>getByPlaceholderText</code> 取得輸入框元素</li>
+</ul>
+<pre><code class="html"> &lt;form&gt;
+        &lt;input
+          type=&quot;text&quot;
+          placeholder=&quot;username&quot;
+          value=&#39;&#39;
+        /&gt;
+        &lt;input
+          type=&quot;password&quot;
+          placeholder=&quot;password&quot;
+          value=&#39;&#39;
+        /&gt;
+  &lt;/form&gt;</code></pre>
+<pre><code class="javascript">  test(&quot;username input should be rendered&quot;, () =&gt; {
+    render(&lt;Login /&gt;);
+    const usernameInputEl = screen.getByPlaceholderText(/username/i);
+    expect(usernameInputEl).toBeInTheDocument();
+  });
+
+  test(&quot;password input should be rendered&quot;, () =&gt; {
+    render(&lt;Login /&gt;);
+    const passwordInputEl = screen.getByPlaceholderText(/password/i);
+    expect(passwordInputEl).toBeInTheDocument();
+  });</code></pre>
+<h3 id="確認畫面上有按鈕"><a href="#確認畫面上有按鈕" class="headerlink" title="確認畫面上有按鈕"></a>確認畫面上有按鈕</h3><ul>
+<li>getByRole 取得按鈕</li>
+</ul>
+<pre><code class="javascript">  test(&quot;button should be rendered&quot;, () =&gt; {
+    render(&lt;Login /&gt;);
+    const buttonEl = screen.getByRole(&quot;button&quot;);
+    expect(buttonEl).toBeInTheDocument();
+  });</code></pre>
+<h3 id="輸入框一開始為空"><a href="#輸入框一開始為空" class="headerlink" title="輸入框一開始為空"></a>輸入框一開始為空</h3><pre><code class="javascript">test(&quot;username input should be empty&quot;, () =&gt; {
+  render(&lt;Login /&gt;);
+  const usernameInputEl = screen.getByPlaceholderText(/username/i);
+  expect(usernameInputEl.value).toBe(&quot;&quot;);
 });
 
-screen  : it represent the whole document which we have rendered
+test(&quot;password input should be empty&quot;, () =&gt; {
+  render(&lt;Login /&gt;);
+  const passwordInputEl = screen.getByPlaceholderText(/password/i);
+  expect(passwordInputEl.value).toBe(&quot;&quot;);
+});</code></pre>
+<h3 id="輸入框為空時，按鈕應為-disabled"><a href="#輸入框為空時，按鈕應為-disabled" class="headerlink" title="輸入框為空時，按鈕應為 disabled"></a>輸入框為空時，按鈕應為 disabled</h3><ul>
+<li>只要取得按鈕元素並使用 <code>toBeDisabled()</code></li>
+</ul>
+<pre><code class="javascript">test(&quot;button should be disabled&quot;, () =&gt; {
+  render(&lt;Login /&gt;);
+  const buttonEl = screen.getByRole(&quot;button&quot;);
+  expect(buttonEl).toBeDisabled();
+});</code></pre>
+<h3 id="錯誤訊息的提示"><a href="#錯誤訊息的提示" class="headerlink" title="錯誤訊息的提示"></a>錯誤訊息的提示</h3><p><img src="https://i.imgur.com/hQ33Kxa.png" alt=""></p>
+<ul>
+<li>確保一開始進入畫面，該訊息不應該出現</li>
+<li>可以看見 <code>toBeVisible()</code> ，反之期望無法看見，就需加入not</li>
+</ul>
+<pre><code class="javascript">test(&quot;error message should not be visible&quot;, () =&gt; {
+  render(&lt;Login /&gt;);
+  const errorEl = screen.getByTestId(&quot;error&quot;);
+  expect(errorEl).not.toBeVisible();
+});</code></pre>
+<h3 id="輸入框的輸入事件"><a href="#輸入框的輸入事件" class="headerlink" title="輸入框的輸入事件"></a>輸入框的輸入事件</h3><ul>
+<li><a href="https://testing-library.com/docs/dom-testing-library/api-events/" target="_blank" rel="noopener">fireEvent</a> 用來針對事件進行測試</li>
+</ul>
+<p><img src="https://i.imgur.com/E9wT8gO.png" alt=""></p>
+<pre><code class="javascript">test(&quot;username input should change&quot;, () =&gt; {
+  render(&lt;Login /&gt;);
+  const usernameInputEl = screen.getByPlaceholderText(/username/i);
+  //模擬傳入的值
+  const testValue = &quot;test&quot;;
 
-getByText: 取得 text
+  fireEvent.change(usernameInputEl, { target: { value: testValue } });
+  expect(usernameInputEl.value).toBe(testValue);
+});
 
-getB..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/11/02/rect-test-1/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/SAaAzP0.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/10/18/React-context/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/SAaAzP0.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/10/18/React-context/">React - 從官方文件學習 Context 的使用</a></h2><time class="has-text-grey" datetime="2022-10-18T05:58:40.000Z">2022-10-18</time><p class="is-flex-grow-2 mt-2">Passing Data Deeply with Context
-當裡面的子狀態，會想要往父層去找尋時，就可以使用Context
-學習文件：React Docs
-資料會和其他元件要共用
-prop drilling
-最基本使用
+test(&quot;password input should change&quot;, () =&gt; {
+  render(&lt;Login /&gt;);
+  const passwordInputEl = screen.getByPlaceholderText(/password/i);
+  const testValue = &quot;test&quot;;
+
+  fireEvent.change(passwordInputEl, { target: { value: testValue } });
+  expect(passwordInputEl.value).toBe(testValue);
+});</code></pre>
+<h3 id="當輸入框有值的時候，按鈕不應該-disabled"><a href="#當輸入框有值的時候，按鈕不應該-disabled" class="headerlink" title="當輸入框有值的時候，按鈕不應該 disabled"></a>當輸入框有值的時候，按鈕不應該 <code>disabled</code></h3><ul>
+<li>期望按鈕可以點擊</li>
+<li>在 jsx 檔案內要設置在輸入框沒有值的時候才是 disabled</li>
+</ul>
+<p><img src="https://i.imgur.com/MdNkcGo.png" alt=""></p>
+<pre><code class="javascript">
+test(&quot;button should not be disabled when inputs exist&quot;, () =&gt; {
+  render(&lt;Login /&gt;);
+  const buttonEl = screen.getByRole(&quot;button&quot;);
+  const usernameInputEl = screen.getByPlaceholderText(/username/i);
+  const passwordInputEl = screen.getByPlaceholderText(/password/i);
+
+  const testValue = &quot;test&quot;;
+
+  fireEvent.change(usernameInputEl, { target: { value: testValue } });
+  fireEvent.change(passwordInputEl, { target: { value: testValue } });
+
+  expect(buttonEl).not.toBeDisabled();
+});</code></pre>
+<h4 id="css-補充"><a href="#css-補充" class="headerlink" title="css 補充"></a>css 補充</h4><pre><code class="css">  style={{ visibility: error ? "visible" : "hidden" }}</code></pre>
+<p>類似： display:none和visibility:hidden</p>
+<p>而兩者差異：<br>visibility：的隱藏，是物件的位置仍舊保持著不會消失,<br>display: none, 會將 html 該物件拔除</p>
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>此練習範例，很請楚地知道在建立一個功能元件之後，如何再加入每一個區塊的測試，如標題文字、輸入框、按鈕的測試等等，也可以觀察到測試根據使用情境一步步的拆解並加入測試<br>下一篇會有串接資料搭配測試，敬請期待</p>
+<p>參考資料<br><a href="https://github.com/safak/youtube2022/blob/react-testing/src/components/login/Login.jsx">github-login</a><br><a href="https://www.youtube.com/watch?v=Flo268xRpV0" target="_blank" rel="noopener">React Testing Tutorial with React Testing Library and Jest</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/11/02/rect-test-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/02/rect-test-1/" class="post-title-link" itemprop="url">React 測試</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-02 15:43:21" itemprop="dateCreated datePublished" datetime="2022-11-02T15:43:21+08:00">2022-11-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:37:02" itemprop="dateModified" datetime="2022-11-04T10:37:02+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-%E6%B8%AC%E8%A9%A6/" itemprop="url" rel="index"><span itemprop="name">React 測試</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>使用 JavaSript 要進行測試最常使用的就是使用 Jest ，另外依據使用的前端框架來搭配使用進行測試。<br>以下內文就先以一些範例來直接學習</p>
+<h2 id="testing-library"><a href="#testing-library" class="headerlink" title="testing-library"></a>testing-library</h2><ul>
+<li><p>當使創建一個 react 檔案，會預設加入的測試範例檔</p>
+<pre><code class="javascript">test(&#39;renders learn react link&#39;, () =&gt; {
+const linkElement = screen.getByText(/learn react/i);
+expect(linkElement).toBeInTheDocument();
+});</code></pre>
+</li>
+<li><p>screen  : it represent the whole document which we have rendered</p>
+</li>
+<li><p>getByText: 取得 text</p>
+<ul>
+<li><code>getByText(/learn react/i)</code></li>
+<li><code>expect(linkElement).toBeInTheDocument();</code></li>
+<li>期待變數得值，<code>toBeInTheDocument()</code></li>
+<li>檢測此項目是否存在於文件之中</li>
+<li><ul>
+<li><a href="https://github.com/testing-library/jest-dom#tobeinthedocument">toBeInTheDocument</a>：判斷一個 Element 是否存在於 DOM 中</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="撰寫測試的參考文件"><a href="#撰寫測試的參考文件" class="headerlink" title="撰寫測試的參考文件"></a>撰寫測試的參考文件</h3><p><a href="https://testing-library.com/docs/queries/byrole" target="_blank" rel="noopener">ByRole</a><br><a href="https://www.w3.org/TR/html-aria/#docconformance" target="_blank" rel="noopener"> role attribute</a></p>
+<h3 id="加入列表（list）測試"><a href="#加入列表（list）測試" class="headerlink" title="加入列表（list）測試"></a>加入列表（list）測試</h3><pre><code class="jsx">import logo from &#39;./logo.svg&#39;;
+
+import &#39;./App.css&#39;;
+
+import Login from &#39;./components/Login/Login&#39;;
 
 
-範例：Section.js \ Heading.js
-children 帶入元件的內容
+
+function App() {
 
 
 
+    return (
+
+    &lt;div className=&quot;App&quot;&gt;
+
+        &lt;header className=&quot;App-header&quot;&gt;
+
+            &lt;img src={logo} className=&quot;App-logo&quot; alt=&quot;logo&quot; /&gt;
+
+            &lt;p&gt;
+
+            Edit &lt;code&gt;src/App.js&lt;/code&gt; and save to reload.
+
+            &lt;/p&gt;
+
+            &lt;a
+
+            className=&quot;App-link&quot;
+
+            href=&quot;https://reactjs.org&quot;
+
+            target=&quot;_blank&quot;
+
+            rel=&quot;noopener noreferrer&quot;
+     .     &gt;                    
+
+                Learn React
+
+            &lt;/a&gt;
+
+            &lt;ul&gt;
+
+                &lt;li&gt;Apple&lt;/li&gt;
+
+                &lt;li&gt;Banana&lt;/li&gt;
+
+                &lt;li&gt;Kiwi&lt;/li&gt;
+
+            &lt;/ul&gt;
 
 
-將 app.js 改寫
+        &lt;/header&gt;
 
-import Heading from &amp;#39;./Heading.js&amp;#39;;
-import Section from &amp;#39;./Section.js&amp;#39;;
+    &lt;/div&gt;
+
+);
+
+}
+
+export default App;</code></pre>
+<pre><code class="javascript">test(&#39;renders 3 list items&#39;, () =&gt; {
+  render(&lt;App /&gt;);
+  const listItems = screen.getAllByRole(&quot;listitem&quot;);
+  expect(listItems.length).toEqual(3);
+});</code></pre>
+<ul>
+<li>jest <a href="https://jestjs.io/docs/expect" target="_blank" rel="noopener">expect</a></li>
+<li>需要時到官網看相關使用的API<br><code>expect(listItems.length).toBe(3);</code><br><code>expect(listItems.length).toEqual(3);</code></li>
+</ul>
+<h3 id="測試-title"><a href="#測試-title" class="headerlink" title="測試 title"></a>測試 title</h3><ul>
+<li>getByTestId：運用此方法可以直接取得在元素上設置的 data-testid</li>
+<li>getByTitle : 取得在標籤設置 title 的元素</li>
+</ul>
+<pre><code class="html">  &lt;!-- const a = 2
+  const b = 1 --&gt;
+
+     &lt;h1 data-testid=&quot;mytestid&quot;&gt;Hello&lt;/h1&gt;
+      &lt;span title=&quot;sum&quot;&gt;{a + b}&lt;/span&gt;</code></pre>
+<pre><code class="javascript">test(&#39;renders title&#39;, () =&gt; {
+
+    render(&lt;App /&gt;);
+    const title = screen.getByTestId(&quot;mytestid&quot;);
+    expect(title).toBeInTheDocument();
+
+});
+
+test(&#39;sum should be 3&#39;, () =&gt; {
+  render(&lt;App /&gt;);
+  const titleSum = screen.getByTitle(&quot;sum&quot;);
+  expect(titleSum.textContent).toBe(&quot;3&quot;);
+});</code></pre>
+<h3 id="運行測試"><a href="#運行測試" class="headerlink" title="運行測試"></a>運行測試</h3><p><code>npm run test</code></p>
+<ul>
+<li><p>透過測試所提供的錯誤提示，可以得知預期的結果以及實際運行後得到的值之間的差異</p>
+<p><img src="https://i.imgur.com/IT8leGK.png" alt=""></p>
+</li>
+</ul>
+<p>參考資料：<br><a href="https://ithelp.ithome.com.tw/articles/10281691" target="_blank" rel="noopener">[Day29] React Testing Library 的一些實用的小技巧</a><br><a href="https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/nextjs-testing-tutorial-1-ed4b27563761" target="_blank" rel="noopener">Next.js | 初探單元測試，使用 Jest + React Testing Library</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/10/18/React-context/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/18/React-context/" class="post-title-link" itemprop="url">React - 從官方文件學習 Context 的使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-18 13:58:40" itemprop="dateCreated datePublished" datetime="2022-10-18T13:58:40+08:00">2022-10-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:36:55" itemprop="dateModified" datetime="2022-11-04T10:36:55+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Passing-Data-Deeply-with-Context"><a href="#Passing-Data-Deeply-with-Context" class="headerlink" title="Passing Data Deeply with Context"></a>Passing Data Deeply with Context</h2><ul>
+<li>當裡面的子狀態，會想要往父層去找尋時，就可以使用Context</li>
+<li>學習文件：<a href="https://beta.reactjs.org/learn?fbclid=IwAR3OXxu3hHQCgDowMfBWzvRDIdPrZpS2-OCktxb_V9EnRYzNrPB_rZ7CrSI" target="_blank" rel="noopener">React Docs</a></li>
+<li>資料會和其他元件要共用<ul>
+<li>prop drilling<ol>
+<li>最基本使用</li>
+</ol>
+</li>
+<li>範例：Section.js \ Heading.js</li>
+<li>children 帶入元件的內容</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/SAaAzP0.png" alt=""></p>
+<ol start="2">
+<li>將 app.js 改寫</li>
+</ol>
+<pre><code class="jsx">import Heading from &#39;./Heading.js&#39;;
+import Section from &#39;./Section.js&#39;;
 
 export default function Page() {
   return (
-    &amp;lt;Section&amp;gt;
-      &amp;lt;Heading level={1}&amp;..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/10/18/React-context/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/I645KZq.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/09/24/code-Merge-Two-Sorted-Lists/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/I645KZq.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/Leetcode"><i class="tag post-item-tag">Leetcode</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/09/24/code-Merge-Two-Sorted-Lists/">刷題練習 - Merge Two Sorted Lists</a></h2><time class="has-text-grey" datetime="2022-09-24T06:57:04.671Z">2022-09-24</time><p class="is-flex-grow-2 mt-2">   首先要先了解 linked lists 和陣列是不一樣的！！   linked lists是一種常見的資料結構，其使用node(節點)來記錄、表示、儲存資料(data)，並利用每個node中的pointer指向下一個node 
-題目：You are given the heads of two sorted linked lists list1 and list2.
-Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.
-Return the head of the merged linked list.
+    &lt;Section&gt;
+      &lt;Heading level={1}&gt;Title&lt;/Heading&gt;
+      &lt;Section&gt;
+        &lt;Heading level={2}&gt;Heading&lt;/Heading&gt;
+        &lt;Heading level={2}&gt;Heading&lt;/Heading&gt;
+        &lt;Heading level={2}&gt;Heading&lt;/Heading&gt;
+        &lt;Section&gt;
+          &lt;Heading level={3}&gt;Sub-heading&lt;/Heading&gt;
+          &lt;Heading level={3}&gt;Sub-heading&lt;/Heading&gt;
+          &lt;Heading level={3}&gt;Sub-heading&lt;/Heading&gt;
+          &lt;Section&gt;
+            &lt;Heading level={4}&gt;Sub-sub-heading&lt;/Heading&gt;
+            &lt;Heading level={4}&gt;Sub-sub-heading&lt;/Heading&gt;
+            &lt;Heading level={4}&gt;Sub-sub-heading&lt;/Heading&gt;
+          &lt;/Section&gt;
+        &lt;/Section&gt;
+      &lt;/Section&gt;
+    &lt;/Section&gt;
+  );
+}</code></pre>
+<p><img src="https://i.imgur.com/UnXwJxu.png" alt=""></p>
+<p>以上方式，看到 在 Heading 元件傳入參數<br>改寫為，在 section 元件就來控制裡面的 Heading 是什麼 level</p>
+<pre><code class="jsx">&lt;Section level={3}&gt;  
 
-注意類似題..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/09/24/code-Merge-Two-Sorted-Lists/">Read more</a></section></article><section class="paginator is-flex is-justify-content-flex-end is-flex-wrap-wrap mt-5"><a class="extend prev" rel="prev" href="/"><i class="iconfont icon-prev has-text-grey"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="iconfont icon-next has-text-grey"></i></a></section></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><style>.search-widget .search-input {
-    border: none;
-    outline: none;
-    background: transparent;
-    color: var(--second-text-color);
+    &lt;Heading&gt;About&lt;/Heading&gt;  
+
+    &lt;Heading&gt;Photos&lt;/Heading&gt;  
+
+    &lt;Heading&gt;Videos&lt;/Heading&gt;  
+
+&lt;/Section&gt;</code></pre>
+<ol start="3">
+<li>實作<ol>
+<li><strong>Create</strong> a context.</li>
+<li><strong>Use</strong> that context，在子層<code>import { useContext } from &#39;react&#39;;</code></li>
+<li>提供 context 的值</li>
+</ol>
+</li>
+</ol>
+<h4 id="Create-a-context"><a href="#Create-a-context" class="headerlink" title="Create  a context."></a>Create  a context.</h4><pre><code class="jsx">import { createContext } from &#39;react&#39;;
+
+export const LevelContext = createContext(1);
+</code></pre>
+<h4 id="Use-that-context"><a href="#Use-that-context" class="headerlink" title="Use that context"></a><strong>Use</strong> that context</h4><ul>
+<li>是 Heading 要往外層找資料，所以要在這裡使用 useContext</li>
+<li>要往外層的地方</li>
+<li>注意 level </li>
+</ul>
+<pre><code class="jsx">import { useContext } from &#39;react&#39;;
+import { LevelContext } from &#39;./LevelContext.js&#39;;
+
+export default function Heading({ children }) {
+  const level = useContext(LevelContext);
+  switch (level) {
+    case 1:
+      return &lt;h1&gt;{children}&lt;/h1&gt;;
+    case 2:
+      return &lt;h2&gt;{children}&lt;/h2&gt;;
+    case 3:
+      return &lt;h3&gt;{children}&lt;/h3&gt;;
+    case 4:
+      return &lt;h4&gt;{children}&lt;/h4&gt;;
+    case 5:
+      return &lt;h5&gt;{children}&lt;/h5&gt;;
+    case 6:
+      return &lt;h6&gt;{children}&lt;/h6&gt;;
+    default:
+      throw Error(&#39;Unknown level: &#39; + level);
+  }
+}</code></pre>
+<h4 id="Provide-the-context"><a href="#Provide-the-context" class="headerlink" title="Provide the context"></a>Provide the context</h4><ul>
+<li>建立 context 的 provider</li>
+<li>提供此資料的提供者、元件</li>
+<li>這個 provider 是放在最外層，所以在此範例應該放在 section 去改寫</li>
+</ul>
+<h5 id="原本的-section-js"><a href="#原本的-section-js" class="headerlink" title="原本的 section.js"></a>原本的 section.js</h5><pre><code class="jsx">export default function Section({ children }) {
+  return (
+    &lt;section className=&quot;section&quot;&gt;
+      {children}
+    &lt;/section&gt;
+  );
 }
-.search-widget .search-content {
-    position: absolute;
-    left: 0;
-    top: calc(100% - 3px);
-    z-index: 2;
+</code></pre>
+<h5 id="改寫section-js"><a href="#改寫section-js" class="headerlink" title="改寫section.js"></a>改寫section.js</h5><ul>
+<li>level 從這邊拿</li>
+</ul>
+<pre><code class="jsx">import { LevelContext } from &#39;./LevelContext.js&#39;;  
 
-    width: 100%;
-    height: 0;
-    max-height: 550px;
 
-    overflow: auto;
-    box-sizing: border-box;
+export default function Section({ level, children }) {  
 
-    background: var(--top-bar-bg-color);
-    backdrop-filter: blur(var(--backdropFilter));
-    -webkit-backdrop-filter: blur(var(--backdropFilter));
+return (  
 
-    border-bottom-left-radius: var(--borderRadius);
-    border-bottom-right-radius: var(--borderRadius);
-    box-shadow: 0 12px 15px rgba(0, 0, 0, 0.08);
-}
+&lt;section className=&quot;section&quot;&gt;  
 
-.search-widget .search-content a:hover h5 {
-    color: #3273dc!important;
-}
-</style><main class="aside-card-container search-widget is-relative"><label for="searchInput"><div class="is-flex px-4" id="searchButton"><i class="iconfont icon--search1 mr-1"></i><input class="search-input is-flex-grow-1" id="searchInput" placeholder="Search everything.."></div></label><section class="search-content content" id="searchContent"></section></main><script>var searchDatabase = []
-var searchInputEl = document.getElementById('searchInput')
-var searchButtonEl = document.getElementById('searchButton')
-var searchResultEl = document.getElementById('searchContent')
+    &lt;LevelContext.Provider value={level}&gt;  
 
-searchInputEl.oninput = function (evt) {
-    var searchValue = evt.srcElement.value
-    var haveSearchValue = Boolean(searchValue.trim())
-    if (!haveSearchValue) {
-        searchResultEl.style.height = 0
-        searchResultEl.innerHTML = null
-        return
+        {children}  
+
+    &lt;/LevelContext.Provider&gt;  
+
+&lt;/section&gt;  
+
+);  
+
+}</code></pre>
+<p><img src="https://i.imgur.com/pI528iX.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/09/24/code-Merge-Two-Sorted-Lists/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/09/24/code-Merge-Two-Sorted-Lists/" class="post-title-link" itemprop="url">刷題練習 - Merge Two Sorted Lists</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-09-24 14:57:04 / Modified: 20:13:07" itemprop="dateCreated datePublished" datetime="2022-09-24T14:57:04+08:00">2022-09-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index"><span itemprop="name">Leetcode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>   首先要先了解 linked lists 和陣列是不一樣的！！<br>   linked lists是一種常見的資料結構，其使用node(節點)來記錄、表示、儲存資料(data)，並利用每個node中的pointer指向下一個node </p>
+<h2 id="題目："><a href="#題目：" class="headerlink" title="題目："></a>題目：</h2><p>You are given the heads of two sorted linked lists list1 and list2.</p>
+<p>Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.</p>
+<p>Return the head of the merged linked list.</p>
+<p><img src="https://i.imgur.com/I645KZq.png" alt=""></p>
+<p>注意類似題目要設立一個 dummy 節點</p>
+<ul>
+<li>如何訪問list 中某個節點的 值，要從第一個節點開始，透過 next 依序訪問下一個節點重複操作直到抵達目標節點並讀取 value</li>
+<li>訪問第一個節點為 list.val  ; 訪問第二個節點 list.next.val ; 訪問第三個節點list.next.next.val </li>
+<li>要將兩個 list 合併的方法，每次比較兩個 而最小的數挑出，放入新的 list</li>
+</ul>
+<pre><code class="JavaScript">/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} list1
+ * @param {ListNode} list2
+ * @return {ListNode}
+ */
+
+  var mergeTwoLists = function (l1, l2) {
+    //current
+    const dummy = new ListNode(-Infinity)
+    //point dummy node
+    let prev = dummy;
+    while (l1 &amp;&amp; l2) {
+      if (l1.val &lt;= l2.val) {
+        prev.next = l1;
+        //移動 prev list
+        prev = l1
+        //鏈錶指針 l1 就往後移動
+        l1 = l1.next
+      } else {
+        prev.next = l2;
+        prev = l2
+        l2 = l2.next
+      }
     }
+    //如果 l1 是 null ,就是 l2
+    if (!l1) prev.next = l2;
+    if (!l2) prev.next = l1;
+    return dummy.next
+  };
 
-    var searchResults = searching(searchValue)
+  mergeTwoLists([1, 100], [3, 4, 6, 8])</code></pre>
 
-    if (searchResults.length > 0) {
-        renderSearchResults(searchResults)
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-}
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
-function renderSearchResults(results) {
-    searchResultEl.innerHTML = null
-    var fragment = document.createDocumentFragment()
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
-    results.forEach(function (item) {
-        var link = document.createElement('a')
-        var title = document.createElement('h5')
-        var content = document.createElement('p')
+  <aside class="sidebar">
+    <div class="sidebar-inner">
 
-        title.className = 'mb-1'
-        title.innerText = item.title
-        content.innerText = item.content
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
 
-        link.href = item.link
-        link.appendChild(title)
-        link.appendChild(content)
-        link.className = 'p-4 is-block'
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
 
-        fragment.appendChild(link)
-    })
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
 
-    searchResultEl.appendChild(fragment)
-    searchResultEl.style.height = 'auto'
-}
 
-function searching(inputText) {
-    var inputTexts = inputText.split(' ')
-    var searchResults = []
-    inputTexts.forEach(function (searchKey) {
-        var haveSearchValue = Boolean(searchKey.trim())
-        if (!haveSearchValue) return
 
-        var key = searchKey.toLowerCase()
+      </div>
 
-        for (var entry of searchDatabase) {
-            var title = entry.getElementsByTagName('title')[0].textContent
-            var link = entry.getElementsByTagName('link')[0].getAttribute('href')
-            var contentWithTags = entry.getElementsByTagName('content')[0].textContent
-            var rawContent = contentWithTags.trim().replace(/<[^>]+>/g, '').toLowerCase()
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
 
-            var LENGTH = 80
-            var finalContent = ''
-            var contentLength = rawContent.length
-            var searchResultIdx = rawContent.indexOf(key)
 
-            var startIdx = searchResultIdx - 20,
-                endIdx = startIdx + LENGTH
+      </div>
+    </main>
 
-            if (startIdx < 0) {
-                startIdx = 0
-                endIdx = 100
-            }
+    <footer class="footer">
+      <div class="footer-inner">
+        
 
-            endIdx > contentLength && (endIdx = contentLength)
+        
 
-            finalContent = rawContent.substring(startIdx, endIdx)
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
 
-            if (title.indexOf(key) > -1 || searchResultIdx > -1) {
-                searchResults.push({
-                    link: link,
-                    title: title,
-                    content: finalContent
-                })
-            }
-        }
-    })
-    return searchResults
-}
+        
 
-searchButtonEl.onclick = function () {
-    if (searchDatabase.length > 0) return;
 
-    fetch(window.location.href + '/search.xml').then(res => res.text()).then(res => {
-        var domparser = new DOMParser
-        var doc = domparser.parseFromString(res, 'application/xml')
-        searchDatabase = doc.getElementsByTagName('search')[0].children
-    })
-}</script><main class="aside-card-container profile-widget"><!-- todo: 使用取色工具动态阴影--><section class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center"><section class="is-flex is-justify-content-center avatar is-clipped skeleton"><!-- debug images "https://api.ixiaowai.cn/gqapi/gqapi.php"--><img class="js-img-fadeIn" src="/images/eva-round.png" alt="user avatar"></section><h3 class="user-name">Eva</h3><blockquote class="has-text-centered is-relative"><span style="margin-bottom: 5px;">Front-end Engineer email:as45986@gmail.com</span></blockquote></section><section class="sns-container is-flex is-justify-content-center is-align-items-center"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section></main><main class="aside-card-container categories-widget category-page"><h3>Categories</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Ajax-%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/">Ajax 實作練習</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSS%E7%B7%B4%E7%BF%92/">CSS練習</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E2E/">E2E</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/">JS實作練習</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Leetcode/">Leetcode</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-%E6%B8%AC%E8%A9%A6/">React 測試</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TypeScript/">TypeScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">3</span></li></ul></section></main><main class="aside-card-container archives-widget"><h3>Archives</h3><section><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li></ul></section></main><main class="aside-card-container tag-widget"><h3>Tags</h3><section><a href="/tags/Ajax"><span class="tag post-item-tag" style="margin-bottom: 5px;">Ajax</span></a><a href="/tags/API"><span class="tag post-item-tag" style="margin-bottom: 5px;">API</span></a><a href="/tags/udemy"><span class="tag post-item-tag" style="margin-bottom: 5px;">udemy</span></a><a href="/tags/CSS"><span class="tag post-item-tag" style="margin-bottom: 5px;">CSS</span></a><a href="/tags/transform"><span class="tag post-item-tag" style="margin-bottom: 5px;">transform</span></a><a href="/tags/JavaScript"><span class="tag post-item-tag" style="margin-bottom: 5px;">JavaScript</span></a><a href="/tags/TypeScript"><span class="tag post-item-tag" style="margin-bottom: 5px;">TypeScript</span></a><a href="/tags/Nuxt"><span class="tag post-item-tag" style="margin-bottom: 5px;">Nuxt</span></a><a href="/tags/Command%20Line"><span class="tag post-item-tag" style="margin-bottom: 5px;">Command Line</span></a><a href="/tags/Algorithm"><span class="tag post-item-tag" style="margin-bottom: 5px;">Algorithm</span></a><a href="/tags/React"><span class="tag post-item-tag" style="margin-bottom: 5px;">React</span></a><a href="/tags/Leetcode"><span class="tag post-item-tag" style="margin-bottom: 5px;">Leetcode</span></a><a href="/tags/Vue"><span class="tag post-item-tag" style="margin-bottom: 5px;">Vue</span></a><a href="/tags/slot"><span class="tag post-item-tag" style="margin-bottom: 5px;">slot</span></a><a href="/tags/v-for"><span class="tag post-item-tag" style="margin-bottom: 5px;">v-for</span></a><a href="/tags/%E5%88%87%E7%89%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">切版</span></a><a href="/tags/test"><span class="tag post-item-tag" style="margin-bottom: 5px;">test</span></a><a href="/tags/cypress"><span class="tag post-item-tag" style="margin-bottom: 5px;">cypress</span></a><a href="/tags/flex"><span class="tag post-item-tag" style="margin-bottom: 5px;">flex</span></a><a href="/tags/footer"><span class="tag post-item-tag" style="margin-bottom: 5px;">footer</span></a><a href="/tags/float"><span class="tag post-item-tag" style="margin-bottom: 5px;">float</span></a><a href="/tags/animation"><span class="tag post-item-tag" style="margin-bottom: 5px;">animation</span></a><a href="/tags/icon"><span class="tag post-item-tag" style="margin-bottom: 5px;">icon</span></a><a href="/tags/box-sizing"><span class="tag post-item-tag" style="margin-bottom: 5px;">box-sizing</span></a><a href="/tags/JS"><span class="tag post-item-tag" style="margin-bottom: 5px;">JS</span></a><a href="/tags/Git"><span class="tag post-item-tag" style="margin-bottom: 5px;">Git</span></a><a href="/tags/HTML"><span class="tag post-item-tag" style="margin-bottom: 5px;">HTML</span></a><a href="/tags/switch"><span class="tag post-item-tag" style="margin-bottom: 5px;">switch</span></a><a href="/tags/%E8%BF%B4%E5%9C%88"><span class="tag post-item-tag" style="margin-bottom: 5px;">迴圈</span></a><a href="/tags/drag&amp;drop"><span class="tag post-item-tag" style="margin-bottom: 5px;">drag&amp;drop</span></a><a href="/tags/Array"><span class="tag post-item-tag" style="margin-bottom: 5px;">Array</span></a><a href="/tags/Object"><span class="tag post-item-tag" style="margin-bottom: 5px;">Object</span></a><a href="/tags/DOM%22"><span class="tag post-item-tag" style="margin-bottom: 5px;">DOM&quot;</span></a><a href="/tags/jQuery"><span class="tag post-item-tag" style="margin-bottom: 5px;">jQuery</span></a><a href="/tags/setInterval"><span class="tag post-item-tag" style="margin-bottom: 5px;">setInterval</span></a><a href="/tags/ajax"><span class="tag post-item-tag" style="margin-bottom: 5px;">ajax</span></a><a href="/tags/input"><span class="tag post-item-tag" style="margin-bottom: 5px;">input</span></a><a href="/tags/local%20storage"><span class="tag post-item-tag" style="margin-bottom: 5px;">local storage</span></a><a href="/tags/forEach"><span class="tag post-item-tag" style="margin-bottom: 5px;">forEach</span></a><a href="/tags/append"><span class="tag post-item-tag" style="margin-bottom: 5px;">append</span></a><a href="/tags/jQuery%20"><span class="tag post-item-tag" style="margin-bottom: 5px;">jQuery </span></a><a href="/tags/random"><span class="tag post-item-tag" style="margin-bottom: 5px;">random</span></a><a href="/tags/parseInt"><span class="tag post-item-tag" style="margin-bottom: 5px;">parseInt</span></a><a href="/tags/ajax%20"><span class="tag post-item-tag" style="margin-bottom: 5px;">ajax </span></a><a href="/tags/setTimeout"><span class="tag post-item-tag" style="margin-bottom: 5px;">setTimeout</span></a><a href="/tags/toggleClass"><span class="tag post-item-tag" style="margin-bottom: 5px;">toggleClass</span></a><a href="/tags/variable"><span class="tag post-item-tag" style="margin-bottom: 5px;">variable</span></a><a href="/tags/webpack"><span class="tag post-item-tag" style="margin-bottom: 5px;">webpack</span></a><a href="/tags/LocalStorage"><span class="tag post-item-tag" style="margin-bottom: 5px;">LocalStorage</span></a><a href="/tags/grid"><span class="tag post-item-tag" style="margin-bottom: 5px;">grid</span></a><a href="/tags/%E5%A4%9A%E9%87%8D%E8%83%8C%E6%99%AF"><span class="tag post-item-tag" style="margin-bottom: 5px;">多重背景</span></a><a href="/tags/opacity"><span class="tag post-item-tag" style="margin-bottom: 5px;">opacity</span></a><a href="/tags/GitHub"><span class="tag post-item-tag" style="margin-bottom: 5px;">GitHub</span></a><a href="/tags/SCSS"><span class="tag post-item-tag" style="margin-bottom: 5px;">SCSS</span></a><a href="/tags/websocket"><span class="tag post-item-tag" style="margin-bottom: 5px;">websocket</span></a><a href="/tags/Vuex"><span class="tag post-item-tag" style="margin-bottom: 5px;">Vuex</span></a></section></main></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2023</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></body></html>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,114 +1,457 @@
-<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Eva's blog</title><meta name="description" content="Front-end Engineer email:as45986@gmail.com"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
-<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
-</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>Categories · React</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/FROBvmD.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/12/01/React-Middleware/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/FROBvmD.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/12/01/React-Middleware/">Redux Toolkit - RTK Query中間層非同步Fetch API的處理</a></h2><time class="has-text-grey" datetime="2022-12-01T04:55:30.000Z">2022-12-01</time><p class="is-flex-grow-2 mt-2">當發起 dispatch 到 UI 更新之間做什麼事情
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-希望 dispath 有能力可以再去做其他事情（所以會在過程中去做一些邏輯）
-
-希望過程中可以再做些事情（UI 從 dispatch 到真正渲染之間）
-Middleware
-
-實際上是一個 function
-
-next 是 dispatch 的意思，next 所代表的是傳入 action ，會調用下一個 dispatch 來執行所傳入的這個 action 
-
-
-以官網範例：
-
-他是 3 個函式包在一起
-
-const logger = store =&amp;gt; nextDispatch =&amp;gt; action =&amp;gt; {  
-    console.log(&amp;#39;dispatching&amp;#39;, action)  
-    let resul..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/12/01/React-Middleware/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/41RnyWT.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/12/01/ReduxToolkit/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/41RnyWT.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/12/01/ReduxToolkit/">Redux Toolkit</a></h2><time class="has-text-grey" datetime="2022-12-01T04:03:04.000Z">2022-12-01</time><p class="is-flex-grow-2 mt-2">安裝：官網安裝
-此範例來自 Bruce 前端課程，使用 todoList 來練習
-
-從官網學習基礎設定
+<link rel="stylesheet" href="/css/main.css">
 
 
-建立 store 同時，撰寫 reducer(會自動產生出對應 reducer 的 action)
-action 如同 dispatch 所送出的包裹
-reducer 會去拆解包裹，以了解用戶想做的事應用於 todo-list
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Let&#39;s Code">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/categories/React/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Eva Chan">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/Eva813/Eva813.github.io.git/categories/React/">
 
 
-store 中會存有幾條備忘錄，幾條 todo視像要做
-建立資料夾 src / slice ，此 slice 中包含 reducer, actionTS-設立tool-kit建立 store 的方式，要先建立 reducer
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
 
-src / slice / todo.ts
-建立 slice，並注意要傳入三個參數
-name : slice 的名字
-initialState 初始..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/12/01/ReduxToolkit/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/VykOAkm.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/11/22/react-component/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/VykOAkm.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/11/22/react-component/">React - 建立元件</a></h2><time class="has-text-grey" datetime="2022-11-22T02:36:50.000Z">2022-11-22</time><p class="is-flex-grow-2 mt-2">
-前段時間練習了一些 React 的基礎，對於 JSX 以及一些 hook 的用法比較有概念，所以就以 Bruce 的 React 課程實作再來練習，樣式部分以 Tailwind 為主此外也搭配 TS 來撰寫。
-1. Header
-製作 IGHeader 元件，因為到不同頁面都會有 header 存在，所以可以將它放在外面的共用元件。
-
-const IGHeader: React.FC = () =&amp;gt; {
-  const go = useNavigate()
-  return (
-    &amp;lt;header className=&amp;quot;sticky top-0 border-b-[1px] bg-white border-gray-300 &amp;quot;&amp;gt;
-      &amp;lt;div cla..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/11/22/react-component/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/SAaAzP0.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/10/18/React-context/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/SAaAzP0.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/10/18/React-context/">React - 從官方文件學習 Context 的使用</a></h2><time class="has-text-grey" datetime="2022-10-18T05:58:40.000Z">2022-10-18</time><p class="is-flex-grow-2 mt-2">Passing Data Deeply with Context
-當裡面的子狀態，會想要往父層去找尋時，就可以使用Context
-學習文件：React Docs
-資料會和其他元件要共用
-prop drilling
-最基本使用
-
-
-範例：Section.js \ Heading.js
-children 帶入元件的內容
+  <title>Category: React | Let's Code</title>
+  
 
 
 
 
 
-將 app.js 改寫
 
-import Heading from &amp;#39;./Heading.js&amp;#39;;
-import Section from &amp;#39;./Section.js&amp;#39;;
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
-export default function Page() {
-  return (
-    &amp;lt;Section&amp;gt;
-      &amp;lt;Heading level={1}&amp;..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/10/18/React-context/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/InPScmW.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/09/04/react-useState/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/InPScmW.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/09/04/react-useState/">React- 元件 / props</a></h2><time class="has-text-grey" datetime="2022-09-04T07:42:36.000Z">2022-09-04</time><p class="is-flex-grow-2 mt-2">
-之前曾快速的學習了React 資料的建立與傳遞方式，並寫了篇文章，最近因為六角讀書會活動也再次更深入一些的學習 React ，並將一些 React Hook 反覆使用練習。因為目前工作主要還是以 Vue 進行開發，所以有時候會提一下兩者框架使用的相同或不同之處。 
-component 元件化在 Vue 的撰寫中，也是會嘗試將頁面中的不同區塊做拆分。與 Vue 一樣，元件的的命名會以 大寫 為開頭。透過減少重複為用意來建立元件化。
-codepen-Component
-多個資料，傳遞給單一元件
-建立兩個元件 component1 , component2
-建立共通元件 Board ，此元件可以各別放入兩個元件要傳入的資料(props)
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-codepen-共用元件
-共同資料，傳遞給不同元件codepen-共用資..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/09/04/react-useState/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/InPScmW.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2022/05/08/react-1/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/InPScmW.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/React"><i class="tag post-item-tag">React</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2022/05/08/react-1/">React- props / state 練習</a></h2><time class="has-text-grey" datetime="2022-05-08T07:42:36.000Z">2022-05-08</time><p class="is-flex-grow-2 mt-2">
-props, state 的應用
-props 傳入參數的部分
-state 讓組建本身有狀態
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
-製作 計數器
-props
-製作，讓計數器的數字變化，可以同步變化到 button 上的數字
-在父層 App.vue 做一個內容的傳送
-在 子元件，要自訂一個變數，作為接收父層從來的資料
+<link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Code</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
 
-import &amp;quot;./styles.css&amp;quot;;
 
-type BtnProps = {
-  btnNum: number;
-};
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
 
-const Btn: React.FC&amp;lt;BtnProps&amp;gt; = ({ btnNum }) =&amp;gt; {
-  return (
-    &amp;lt;button&amp;gt;
-      add 1&amp;lt;span&amp;gt;目前總數：{btnNum}&amp;lt;/span&amp;gt;
- ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2022/05/08/react-1/">Read more</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container categories-widget category-page"><h3>Categories</h3><section><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Ajax-%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/">Ajax 實作練習</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSS%E7%B7%B4%E7%BF%92/">CSS練習</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E2E/">E2E</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/">JS實作練習</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Leetcode/">Leetcode</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-%E6%B8%AC%E8%A9%A6/">React 測試</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TypeScript/">TypeScript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">3</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
+  </li>
+        <li class="menu-item menu-item-archives">
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2023</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
+  </li>
+  </ul>
+</nav>
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></body></html>
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content category">
+            
+
+  
+  
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h2 class="collection-header">React
+          <small>Category</small>
+        </h2>
+      </div>
+
+      
+    <div class="collection-year">
+      <span class="collection-header">2022</span>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-12-01T12:55:30+08:00"
+              content="2022-12-01">
+          12-01
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2022/12/01/React-Middleware/" itemprop="url">
+            <span itemprop="name">Redux Toolkit - RTK Query中間層非同步Fetch API的處理</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-12-01T12:03:04+08:00"
+              content="2022-12-01">
+          12-01
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2022/12/01/ReduxToolkit/" itemprop="url">
+            <span itemprop="name">Redux Toolkit</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-11-22T10:36:50+08:00"
+              content="2022-11-22">
+          11-22
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2022/11/22/react-component/" itemprop="url">
+            <span itemprop="name">React - 建立元件</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-10-18T13:58:40+08:00"
+              content="2022-10-18">
+          10-18
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2022/10/18/React-context/" itemprop="url">
+            <span itemprop="name">React - 從官方文件學習 Context 的使用</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-09-04T15:42:36+08:00"
+              content="2022-09-04">
+          09-04
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2022/09/04/react-useState/" itemprop="url">
+            <span itemprop="name">React- 元件 / props</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-05-08T15:42:36+08:00"
+              content="2022-05-08">
+          05-08
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2022/05/08/react-1/" itemprop="url">
+            <span itemprop="name">React- props / state 練習</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+    </div>
+  </div>
+  
+  
+  
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

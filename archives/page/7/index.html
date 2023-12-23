@@ -1,234 +1,543 @@
-<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Eva's blog</title><meta name="description" content="Front-end Engineer email:as45986@gmail.com"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
-<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
-</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Eva's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>Archives · All</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/3LBdMiU.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/15/js-musicPlayer/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/3LBdMiU.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/append"><i class="tag post-item-tag">append</i></a><a href="/tags/jQuery%20"><i class="tag post-item-tag">jQuery </i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/15/js-musicPlayer/">JS實作- musicPlayer</a></h2><time class="has-text-grey" datetime="2021-01-15T13:51:43.000Z">2021-01-15</time><p class="is-flex-grow-2 mt-2">觀察須製作的功能成品
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-播放器API的樣式
-
-&amp;lt;audio&amp;gt;: The Embed Audio element
-
-播放時，左方的圓型圖示會旋轉。
-
-
-先於css檔案製作符合動畫的class
-在js時，依照符合的情況加入該class
-
-
-
-播放時，上方會跳出播放歌曲的名稱。
+<link rel="stylesheet" href="/css/main.css">
 
 
-先於css檔案製作符合動畫的class，設定opacity1或0，translateY位置的移動
-在js時，依照符合的情況加入該class
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Let&#39;s Code">
+<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/archives/page/7/index.html">
+<meta property="og:site_name" content="Let&#39;s Code">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Eva Chan">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://github.com/Eva813/Eva813.github.io.git/archives/page/7/">
 
 
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
 
-左右按鍵可以更換曲目，同時圖片會更換
-
-
-設定陣列，使歌曲與圖片相符
-並讓前後的跳轉鍵，依照順序或條件來變化
-
-
-
-html部分跳轉按鍵
-播放鍵、前/後跳轉的按鈕 
-
-&amp;lt;div class=&amp;quot;nav&amp;quot;&amp;gt;
-        &amp;lt;button id=..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/15/js-musicPlayer/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/Vhxlk8D.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/13/form-validator/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/Vhxlk8D.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/13/form-validator/">JS實作- 表單驗證</a></h2><time class="has-text-grey" datetime="2021-01-13T01:17:11.000Z">2021-01-13</time><p class="is-flex-grow-2 mt-2">
-觀察功能
-製作一個會員申請的表單
-帳號
-email
-密碼
-
-
-輸入框的顏色變化
-判斷條件的設置
-
-任務拆解抓出要互動的元素const form = document.querySelector(&amp;#39;#form&amp;#39;);
-const username = document.querySelector(&amp;#39;#username&amp;#39;);
-const email = document.querySelector(&amp;#39;#email&amp;#39;);
-const password = document.querySelector(&amp;#39;#password&amp;#39;);
-const password2 = document.querySelector(&amp;#39;#password2&amp;#39;)..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/13/form-validator/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/qCvmh4b.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/10/localstorage/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/qCvmh4b.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/LocalStorage"><i class="tag post-item-tag">LocalStorage</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/10/localstorage/">認識什麼是LocalStorage</a></h2><time class="has-text-grey" datetime="2021-01-10T02:36:26.000Z">2021-01-10</time><p class="is-flex-grow-2 mt-2">
-認識 Web Storage：HTML5 的 Web Storage 是一種可讓網頁將資料儲存於本地端的技術，其作用如同 cookie。
-Cookie 儲存空間很小，最多僅能儲存4KB的資料。HTML5 Web Storage 的儲存空間則大得多(儲存資料容量至少5MB以上)。
-
-localStorage 與  sessionStorageWeb Storage 提供兩個物件可以將資料存在 client 端，一種是 localStorage，另一種是 sessionStorage
-
-localStorage:可以跨瀏覽器分頁（tab）存取，且資料存取沒有期限，除非手動從本地端清除。
-sessionStorage:生命週期較短，每次分頁或瀏覽器關掉後就會清除。
-
-基本操作：
-
-設置資料：localStora..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/10/localstorage/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/VSjpRSa.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/10/js-expenseTracker/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/VSjpRSa.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/local%20storage"><i class="tag post-item-tag">local storage</i></a><a href="/tags/forEach"><i class="tag post-item-tag">forEach</i></a><a href="/tags/append"><i class="tag post-item-tag">append</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/10/js-expenseTracker/">JS實作- expense tracker 記帳簿</a></h2><time class="has-text-grey" datetime="2021-01-10T02:08:01.000Z">2021-01-10</time><p class="is-flex-grow-2 mt-2">完成後的成品
-觀察須製作的功能
-重新整理網頁後，保有過去執行的狀態：localstorage
-實作內有使用:
-localstorage:setItem,getItem
-jason.stringfy/jason.parse
+  <title>Archive | Let's Code</title>
+  
 
 
 
 
 
 
-在new transation輸入資料後，會將資料傳入history中
-add transation之後，頁面不會刷新(spa)(e.preventdefault)
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Code" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Code</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-摸到history中的項目，會出現刪除符號，點擊後刪除
 
 
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
 
-輸入的金額，會顯示於上方income、expense，並且計算總額
-有正負值
-計算收入、花費
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
+  </li>
+        <li class="menu-item menu-item-archives">
 
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
-
-呈現完整語法$(document).ready(function () {
-  //預設值的設置，取得存在本地的資料或是空陣列
-  var tran..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/10/js-expenseTracker/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/cu80NjP.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/01/10/js-exchangeRate/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/cu80NjP.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/ajax"><i class="tag post-item-tag">ajax</i></a><a href="/tags/input"><i class="tag post-item-tag">input</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/01/10/js-exchangeRate/">JS實作- exchangeRate匯率轉換器</a></h2><time class="has-text-grey" datetime="2021-01-10T01:50:30.000Z">2021-01-10</time><p class="is-flex-grow-2 mt-2">實作需求分析
-
-抓取api提供的匯率資料：使用jQuery,ajax
-選擇不同幣別，進行匯率換算
-swap按鈕，使幣別交換
-
-完成後的成品jQuery.ajax 使用
-參考資料：jQuery.ajax()
-
-
-$.ajax({
-  method: &amp;quot;get&amp;quot;,
-  url: &amp;quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&amp;quot;,
-
-})
-  .done(function( some_data ) {
-    console.log(data);
-    //成功抓到值的話，就會印出抓取到的資料
-  }).fail(function(){
-
-  })
-
-
-應用於exchangeR..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/01/10/js-exchangeRate/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/NdO4OR5.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/28/js-browser/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/NdO4OR5.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/DOM%22"><i class="tag post-item-tag">DOM&quot;</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/28/js-browser/">JS-browser</a></h2><time class="has-text-grey" datetime="2020-12-28T10:47:58.000Z">2020-12-28</time><p class="is-flex-grow-2 mt-2">
-1. DOM 與樹狀結構
-
-DOM: document:網頁內部
-KURO 老師:DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。
+  </li>
+  </ul>
+</nav>
 
 
 
 
-Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西 
+</div>
+    </header>
 
-API (Application Programming Interface)
-應用程式 編程 介面
-document 物件 API 文件
-getElementsByTagName : 抓取html中某tag的元素&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
-&amp;lt;body&amp;gt;
-&amp;lt;div&amp;gt;
-  hello~
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
-&amp;lt;/div&amp;gt;
-&amp;lt;div&amp;gt;
-..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/28/js-browser/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/44kqCRM.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/27/js-array/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/44kqCRM.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/Array"><i class="tag post-item-tag">Array</i></a><a href="/tags/Object"><i class="tag post-item-tag">Object</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/27/js-array/">JS基本功- 物件與陣列</a></h2><time class="has-text-grey" datetime="2020-12-27T13:17:13.000Z">2020-12-27</time><p class="is-flex-grow-2 mt-2">
-程式柴
-Function、array都屬於物件
 
-物件的例子var person = {
-      name: [&amp;#39;Bob&amp;#39;, &amp;#39;Smith&amp;#39;],
-      age: 32,
-      gender: &amp;#39;male&amp;#39;,
-      interest: [&amp;#39;music&amp;#39;, &amp;#39;movie&amp;#39;],
-      greeting: function () {
-        console.log(&amp;#39;hi I\&amp;#39;m&amp;#39; + this.name[0] + &amp;#39;.&amp;#39;);
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content archive">
+            
+
+  
+  
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        
+        <span class="collection-header">Good! 87 posts in total. Keep on posting.</span>
+      </div>
+
+      
+    <div class="collection-year">
+      <span class="collection-header">2021</span>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-01-15T21:51:43+08:00"
+              content="2021-01-15">
+          01-15
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2021/01/15/js-musicPlayer/" itemprop="url">
+            <span itemprop="name">JS實作- musicPlayer</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-01-13T09:17:11+08:00"
+              content="2021-01-13">
+          01-13
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2021/01/13/form-validator/" itemprop="url">
+            <span itemprop="name">JS實作- 表單驗證</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-01-10T10:36:26+08:00"
+              content="2021-01-10">
+          01-10
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2021/01/10/localstorage/" itemprop="url">
+            <span itemprop="name">認識什麼是LocalStorage</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-01-10T10:08:01+08:00"
+              content="2021-01-10">
+          01-10
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2021/01/10/js-expenseTracker/" itemprop="url">
+            <span itemprop="name">JS實作- expense tracker 記帳簿</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-01-10T09:50:30+08:00"
+              content="2021-01-10">
+          01-10
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2021/01/10/js-exchangeRate/" itemprop="url">
+            <span itemprop="name">JS實作- exchangeRate匯率轉換器</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+    <div class="collection-year">
+      <span class="collection-header">2020</span>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-12-28T18:47:58+08:00"
+              content="2020-12-28">
+          12-28
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2020/12/28/js-browser/" itemprop="url">
+            <span itemprop="name">JS-browser</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-12-27T21:17:13+08:00"
+              content="2020-12-27">
+          12-27
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2020/12/27/js-array/" itemprop="url">
+            <span itemprop="name">JS基本功- 物件與陣列</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-12-27T18:55:19+08:00"
+              content="2020-12-27">
+          12-27
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2020/12/27/js-function/" itemprop="url">
+            <span itemprop="name">JS基本功- function函式</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-12-26T18:42:57+08:00"
+              content="2020-12-26">
+          12-26
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2020/12/26/js-Control-Flow/" itemprop="url">
+            <span itemprop="name">JS基本功- 控制流程 Control Flow</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-12-26T18:35:07+08:00"
+              content="2020-12-26">
+          12-26
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2020/12/26/js-operator/" itemprop="url">
+            <span itemprop="name">JS基本功- 運算元與運算子</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+
+    </div>
+  </div>
+  
+  
+  
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/archives/page/6/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/archives/page/8/">8</a><a class="page-number" href="/archives/page/9/">9</a><a class="extend next" rel="next" href="/archives/page/8/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
       }
     }
-物件的創建var x={}
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
-有一隻狗,其名字、年齡，函式
-var dog = {
-    name: ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/27/js-array/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/qRxqi5e.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/27/js-function/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/qRxqi5e.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/parseInt"><i class="tag post-item-tag">parseInt</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/27/js-function/">JS基本功- function函式</a></h2><time class="has-text-grey" datetime="2020-12-27T10:55:19.000Z">2020-12-27</time><p class="is-flex-grow-2 mt-2">
-使用函式可以讓我們執行效率提升，不用重複撰寫，只需幾行語法便可以達到快速的運算、或是功能的執行。以下範例為數羊計數，透過函式以及迴圈，以幫助設定計數的起始以及終點，並快速的執行範圍內的計數。//為什麼我們需要function
-    //DRY -&amp;gt; Don&amp;#39;t repeat yourself
-    function echoSheep(index) {
-      console.log(&amp;#39;第&amp;#39; + i + &amp;#39;隻綿羊&amp;#39;)
-    }
-    for (var i = 1; i &amp;lt; 11; i++) {
-      echoSheep(i)
-    }
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
-與過去所學結合
+  <aside class="sidebar">
+    <div class="sidebar-inner">
 
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
 
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
 
-也可以return後面接物件 
-回傳結果為20
-
-
-
-簡單練習題
-創建空陣列..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/27/js-function/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/kpTOWx4.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/26/js-Control-Flow/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/kpTOWx4.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/switch"><i class="tag post-item-tag">switch</i></a><a href="/tags/%E8%BF%B4%E5%9C%88"><i class="tag post-item-tag">迴圈</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/26/js-Control-Flow/">JS基本功- 控制流程 Control Flow</a></h2><time class="has-text-grey" datetime="2020-12-26T10:42:57.000Z">2020-12-26</time><p class="is-flex-grow-2 mt-2">簡易控制流程的撰寫var str = &amp;#39;只被當一科&amp;#39;;
-    if (str === &amp;#39;all pass&amp;#39;) {
-      console.log(&amp;#39;帶你去歐洲玩&amp;#39;);
-    } else if (str === &amp;#39;只被當一科&amp;#39;) {
-      console.log(&amp;#39;帶你去宜蘭玩&amp;#39;);
-    } else {
-      console.log(&amp;#39;禁足&amp;#39;);
-    }
-    //帶你去宜蘭玩
-
-使用switch來撰寫(太多如果的話可以改用switch)
-使用break，是用來跳出swich迴圈（換句話說，沒有寫break的話會使程式一直往下跑）
-//用switch 改寫 if else
-  va..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/26/js-Control-Flow/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="https://i.imgur.com/42eMxRa.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2020/12/26/js-operator/"><img class="post-cover-img js-img-fadeIn" src="https://i.imgur.com/42eMxRa.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><header><a href="/tags/JS"><i class="tag post-item-tag">JS</i></a><a href="/tags/parseInt"><i class="tag post-item-tag">parseInt</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2020/12/26/js-operator/">JS基本功- 運算元與運算子</a></h2><time class="has-text-grey" datetime="2020-12-26T10:35:07.000Z">2020-12-26</time><p class="is-flex-grow-2 mt-2">
-比較運算子
-運算符號，使用&amp;gt;,&amp;lt;,=來做判斷
-
-
-三個等於與兩個等於 有什麼不一樣
-只有一個等於：var x=1; -&amp;gt; 賦值運算子
-所以比較運算值的時候，會使用兩個等於以上
-
-兩個等於
-不是嚴格的比較
-轉換過的值是相同的，就會符合
-
-
-三個等於
-實務常用，且較為嚴謹
-字串需經過轉換為數值，進行比較  
-
-
-算數運算子
-+,-, * ,/
-先乘除後加減
-parseInt(10/3) -&amp;gt;取整數
-除了取整數外，也將文字轉數值
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
 
 
 
+      </div>
 
-餘數與被除數
-取餘數：5%3 –&amp;gt;2 指5對3取餘數為2
-重新認識 JavaScript: Day 06 運算式與運算子 | MDN運算式與運算子
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
 
-邏輯運算子
-用於結合流程判斷：兩件事同時發生，要兩個都符合、或是達成其中之一
 
-AND (&amp;amp..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2020/12/26/js-operator/">Read more</a></section></article><section class="paginator is-flex is-justify-content-flex-end is-flex-wrap-wrap mt-5"><a class="extend prev" rel="prev" href="/archives/page/6/"><i class="iconfont icon-prev has-text-grey"></i></a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="page-number" href="/archives/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/archives/page/8/">8</a><a class="page-number" href="/archives/page/9/">9</a><a class="extend next" rel="next" href="/archives/page/8/"><i class="iconfont icon-next has-text-grey"></i></a></section></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container archives-widget is-in-archive-page"><h3>Archives</h3><section><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+      </div>
+    </main>
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
+    <footer class="footer">
+      <div class="footer-inner">
+        
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/https://github.com/Eva813"><i class="iconfont icon-github"></i></a><!-- Ins--><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--></section><p><span>Copyright ©</span><span> Eva 2023</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+        
 
-window.addEventListener('resize', $claudia.throttle(function () {
-    var images = document.querySelectorAll('.js-img-fadeIn')
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
 
-    images.forEach($claudia.blurBackdropImg)
-}, 150))</script></body></html>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
