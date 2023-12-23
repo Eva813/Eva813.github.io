@@ -6,7 +6,7 @@
   <link href="https://github.com/Eva813/Eva813.github.io.git/atom.xml" rel="self"/>
   
   <link href="https://github.com/Eva813/Eva813.github.io.git/"/>
-  <updated>2023-12-23T04:47:18.895Z</updated>
+  <updated>2023-12-23T05:13:14.130Z</updated>
   <id>https://github.com/Eva813/Eva813.github.io.git/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>製作簽名面板元件</title>
+    <link href="https://github.com/Eva813/Eva813.github.io.git/2023/12/23/signaturePad-component/"/>
+    <id>https://github.com/Eva813/Eva813.github.io.git/2023/12/23/signaturePad-component/</id>
+    <published>2023-12-23T04:49:11.000Z</published>
+    <updated>2023-12-23T05:13:14.130Z</updated>
+    
+    <content type="html"><![CDATA[<p>因工作需求需要製作簽名面板，查看套件使用度較高 <a href="https://www.npmjs.com/package/signature_pad" target="_blank" rel="noopener">signature_pad</a></p><ol><li>在專案內安裝 signature_pad 套件 <code>npm i signature_pad</code></li><li>嘗試將引入的簽名套件包成可以重複使用的元件。</li></ol><p>initializeSignaturePad : 進行初始化，如尺寸大小、筆的顏色、畫布背景色等。這邊將這些設置放在 props 讓使用時可以保有一些彈性空間。<br>resizeCanvas : 用於調整畫布的大小，目的是確保畫布的大小能夠適應不同的設備和螢幕解析度。<br>saveSignature\ clearSignature: 顧名思義就是儲存、清除簽名<br>注意：因為將簽名功能包成元件，使用 emit 將儲存的簽名傳到外層。</p><pre><code class="vue">&lt;template&gt;  &lt;div    class=&quot;signature-pad&quot;    :style=&quot;{ width: props.width, height: props.height }&quot;  &gt;    &lt;canvas ref=&quot;canvas&quot;&gt;&lt;/canvas&gt;    &lt;slot&gt;      &lt;button @click=&quot;clearSignature&quot;&gt;清除簽名&lt;/button&gt;      &lt;button @click=&quot;saveSignature&quot;&gt;儲存簽名&lt;/button&gt;    &lt;/slot&gt;  &lt;/div&gt;&lt;/template&gt;&lt;script setup&gt;import { onMounted, ref, watch, onUnmounted } from &quot;vue&quot;;import SignaturePad from &quot;signature_pad&quot;;const props = defineProps({  width: { type: String, default: &quot;100%&quot; },  height: { type: String, default: &quot;300px&quot; },  penColor: { type: String, default: &quot;black&quot; },  backgroundColor: { type: String, default: &quot;white&quot; },  options: { type: Object, default: () =&gt; ({}) },});const canvas = ref(null);let signaturePad = null;const initializeSignaturePad = () =&gt; {  if (canvas.value) {    signaturePad = new SignaturePad(canvas.value, {      ...props.options,      penColor: props.penColor,      backgroundColor: props.backgroundColor,    });  }};const resizeCanvas = () =&gt; {  //window.devicePixelRatio 來獲取設備的像素密度，如果無法獲取到，則將ratio設為1。  const ratio = Math.max(window.devicePixelRatio || 1, 1);  //根據畫布元素的寬度和高度，乘以ratio，來設定畫布的寬度和高度。為了確保畫布在高像素密度的設備上顯示正確。  canvas.value.width = canvas.value.offsetWidth * ratio;  canvas.value.height = canvas.value.offsetHeight * ratio;  //獲取畫布的2D繪圖上下文，並使用scale方法將繪圖上下文的縮放比例設為ratio。  canvas.value.getContext(&quot;2d&quot;).scale(ratio, ratio);  signaturePad.clear(); // Clears any existing drawing};const emit = defineEmits([&quot;clear&quot;, &quot;save&quot;]);const saveSignature = () =&gt; {  if (signaturePad) {    const signatureImage = signaturePad.toDataURL();    emit(&quot;save&quot;, signatureImage);  }  return null;};const clearSignature = () =&gt; {  if (signaturePad) {    signaturePad.clear();    emit(&quot;clear&quot;); // 發射清除事件  }};// Initialize and resize canvasonMounted(() =&gt; {  initializeSignaturePad();  window.addEventListener(&quot;resize&quot;, resizeCanvas);  resizeCanvas();});onUnmounted(() =&gt; {  window.removeEventListener(&quot;resize&quot;, resizeCanvas);});// Watch for prop changeswatch(  () =&gt; [props.penColor, props.backgroundColor, props.options],  () =&gt; {    initializeSignaturePad();  },  { deep: true });&lt;/script&gt;</code></pre><h3 id="參考資料："><a href="#參考資料：" class="headerlink" title="參考資料："></a>參考資料：</h3><p><a href="https://github.com/WangShayne/vue3-signature">https://github.com/WangShayne/vue3-signature</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;因工作需求需要製作簽名面板，查看套件使用度較高 &lt;a href=&quot;https://www.npmjs.com/package/signature_pad&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;signature_pad&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;</summary>
+      
+    
+    
+    
+    
+    <category term="Vue" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Vue/"/>
+    
+  </entry>
   
   <entry>
     <title>vueTest - Vue test util (2)</title>
@@ -491,30 +515,6 @@
       
     <summary type="html">&lt;p&gt;   首先要先了解 linked lists 和陣列是不一樣的！！&lt;br&gt;   linked lists是一種常見的資料結構，其使用node(節點)來記錄、表示、儲存資料(data)，並利用每個node中的pointer指向下一個node &lt;/p&gt;
 &lt;h2 id=&quot;題目：&quot;</summary>
-      
-    
-    
-    
-    <category term="Leetcode" scheme="https://github.com/Eva813/Eva813.github.io.git/categories/Leetcode/"/>
-    
-    
-    <category term="Leetcode" scheme="https://github.com/Eva813/Eva813.github.io.git/tags/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>刷題練習 - Valid Parentheses</title>
-    <link href="https://github.com/Eva813/Eva813.github.io.git/2022/09/24/code-practice/"/>
-    <id>https://github.com/Eva813/Eva813.github.io.git/2022/09/24/code-practice/</id>
-    <published>2022-09-24T00:32:55.000Z</published>
-    <updated>2022-09-24T06:41:03.932Z</updated>
-    
-    <content type="html"><![CDATA[<p>  對於刷題總時敬而遠之，記得剛開始學習 JavaScript 時，有挑幾題來練習，看到題目後完全不知道該如何著手，甚至有些題目還要反覆看幾次才比較理解。 畢竟也踏入前端工程師近一年的時間，使用 JavaScript 也有兩年了，該是好好鑽研練習 Leetcode。</p><p>題目：<br>  Given a string s containing just the characters ‘(‘, ‘)’, ‘{‘, ‘}’, ‘[‘ and ‘]’, determine if the input string is valid.</p><p>  An input string is valid if:</p><p>  Open brackets must be closed by the same type of brackets.<br>  Open brackets must be closed in the correct order.<br>  Every close bracket has a corresponding open bracket of the same type.</p><p>  以字串帶入，並要確認傳入的字串中的大括號, 中括號等是否有兩倆配對</p><p>Example 1: </p><pre><code>Input: s = &quot;()&quot;Output: true</code></pre><pre><code>Input: s = &quot;()[]{}&quot;Output: true</code></pre><pre><code>Input: s = &quot;(]&quot;Output: false</code></pre><ol><li>製作一個物件，為括號的配對</li><li>存放括號的空物件</li><li>將字串進行迭代判斷</li></ol><pre><code>  i 會loop 此字串  &quot;([]){}&quot;  第一圈：遇到 &quot;(&quot;  stack = [ &quot;)&quot;]  第二圈：遇到 &quot;[&quot;  stack = [ &quot;)&quot;,&quot;]&quot;]  第三圈：遇到 &quot;]&quot; , 此時，stack = [ &quot;)&quot;,&quot;]&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=2 ,ch = &quot;]&quot; 互相配對，若配對成功則從陣列中刪除  第四圈：遇到 &quot;)&quot; , 此時，stack = [ &quot;)&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=3 ,ch = &quot;)&quot; 互相配對，若配對成功則從陣列中刪除  第五圈：遇到 &quot;{&quot; , 此時，stack = []  stack = [ &quot;}&quot;]  第六圈：遇到 &quot;}&quot; , 此時，stack = [ &quot;}&quot;]  進入第二個判斷：stack[stack.length - 1] === ch  陣列的最後一個是否與 i=5 ,ch = &quot;}&quot; 互相配對，若配對成功則從陣列中刪除    最後跳出陣列確認 stack.length === 0 =&gt; 為 0 表示皆配對成功</code></pre><pre><code class="JavaScript">  var isValid = function (s) {    const hashMap = { &quot;(&quot;: &quot;)&quot;, &quot;{&quot;: &quot;}&quot;, &quot;[&quot;: &quot;]&quot; };    const stack = [];    for (let ch of s) {      if (hashMap[ch]) {        // ch is an opening bracket        stack.push(hashMap[ch]);      } else if (stack.length &gt; 0 &amp;&amp; stack[stack.length - 1] === ch) {        //當空陣列裡面有值且陣列的最後一個值和 key 是一樣的就從陣列中刪除        // ch is a closing bracket and top of stack matches        stack.pop();      } else {        // ch is a closing bracket and top of the stack doesn&#39;t match        return false;      }    }    return stack.length === 0;  };</code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;  對於刷題總時敬而遠之，記得剛開始學習 JavaScript 時，有挑幾題來練習，看到題目後完全不知道該如何著手，甚至有些題目還要反覆看幾次才比較理解。 畢竟也踏入前端工程師近一年的時間，使用 JavaScript 也有兩年了，該是好好鑽研練習 Leetcode。&lt;/p&gt;</summary>
       
     
     

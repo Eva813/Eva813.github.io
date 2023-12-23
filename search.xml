@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>製作簽名面板元件</title>
+      <link href="/2023/12/23/signaturePad-component/"/>
+      <url>/2023/12/23/signaturePad-component/</url>
+      
+        <content type="html"><![CDATA[<p>因工作需求需要製作簽名面板，查看套件使用度較高 <a href="https://www.npmjs.com/package/signature_pad" target="_blank" rel="noopener">signature_pad</a></p><ol><li>在專案內安裝 signature_pad 套件 <code>npm i signature_pad</code></li><li>嘗試將引入的簽名套件包成可以重複使用的元件。</li></ol><p>initializeSignaturePad : 進行初始化，如尺寸大小、筆的顏色、畫布背景色等。這邊將這些設置放在 props 讓使用時可以保有一些彈性空間。<br>resizeCanvas : 用於調整畫布的大小，目的是確保畫布的大小能夠適應不同的設備和螢幕解析度。<br>saveSignature\ clearSignature: 顧名思義就是儲存、清除簽名<br>注意：因為將簽名功能包成元件，使用 emit 將儲存的簽名傳到外層。</p><pre><code class="vue">&lt;template&gt;  &lt;div    class=&quot;signature-pad&quot;    :style=&quot;{ width: props.width, height: props.height }&quot;  &gt;    &lt;canvas ref=&quot;canvas&quot;&gt;&lt;/canvas&gt;    &lt;slot&gt;      &lt;button @click=&quot;clearSignature&quot;&gt;清除簽名&lt;/button&gt;      &lt;button @click=&quot;saveSignature&quot;&gt;儲存簽名&lt;/button&gt;    &lt;/slot&gt;  &lt;/div&gt;&lt;/template&gt;&lt;script setup&gt;import { onMounted, ref, watch, onUnmounted } from &quot;vue&quot;;import SignaturePad from &quot;signature_pad&quot;;const props = defineProps({  width: { type: String, default: &quot;100%&quot; },  height: { type: String, default: &quot;300px&quot; },  penColor: { type: String, default: &quot;black&quot; },  backgroundColor: { type: String, default: &quot;white&quot; },  options: { type: Object, default: () =&gt; ({}) },});const canvas = ref(null);let signaturePad = null;const initializeSignaturePad = () =&gt; {  if (canvas.value) {    signaturePad = new SignaturePad(canvas.value, {      ...props.options,      penColor: props.penColor,      backgroundColor: props.backgroundColor,    });  }};const resizeCanvas = () =&gt; {  //window.devicePixelRatio 來獲取設備的像素密度，如果無法獲取到，則將ratio設為1。  const ratio = Math.max(window.devicePixelRatio || 1, 1);  //根據畫布元素的寬度和高度，乘以ratio，來設定畫布的寬度和高度。為了確保畫布在高像素密度的設備上顯示正確。  canvas.value.width = canvas.value.offsetWidth * ratio;  canvas.value.height = canvas.value.offsetHeight * ratio;  //獲取畫布的2D繪圖上下文，並使用scale方法將繪圖上下文的縮放比例設為ratio。  canvas.value.getContext(&quot;2d&quot;).scale(ratio, ratio);  signaturePad.clear(); // Clears any existing drawing};const emit = defineEmits([&quot;clear&quot;, &quot;save&quot;]);const saveSignature = () =&gt; {  if (signaturePad) {    const signatureImage = signaturePad.toDataURL();    emit(&quot;save&quot;, signatureImage);  }  return null;};const clearSignature = () =&gt; {  if (signaturePad) {    signaturePad.clear();    emit(&quot;clear&quot;); // 發射清除事件  }};// Initialize and resize canvasonMounted(() =&gt; {  initializeSignaturePad();  window.addEventListener(&quot;resize&quot;, resizeCanvas);  resizeCanvas();});onUnmounted(() =&gt; {  window.removeEventListener(&quot;resize&quot;, resizeCanvas);});// Watch for prop changeswatch(  () =&gt; [props.penColor, props.backgroundColor, props.options],  () =&gt; {    initializeSignaturePad();  },  { deep: true });&lt;/script&gt;</code></pre><h3 id="參考資料："><a href="#參考資料：" class="headerlink" title="參考資料："></a>參考資料：</h3><p><a href="https://github.com/WangShayne/vue3-signature">https://github.com/WangShayne/vue3-signature</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Vue </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>vueTest - Vue test util (2)</title>
       <link href="/2023/08/05/vueTest-3/"/>
       <url>/2023/08/05/vueTest-3/</url>
