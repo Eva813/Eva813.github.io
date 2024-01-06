@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta property="og:type" content="website">
@@ -142,6 +142,118 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/01/06/FormData-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/06/FormData-1/" class="post-title-link" itemprop="url">FormData 表單的運用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-06 10:44:33" itemprop="dateCreated datePublished" datetime="2022-01-06T10:44:33+08:00">2022-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/xf0DAqA.png" alt=""></p>
+<p>最近遇到將表單資料存到後端的方式，過去一直以為是將資料整理為物件方式存取即可，後來發現使用FormData來建立物件傳送檔案即可!</p>
+<ul>
+<li>FormData 是一個表單格式，利用它將資料轉成表單的格式，並且以表單的形式回傳給後端</li>
+</ul>
+<h2 id="建立-FormData-物件"><a href="#建立-FormData-物件" class="headerlink" title="建立 FormData 物件"></a>建立 FormData 物件</h2><ul>
+<li>最直接方式，先取得form的資料</li>
+</ul>
+<pre><code class="javascript">// 根據表單元素取得表單資料
+var form = document.querySelector(&#39;form&#39;);
+var formData = new FormData(form);
+
+// 可以用 append 把欄位灌進去表單中
+var formData = new FormData(); // 一開始表單的資料是空的
+formData.append(&#39;username&#39;, Chris); // 增加欄位
+formData.append(&#39;image&#39;, file); // 檔案也可以透過 append 放進來</code></pre>
+<h2 id="以下介紹幾個基礎的使用方式："><a href="#以下介紹幾個基礎的使用方式：" class="headerlink" title="以下介紹幾個基礎的使用方式："></a>以下介紹幾個基礎的使用方式：</h2><ul>
+<li><code>formData.append(name, value)</code> : 加入有 name 和 value 的表單資料(name:表單標籤的名稱,value: input 輸入的值)</li>
+<li><code>formData.append(name, blob, fileName)</code> : 加入字段，就像它是 <code>&lt;input type=&quot;file&quot;&gt;</code>，第三個參數 fileName 設置檔案名</li>
+<li><code>formData.delete(name)</code> : 移除帶有 name 的字段，</li>
+<li><code>formData.get(name)</code> : 取得帶有 name 的值，</li>
+<li><code>formData.has(name)</code> : 如果帶有給定 name 的字段，返回 true，否則返回 false。</li>
+</ul>
+<h2 id="使用axios-傳遞資料"><a href="#使用axios-傳遞資料" class="headerlink" title="使用axios 傳遞資料"></a>使用axios 傳遞資料</h2><pre><code class="javascript">var formData = new FormData();
+//宣告要取得的值
+var title = form.name
+formData.append(&quot;formTitle&quot;, title);
+axios.post(&#39;upload_file&#39;, formData, {
+    headers: {
+      &#39;Content-Type&#39;: &#39;multipart/form-data&#39;
+    }
+})</code></pre>
+<h2 id="補充-vue-Typescript-宣告型別"><a href="#補充-vue-Typescript-宣告型別" class="headerlink" title="補充 vue+Typescript 宣告型別"></a>補充 vue+Typescript 宣告型別</h2><ul>
+<li>以 stack overflow 內的資料為例：<ul>
+<li>可以使用 ref來取得DOM元素，並宣告該變數為HTMLFormElement<pre><code class="javascript">&lt;el-form
+    class=&quot;m-auto&quot;
+    ref=&quot;formRef&quot;
+    :model=&quot;form&quot;
+    :rules=&quot;rules&quot;
+  &gt;</code></pre>
+<pre><code class="javascript">const formRef = ref&lt;HTMLFormElement&gt;();</code></pre>
+</li>
+</ul>
+</li>
+<li>另是使用 element-UI 的表單，也可以使用<br><code>import {  ElForm } from &quot;element-ui&quot;;</code></li>
+</ul>
+<p><a href="https://www.ucamc.com/articles/332-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8jquery-ajax-submit-%E5%82%B3%E9%80%81form%E8%A1%A8%E5%96%AEserialize-%E6%96%B9%E6%B3%95" target="_blank" rel="noopener">如何使用jQuery AJAX submit 傳送form表單方法</a><br><a href="https://5xruby.tw/courses/javascript" target="_blank" rel="noopener">JavaScript / jQuery 前端開發入門實戰
+</a><br><a href="https://zh.javascript.info/formdata" target="_blank" rel="noopener">JavaScript Info-formData</a><br><a href="https://stackoverflow.com/questions/67074871/vue-3-typescript-unable-to-access-method-from-ref" target="_blank" rel="noopener">stackoverflow</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -2676,127 +2788,6 @@ function insertionSort(arr) {
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/10/02/Algorithm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Code">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/02/Algorithm/" class="post-title-link" itemprop="url">演算法入門</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-10-02 13:17:40" itemprop="dateCreated datePublished" datetime="2021-10-02T13:17:40+08:00">2021-10-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/LHDcmBI.png" alt=""></p>
-<p>常常看到 YouTube 演算法造成頻道經營的難度、或是facebook演算法而使得行銷曝光度的改變，但始終對演算法這個名詞沒有認識。<br>藉由 Wilson Ren<a href="https://www.udemy.com/course/algorithm-data-structure/?course_id=3819536&fbclid=IwAR3ugnEJMsniBCvoMHthf31EqEQeG9hCL3BQb2gWS7eAFZ4lcixmWOiwNAo" target="_blank" rel="noopener">課程</a></p>
-<h2 id="什麼是演算法？"><a href="#什麼是演算法？" class="headerlink" title="什麼是演算法？"></a>什麼是演算法？</h2><p>用以解決問題而可以逐步執行的步驟或程序。</p>
-<h4 id="來看看現實生活中的演算法"><a href="#來看看現實生活中的演算法" class="headerlink" title="來看看現實生活中的演算法"></a>來看看現實生活中的演算法</h4><ul>
-<li>Google Map 如何找到最短路徑</li>
-<li>YouTube 推薦給你，認為你有興趣的影片</li>
-<li>FB\IG 的加好友、追蹤推薦</li>
-</ul>
-<h2 id="演算法比較"><a href="#演算法比較" class="headerlink" title="演算法比較"></a>演算法比較</h2><p>有兩個演算法都可以完成目標任務，那我們會如何取決誰比較好？</p>
-<ul>
-<li>哪個演算法執行速度快？</li>
-<li>所佔用電腦的記憶體資源少？<h3 id="時間"><a href="#時間" class="headerlink" title="時間?"></a>時間?</h3>首先，在計時演算法所耗時的部分：</li>
-<li>幫演算法做計時，是不實際的事情<ul>
-<li>同一台電腦在執行同一任務，所執行的時間會不同</li>
-<li>不同電腦、CPU處理速度不一樣<h4 id="應該考慮，複雜度-Complexity"><a href="#應該考慮，複雜度-Complexity" class="headerlink" title="應該考慮，複雜度 Complexity"></a>應該考慮，複雜度 Complexity</h4></li>
-</ul>
-</li>
-<li>複雜度分為兩種：時間複雜度、空間複雜度 （在本文多是討論時間複雜度）</li>
-<li>要如何計算時間複雜度?<ul>
-<li>加、減、乘、除、comparison ，這些每一個都可以被算作一個 operation</li>
-<li>Complexity: 在所寫的演算法中，總共用到多少 operations(運算子)</li>
-<li>使用 function 來顯示 Complexity 和 input size 的關係。</li>
-</ul>
-</li>
-</ul>
-<h2 id="Big-O-Notation"><a href="#Big-O-Notation" class="headerlink" title="Big O Notation"></a>Big O Notation</h2><ol>
-<li>是一個工具，用來描述當你的值不斷擴大時，f(n)值會去哪裡</li>
-<li>為最壞情況的打算。他會展示一個演算法複雜度的趨勢</li>
-</ol>
-<h3 id="計算-Big-O-的值"><a href="#計算-Big-O-的值" class="headerlink" title="計算 Big O 的值"></a>計算 Big O 的值</h3><ol>
-<li>Constant doesn’t matter : 常數它並不重要<ul>
-<li>f(n)=3n ：3為常數、n為變數</li>
-</ul>
-</li>
-<li>Small Terms don’t matter<ul>
-<li>fn= 3n^2 + 6n + 4 =&gt; 只需保留到fn= 3n^2</li>
-</ul>
-</li>
-<li>Logarithm Base doesn’t matter<br><img src="https://i.imgur.com/dNM08rx.png" alt=""><h2 id="範例："><a href="#範例：" class="headerlink" title="範例："></a>範例：</h2></li>
-<li>f(n)=3n<br>答案：O(n)</li>
-<li>f(n)=13n^3 + 6n +7<br>答案：O(n^3)</li>
-<li>f(n)=4log₂n<br>答案：O(logn)</li>
-<li>f(n)=5<br>答案：O(1)</li>
-</ol>
-<h2 id="演算法常見-Big-O-的值"><a href="#演算法常見-Big-O-的值" class="headerlink" title="演算法常見 Big O 的值"></a>演算法常見 Big O 的值</h2><p>由好至差</p>
-<ol>
-<li>O(1)</li>
-<li>O(logn)</li>
-<li>O(n)</li>
-<li>O(nlogn)</li>
-<li>O(n^2)</li>
-<li>O(n^3)</li>
-</ol>
-<ul>
-<li>很多sorting值會是 O(nlogn)</li>
-<li>盡量讓演算法可以達到3、4的值</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2868,7 +2859,7 @@ function insertionSort(arr) {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2877,7 +2868,7 @@ function insertionSort(arr) {
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
@@ -2909,7 +2900,7 @@ function insertionSort(arr) {
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

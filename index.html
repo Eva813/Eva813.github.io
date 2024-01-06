@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta property="og:type" content="website">
@@ -146,6 +146,170 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2024/01/06/css-grid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/01/06/css-grid/" class="post-title-link" itemprop="url">css-grid</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-01-06 12:15:17 / Modified: 13:22:16" itemprop="dateCreated datePublished" datetime="2024-01-06T12:15:17+08:00">2024-01-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在 Youtube 看到 Kevin Powell 介紹使用 grid 來作為 wrapper，以自適應網頁的縮放。</p>
+<p>首先基本常用 grid 方式</p>
+<ul>
+<li>創建一個包含三欄等寬的網格布局</li>
+</ul>
+<pre><code class="css">.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}</code></pre>
+<p>加入使用 using named grid lines，定義出欄的 content 範圍</p>
+<pre><code class="css">.content-grid {
+  display: grid;
+  grid-template-columns: 1fr [content-start] 1fr [content-end] 1fr;
+}</code></pre>
+<p>設計一個 class 給他，如果在 content-grid 以下的元素，會將以下的元素放在 content 之間</p>
+<ul>
+<li>應用到 <code>.content-grid</code> 內部的每一個直接子元素</li>
+</ul>
+<pre><code class="css">.content-grid {
+  display: grid;
+  grid-template-columns: 1fr [content-start] 1fr [content- end] 1fr;
+}
+
+.content-grid &gt; * {
+  grid-column: content;
+}</code></pre>
+<h3 id="Layout-grid-可以先設置："><a href="#Layout-grid-可以先設置：" class="headerlink" title="Layout grid 可以先設置："></a>Layout grid 可以先設置：</h3><ul>
+<li>就可以看到 content 範圍<br><img src="https://hackmd.io/_uploads/HyCjULL_p.png" alt="image"><br><img src="https://hackmd.io/_uploads/HkJWv8UO6.png" alt="image"></li>
+</ul>
+<h2 id="設置-breakout"><a href="#設置-breakout" class="headerlink" title="設置 breakout"></a>設置 breakout</h2><pre><code class="css">.content-grid {
+  display: grid;
+  grid-template-columns: 100px [breakout-start] 100px [content-start] 1fr [content-end] 100px [breakout-end] 100px;
+}
+
+.content-grid &gt; * {
+  grid-column: content;
+}
+
+.content-grid &gt; .breakout {
+  grid-column: breakout;
+}</code></pre>
+<p><img src="https://hackmd.io/_uploads/HycvDLIO6.png" alt="image"></p>
+<h2 id="不可缺的-full-width"><a href="#不可缺的-full-width" class="headerlink" title="不可缺的 full-width"></a>不可缺的 full-width</h2><ul>
+<li>利用網格線的 最左側以及最右側 grid line</li>
+</ul>
+<pre><code class="css">.content-grid {
+  display: grid;
+  grid-template-columns: [full-width-start] 100px [breakout-start] 100px [content-start] 1fr [content-end] 100px [breakout-end] 100px [full-width-end];
+}
+
+.content-grid &gt; * {
+  grid-column: content;
+}
+
+.content-grid &gt; .breakout {
+  grid-column: breakout;
+}
+
+.content-grid &gt; .full-width {
+  grid-column: full-width;
+}</code></pre>
+<ul>
+<li>希望區塊的背景可以 full-with 但內容符合文章(content)寬度<br><code>.content-grid &gt; .full-width</code></li>
+</ul>
+<pre><code class="css">.content-grid {
+  display: grid;
+
+  grid-template-columns: [full-width-start] 100px [breakout-start] 100px [content-start] 1fr [content-end] 100px [breakout-end] 100px [full-width-end];
+}
+
+.content-grid &gt; :not(.breakout, .full-width),
+.full-width &gt; :not(.breakout, .full-width) {
+  grid-column: content;
+}
+
+.content-grid &gt; .breakout {
+  grid-column: breakout;
+}
+
+.content-grid &gt; .full-width {
+  grid-column: full-width;
+  display: grid;
+  grid-template-columns: inherit;
+}</code></pre>
+<h2 id="更細微的調整，設置變數以符合-responsive"><a href="#更細微的調整，設置變數以符合-responsive" class="headerlink" title="更細微的調整，設置變數以符合 responsive"></a>更細微的調整，設置變數以符合 responsive</h2><pre><code class="css">.content-grid{
+     --padding-inline: 2rem ;
+     --content-max-width: 70ch;
+     --breakout-max-width: 85ch
+    --breakout-size: calc(
+(var(--breakout-max-width) - var(--content-max-width)) / 2
+);
+    display: grid;
+
+    grid-template-columns:
+    [full-width-start] minmax(var(--padding-inline), 1fr)
+    [breakout-start] minmax(0, var(--breakout-size))
+    [content-start] min(100% - (var(--padding-inline) * 2 ), var(--content-max-width)) [content-end] minmax(0, var(--breakout-size)) [breakout-end]
+    minmax(var(--padding-inline), 1fr) [full-width-end];
+}</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/01/06/css-grid/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/12/23/signaturePad-component/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -169,10 +333,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-12-23 12:49:11 / Modified: 13:13:14" itemprop="dateCreated datePublished" datetime="2023-12-23T12:49:11+08:00">2023-12-23</time>
+              <time title="Created: 2023-12-23 12:49:11" itemprop="dateCreated datePublished" datetime="2023-12-23T12:49:11+08:00">2023-12-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-01-06 12:14:02" itemprop="dateModified" datetime="2024-01-06T12:14:02+08:00">2024-01-06</time>
+              </span>
 
           
 
@@ -191,7 +361,7 @@
 <li>嘗試將引入的簽名套件包成可以重複使用的元件。</li>
 </ol>
 <p>initializeSignaturePad : 進行初始化，如尺寸大小、筆的顏色、畫布背景色等。這邊將這些設置放在 props 讓使用時可以保有一些彈性空間。<br>resizeCanvas : 用於調整畫布的大小，目的是確保畫布的大小能夠適應不同的設備和螢幕解析度。<br>saveSignature\ clearSignature: 顧名思義就是儲存、清除簽名<br>注意：因為將簽名功能包成元件，使用 emit 將儲存的簽名傳到外層。</p>
-<pre><code class="vue">&lt;template&gt;
+<pre><code class="javascript">&lt;template&gt;
   &lt;div
     class=&quot;signature-pad&quot;
     :style=&quot;{ width: props.width, height: props.height }&quot;
@@ -1762,236 +1932,6 @@ const fn2: GenericFnI&lt;string&gt;= (param)=&gt;[param]</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/01/25/TS-interface/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Code">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/25/TS-interface/" class="post-title-link" itemprop="url">TypeScript - interface 使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-25 13:34:04" itemprop="dateCreated datePublished" datetime="2023-01-25T13:34:04+08:00">2023-01-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-01-26 13:04:49" itemprop="dateModified" datetime="2023-01-26T13:04:49+08:00">2023-01-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
-<p>最近在複習使用 TypeScript 發現還有些部分可以做紀錄並且重新回憶的區塊，藉此再紀錄於部落格。</p>
-<h2 id="TS-interface的基礎宣告"><a href="#TS-interface的基礎宣告" class="headerlink" title="TS interface的基礎宣告"></a>TS interface的基礎宣告</h2><ul>
-<li>將複雜系統簡化的結果叫做介面</li>
-<li>介面一般首字母大寫</li>
-</ul>
-<pre><code class="typescript">interface Person {
-  name: string;
-  age: number;
-}
-
-let Eva: Person = {
-    name: &#39;Eva&#39;,
-    age: 25
-};</code></pre>
-<h2 id="函式與介面"><a href="#函式與介面" class="headerlink" title="函式與介面"></a>函式與介面</h2><ul>
-<li>以下範例宣告 AddFunction 的介面</li>
-<li>並將此型別應用於 add 這個變數的方法中</li>
-</ul>
-<pre><code class="typescript">interface AddFunction {
-  (a: number, b: number): number;
-}
-
-let add: AddFunction = function(a, b) { return a + b; };
-</code></pre>
-<h2 id="class與介面"><a href="#class與介面" class="headerlink" title="class與介面"></a>class與介面</h2><pre><code class="typescript">interface CatInterface {
-    //普通成員變數的規格
-    name: string;
-    breed: string;
-    noise: string;
-
-    //普通成員方法的規格，使用函式型別格式
-    makeNoise(): void;
-    feed(something: string): void
-}</code></pre>
-<ul>
-<li>若類別想要實踐此介面，必須用 <code>implements</code> 這個關鍵字</li>
-<li>如果類別實踐介面的規格中，任何一個成員不見或沒有實踐時，會出現提醒訊息。</li>
-</ul>
-<pre><code class="typescript">class Cat implements CatInterface{
-    public name: string;
-    public breed: string;
-    public noise: string = &#39;Meow meow!&#39;;
-
-  constructor(name:string, breed:string){
-        this.name = name;
-        this.breed = breed;
-    }
-
-  public makeNoise(){
-        console.log(this.noise);
-    }
-
-   public feed(something: string){
-         console.log(`${this.name} is eating ${something}...`)
-     }
-
-}</code></pre>
-<h2 id="搭配-interface-常用的方法"><a href="#搭配-interface-常用的方法" class="headerlink" title="搭配 interface 常用的方法"></a>搭配 interface 常用的方法</h2><ol>
-<li>extends</li>
-</ol>
-<ul>
-<li>以 <code>PersonalInfo</code> 為例</li>
-</ul>
-<pre><code class="typescript">interface PersonalInfo{
-    name: string;
-    age: number;
-    interesting: string[];
-}</code></pre>
-<ul>
-<li>假設今天想宣告一個新的使用者帳戶的介面為 <code>UserAccount</code><ul>
-<li>除了有一些和客戶相關的規格屬性外，還要包含介面 <code>PersonalInfo</code> 裡的規格</li>
-</ul>
-</li>
-</ul>
-<pre><code class="typescript">interface UserAccount extends PersonalInfo{
-    email: string;
-    password: string;
-    subscribed: boolean;
-
-}</code></pre>
-<ul>
-<li>上面的撰寫方式，等同於</li>
-<li>透過使用 extends 延展可以將功用的屬性、型別整理一起</li>
-</ul>
-<pre><code class="typescript">interface UserAccount{
-    email: string;
-    password: string;
-    subscribed: boolean;
-
-    //從PersonalInfo延展而來
-    name: string;
-    age: number;
-    interesting: string[];
-
-}</code></pre>
-<p>另外若需要再合併新的型別，也可以透過逗號方式加以延伸</p>
-<ul>
-<li>此外還能再多新增 <code>SocialLinks</code></li>
-</ul>
-<pre><code class="typescript">interface SocialLinks {
-    facebook?: string;
-    twitter?: string;
-    linkedin?: string;
-    website?: ({name:string; url:string})[]
-
-}</code></pre>
-<ul>
-<li>同時延展:透過逗號再加入新的</li>
-</ul>
-<pre><code class="typescript">interface UserAccount extends PersonalInfo, SocialLinks{
-    //...
-}</code></pre>
-<h2 id="pick"><a href="#pick" class="headerlink" title="pick"></a>pick</h2><p>Picking Items with <code>Pick&lt;Type, Keys&gt;</code></p>
-<ul>
-<li>挑選想要的屬性(key)做使用</li>
-<li>注意 pick 只能在 type 宣告使用</li>
-</ul>
-<pre><code class="typescript">interface Todo {
-  title: string;
-  description: string;
-  completed: boolean;
-}
-
-type TodoPreview = Pick&lt;Todo, &quot;title&quot; | &quot;completed&quot;&gt;;
-
-const todo: TodoPreview = {
-  title: &quot;Clean room&quot;,
-  completed: false,
-};
-
-console.log(todo.title); // &quot;Clean room&quot;
-console.log(todo.description); // undefined
-
-</code></pre>
-<ul>
-<li>注意 pick 只能在 type 宣告使用<pre><code class="typescript">interface todo = Pick&lt;Todo, &quot;title&quot; | &quot;completed&quot;&gt;;
-// &#39;Pick&#39; only refers to a type, but is being used as a value here.</code></pre>
-</li>
-</ul>
-<h2 id="omit"><a href="#omit" class="headerlink" title="omit"></a>omit</h2><p><code>Omit&lt;Type, Keys&gt;</code></p>
-<pre><code class="typeScript">interface Todo {
-  title: string;
-  description: string;
-  completed: boolean;
-  createdAt: number;
-}
-
-type TodoPreview = Omit&lt;Todo, &quot;description&quot;&gt;;
-
-const todo: TodoPreview = {
-  title: &quot;Clean room&quot;,
-  completed: false,
-  createdAt: 1615544252770,
-};
-</code></pre>
-<p>參考資料<br><a href="https://refine.dev/blog/typescript-pick-utility-type/" target="_blank" rel="noopener">A Detailed Guide on TypeScript Pick Type</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2063,7 +2003,7 @@ const todo: TodoPreview = {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2072,7 +2012,7 @@ const todo: TodoPreview = {
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
@@ -2104,7 +2044,7 @@ const todo: TodoPreview = {
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
