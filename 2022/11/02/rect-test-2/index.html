@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。 建立 login 檔案 login.js : 製作登入元件  login.test.js : 撰寫測試    確認 輸入框 有渲染至文件 使用 getByPlaceholderText 取得輸入框元素   &lt;form&gt;         &lt;input           type&#x3D;&quot;text&amp;quo">
+  <meta name="description" content="想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。 建立 login 檔案 login.js : 製作登入元件  login.test.js : 撰寫測試    確認 輸入框 有渲染至文件 使用 getByPlaceholderText 取得輸入框元素  123456789101112&lt;form&gt;       &lt;input         type&#x3D;&amp;quo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React 測試 - 以登入元件練習">
 <meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2022/11/02/rect-test-2/index.html">
 <meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。 建立 login 檔案 login.js : 製作登入元件  login.test.js : 撰寫測試    確認 輸入框 有渲染至文件 使用 getByPlaceholderText 取得輸入框元素   &lt;form&gt;         &lt;input           type&#x3D;&quot;text&amp;quo">
+<meta property="og:description" content="想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。 建立 login 檔案 login.js : 製作登入元件  login.test.js : 撰寫測試    確認 輸入框 有渲染至文件 使用 getByPlaceholderText 取得輸入框元素  123456789101112&lt;form&gt;       &lt;input         type&#x3D;&amp;quo">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/4Pw5JTD.png">
 <meta property="og:image" content="https://i.imgur.com/hQ33Kxa.png">
@@ -221,112 +221,46 @@
 <h3 id="確認-輸入框-有渲染至文件"><a href="#確認-輸入框-有渲染至文件" class="headerlink" title="確認 輸入框 有渲染至文件"></a>確認 輸入框 有渲染至文件</h3><ul>
 <li>使用 <code>getByPlaceholderText</code> 取得輸入框元素</li>
 </ul>
-<pre><code class="html"> &lt;form&gt;
-        &lt;input
-          type=&quot;text&quot;
-          placeholder=&quot;username&quot;
-          value=&#39;&#39;
-        /&gt;
-        &lt;input
-          type=&quot;password&quot;
-          placeholder=&quot;password&quot;
-          value=&#39;&#39;
-        /&gt;
-  &lt;/form&gt;</code></pre>
-<pre><code class="javascript">  test(&quot;username input should be rendered&quot;, () =&gt; {
-    render(&lt;Login /&gt;);
-    const usernameInputEl = screen.getByPlaceholderText(/username/i);
-    expect(usernameInputEl).toBeInTheDocument();
-  });
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">input</span></span></span><br><span class="line"><span class="tag">         <span class="attr">type</span>=<span class="string">&quot;text&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">placeholder</span>=<span class="string">&quot;username&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">value</span>=<span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="tag">       /&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">input</span></span></span><br><span class="line"><span class="tag">         <span class="attr">type</span>=<span class="string">&quot;password&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">placeholder</span>=<span class="string">&quot;password&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">value</span>=<span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="tag">       /&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-  test(&quot;password input should be rendered&quot;, () =&gt; {
-    render(&lt;Login /&gt;);
-    const passwordInputEl = screen.getByPlaceholderText(/password/i);
-    expect(passwordInputEl).toBeInTheDocument();
-  });</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;username input should be rendered&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(usernameInputEl).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;password input should be rendered&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(passwordInputEl).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
 <h3 id="確認畫面上有按鈕"><a href="#確認畫面上有按鈕" class="headerlink" title="確認畫面上有按鈕"></a>確認畫面上有按鈕</h3><ul>
 <li>getByRole 取得按鈕</li>
 </ul>
-<pre><code class="javascript">  test(&quot;button should be rendered&quot;, () =&gt; {
-    render(&lt;Login /&gt;);
-    const buttonEl = screen.getByRole(&quot;button&quot;);
-    expect(buttonEl).toBeInTheDocument();
-  });</code></pre>
-<h3 id="輸入框一開始為空"><a href="#輸入框一開始為空" class="headerlink" title="輸入框一開始為空"></a>輸入框一開始為空</h3><pre><code class="javascript">test(&quot;username input should be empty&quot;, () =&gt; {
-  render(&lt;Login /&gt;);
-  const usernameInputEl = screen.getByPlaceholderText(/username/i);
-  expect(usernameInputEl.value).toBe(&quot;&quot;);
-});
-
-test(&quot;password input should be empty&quot;, () =&gt; {
-  render(&lt;Login /&gt;);
-  const passwordInputEl = screen.getByPlaceholderText(/password/i);
-  expect(passwordInputEl.value).toBe(&quot;&quot;);
-});</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;button should be rendered&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> buttonEl = screen.<span class="title function_">getByRole</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(buttonEl).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="輸入框一開始為空"><a href="#輸入框一開始為空" class="headerlink" title="輸入框一開始為空"></a>輸入框一開始為空</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;username input should be empty&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(usernameInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;password input should be empty&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(passwordInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <h3 id="輸入框為空時，按鈕應為-disabled"><a href="#輸入框為空時，按鈕應為-disabled" class="headerlink" title="輸入框為空時，按鈕應為 disabled"></a>輸入框為空時，按鈕應為 disabled</h3><ul>
 <li>只要取得按鈕元素並使用 <code>toBeDisabled()</code></li>
 </ul>
-<pre><code class="javascript">test(&quot;button should be disabled&quot;, () =&gt; {
-  render(&lt;Login /&gt;);
-  const buttonEl = screen.getByRole(&quot;button&quot;);
-  expect(buttonEl).toBeDisabled();
-});</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;button should be disabled&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> buttonEl = screen.<span class="title function_">getByRole</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(buttonEl).<span class="title function_">toBeDisabled</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <h3 id="錯誤訊息的提示"><a href="#錯誤訊息的提示" class="headerlink" title="錯誤訊息的提示"></a>錯誤訊息的提示</h3><p><img src="https://i.imgur.com/hQ33Kxa.png" alt=""></p>
 <ul>
 <li>確保一開始進入畫面，該訊息不應該出現</li>
 <li>可以看見 <code>toBeVisible()</code> ，反之期望無法看見，就需加入not</li>
 </ul>
-<pre><code class="javascript">test(&quot;error message should not be visible&quot;, () =&gt; {
-  render(&lt;Login /&gt;);
-  const errorEl = screen.getByTestId(&quot;error&quot;);
-  expect(errorEl).not.toBeVisible();
-});</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;error message should not be visible&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> errorEl = screen.<span class="title function_">getByTestId</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(errorEl).<span class="property">not</span>.<span class="title function_">toBeVisible</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
 <h3 id="輸入框的輸入事件"><a href="#輸入框的輸入事件" class="headerlink" title="輸入框的輸入事件"></a>輸入框的輸入事件</h3><ul>
-<li><a href="https://testing-library.com/docs/dom-testing-library/api-events/" target="_blank" rel="noopener">fireEvent</a> 用來針對事件進行測試</li>
+<li><a target="_blank" rel="noopener" href="https://testing-library.com/docs/dom-testing-library/api-events/">fireEvent</a> 用來針對事件進行測試</li>
 </ul>
 <p><img src="https://i.imgur.com/E9wT8gO.png" alt=""></p>
-<pre><code class="javascript">test(&quot;username input should change&quot;, () =&gt; {
-  render(&lt;Login /&gt;);
-  const usernameInputEl = screen.getByPlaceholderText(/username/i);
-  //模擬傳入的值
-  const testValue = &quot;test&quot;;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;username input should change&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="comment">//模擬傳入的值</span></span><br><span class="line">  <span class="keyword">const</span> testValue = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(usernameInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line">  <span class="title function_">expect</span>(usernameInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(testValue);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;password input should change&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line">  <span class="keyword">const</span> testValue = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(passwordInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line">  <span class="title function_">expect</span>(passwordInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(testValue);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-  fireEvent.change(usernameInputEl, { target: { value: testValue } });
-  expect(usernameInputEl.value).toBe(testValue);
-});
-
-test(&quot;password input should change&quot;, () =&gt; {
-  render(&lt;Login /&gt;);
-  const passwordInputEl = screen.getByPlaceholderText(/password/i);
-  const testValue = &quot;test&quot;;
-
-  fireEvent.change(passwordInputEl, { target: { value: testValue } });
-  expect(passwordInputEl.value).toBe(testValue);
-});</code></pre>
 <h3 id="當輸入框有值的時候，按鈕不應該-disabled"><a href="#當輸入框有值的時候，按鈕不應該-disabled" class="headerlink" title="當輸入框有值的時候，按鈕不應該 disabled"></a>當輸入框有值的時候，按鈕不應該 <code>disabled</code></h3><ul>
 <li>期望按鈕可以點擊</li>
 <li>在 jsx 檔案內要設置在輸入框沒有值的時候才是 disabled</li>
 </ul>
 <p><img src="https://i.imgur.com/MdNkcGo.png" alt=""></p>
-<pre><code class="javascript">
-test(&quot;button should not be disabled when inputs exist&quot;, () =&gt; {
-  render(&lt;Login /&gt;);
-  const buttonEl = screen.getByRole(&quot;button&quot;);
-  const usernameInputEl = screen.getByPlaceholderText(/username/i);
-  const passwordInputEl = screen.getByPlaceholderText(/password/i);
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;button should not be disabled when inputs exist&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> buttonEl = screen.<span class="title function_">getByRole</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> testValue = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(usernameInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line">  fireEvent.<span class="title function_">change</span>(passwordInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">expect</span>(buttonEl).<span class="property">not</span>.<span class="title function_">toBeDisabled</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-  const testValue = &quot;test&quot;;
 
-  fireEvent.change(usernameInputEl, { target: { value: testValue } });
-  fireEvent.change(passwordInputEl, { target: { value: testValue } });
+<h4 id="css-補充"><a href="#css-補充" class="headerlink" title="css 補充"></a>css 補充</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">style=&#123;&#123; <span class="attribute">visibility</span>: error ? <span class="string">&quot;visible&quot;</span> : <span class="string">&quot;hidden&quot;</span> &#125;&#125;</span><br></pre></td></tr></table></figure>
 
-  expect(buttonEl).not.toBeDisabled();
-});</code></pre>
-<h4 id="css-補充"><a href="#css-補充" class="headerlink" title="css 補充"></a>css 補充</h4><pre><code class="css">  style={{ visibility: error ? "visible" : "hidden" }}</code></pre>
 <p>類似： display:none和visibility:hidden</p>
 <p>而兩者差異：<br>visibility：的隱藏，是物件的位置仍舊保持著不會消失,<br>display: none, 會將 html 該物件拔除</p>
 <h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>此練習範例，很請楚地知道在建立一個功能元件之後，如何再加入每一個區塊的測試，如標題文字、輸入框、按鈕的測試等等，也可以觀察到測試根據使用情境一步步的拆解並加入測試<br>下一篇會有串接資料搭配測試，敬請期待</p>
-<p>參考資料<br><a href="https://github.com/safak/youtube2022/blob/react-testing/src/components/login/Login.jsx">github-login</a><br><a href="https://www.youtube.com/watch?v=Flo268xRpV0" target="_blank" rel="noopener">React Testing Tutorial with React Testing Library and Jest</a></p>
+<p>參考資料<br><a href="https://github.com/safak/youtube2022/blob/react-testing/src/components/login/Login.jsx">github-login</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Flo268xRpV0">React Testing Tutorial with React Testing Library and Jest</a></p>
 
     </div>
 
@@ -410,7 +344,7 @@ test(&quot;button should not be disabled when inputs exist&quot;, () =&gt; {
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#建立-login-檔案"><span class="nav-number">1.</span> <span class="nav-text">建立 login 檔案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#確認-輸入框-有渲染至文件"><span class="nav-number">2.</span> <span class="nav-text">確認 輸入框 有渲染至文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#確認畫面上有按鈕"><span class="nav-number">3.</span> <span class="nav-text">確認畫面上有按鈕</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#輸入框一開始為空"><span class="nav-number">4.</span> <span class="nav-text">輸入框一開始為空</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#輸入框為空時，按鈕應為-disabled"><span class="nav-number">5.</span> <span class="nav-text">輸入框為空時，按鈕應為 disabled</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#錯誤訊息的提示"><span class="nav-number">6.</span> <span class="nav-text">錯誤訊息的提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#輸入框的輸入事件"><span class="nav-number">7.</span> <span class="nav-text">輸入框的輸入事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#當輸入框有值的時候，按鈕不應該-disabled"><span class="nav-number">8.</span> <span class="nav-text">當輸入框有值的時候，按鈕不應該 disabled</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#css-補充"><span class="nav-number">8.1.</span> <span class="nav-text">css 補充</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小結"><span class="nav-number"></span> <span class="nav-text">小結</span></a></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B-login-%E6%AA%94%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">建立 login 檔案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A2%BA%E8%AA%8D-%E8%BC%B8%E5%85%A5%E6%A1%86-%E6%9C%89%E6%B8%B2%E6%9F%93%E8%87%B3%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">確認 輸入框 有渲染至文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A2%BA%E8%AA%8D%E7%95%AB%E9%9D%A2%E4%B8%8A%E6%9C%89%E6%8C%89%E9%88%95"><span class="nav-number">3.</span> <span class="nav-text">確認畫面上有按鈕</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BC%B8%E5%85%A5%E6%A1%86%E4%B8%80%E9%96%8B%E5%A7%8B%E7%82%BA%E7%A9%BA"><span class="nav-number">4.</span> <span class="nav-text">輸入框一開始為空</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BC%B8%E5%85%A5%E6%A1%86%E7%82%BA%E7%A9%BA%E6%99%82%EF%BC%8C%E6%8C%89%E9%88%95%E6%87%89%E7%82%BA-disabled"><span class="nav-number">5.</span> <span class="nav-text">輸入框為空時，按鈕應為 disabled</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%8C%AF%E8%AA%A4%E8%A8%8A%E6%81%AF%E7%9A%84%E6%8F%90%E7%A4%BA"><span class="nav-number">6.</span> <span class="nav-text">錯誤訊息的提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BC%B8%E5%85%A5%E6%A1%86%E7%9A%84%E8%BC%B8%E5%85%A5%E4%BA%8B%E4%BB%B6"><span class="nav-number">7.</span> <span class="nav-text">輸入框的輸入事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%95%B6%E8%BC%B8%E5%85%A5%E6%A1%86%E6%9C%89%E5%80%BC%E7%9A%84%E6%99%82%E5%80%99%EF%BC%8C%E6%8C%89%E9%88%95%E4%B8%8D%E6%87%89%E8%A9%B2-disabled"><span class="nav-number">8.</span> <span class="nav-text">當輸入框有值的時候，按鈕不應該 disabled</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#css-%E8%A3%9C%E5%85%85"><span class="nav-number">8.1.</span> <span class="nav-text">css 補充</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%B5%90"><span class="nav-number"></span> <span class="nav-text">小結</span></a></div>
       </div>
       <!--/noindex-->
 

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="圖示： emit 實作練習  透過點擊add按鈕，觸發外層元件數值的改變 先定義外層接收資料方式 定義內層的 $emit 觸發方法 使用 v-on 的方式觸發外層方法（口訣：前內、後外）    外層元件 定義接收方法：當內層傳給你的時候，要做什麼事  addNumber()使num 增加1 const app &#x3D; Vue.createApp({       data() {         ret">
+  <meta name="description" content="圖示： emit 實作練習  透過點擊add按鈕，觸發外層元件數值的改變 先定義外層接收資料方式 定義內層的 $emit 觸發方法 使用 v-on 的方式觸發外層方法（口訣：前內、後外）    外層元件 定義接收方法：當內層傳給你的時候，要做什麼事 addNumber()使num 增加1123456789101112131415const app &#x3D; Vue.createApp(&#123;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue.js 3 -  資料傳遞 emit">
 <meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2021/09/21/vue-emit/index.html">
 <meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="圖示： emit 實作練習  透過點擊add按鈕，觸發外層元件數值的改變 先定義外層接收資料方式 定義內層的 $emit 觸發方法 使用 v-on 的方式觸發外層方法（口訣：前內、後外）    外層元件 定義接收方法：當內層傳給你的時候，要做什麼事  addNumber()使num 增加1 const app &#x3D; Vue.createApp({       data() {         ret">
+<meta property="og:description" content="圖示： emit 實作練習  透過點擊add按鈕，觸發外層元件數值的改變 先定義外層接收資料方式 定義內層的 $emit 觸發方法 使用 v-on 的方式觸發外層方法（口訣：前內、後外）    外層元件 定義接收方法：當內層傳給你的時候，要做什麼事 addNumber()使num 增加1123456789101112131415const app &#x3D; Vue.createApp(&#123;">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/PxIIobu.png">
 <meta property="og:image" content="https://i.imgur.com/7guYdVb.png">
@@ -221,24 +221,9 @@
 </li>
 </ul>
 <h3 id="外層元件"><a href="#外層元件" class="headerlink" title="外層元件"></a>外層元件</h3><ul>
-<li><p>定義接收方法：當內層傳給你的時候，要做什麼事</p>
-<ul>
-<li><p><code>addNumber()</code>使num 增加1</p>
-<pre><code class="javascript">const app = Vue.createApp({
-      data() {
-        return {
-          num: 0,
-          text: &#39;&#39;
-        };
-      },
-      methods: {
-        addNumber() {
-          console.log(&#39;addnumber&#39;);
-          this.num++;
-        },
+<li>定義接收方法：當內層傳給你的時候，要做什麼事<ul>
+<li><code>addNumber()</code>使num 增加1<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line">            <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">              <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="attr">num</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="attr">text</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">              &#125;;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">methods</span>: &#123;</span><br><span class="line">              <span class="title function_">addNumber</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;addnumber&#x27;</span>);</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">num</span>++;</span><br><span class="line">              &#125;,</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure>
 
-      }
-    });</code></pre>
 </li>
 </ul>
 </li>
@@ -246,15 +231,8 @@
 <h3 id="內層元件"><a href="#內層元件" class="headerlink" title="內層元件"></a>內層元件</h3><ul>
 <li>在方法內建立函式，來觸發資料傳遞</li>
 <li>並將<code>click</code>綁到內部元件的按鈕上。使點擊時候，會觸發$emit<ul>
-<li>emit 名稱<code>emit-num</code><pre><code class="javascript">app.component(&#39;button-counter&#39;, {
-      methods: {
-        click() {
-          console.log(&#39;inner,click&#39;);
-          this.$emit(&#39;emit-num&#39;);
-        }
-      },
-      template: `&lt;button type=&quot;button&quot; @click=&quot;click&quot;&gt;add&lt;/button&gt;`
-    });</code></pre>
+<li>emit 名稱<code>emit-num</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;button-counter&#x27;</span>, &#123;</span><br><span class="line">            <span class="attr">methods</span>: &#123;</span><br><span class="line">              <span class="title function_">click</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;inner,click&#x27;</span>);</span><br><span class="line">                <span class="variable language_">this</span>.$emit(<span class="string">&#x27;emit-num&#x27;</span>);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">template</span>: <span class="string">`&lt;button type=&quot;button&quot; @click=&quot;click&quot;&gt;add&lt;/button&gt;`</span></span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
 </li>
@@ -267,46 +245,17 @@
 </ul>
 </li>
 </ul>
-<pre><code class="javascript">&lt;div id=&quot;app&quot;&gt;
-          {{ num }}
-    &lt;button-counter v-on:emit-num=&quot;addNumber&quot;&gt;&lt;/button-counter&gt;
-     &lt;/div&gt;</code></pre>
-<h2 id="練習二，資料接收"><a href="#練習二，資料接收" class="headerlink" title="練習二，資料接收"></a>練習二，資料接收</h2><h3 id="外層元件-1"><a href="#外層元件-1" class="headerlink" title="外層元件"></a>外層元件</h3><ul>
-<li><p>接收方法為 <code>getData</code> 接收 text</p>
-<pre><code class="javascript">const app = Vue.createApp({
-          data() {
-            return {
-              text: &#39;&#39;
-            };
-          },
-          methods: {
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">&quot;app&quot;</span>&gt;</span><br><span class="line">          &#123;&#123; num &#125;&#125;</span><br><span class="line">    &lt;button-counter v-<span class="attr">on</span>:emit-num=<span class="string">&quot;addNumber&quot;</span>&gt;&lt;/button-counter&gt;</span><br><span class="line">     &lt;/div&gt;</span><br></pre></td></tr></table></figure>
 
-            getData(value) {
-              console.log(&#39;getData&#39;, text);
-              this.text = value;
-            }
-          }
-        });</code></pre>
+<h2 id="練習二，資料接收"><a href="#練習二，資料接收" class="headerlink" title="練習二，資料接收"></a>練習二，資料接收</h2><h3 id="外層元件-1"><a href="#外層元件-1" class="headerlink" title="外層元件"></a>外層元件</h3><ul>
+<li>接收方法為 <code>getData</code> 接收 text<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line">            <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">              <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="attr">text</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">              &#125;;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">methods</span>: &#123;</span><br><span class="line">           </span><br><span class="line">              <span class="title function_">getData</span>(<span class="params">value</span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;getData&#x27;</span>, text);</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">text</span> = value;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
 <h3 id="內層元件-1"><a href="#內層元件-1" class="headerlink" title="內層元件"></a>內層元件</h3><ul>
 <li>建立觸發傳遞的方式<ul>
-<li>將內層元件<code>text: &#39;內部資料&#39;</code> 傳遞到外層<pre><code class="javascript">app.component(&#39;button-text&#39;, {
-data() {
-  return {
-  text: &#39;內部資料&#39;,
-   }
-},
-methods: {
-emitText() {
-this.emit(&#39;emit-text&#39;, this.text)
-   }
-},
-template: `&lt;button type=&quot;button&quot; @click=&quot;emitText&quot;&gt;emit data&lt;/button&gt;`
-});</code></pre>
-<h3 id="建立內外橋樑"><a href="#建立內外橋樑" class="headerlink" title="建立內外橋樑"></a>建立內外橋樑</h3><pre><code class="javascript">&lt;h3&gt;傳遞資料狀態&lt;/h3&gt;
-內部傳來的文字：{{ text }}&lt;br&gt;
-&lt;button-text @emit-text=&quot;getData&quot;&gt;&lt;/button-text&gt;</code></pre>
+<li>將內層元件<code>text: &#39;內部資料&#39;</code> 傳遞到外層<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;button-text&#x27;</span>, &#123;</span><br><span class="line">    <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">text</span>: <span class="string">&#x27;內部資料&#x27;</span>,</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;,</span><br><span class="line">    <span class="attr">methods</span>: &#123;</span><br><span class="line">      <span class="title function_">emitText</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">emit</span>(<span class="string">&#x27;emit-text&#x27;</span>, <span class="variable language_">this</span>.<span class="property">text</span>)</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">     <span class="attr">template</span>: <span class="string">`&lt;button type=&quot;button&quot; @click=&quot;emitText&quot;&gt;emit data&lt;/button&gt;`</span></span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="建立內外橋樑"><a href="#建立內外橋樑" class="headerlink" title="建立內外橋樑"></a>建立內外橋樑</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;h3&gt;傳遞資料狀態&lt;/h3&gt;</span><br><span class="line"> 內部傳來的文字：&#123;&#123; text &#125;&#125;&lt;br&gt;</span><br><span class="line"> <span class="language-xml"><span class="tag">&lt;<span class="name">button-text</span> @<span class="attr">emit-text</span>=<span class="string">&quot;getData&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">button-text</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 <img src="https://i.imgur.com/avhMirS.png" alt=""></li>
 </ul>
 </li>
@@ -314,13 +263,10 @@ template: `&lt;button type=&quot;button&quot; @click=&quot;emitText&quot;&gt;emi
 <h2 id="emit-命名"><a href="#emit-命名" class="headerlink" title="emit 命名"></a>emit 命名</h2><p>與 props 命名一樣需要注意：</p>
 <ul>
 <li>在內層若以駝峰命名 <code>emitText</code><ul>
-<li>也可以一開始內層就是用<code>-</code> 來命名即可，如<code>emit-text</code><pre><code class="javascript">emitText() {
- this.emit(&#39;emitText&#39;, this.text)
-}</code></pre>
-</li>
+<li>也可以一開始內層就是用<code>-</code> 來命名即可，如<code>emit-text</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">emitText</span>(<span class="params"></span>) &#123;</span><br><span class="line">       <span class="variable language_">this</span>.<span class="title function_">emit</span>(<span class="string">&#x27;emitText&#x27;</span>, <span class="variable language_">this</span>.<span class="property">text</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li>到了要綁定的 template 上，<code>emit-text</code><pre><code class="javascript">&lt;button-text @emit-text=&quot;getData&quot;&gt;&lt;/button-text&gt;</code></pre>
+<li>到了要綁定的 template 上，<code>emit-text</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button-text @emit-text=<span class="string">&quot;getData&quot;</span>&gt;&lt;/button-text&gt;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 
@@ -406,7 +352,7 @@ template: `&lt;button type=&quot;button&quot; @click=&quot;emitText&quot;&gt;emi
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#emit-實作練習"><span class="nav-number">1.</span> <span class="nav-text">emit 實作練習</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#外層元件"><span class="nav-number">1.1.</span> <span class="nav-text">外層元件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#內層元件"><span class="nav-number">1.2.</span> <span class="nav-text">內層元件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立內外層元件的溝通橋樑"><span class="nav-number">2.</span> <span class="nav-text">建立內外層元件的溝通橋樑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#練習二，資料接收"><span class="nav-number">3.</span> <span class="nav-text">練習二，資料接收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#外層元件-1"><span class="nav-number">3.1.</span> <span class="nav-text">外層元件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#內層元件-1"><span class="nav-number">3.2.</span> <span class="nav-text">內層元件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立內外橋樑"><span class="nav-number">3.3.</span> <span class="nav-text">建立內外橋樑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#emit-命名"><span class="nav-number">4.</span> <span class="nav-text">emit 命名</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#emit-%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92"><span class="nav-number">1.</span> <span class="nav-text">emit 實作練習</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E5%B1%A4%E5%85%83%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">外層元件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A7%E5%B1%A4%E5%85%83%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">內層元件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%85%A7%E5%A4%96%E5%B1%A4%E5%85%83%E4%BB%B6%E7%9A%84%E6%BA%9D%E9%80%9A%E6%A9%8B%E6%A8%91"><span class="nav-number">2.</span> <span class="nav-text">建立內外層元件的溝通橋樑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B7%B4%E7%BF%92%E4%BA%8C%EF%BC%8C%E8%B3%87%E6%96%99%E6%8E%A5%E6%94%B6"><span class="nav-number">3.</span> <span class="nav-text">練習二，資料接收</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E5%B1%A4%E5%85%83%E4%BB%B6-1"><span class="nav-number">3.1.</span> <span class="nav-text">外層元件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A7%E5%B1%A4%E5%85%83%E4%BB%B6-1"><span class="nav-number">3.2.</span> <span class="nav-text">內層元件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%85%A7%E5%A4%96%E6%A9%8B%E6%A8%91"><span class="nav-number">3.3.</span> <span class="nav-text">建立內外橋樑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#emit-%E5%91%BD%E5%90%8D"><span class="nav-number">4.</span> <span class="nav-text">emit 命名</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

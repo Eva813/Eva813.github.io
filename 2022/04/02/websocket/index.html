@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -227,43 +227,15 @@
 <h3 id="後端"><a href="#後端" class="headerlink" title="後端"></a>後端</h3><ul>
 <li>將 socket.io 引入 node.js 的 server 端</li>
 </ul>
-<pre><code class="javascript">import devServer from &quot;@/server/dev&quot;;
-import prodServer from &quot;@/server/prod&quot;;
-import express from &quot;express&quot;;
-import { Server } from &quot;socket.io&quot;
-import http from &quot;http&quot;  //也可以引入http模組
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> devServer <span class="keyword">from</span> <span class="string">&quot;@/server/dev&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> prodServer <span class="keyword">from</span> <span class="string">&quot;@/server/prod&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">&quot;express&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Server</span> &#125; <span class="keyword">from</span> <span class="string">&quot;socket.io&quot;</span></span><br><span class="line"><span class="keyword">import</span> http <span class="keyword">from</span> <span class="string">&quot;http&quot;</span>  <span class="comment">//也可以引入http模組</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> port = <span class="number">3000</span>;</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"><span class="comment">//透過 http 將 server 建立起來</span></span><br><span class="line"><span class="keyword">const</span> server = http.<span class="title function_">createServer</span>(app)</span><br><span class="line"><span class="keyword">const</span> io = <span class="keyword">new</span> <span class="title class_">Server</span>(server)</span><br><span class="line"><span class="keyword">const</span> userService = <span class="keyword">new</span> <span class="title class_">UserService</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//監聽</span></span><br><span class="line">server.<span class="title function_">listen</span>(port, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`The application is running on port <span class="subst">$&#123;port&#125;</span>.`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-const port = 3000;
-const app = express();
-//透過 http 將 server 建立起來
-const server = http.createServer(app)
-const io = new Server(server)
-const userService = new UserService
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//建立起連接時，發出訊息</span></span><br><span class="line"><span class="comment">//當有用戶連接到connection 就會有回呼函式</span></span><br><span class="line">io.<span class="title function_">on</span>(<span class="string">&#x27;connection&#x27;</span>,<span class="function">(<span class="params">socket</span>)=&gt;</span>&#123;</span><br><span class="line">	<span class="comment">//發出訊息</span></span><br><span class="line">	socket.<span class="title function_">emit</span>(<span class="string">&#x27;join&#x27;</span>, <span class="string">&#x27;Welcom&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-//監聽
-server.listen(port, () =&gt; {
-  console.log(`The application is running on port ${port}.`);
-});
-</code></pre>
-<pre><code class="typescript">//建立起連接時，發出訊息
-//當有用戶連接到connection 就會有回呼函式
-io.on(&#39;connection&#39;,(socket)=&gt;{
-    //發出訊息
-    socket.emit(&#39;join&#39;, &#39;Welcom&#39;)
-})</code></pre>
+
 <h2 id="如何在前端使用，與後端建立連線？"><a href="#如何在前端使用，與後端建立連線？" class="headerlink" title="如何在前端使用，與後端建立連線？"></a>如何在前端使用，與後端建立連線？</h2><ul>
 <li>到前端的入口檔案</li>
 </ul>
-<pre><code class="typescript">//將 socket.io 的包引入前端程式這邊
-import { io } from &quot;socket.io-client&quot;;
-
-//1. 建立連接到 node server
-const clientIo = io();
-
-
-clientIo.on(&#39;join&#39;,(msg)=&gt;{
-    console.log(&#39;msg&#39;,msg)
-})</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將 socket.io 的包引入前端程式這邊</span></span><br><span class="line"><span class="keyword">import</span> &#123; io &#125; <span class="keyword">from</span> <span class="string">&quot;socket.io-client&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//1. 建立連接到 node server</span></span><br><span class="line"><span class="keyword">const</span> clientIo = <span class="title function_">io</span>();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">clientIo.<span class="title function_">on</span>(<span class="string">&#x27;join&#x27;</span>,<span class="function">(<span class="params">msg</span>)=&gt;</span>&#123;</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;msg&#x27;</span>,msg)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -347,7 +319,7 @@ clientIo.on(&#39;join&#39;,(msg)=&gt;{
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#情境說明"><span class="nav-number">1.</span> <span class="nav-text">情境說明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聊天室的實際運用"><span class="nav-number">2.</span> <span class="nav-text">聊天室的實際運用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝-socket-io"><span class="nav-number">3.</span> <span class="nav-text">安裝 socket.io</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#後端"><span class="nav-number">3.1.</span> <span class="nav-text">後端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何在前端使用，與後端建立連線？"><span class="nav-number">4.</span> <span class="nav-text">如何在前端使用，與後端建立連線？</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%83%85%E5%A2%83%E8%AA%AA%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">情境說明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%8A%E5%A4%A9%E5%AE%A4%E7%9A%84%E5%AF%A6%E9%9A%9B%E9%81%8B%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">聊天室的實際運用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D-socket-io"><span class="nav-number">3.</span> <span class="nav-text">安裝 socket.io</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E7%AB%AF"><span class="nav-number">3.1.</span> <span class="nav-text">後端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E5%89%8D%E7%AB%AF%E4%BD%BF%E7%94%A8%EF%BC%8C%E8%88%87%E5%BE%8C%E7%AB%AF%E5%BB%BA%E7%AB%8B%E9%80%A3%E7%B7%9A%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">如何在前端使用，與後端建立連線？</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

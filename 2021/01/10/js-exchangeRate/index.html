@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="實作需求分析  抓取api提供的匯率資料：使用jQuery,ajax 選擇不同幣別，進行匯率換算 swap按鈕，使幣別交換  完成後的成品jQuery.ajax 使用 參考資料：jQuery.ajax()   $.ajax({   method: &quot;get&quot;,   url: &quot;https:&#x2F;&#x2F;v6.exchangerate-api.com&#x2F;v6&#x2F;06f04b80574">
+  <meta name="description" content="實作需求分析  抓取api提供的匯率資料：使用jQuery,ajax 選擇不同幣別，進行匯率換算 swap按鈕，使幣別交換  完成後的成品jQuery.ajax 使用 參考資料：jQuery.ajax()   1234567891011$.ajax(&#123;  method: &quot;get&quot;,  url: &quot;https:&#x2F;&#x2F;v6.exchangerate-api.co">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JS實作- exchangeRate匯率轉換器">
 <meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2021/01/10/js-exchangeRate/index.html">
 <meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="實作需求分析  抓取api提供的匯率資料：使用jQuery,ajax 選擇不同幣別，進行匯率換算 swap按鈕，使幣別交換  完成後的成品jQuery.ajax 使用 參考資料：jQuery.ajax()   $.ajax({   method: &quot;get&quot;,   url: &quot;https:&#x2F;&#x2F;v6.exchangerate-api.com&#x2F;v6&#x2F;06f04b80574">
+<meta property="og:description" content="實作需求分析  抓取api提供的匯率資料：使用jQuery,ajax 選擇不同幣別，進行匯率換算 swap按鈕，使幣別交換  完成後的成品jQuery.ajax 使用 參考資料：jQuery.ajax()   1234567891011$.ajax(&#123;  method: &quot;get&quot;,  url: &quot;https:&#x2F;&#x2F;v6.exchangerate-api.co">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/cu80NjP.png">
 <meta property="og:image" content="https://i.imgur.com/S1kOYmH.png">
@@ -224,100 +224,31 @@
 <li>選擇不同幣別，進行匯率換算</li>
 <li>swap按鈕，使幣別交換</li>
 </ul>
-<h4 id="完成後的成品"><a href="#完成後的成品" class="headerlink" title="完成後的成品"></a>完成後的<a href="https://eva813.github.io/Eva_portfolio/exchangeRate/exchangeRate.html" target="_blank" rel="noopener">成品</a></h4><h2 id="jQuery-ajax-使用"><a href="#jQuery-ajax-使用" class="headerlink" title="jQuery.ajax 使用"></a>jQuery.ajax 使用</h2><ul>
-<li>參考資料：<a href="https://api.jquery.com/jquery.ajax/" target="_blank" rel="noopener">jQuery.ajax()
+<h4 id="完成後的成品"><a href="#完成後的成品" class="headerlink" title="完成後的成品"></a>完成後的<a target="_blank" rel="noopener" href="https://eva813.github.io/Eva_portfolio/exchangeRate/exchangeRate.html">成品</a></h4><h2 id="jQuery-ajax-使用"><a href="#jQuery-ajax-使用" class="headerlink" title="jQuery.ajax 使用"></a>jQuery.ajax 使用</h2><ul>
+<li>參考資料：<a target="_blank" rel="noopener" href="https://api.jquery.com/jquery.ajax/">jQuery.ajax()
 </a></li>
 </ul>
-<pre><code class="javascript">$.ajax({
-  method: &quot;get&quot;,
-  url: &quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&quot;,
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&quot;get&quot;</span>,</span><br><span class="line">  <span class="attr">url</span>: <span class="string">&quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&quot;</span>,</span><br><span class="line"> </span><br><span class="line">&#125;)</span><br><span class="line">  .<span class="title function_">done</span>(<span class="keyword">function</span>(<span class="params"> some_data </span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">    <span class="comment">//成功抓到值的話，就會印出抓取到的資料</span></span><br><span class="line">  &#125;).<span class="title function_">fail</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">  </span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
 
-})
-  .done(function( some_data ) {
-    console.log(data);
-    //成功抓到值的話，就會印出抓取到的資料
-  }).fail(function(){
-
-  })</code></pre>
 <p><img src="https://i.imgur.com/S1kOYmH.png" alt=""></p>
 <ul>
-<li>應用於exchangeRate:<pre><code class="javascript">$.ajax({
-  url: `https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/${currency_one}`,  //注意符號
-  method: &#39;get&#39;,//get,post,put
-  dataType: &#39;json&#39;,
-  success: function (data) {
-    //console.log(data);
-    const rate = data.conversion_rates[currency_two];
-    //console.log(rate);
-    $(&#39;#rate&#39;).text(`1 ${currency_one} = ${rate} ${currency_two}`);
-    $(&#39;#amount-two&#39;).val((amountOne * rate).toFixed(2));
-  }
-})
-</code></pre>
-</li>
+<li>應用於exchangeRate:<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">`https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/<span class="subst">$&#123;currency_one&#125;</span>`</span>,  <span class="comment">//注意符號</span></span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;get&#x27;</span>,<span class="comment">//get,post,put</span></span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="comment">//console.log(data);</span></span><br><span class="line">      <span class="keyword">const</span> rate = data.<span class="property">conversion_rates</span>[currency_two];</span><br><span class="line">      <span class="comment">//console.log(rate);</span></span><br><span class="line">      $(<span class="string">&#x27;#rate&#x27;</span>).<span class="title function_">text</span>(<span class="string">`1 <span class="subst">$&#123;currency_one&#125;</span> = <span class="subst">$&#123;rate&#125;</span> <span class="subst">$&#123;currency_two&#125;</span>`</span>);</span><br><span class="line">      $(<span class="string">&#x27;#amount-two&#x27;</span>).<span class="title function_">val</span>((amountOne * rate).<span class="title function_">toFixed</span>(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><h4 id="詳細說明可以參照內文：計算匯率calculate函式"><a href="#詳細說明可以參照內文：計算匯率calculate函式" class="headerlink" title="詳細說明可以參照內文：計算匯率calculate函式"></a>詳細說明可以參照內文：<a href="#計算匯率calculate-函式">計算匯率calculate函式</a></h4></li>
 </ul>
-<pre><code>* #### 詳細說明可以參照內文：[計算匯率calculate函式](#計算匯率calculate-函式)
+<h4 id="其他參考資料："><a href="#其他參考資料：" class="headerlink" title="其他參考資料："></a>其他參考資料：</h4><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=z-hN7GY5K7g">[ Alex 宅開發 ] 👨‍💻從 jQuery 入門到認識 JavaScript #5 Ajax 與非同步功能操作與原始碼探索</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- `url`:來源，api的位置在哪裏</span><br><span class="line">- `type`:api的呼叫方式</span><br><span class="line">- `dataType`:它回給你的資料類型</span><br><span class="line">- `data`:你要傳給它什麼</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">$.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">  <span class="attr">url</span>: data.<span class="property">json</span>,</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;get&#x27;</span>,<span class="comment">//get,post,put,path,delete</span></span><br><span class="line">  <span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>, <span class="comment">//html,xml,text,jsonp</span></span><br><span class="line">  <span class="attr">data</span>: &#123;&#125;</span><br><span class="line"></span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">res</span>) &#123;</span><br><span class="line">  <span class="comment">//response &lt;-&gt; request</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(res);</span><br><span class="line">  <span class="keyword">return</span> def.<span class="title function_">resolve</span>();</span><br><span class="line">&#125;), <span class="keyword">function</span> (<span class="params">err</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(err);</span><br><span class="line">  <span class="keyword">return</span> def.<span class="title function_">reject</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
-#### 其他參考資料：
 
-[[ Alex 宅開發 ] 👨‍💻從 jQuery 入門到認識 JavaScript #5 Ajax 與非同步功能操作與原始碼探索](https://www.youtube.com/watch?v=z-hN7GY5K7g)
-</code></pre><ul>
-<li><code>url</code>:來源，api的位置在哪裏</li>
-<li><code>type</code>:api的呼叫方式</li>
-<li><code>dataType</code>:它回給你的資料類型</li>
-<li><code>data</code>:你要傳給它什麼<pre><code></code></pre></li>
-</ul>
-<pre><code class="javascript">
 
-$.ajax({
-  url: data.json,
-  type: &#39;get&#39;,//get,post,put,path,delete
-  dataType: &#39;json&#39;, //html,xml,text,jsonp
-  data: {}
-
-}).then(function (res) {
-  //response &lt;-&gt; request
-  console.log(res);
-  return def.resolve();
-}), function (err) {
-  console.log(err);
-  return def.reject();
-}
-</code></pre>
 <h2 id="計算匯率calculate-函式"><a href="#計算匯率calculate-函式" class="headerlink" title="計算匯率calculate 函式"></a>計算匯率calculate 函式</h2><ul>
 <li>此函式為抓取匯率api的資料並帶入計算匯率</li>
 </ul>
-<pre><code class="javascript">function calculate() {
-
-  var currency_one = $(&quot;#currency-one&quot;).val();
-  var currency_two = $(&#39;#currency-two&#39;).val();
-  var amountOne = $(&#39;#amount-one&#39;).val();
-  var amountTwo = $(&#39;#amount-two&#39;).val();
-
-  //https://app.exchangerate-api.com/dashboard/confirmed
-
-  $.ajax({
-    url: `https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/${currency_one}`,//注意符號
-    method: &#39;get&#39;,//抓取值
-    dataType: &#39;json&#39;,
-    success: function (data) {
-      //console.log(data);  //查看抓到的物件
-
-      const rate = data.conversion_rates[currency_two];
-      //console.log(rate);
-
-      $(&#39;#rate&#39;).text(`1 ${currency_one} = ${rate} ${currency_two}`);
-
-      //將值帶入
-      $(&#39;#amount-two&#39;).val((amountOne * rate).toFixed(2));
-    }
-  })
-
-
-}</code></pre>
-<h3 id="函式說明"><a href="#函式說明" class="headerlink" title="函式說明:"></a>函式說明:</h3><h4 id="1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量"><a href="#1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量" class="headerlink" title="1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量"></a>1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量</h4><h4 id="2-串接資料"><a href="#2-串接資料" class="headerlink" title="2.串接資料"></a>2.串接資料</h4><p> (1). 抓取資料的位置<br><code>url: https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/${currency_one}</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">calculate</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> currency_one = $(<span class="string">&quot;#currency-one&quot;</span>).<span class="title function_">val</span>();</span><br><span class="line">  <span class="keyword">var</span> currency_two = $(<span class="string">&#x27;#currency-two&#x27;</span>).<span class="title function_">val</span>();</span><br><span class="line">  <span class="keyword">var</span> amountOne = $(<span class="string">&#x27;#amount-one&#x27;</span>).<span class="title function_">val</span>();</span><br><span class="line">  <span class="keyword">var</span> amountTwo = $(<span class="string">&#x27;#amount-two&#x27;</span>).<span class="title function_">val</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//https://app.exchangerate-api.com/dashboard/confirmed</span></span><br><span class="line"></span><br><span class="line">  $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">`https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/<span class="subst">$&#123;currency_one&#125;</span>`</span>,<span class="comment">//注意符號</span></span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;get&#x27;</span>,<span class="comment">//抓取值</span></span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="comment">//console.log(data);  //查看抓到的物件</span></span><br><span class="line">      </span><br><span class="line">      <span class="keyword">const</span> rate = data.<span class="property">conversion_rates</span>[currency_two];</span><br><span class="line">      <span class="comment">//console.log(rate);</span></span><br><span class="line">      </span><br><span class="line">      $(<span class="string">&#x27;#rate&#x27;</span>).<span class="title function_">text</span>(<span class="string">`1 <span class="subst">$&#123;currency_one&#125;</span> = <span class="subst">$&#123;rate&#125;</span> <span class="subst">$&#123;currency_two&#125;</span>`</span>);</span><br><span class="line">      </span><br><span class="line">      <span class="comment">//將值帶入</span></span><br><span class="line">      $(<span class="string">&#x27;#amount-two&#x27;</span>).<span class="title function_">val</span>((amountOne * rate).<span class="title function_">toFixed</span>(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函式說明"><a href="#函式說明" class="headerlink" title="函式說明:"></a>函式說明:</h3><h4 id="1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量"><a href="#1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量" class="headerlink" title="1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量"></a>1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量</h4><h4 id="2-串接資料"><a href="#2-串接資料" class="headerlink" title="2.串接資料"></a>2.串接資料</h4><p> (1). 抓取資料的位置<br><code>url: https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/$&#123;currency_one&#125;</code></p>
 <p>注意網址：<br><code>&quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&quot;</code><br>注意網址後面有修改，要抓取會變動的變數： ${currency_one}</p>
 <p> (2) 檢查是否有抓到要的資料：</p>
 <ul>
@@ -336,32 +267,15 @@ $.ajax({
 <h2 id="其他輸入值的抓取與連動"><a href="#其他輸入值的抓取與連動" class="headerlink" title="其他輸入值的抓取與連動"></a>其他輸入值的抓取與連動</h2><ul>
 <li><h4 id="currency-one的改變，會連動上面的函式計算結果"><a href="#currency-one的改變，會連動上面的函式計算結果" class="headerlink" title="#currency-one的改變，會連動上面的函式計算結果"></a><code>#currency-one的改變</code>，會連動上面的函式計算結果</h4></li>
 </ul>
-<pre><code class="javascript">$(&quot;#currency-one&quot;).change(function () {
-  $(&quot;#rate&quot;).html(&quot;&quot;); 
-  calculate();
-})</code></pre>
-<pre><code class="javascript">
-//抓取amountone
-$(&quot;#amount-one&quot;).on(&quot;input&quot;, function () {
-  $(&quot;#rate&quot;).html(&quot;&quot;);
-  calculate();
-})
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&quot;#currency-one&quot;</span>).<span class="title function_">change</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&quot;#rate&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;&quot;</span>); </span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-$(&quot;#currency-two&quot;).change(function () {
-  $(&quot;#rate&quot;).html(&quot;&quot;);
-  calculate();
-})
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//抓取amountone</span></span><br><span class="line">$(<span class="string">&quot;#amount-one&quot;</span>).<span class="title function_">on</span>(<span class="string">&quot;input&quot;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&quot;#rate&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">$(<span class="string">&quot;#currency-two&quot;</span>).<span class="title function_">change</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&quot;#rate&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//抓取amountTwo</span></span><br><span class="line">$(<span class="string">&quot;#amount-two&quot;</span>).<span class="title function_">on</span>(<span class="string">&quot;input&quot;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&quot;#rate&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-//抓取amountTwo
-$(&quot;#amount-two&quot;).on(&quot;input&quot;, function () {
-  $(&quot;#rate&quot;).html(&quot;&quot;);
-  calculate();
-})</code></pre>
 <ul>
 <li><h4 id="發現使用-append-，會出現累積div文字的問題"><a href="#發現使用-append-，會出現累積div文字的問題" class="headerlink" title="發現使用.append()，會出現累積div文字的問題"></a>發現使用<code>.append()</code>，會出現累積div文字的問題</h4></li>
 <li><p>(1) 清除函式<code>.append()</code>，累積div文字呈現的問題<br><code>$(&quot;#rate&quot;).html(&quot;&quot;);</code></p>
 </li>
-<li><p>(2) 將原本使用<code>.append()</code>的地方，修改為<code>.text()</code>, <code>$(&#39;#rate&#39;).text(`1 ${currency_one} = ${rate} ${currency_two}`);</code></p>
+<li><p>(2) 將原本使用<code>.append()</code>的地方，修改為<code>.text()</code>, <code>$(&#39;#rate&#39;).text(`1 $&#123;currency_one&#125; = $&#123;rate&#125; $&#123;currency_two&#125;`);</code></p>
 <ul>
 <li>位置：<a href="#計算匯率calculate-函式">計算匯率calculate函式</a></li>
 </ul>
@@ -375,22 +289,14 @@ $(&quot;#amount-two&quot;).on(&quot;input&quot;, function () {
 </ul>
 <p><img src="https://i.imgur.com/gkYsHxQ.png" alt=""></p>
 <p><img src="https://i.imgur.com/fAZmC0Q.png" alt=""></p>
-<pre><code class="javascript">//swap按鈕
-$(&#39;#swap&#39;).click(function () {
-  let temp = $(&quot;#currency-one&quot;).val();//設一個變數來存放currency-one
-  $(&quot;#currency-one&quot;).val($(&quot;#currency-two&quot;).val());
-  $(&quot;#currency-two&quot;).val(temp);
-  calculate();
-})
-
-calculate(); //放於最後</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//swap按鈕</span></span><br><span class="line">$(<span class="string">&#x27;#swap&#x27;</span>).<span class="title function_">click</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> temp = $(<span class="string">&quot;#currency-one&quot;</span>).<span class="title function_">val</span>();<span class="comment">//設一個變數來存放currency-one</span></span><br><span class="line">  $(<span class="string">&quot;#currency-one&quot;</span>).<span class="title function_">val</span>($(<span class="string">&quot;#currency-two&quot;</span>).<span class="title function_">val</span>());</span><br><span class="line">  $(<span class="string">&quot;#currency-two&quot;</span>).<span class="title function_">val</span>(temp);</span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title function_">calculate</span>(); <span class="comment">//放於最後</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>console.log($(&quot;#currency-one&quot;).val());</code></li>
 <li><code>console.log($(&quot;#currency-two&quot;).val());</code></li>
 </ul>
 <p><img src="https://i.imgur.com/o4JLcIF.png" alt=""></p>
 <hr>
-<p>參考資料：<br><a href="https://ithelp.ithome.com.tw/articles/10192175" target="_blank" rel="noopener">重新認識 JavaScript: Day 16 那些你知道與不知道的事件們</a></p>
+<p>參考資料：<br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10192175">重新認識 JavaScript: Day 16 那些你知道與不知道的事件們</a></p>
 
     </div>
 
@@ -476,7 +382,7 @@ calculate(); //放於最後</code></pre>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#實作需求分析"><span class="nav-number">1.</span> <span class="nav-text">實作需求分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#完成後的成品"><span class="nav-number">1.0.1.</span> <span class="nav-text">完成後的成品</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jQuery-ajax-使用"><span class="nav-number">2.</span> <span class="nav-text">jQuery.ajax 使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#計算匯率calculate-函式"><span class="nav-number">3.</span> <span class="nav-text">計算匯率calculate 函式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函式說明"><span class="nav-number">3.1.</span> <span class="nav-text">函式說明:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-串接資料"><span class="nav-number">3.1.2.</span> <span class="nav-text">2.串接資料</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他輸入值的抓取與連動"><span class="nav-number">4.</span> <span class="nav-text">其他輸入值的抓取與連動</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#currency-one的改變，會連動上面的函式計算結果"><span class="nav-number">4.0.1.</span> <span class="nav-text">#currency-one的改變，會連動上面的函式計算結果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#發現使用-append-，會出現累積div文字的問題"><span class="nav-number">4.0.2.</span> <span class="nav-text">發現使用.append()，會出現累積div文字的問題</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swap按鈕-（使幣別交換）"><span class="nav-number">5.</span> <span class="nav-text">swap按鈕 （使幣別交換）</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">實作需求分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E5%BE%8C%E7%9A%84%E6%88%90%E5%93%81"><span class="nav-number">1.0.1.</span> <span class="nav-text">完成後的成品</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jQuery-ajax-%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">jQuery.ajax 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A9%B3%E7%B4%B0%E8%AA%AA%E6%98%8E%E5%8F%AF%E4%BB%A5%E5%8F%83%E7%85%A7%E5%85%A7%E6%96%87%EF%BC%9A%E8%A8%88%E7%AE%97%E5%8C%AF%E7%8E%87calculate%E5%87%BD%E5%BC%8F"><span class="nav-number">2.0.1.</span> <span class="nav-text">詳細說明可以參照內文：計算匯率calculate函式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99%EF%BC%9A"><span class="nav-number">2.0.2.</span> <span class="nav-text">其他參考資料：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%88%E7%AE%97%E5%8C%AF%E7%8E%87calculate-%E5%87%BD%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">計算匯率calculate 函式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E5%BC%8F%E8%AA%AA%E6%98%8E"><span class="nav-number">3.1.</span> <span class="nav-text">函式說明:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%85%88%E5%B0%87%E8%A6%81%E6%8A%93%E5%8F%96%E7%9A%84%E5%80%BC%EF%BC%8C%E5%AE%A3%E5%91%8A%E8%AE%8A%E6%95%B8-%E5%88%86%E5%88%A5%E6%9C%89%E9%81%B8%E6%93%87%E7%9A%84%E5%9C%8B%E5%AE%B6%E5%B9%A3%E5%88%A5%E3%80%81%E5%85%8C%E6%8F%9B%E7%9A%84%E6%95%B8%E9%87%8F"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%B8%B2%E6%8E%A5%E8%B3%87%E6%96%99"><span class="nav-number">3.1.2.</span> <span class="nav-text">2.串接資料</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%BC%B8%E5%85%A5%E5%80%BC%E7%9A%84%E6%8A%93%E5%8F%96%E8%88%87%E9%80%A3%E5%8B%95"><span class="nav-number">4.</span> <span class="nav-text">其他輸入值的抓取與連動</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#currency-one%E7%9A%84%E6%94%B9%E8%AE%8A%EF%BC%8C%E6%9C%83%E9%80%A3%E5%8B%95%E4%B8%8A%E9%9D%A2%E7%9A%84%E5%87%BD%E5%BC%8F%E8%A8%88%E7%AE%97%E7%B5%90%E6%9E%9C"><span class="nav-number">4.0.1.</span> <span class="nav-text">#currency-one的改變，會連動上面的函式計算結果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%99%BC%E7%8F%BE%E4%BD%BF%E7%94%A8-append-%EF%BC%8C%E6%9C%83%E5%87%BA%E7%8F%BE%E7%B4%AF%E7%A9%8Ddiv%E6%96%87%E5%AD%97%E7%9A%84%E5%95%8F%E9%A1%8C"><span class="nav-number">4.0.2.</span> <span class="nav-text">發現使用.append()，會出現累積div文字的問題</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swap%E6%8C%89%E9%88%95-%EF%BC%88%E4%BD%BF%E5%B9%A3%E5%88%A5%E4%BA%A4%E6%8F%9B%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">swap按鈕 （使幣別交換）</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

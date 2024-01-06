@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1. DOM 與樹狀結構  DOM: document:網頁內部 KURO 老師:DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。     Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西   API (Application Programming Interface) 應用程式 編程 介面 document 物件 A">
+  <meta name="description" content="1. DOM 與樹狀結構  DOM: document:網頁內部 KURO 老師:DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。     Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西   API (Application Programming Interface) 應用程式 編程 介面document 物件 AP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JS-browser">
 <meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2020/12/28/js-browser/index.html">
 <meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="1. DOM 與樹狀結構  DOM: document:網頁內部 KURO 老師:DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。     Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西   API (Application Programming Interface) 應用程式 編程 介面 document 物件 A">
+<meta property="og:description" content="1. DOM 與樹狀結構  DOM: document:網頁內部 KURO 老師:DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。     Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西   API (Application Programming Interface) 應用程式 編程 介面document 物件 AP">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/NdO4OR5.png">
 <meta property="og:image" content="https://i.imgur.com/uZDTql8.png">
@@ -33,6 +33,9 @@
 <meta property="og:image" content="https://i.imgur.com/hSmfZ9u.png">
 <meta property="og:image" content="https://i.imgur.com/yNOOK2m.png">
 <meta property="og:image" content="https://i.imgur.com/d7ZlZnr.png">
+<meta property="og:image" content="https://i.imgur.com/1ouq4WA.png">
+<meta property="og:image" content="https://i.imgur.com/QzoOo6r.png">
+<meta property="og:image" content="https://i.imgur.com/pSMPFCJ.png">
 <meta property="og:image" content="https://i.imgur.com/I9qr8LD.png">
 <meta property="og:image" content="https://i.imgur.com/jFPYIO0.png">
 <meta property="og:image" content="https://i.imgur.com/8EeLLGQ.png">
@@ -221,133 +224,44 @@
 <p>Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西<br> <img src="https://i.imgur.com/tPHGSL4.png" alt=""></p>
 </blockquote>
 <h3 id="API-Application-Programming-Interface"><a href="#API-Application-Programming-Interface" class="headerlink" title="API (Application Programming Interface)"></a>API (Application Programming Interface)</h3><ul>
-<li><p>應用程式 編程 介面</p>
-<h2 id="document-物件-API-文件"><a href="#document-物件-API-文件" class="headerlink" title="document 物件 API 文件"></a>document 物件 API 文件</h2></li>
-<li><h4 id="getElementsByTagName-抓取html中某tag的元素"><a href="#getElementsByTagName-抓取html中某tag的元素" class="headerlink" title="getElementsByTagName : 抓取html中某tag的元素"></a><code>getElementsByTagName</code> : 抓取html中某tag的元素</h4><pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;body&gt;
-&lt;div&gt;
-  hello~
-
-&lt;/div&gt;
-&lt;div&gt;
-  yo!
-&lt;/div&gt;
-&lt;script&gt;
-
-  const elements = document.getElementsByTagName(&#39;div&#39;);
-  console.log(elements);
-&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-<p><img src="https://i.imgur.com/hSmfZ9u.png" alt=""></p>
-</li>
+<li>應用程式 編程 介面<h2 id="document-物件-API-文件"><a href="#document-物件-API-文件" class="headerlink" title="document 物件 API 文件"></a>document 物件 API 文件</h2></li>
+<li><h4 id="getElementsByTagName-抓取html中某tag的元素"><a href="#getElementsByTagName-抓取html中某tag的元素" class="headerlink" title="getElementsByTagName : 抓取html中某tag的元素"></a><code>getElementsByTagName</code> : 抓取html中某tag的元素</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&#x27;div&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/hSmfZ9u.png" alt=""></li>
 </ul>
 <p><img src="https://i.imgur.com/yNOOK2m.png" alt=""></p>
 <ul>
 <li><h4 id="getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取"><a href="#getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取" class="headerlink" title="getElementsByClassName: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)"></a><code>getElementsByClassName</code>: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)</h4></li>
 </ul>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">getElementsByClassName</span>(<span class="string">&#x27;block1&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-  &lt;title&gt;&lt;/title&gt;
-&lt;/head&gt;
-
-&lt;body&gt;
-  &lt;h1&gt;DOM
-  &lt;/h1&gt;
-  &lt;div class=&quot;block1&quot;&gt;
-    hello~
-
-  &lt;/div&gt;
-  &lt;div&gt;
-    yo!
-  &lt;/div&gt;
-  &lt;script&gt;
-
-    const elements = document.getElementsByClassName(&#39;block1&#39;);
-    console.log(elements);
-  &lt;/script&gt;
-&lt;/body&gt;
-
-&lt;/html&gt;</code></pre>
 <p><img src="https://i.imgur.com/d7ZlZnr.png" alt=""></p>
 <ul>
-<li><h4 id="getElementById-注意：getElement-沒有加s！這是用來抓取指定ID"><a href="#getElementById-注意：getElement-沒有加s！這是用來抓取指定ID" class="headerlink" title="getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID"></a><code>getElementById</code> : 注意：getElement 沒有加s！這是用來抓取指定ID</h4><pre><code class="html">&lt;body&gt;
-&lt;h1&gt;DOM
-&lt;/h1&gt;
-&lt;div class=&quot;block1&quot;&gt;
-  hello~
-
-&lt;/div&gt;
-&lt;div id=&quot;myyo&quot;&gt;
-  yo!
-&lt;/div&gt;
-&lt;script&gt;
-  const elements = document.getElementById(&#39;myyo&#39;);
-  console.log(elements);
-&lt;/script&gt;
-&lt;/body&gt;
-</code></pre>
+<li><h4 id="getElementById-注意：getElement-沒有加s！這是用來抓取指定ID"><a href="#getElementById-注意：getElement-沒有加s！這是用來抓取指定ID" class="headerlink" title="getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID"></a><code>getElementById</code> : 注意：getElement 沒有加s！這是用來抓取指定ID</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;myyo&quot;</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myyo&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/1ouq4WA.png" alt=""></p>
+</li>
+<li><h4 id="querySelector-後面接的是css選擇器"><a href="#querySelector-後面接的是css選擇器" class="headerlink" title="querySelector: 後面接的是css選擇器"></a><code>querySelector</code>: 後面接的是css選擇器</h4></li>
+<li><p>只會針對元素的第一筆資料，其他並不會被選入這時候可以使用</p>
+<ul>
+<li>選擇tag標籤：(‘div’)：注意：使用此方式當html有多個div，他只會選擇到第一個符合的</li>
+<li>選擇cass : (‘.calssName’)</li>
+<li>選擇id : (‘#idName’)</li>
+</ul>
 </li>
 </ul>
-<pre><code>![](https://i.imgur.com/1ouq4WA.png)
-
-* #### `querySelector`: 後面接的是css選擇器
-* 只會針對元素的第一筆資料，其他並不會被選入這時候可以使用
-
-    * 選擇tag標籤：(&#39;div&#39;)：注意：使用此方式當html有多個div，他只會選擇到第一個符合的
-    * 選擇cass : (&#39;.calssName&#39;)
-    * 選擇id : (&#39;#idName&#39;)
-
-![](https://i.imgur.com/QzoOo6r.png)
-
-![](https://i.imgur.com/pSMPFCJ.png)
-
-* 也可以選區某一tag下的tag
-    * `querySelector(&#39;div &gt; a&#39;)`
-```html
-&lt;body&gt;
-  &lt;h1&gt;DOM
-  &lt;/h1&gt;
-  &lt;div class=&quot;block1&quot;&gt;
-    hello~
-
-  &lt;/div&gt;
-  &lt;div id=&quot;myyo&quot;&gt;
-    yo!
-    &lt;a href=&quot;#&quot;&gt;hello&lt;/a&gt;
-  &lt;/div&gt;
-  &lt;script&gt;
-
-    const elements = document.querySelector(&#39;div &gt; a&#39;);
-    console.log(elements);
-  &lt;/script&gt;
-&lt;/body&gt;</code></pre><p><img src="https://i.imgur.com/I9qr8LD.png" alt=""></p>
+<p><img src="https://i.imgur.com/QzoOo6r.png" alt=""></p>
+<p><img src="https://i.imgur.com/pSMPFCJ.png" alt=""></p>
 <ul>
+<li><p>也可以選區某一tag下的tag</p>
+<ul>
+<li><code>querySelector(&#39;div &gt; a&#39;)</code><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;myyo&quot;</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;div &gt; a&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/I9qr8LD.png" alt=""></li>
+</ul>
+</li>
 <li><h4 id="querySelectorAll-可以選取多個元素"><a href="#querySelectorAll-可以選取多個元素" class="headerlink" title="querySelectorAll: 可以選取多個元素"></a><code>querySelectorAll</code>: 可以選取多個元素</h4></li>
 </ul>
-<pre><code class="html">&lt;body&gt;
-  &lt;h1&gt;DOM
-  &lt;/h1&gt;
-  &lt;div class=&quot;block1&quot;&gt;
-    hello~
-
-  &lt;/div&gt;
-  &lt;div id=&quot;myyo&quot;&gt;
-    yo!
-    &lt;a href=&quot;#&quot;&gt;hello&lt;/a&gt;
-  &lt;/div&gt;
-  &lt;script&gt;
-
-    const elements = document.querySelectorAll(&#39;div&#39;);
-    console.log(elements);
-  &lt;/script&gt;</code></pre>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;myyo&quot;</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;div&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/jFPYIO0.png" alt="Eloquent JavaScript, 3rd Edition"></p>
-<h3 id="順利選則元素之後，嘗試做些改變"><a href="#順利選則元素之後，嘗試做些改變" class="headerlink" title="順利選則元素之後，嘗試做些改變"></a>順利選則元素之後，嘗試做些改變</h3><p>可以看看，js如何與瀏覽器互動 -&gt;<a href="https://hackmd.io/yGiTI8qVRLWmDCpD1w7HcA?view" target="_blank" rel="noopener">JavaScript 與瀏覽器的溝通</a></p>
+<h3 id="順利選則元素之後，嘗試做些改變"><a href="#順利選則元素之後，嘗試做些改變" class="headerlink" title="順利選則元素之後，嘗試做些改變"></a>順利選則元素之後，嘗試做些改變</h3><p>可以看看，js如何與瀏覽器互動 -&gt;<a target="_blank" rel="noopener" href="https://hackmd.io/yGiTI8qVRLWmDCpD1w7HcA?view">JavaScript 與瀏覽器的溝通</a></p>
 <h3 id="BOM-與-window-物件"><a href="#BOM-與-window-物件" class="headerlink" title="BOM 與 window 物件"></a>BOM 與 window 物件</h3><ul>
 <li>BOM (Browser Object Model，瀏覽器物件模型)，是瀏覽器所有功能的核心，與網頁的內容無關。<ul>
 <li>window是瀏覽器的根物件，也是BOM的瀏覽器模型</li>
@@ -357,7 +271,7 @@
 <li>window.history.back(); =&gt; 回到網頁瀏覽的上一頁<br><img src="https://i.imgur.com/kBtDslP.png" alt=""></li>
 </ul>
 <p><img src="https://i.imgur.com/jyPOjvH.png" alt=""></p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a href="https://ithelp.ithome.com.tw/articles/10202689" target="_blank" rel="noopener">Day03-深入理解網頁架構：DOM</a><br><a href="https://hsuchihting.github.io/javascript/20200615/1316819935/" target="_blank" rel="noopener">JS 筆記 - 認識 DOM 文件物件模型</a><br><a href="https://developer.mozilla.org/zh-TW/docs/Web/API/Document" target="_blank" rel="noopener">MDN-Document</a><br><a href="https://www.w3schools.com/jsref/dom_obj_document.asp" target="_blank" rel="noopener">The HTML DOM Document Object</a><br><a href="https://ithelp.ithome.com.tw/articles/10211614" target="_blank" rel="noopener">JavaScript 基礎知識-querySelectorAll</a><br><a href="https://eloquentjavascript.net/14_dom.html" target="_blank" rel="noopener">The Document Object Model</a><br><a href="https://www.happycoding.today/posts/43" target="_blank" rel="noopener">JavaScript入門系列：BOM和DOM筆記</a></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10202689">Day03-深入理解網頁架構：DOM</a><br><a target="_blank" rel="noopener" href="https://hsuchihting.github.io/javascript/20200615/1316819935/">JS 筆記 - 認識 DOM 文件物件模型</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/Document">MDN-Document</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/jsref/dom_obj_document.asp">The HTML DOM Document Object</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10211614">JavaScript 基礎知識-querySelectorAll</a><br><a target="_blank" rel="noopener" href="https://eloquentjavascript.net/14_dom.html">The Document Object Model</a><br><a target="_blank" rel="noopener" href="https://www.happycoding.today/posts/43">JavaScript入門系列：BOM和DOM筆記</a></p>
 
     </div>
 
@@ -442,7 +356,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-DOM-與樹狀結構"><span class="nav-number">1.</span> <span class="nav-text">1. DOM 與樹狀結構</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#API-Application-Programming-Interface"><span class="nav-number">1.1.</span> <span class="nav-text">API (Application Programming Interface)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#document-物件-API-文件"><span class="nav-number">2.</span> <span class="nav-text">document 物件 API 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#getElementsByTagName-抓取html中某tag的元素"><span class="nav-number">2.0.1.</span> <span class="nav-text">getElementsByTagName : 抓取html中某tag的元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取"><span class="nav-number">2.0.2.</span> <span class="nav-text">getElementsByClassName: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getElementById-注意：getElement-沒有加s！這是用來抓取指定ID"><span class="nav-number">2.0.3.</span> <span class="nav-text">getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#querySelectorAll-可以選取多個元素"><span class="nav-number">2.0.4.</span> <span class="nav-text">querySelectorAll: 可以選取多個元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#順利選則元素之後，嘗試做些改變"><span class="nav-number">2.1.</span> <span class="nav-text">順利選則元素之後，嘗試做些改變</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BOM-與-window-物件"><span class="nav-number">2.2.</span> <span class="nav-text">BOM 與 window 物件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#參考資料"><span class="nav-number">2.3.</span> <span class="nav-text">參考資料</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-DOM-%E8%88%87%E6%A8%B9%E7%8B%80%E7%B5%90%E6%A7%8B"><span class="nav-number">1.</span> <span class="nav-text">1. DOM 與樹狀結構</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#API-Application-Programming-Interface"><span class="nav-number">1.1.</span> <span class="nav-text">API (Application Programming Interface)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#document-%E7%89%A9%E4%BB%B6-API-%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">document 物件 API 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#getElementsByTagName-%E6%8A%93%E5%8F%96html%E4%B8%AD%E6%9F%90tag%E7%9A%84%E5%85%83%E7%B4%A0"><span class="nav-number">2.0.1.</span> <span class="nav-text">getElementsByTagName : 抓取html中某tag的元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getElementsByClassName-%E6%8A%93%E5%8F%96html%E4%B8%AD%E6%9F%90class%E5%85%83%E7%B4%A0-%E6%9C%89%E5%A5%BD%E5%B9%BE%E5%80%8B%E7%9B%B8%E5%90%8C%E5%90%8D%E7%A8%B1%E7%9A%84class%EF%BC%8C%E6%9C%83%E4%B8%80%E4%B8%A6%E6%8A%93%E5%8F%96"><span class="nav-number">2.0.2.</span> <span class="nav-text">getElementsByClassName: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getElementById-%E6%B3%A8%E6%84%8F%EF%BC%9AgetElement-%E6%B2%92%E6%9C%89%E5%8A%A0s%EF%BC%81%E9%80%99%E6%98%AF%E7%94%A8%E4%BE%86%E6%8A%93%E5%8F%96%E6%8C%87%E5%AE%9AID"><span class="nav-number">2.0.3.</span> <span class="nav-text">getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#querySelector-%E5%BE%8C%E9%9D%A2%E6%8E%A5%E7%9A%84%E6%98%AFcss%E9%81%B8%E6%93%87%E5%99%A8"><span class="nav-number">2.0.4.</span> <span class="nav-text">querySelector: 後面接的是css選擇器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#querySelectorAll-%E5%8F%AF%E4%BB%A5%E9%81%B8%E5%8F%96%E5%A4%9A%E5%80%8B%E5%85%83%E7%B4%A0"><span class="nav-number">2.0.5.</span> <span class="nav-text">querySelectorAll: 可以選取多個元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%86%E5%88%A9%E9%81%B8%E5%89%87%E5%85%83%E7%B4%A0%E4%B9%8B%E5%BE%8C%EF%BC%8C%E5%98%97%E8%A9%A6%E5%81%9A%E4%BA%9B%E6%94%B9%E8%AE%8A"><span class="nav-number">2.1.</span> <span class="nav-text">順利選則元素之後，嘗試做些改變</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BOM-%E8%88%87-window-%E7%89%A9%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">BOM 與 window 物件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">2.3.</span> <span class="nav-text">參考資料</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

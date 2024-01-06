@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="資料整理例如有兩個 interface 屬性一樣，差異在於 型別內容 interface DataA {   key:string   key2:number }  interface DataB {   key:string   key2:boolean }   使用 泛型 整理 將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定   type GenericsObj &#x3D; {">
+  <meta name="description" content="資料整理例如有兩個 interface 屬性一樣，差異在於 型別內容 12345678910interface DataA &#123;  key:string  key2:number&#125;interface DataB &#123;  key:string  key2:boolean&#125;  使用 泛型 整理 將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TS - Generics 泛型">
 <meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2023/01/25/TS-Generics/index.html">
 <meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="資料整理例如有兩個 interface 屬性一樣，差異在於 型別內容 interface DataA {   key:string   key2:number }  interface DataB {   key:string   key2:boolean }   使用 泛型 整理 將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定   type GenericsObj &#x3D; {">
+<meta property="og:description" content="資料整理例如有兩個 interface 屬性一樣，差異在於 型別內容 12345678910interface DataA &#123;  key:string  key2:number&#125;interface DataB &#123;  key:string  key2:boolean&#125;  使用 泛型 整理 將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定1">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/xGK5aDO.png">
 <meta property="og:image" content="https://i.imgur.com/QZCK4Em.png">
@@ -225,216 +225,72 @@
       
         <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
 <h2 id="資料整理"><a href="#資料整理" class="headerlink" title="資料整理"></a>資料整理</h2><p>例如有兩個 interface 屬性一樣，差異在於 型別內容</p>
-<pre><code class="typeScript">interface DataA {
-  key:string
-  key2:number
-}
-
-interface DataB {
-  key:string
-  key2:boolean
-}
-</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">DataA</span> &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:<span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">DataB</span> &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:<span class="built_in">boolean</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li>使用 泛型 整理</li>
-<li>將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定<pre><code class="typeScript"></code></pre>
+<li>將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericsObj</span>&lt;T&gt; = &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:T</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">DataA</span> = <span class="title class_">GenericsObj</span>&lt;<span class="built_in">number</span>&gt;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">DataB</span> = <span class="title class_">GenericsObj</span>&lt;<span class="built_in">boolean</span>&gt;;</span><br><span class="line"><span class="comment">//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣</span></span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
-<p>type GenericsObj<T> = {<br>  key:string<br>  key2:T<br>}<br>type DataA = GenericsObj<number>;<br>type DataB = GenericsObj<boolean>;<br>//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣</p>
-<pre><code>
-範例2：
-```typeScript
-interface KeyPair&lt;T, U&gt; {
-  key: T;
-  value: U;
-}
+<p>範例2：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">KeyPair</span>&lt;T, U&gt; &#123;</span><br><span class="line">  <span class="attr">key</span>: T;</span><br><span class="line">  <span class="attr">value</span>: U;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp1</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">number</span>, <span class="built_in">string</span>&gt; = &#123; <span class="attr">key</span>: <span class="number">1</span>, <span class="attr">value</span>: <span class="string">&quot;str&quot;</span>&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp2</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; = &#123; <span class="attr">key</span>: <span class="string">&quot;str&quot;</span>, <span class="attr">value</span>: <span class="number">123</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">arr</span>:<span class="built_in">number</span>[] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">arrTwo</span>:<span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
 
-let kp1: KeyPair&lt;number, string&gt; = { key: 1, value: &quot;str&quot;}
-let kp2: KeyPair&lt;string, number&gt; = { key: &quot;str&quot;, value: 123}
-
-let arr:number[] = [1,2,3];
-let arrTwo:Array&lt;number&gt; = [1,2,3]</code></pre><h2 id="payload-應用"><a href="#payload-應用" class="headerlink" title="payload 應用"></a>payload 應用</h2><ul>
+<h2 id="payload-應用"><a href="#payload-應用" class="headerlink" title="payload 應用"></a>payload 應用</h2><ul>
 <li>這邊以 redux 中整理的 action 為範例</li>
 </ul>
-<pre><code class="typeScript">type userDataPayload = {
-  userId: string,
-  data:any
-}
-//負責生成 action 的函式
-const setUserDataAction = (payload:userDataPayload )=&gt;({
-  type: &#39;SET_USER_DATA&#39;,
-  payload
-})
-const resetUserDataAction =()=&gt;({
-  type: &#39;RESET_USER_DATA&#39;,
-})
-
-type CartDataPayload = {
-  product: string
-}
-const setCartDataAction =(payload:CartDataPayload)=&gt;({
-  type: &#39;SET_CART_DATA&#39;,
-  payload
-})
-
-type SetUserDataAction = {
-  type: &#39;SET_USER_DATA&#39;,
-  payload:userDataPayload
-}
-type ResetUserDataAction = {
-  type: &#39;RESET_USER_DATA&#39;
-}
-type SetCartDataAction = {
-  type: &#39;SET_CART_DATA&#39;,
-  payload:CartDataPayload
-}
-</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> userDataPayload = &#123;</span><br><span class="line">  <span class="attr">userId</span>: <span class="built_in">string</span>,</span><br><span class="line">  <span class="attr">data</span>:<span class="built_in">any</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//負責生成 action 的函式</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">setUserDataAction</span> = (<span class="params">payload:userDataPayload </span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_USER_DATA&#x27;</span>,</span><br><span class="line">  payload</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">resetUserDataAction</span> =(<span class="params"></span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;RESET_USER_DATA&#x27;</span>,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">CartDataPayload</span> = &#123;</span><br><span class="line">  <span class="attr">product</span>: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">setCartDataAction</span> =(<span class="params">payload:CartDataPayload</span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_CART_DATA&#x27;</span>,</span><br><span class="line">  payload</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetUserDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_USER_DATA&#x27;</span>,</span><br><span class="line">  <span class="attr">payload</span>:userDataPayload</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ResetUserDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;RESET_USER_DATA&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetCartDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_CART_DATA&#x27;</span>,</span><br><span class="line">  <span class="attr">payload</span>:<span class="title class_">CartDataPayload</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li>由上可以觀察到 SetUserDataAction、ResetUserDataAction、SetCartDataAction 整理為一個</li>
 <li>將 action 的型別整理，其key為type 與 payload</li>
 </ul>
-<pre><code class="typescript">type Action&lt;T,P&gt; = {
-  type: T,
-  payload:P
-}
-type ActionWithoutPayload&lt;T&gt; = {
-  type: T
-}
-
-type SetUserDataAction = Action&lt;&#39;SET_USER_DATA&#39;,userDataPayload&gt;
-type SetCartDataAction = Action&lt;&#39;SET_CART_DATA&#39;,CartDataPayload&gt;
-type ResetUserDataAction = ActionWithoutPayload&lt;&#39;RESET_USER_DATA&#39;&gt;
-
-//可以將action 中的 type 進行聚合
-type Actions = SET_USER_DATA | SET_CART_DATA | RESET_USER_DATA;</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Action</span>&lt;T,P&gt; = &#123;</span><br><span class="line">  <span class="attr">type</span>: T,</span><br><span class="line">  <span class="attr">payload</span>:P</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ActionWithoutPayload</span>&lt;T&gt; = &#123;</span><br><span class="line">  <span class="attr">type</span>: T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetUserDataAction</span> = <span class="title class_">Action</span>&lt;<span class="string">&#x27;SET_USER_DATA&#x27;</span>,userDataPayload&gt;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetCartDataAction</span> = <span class="title class_">Action</span>&lt;<span class="string">&#x27;SET_CART_DATA&#x27;</span>,<span class="title class_">CartDataPayload</span>&gt;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ResetUserDataAction</span> = <span class="title class_">ActionWithoutPayload</span>&lt;<span class="string">&#x27;RESET_USER_DATA&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以將action 中的 type 進行聚合</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Actions</span> = <span class="variable constant_">SET_USER_DATA</span> | <span class="variable constant_">SET_CART_DATA</span> | <span class="variable constant_">RESET_USER_DATA</span>;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>以下，進一步再將 Action 和 ActionWithoutPayload 進行整合，他們差異在與 payload </li>
 </ul>
-<pre><code class="typeScript">type Action&lt;T, P = null&gt; = p extends {} ? {type: T, payload: P} : {type: T};</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Action</span>&lt;T, P = <span class="literal">null</span>&gt; = p <span class="keyword">extends</span> &#123;&#125; ? &#123;<span class="attr">type</span>: T, <span class="attr">payload</span>: P&#125; : &#123;<span class="attr">type</span>: T&#125;;</span><br></pre></td></tr></table></figure>
+
 <p>型別參數動態生成不同型別</p>
-<h2 id="函式的泛型"><a href="#函式的泛型" class="headerlink" title="函式的泛型"></a>函式的泛型</h2><pre><code class="typeScript">const fn = (param: string | number):(string|number)[]=&gt;[param];
-fn(1);//number 陣列 number[];
-fn(&#39;hello&#39;) //string[]</code></pre>
+<h2 id="函式的泛型"><a href="#函式的泛型" class="headerlink" title="函式的泛型"></a>函式的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = (<span class="attr">param</span>: <span class="built_in">string</span> | <span class="built_in">number</span>):(<span class="built_in">string</span>|<span class="built_in">number</span>)[]=&gt;[param];</span><br><span class="line"><span class="title function_">fn</span>(<span class="number">1</span>);<span class="comment">//number 陣列 number[];</span></span><br><span class="line"><span class="title function_">fn</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">//string[]</span></span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/QZCK4Em.png" alt=""></p>
-<pre><code class="typeScript">const fn = &lt;T&gt;(param: T):(T)[]=&gt;[param];
-fn(1);//number 陣列 number[];
-fn(&#39;hello&#39;) //string[]</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = &lt;T&gt;(<span class="attr">param</span>: T):(T)[]=&gt;[param];</span><br><span class="line"><span class="title function_">fn</span>(<span class="number">1</span>);<span class="comment">//number 陣列 number[];</span></span><br><span class="line"><span class="title function_">fn</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">//string[]</span></span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/Yeeuum6.png" alt=""></p>
 <ul>
 <li>function 改寫方式</li>
 </ul>
-<pre><code class="typeScript">function fn&lt;T&gt;(param:T):T[]{
-  return [param]
-}</code></pre>
-<h2 id="type-的泛型"><a href="#type-的泛型" class="headerlink" title="type 的泛型"></a>type 的泛型</h2><pre><code class="typeScript">//共用模板
-type GenericList&lt;T&gt; = T[];
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fn&lt;T&gt;(<span class="attr">param</span>:T):T[]&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-type StrList = GenericList&lt;string&gt;;
-type BoolList = GenericList&lt;boolean&gt;;
 
-type GenericValObj&lt;T&gt; = {[key:string]:T} 
-type NumValObj = GenericValObj&lt;number&gt;
+<h2 id="type-的泛型"><a href="#type-的泛型" class="headerlink" title="type 的泛型"></a>type 的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//共用模板</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericList</span>&lt;T&gt; = T[];</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StrList</span> = <span class="title class_">GenericList</span>&lt;<span class="built_in">string</span>&gt;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">BoolList</span> = <span class="title class_">GenericList</span>&lt;<span class="built_in">boolean</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericValObj</span>&lt;T&gt; = &#123;[<span class="attr">key</span>:<span class="built_in">string</span>]:T&#125; </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NumValObj</span> = <span class="title class_">GenericValObj</span>&lt;<span class="built_in">number</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">numValObj</span>:<span class="title class_">NumValObj</span> = &#123;</span><br><span class="line">  <span class="attr">img_res_200</span>:<span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-const numValObj:NumValObj = {
-  img_res_200:200
-}
-</code></pre>
 <p><img src="https://i.imgur.com/sJFzEUg.png" alt=""></p>
 <p><img src="https://i.imgur.com/7P1MnFL.png" alt=""></p>
 <ul>
 <li>嘗試聚合資料</li>
 </ul>
-<pre><code class="typeScript">type GenericUnion&lt;T,U&gt; = T | U | T[] | U[];
-type strNumUnion = GenericUnion&lt;string,number&gt;
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">GenericUnion</span>&lt;T,U&gt; = T | U | T[] | U[];</span><br><span class="line"><span class="keyword">type</span> strNumUnion = <span class="title class_">GenericUnion</span>&lt;<span class="built_in">string</span>,<span class="built_in">number</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">val</span>:strNumUnion = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">val2</span>:strNumUnion = [<span class="string">&quot;123&quot;</span>]</span><br></pre></td></tr></table></figure>
 
-const val:strNumUnion = &quot;123&quot;
-const val2:strNumUnion = [&quot;123&quot;]</code></pre>
 <p><img src="https://i.imgur.com/y5Vl8M9.png" alt=""></p>
 <h2 id="將函式改寫為-共用的泛型型別"><a href="#將函式改寫為-共用的泛型型別" class="headerlink" title="將函式改寫為 共用的泛型型別"></a>將函式改寫為 共用的泛型型別</h2><ul>
 <li>將type 拉出來獨立撰寫，可以重複使用</li>
 </ul>
-<pre><code class="typeScript">const fn = &lt;T&gt;(param: T):(T)[]=&gt;{
-  return [param]
-};
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = &lt;T&gt;(<span class="attr">param</span>: T):(T)[]=&gt;&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//上面的函式也可以用於</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123;</span><br><span class="line">  <span class="attr">onFn</span>: <span class="keyword">typeof</span> fn</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//rewrite</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericFn</span> = &lt;T&gt;<span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn</span>:<span class="title class_">GenericFn</span> = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//共用，如下有個 interface 其中有個屬性的型別與 GenericFn 一樣，則可以共用</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123;</span><br><span class="line">  <span class="attr">onFn</span>:<span class="title class_">GenericFn</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-//上面的函式也可以用於
-interface Props {
-  onFn: typeof fn
-}
 
-//rewrite
-type GenericFn = &lt;T&gt;(param: T) =&gt; T[]
-const fn:GenericFn = (param) =&gt; {
-  return [param]
-}
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fn&lt;T&gt;(<span class="attr">param</span>:T):T[]&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//產生型別泛型</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnType</span> = <span class="keyword">typeof</span> fn ;</span><br></pre></td></tr></table></figure>
 
-//共用，如下有個 interface 其中有個屬性的型別與 GenericFn 一樣，則可以共用
-interface Props {
-  onFn:GenericFn
-}
-</code></pre>
-<pre><code class="typeScript">function fn&lt;T&gt;(param:T):T[]{
-  return [param]
-}
-
-//產生型別泛型
-type FnType = typeof fn ;</code></pre>
 <p><img src="https://i.imgur.com/yxsVm1s.png" alt=""></p>
 <p><img src="https://i.imgur.com/zYtwh7H.png" alt=""><br><img src="https://i.imgur.com/tPHEDZ7.png" alt=""></p>
-<h3 id="比較-lt-T-gt-位置差異"><a href="#比較-lt-T-gt-位置差異" class="headerlink" title="比較&lt;T&gt;位置差異"></a>比較<code>&lt;T&gt;</code>位置差異</h3><pre><code class="typeScript">type FnTypeA = &lt;T&gt;(param: T) =&gt; T[]
-type FnTypeB&lt;T&gt; = (param: T) =&gt; T[]
+<h3 id="比較-lt-T-gt-位置差異"><a href="#比較-lt-T-gt-位置差異" class="headerlink" title="比較&lt;T&gt;位置差異"></a>比較<code>&lt;T&gt;</code>位置差異</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">FnTypeA</span> = &lt;T&gt;<span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnTypeB</span>&lt;T&gt; = <span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn1</span>:<span class="title class_">FnTypeA</span> = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//必須指定好型別的 argument</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn2</span>:<span class="title class_">FnTypeB</span>&lt;<span class="built_in">string</span>&gt; = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//兩個函式在使用上會有差異：</span></span><br><span class="line"><span class="title function_">fn1</span>();</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn2</span>(<span class="string">&#x27;Hi&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-const fn1:FnTypeA = (param) =&gt; {
-  return [param]
-}
-
-//必須指定好型別的 argument
-const fn2:FnTypeB&lt;string&gt; = (param) =&gt; {
-  return [param]
-}
-
-//兩個函式在使用上會有差異：
-fn1();
-
-fn2(&#39;Hi&#39;)
-</code></pre>
 <p><img src="https://i.imgur.com/J3zJs2Y.png" alt=""></p>
 <p><img src="https://i.imgur.com/0wxPZk9.png" alt=""></p>
 <ul>
 <li>fn1 可以填入任何內容、可以動態填入型別<br><img src="https://i.imgur.com/pwfnIjO.png" alt=""><br><img src="https://i.imgur.com/6B8gtAc.png" alt=""><br><img src="https://i.imgur.com/OgPatHZ.png" alt=""></li>
 <li>fn2 只能填入 string 內容<br><img src="https://i.imgur.com/cwmVA5b.png" alt=""></li>
 </ul>
-<pre><code class="typeScript">export type ClickFn = &lt;Event&gt;(e:Event) =&gt; any
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">ClickFn</span> = &lt;<span class="title class_">Event</span>&gt;<span class="function">(<span class="params">e:Event</span>) =&gt;</span> <span class="built_in">any</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用 function 會無法重複使用寫好的型別</span></span><br><span class="line"><span class="comment">// 引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">handleClick</span>:<span class="title class_">ClickFn</span> = <span class="function">(<span class="params">e</span>)=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-//使用 function 會無法重複使用寫好的型別
-// 引用
-const handleClick:ClickFn = (e)=&gt;{
-
-}</code></pre>
-<h2 id="interface-的泛型"><a href="#interface-的泛型" class="headerlink" title="interface 的泛型"></a>interface 的泛型</h2><pre><code class="typeScript">export interface GenericI&lt;T&gt;{
-  [key:string]: T
-} 
-type NumValObj =  GenericI&lt;number&gt;;
-const numberValObj:NumValObj = {
-  res:123
-}
-
-//type寫法也可以一樣
-export type GenericT&lt;T&gt; = {
-  [key:string]: T
-}
-
-//API 的應用！！！
-//注意：in 寫法只用於 type 中
-export type GenericKeyValObj&lt;T extends  keyof any,P&gt; = {
-  [key in T ]: P
-}
-
-//可以應用於 API 
-
-type ApiKey = &#39;user&#39; | &#39;id&#39; | &#39;password&#39;; //將欄位值設定好
-type UserApiData = GenericKeyValObj&lt;ApiKey, string&gt;
-</code></pre>
+<h2 id="interface-的泛型"><a href="#interface-的泛型" class="headerlink" title="interface 的泛型"></a>interface 的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">GenericI</span>&lt;T&gt;&#123;</span><br><span class="line">  [<span class="attr">key</span>:<span class="built_in">string</span>]: T</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NumValObj</span> =  <span class="title class_">GenericI</span>&lt;<span class="built_in">number</span>&gt;;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">numberValObj</span>:<span class="title class_">NumValObj</span> = &#123;</span><br><span class="line">  <span class="attr">res</span>:<span class="number">123</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//type寫法也可以一樣</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">GenericT</span>&lt;T&gt; = &#123;</span><br><span class="line">  [<span class="attr">key</span>:<span class="built_in">string</span>]: T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//API 的應用！！！</span></span><br><span class="line"><span class="comment">//注意：in 寫法只用於 type 中</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">GenericKeyValObj</span>&lt;T <span class="keyword">extends</span>  keyof <span class="built_in">any</span>,P&gt; = &#123;</span><br><span class="line">  [key <span class="keyword">in</span> T ]: P</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以應用於 API </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ApiKey</span> = <span class="string">&#x27;user&#x27;</span> | <span class="string">&#x27;id&#x27;</span> | <span class="string">&#x27;password&#x27;</span>; <span class="comment">//將欄位值設定好</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">UserApiData</span> = <span class="title class_">GenericKeyValObj</span>&lt;<span class="title class_">ApiKey</span>, <span class="built_in">string</span>&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/dceV8io.png" alt=""></p>
 <ul>
 <li><p>可以很快的生成 API 的資料型別<br><img src="https://i.imgur.com/Vv3lVDC.png" alt=""></p>
@@ -442,39 +298,19 @@ type UserApiData = GenericKeyValObj&lt;ApiKey, string&gt;
 <li><p>其他範例</p>
 </li>
 </ul>
-<pre><code class="typeScript">//類似呼叫API的函式
-//Params : 參數
-//Res result : 回傳值
-type GenericApiFn&lt;Params, Res&gt; = (params:Params)=&gt; Res
-
-//組合其他泛型使用，也可以將原本泛型參數自己使用
-interface ApiContainerProps&lt;Params, Res&gt; {
-  initData: Res;
-  onAsyncCb: GenericApiFn&lt;Params, Res&gt;
-}
-</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//類似呼叫API的函式</span></span><br><span class="line"><span class="comment">//Params : 參數</span></span><br><span class="line"><span class="comment">//Res result : 回傳值</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericApiFn</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt; = <span class="function">(<span class="params">params:Params</span>)=&gt;</span> <span class="title class_">Res</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//組合其他泛型使用，也可以將原本泛型參數自己使用</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ApiContainerProps</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt; &#123;</span><br><span class="line">  <span class="attr">initData</span>: <span class="title class_">Res</span>;</span><br><span class="line">  <span class="attr">onAsyncCb</span>: <span class="title class_">GenericApiFn</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li>interface 與 type 的泛型寫法</li>
 </ul>
-<pre><code class="typeScript">//interface 寫函式
-interface FnI {
-  &lt;T&gt;(param: T): T[]
-}
-//同等於
-type FnT = &lt;T&gt;(param:T)=&gt;T[]
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//interface 寫函式</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">FnI</span> &#123;</span><br><span class="line">  &lt;T&gt;(<span class="attr">param</span>: T): T[]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//同等於</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnT</span> = &lt;T&gt;<span class="function">(<span class="params">param:T</span>)=&gt;</span>T[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn</span>:<span class="title class_">FnT</span> = <span class="function">(<span class="params">param</span>)=&gt;</span>[param]</span><br></pre></td></tr></table></figure>
 
-const fn:FnT = (param)=&gt;[param]</code></pre>
 <ul>
 <li><code>&lt;T&gt;</code>位置的調動</li>
 </ul>
-<pre><code class="typeScript">//&lt;T&gt; 會影響整個 interface
-interface GenericFnI&lt;T&gt; {
-  (param: T): T[]
-}
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//&lt;T&gt; 會影響整個 interface</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">GenericFnI</span>&lt;T&gt; &#123;</span><br><span class="line">  (<span class="attr">param</span>: T): T[]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn2</span>: <span class="title class_">GenericFnI</span>&lt;<span class="built_in">string</span>&gt;= <span class="function">(<span class="params">param</span>)=&gt;</span>[param]</span><br></pre></td></tr></table></figure>
 
-const fn2: GenericFnI&lt;string&gt;= (param)=&gt;[param]</code></pre>
 <p>過去都未曾注意到泛型可以抽成共用還有 <code>&lt;T&gt;</code> 的位置所放的位置，會影響宣告，透過此次的教學，讓我對泛型可以應用於實際情況的案例，同樣未來在訂定 type 或 interface 時可以加以注意，思考是否可以改寫為泛型加以使用。</p>
-<p>參考資料<br><a href="https://www.youtube.com/watch?v=9hZbfX_Atpc&t=44s" target="_blank" rel="noopener">成為進階TS開發者的第一哩路 — 泛型簡介與基礎(1)</a><br><a href="https://www.youtube.com/watch?v=7yA4ALLoSxY" target="_blank" rel="noopener">成為進階TS開發者的第一哩路 — 泛型的函式, type和interface寫法一次說清楚！</a></p>
+<p>參考資料<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=9hZbfX_Atpc&t=44s">成為進階TS開發者的第一哩路 — 泛型簡介與基礎(1)</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=7yA4ALLoSxY">成為進階TS開發者的第一哩路 — 泛型的函式, type和interface寫法一次說清楚！</a></p>
 
     </div>
 
@@ -558,7 +394,7 @@ const fn2: GenericFnI&lt;string&gt;= (param)=&gt;[param]</code></pre>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#資料整理"><span class="nav-number">1.</span> <span class="nav-text">資料整理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#payload-應用"><span class="nav-number">2.</span> <span class="nav-text">payload 應用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函式的泛型"><span class="nav-number">3.</span> <span class="nav-text">函式的泛型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type-的泛型"><span class="nav-number">4.</span> <span class="nav-text">type 的泛型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#將函式改寫為-共用的泛型型別"><span class="nav-number">5.</span> <span class="nav-text">將函式改寫為 共用的泛型型別</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#比較-lt-T-gt-位置差異"><span class="nav-number">5.1.</span> <span class="nav-text">比較&lt;T&gt;位置差異</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#interface-的泛型"><span class="nav-number">6.</span> <span class="nav-text">interface 的泛型</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E6%95%B4%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">資料整理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#payload-%E6%87%89%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">payload 應用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E5%BC%8F%E7%9A%84%E6%B3%9B%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">函式的泛型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#type-%E7%9A%84%E6%B3%9B%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">type 的泛型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%87%E5%87%BD%E5%BC%8F%E6%94%B9%E5%AF%AB%E7%82%BA-%E5%85%B1%E7%94%A8%E7%9A%84%E6%B3%9B%E5%9E%8B%E5%9E%8B%E5%88%A5"><span class="nav-number">5.</span> <span class="nav-text">將函式改寫為 共用的泛型型別</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BC%83-lt-T-gt-%E4%BD%8D%E7%BD%AE%E5%B7%AE%E7%95%B0"><span class="nav-number">5.1.</span> <span class="nav-text">比較&lt;T&gt;位置差異</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#interface-%E7%9A%84%E6%B3%9B%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text">interface 的泛型</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

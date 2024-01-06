@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -215,35 +215,28 @@
 <h2 id="註記與斷言"><a href="#註記與斷言" class="headerlink" title="註記與斷言"></a>註記與斷言</h2><ul>
 <li>帶有冒號的相關語法</li>
 </ul>
-<pre><code class="typescript">let randomNumber:number = Math.random();
-const subscribed:boolean = true;</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">randomNumber</span>:<span class="built_in">number</span> = <span class="title class_">Math</span>.<span class="title function_">random</span>();</span><br><span class="line"><span class="keyword">const</span> <span class="attr">subscribed</span>:<span class="built_in">boolean</span> = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>如果遇到函式，參數(Argument)部分除了可以有類似註記方式標明輸入的參數型別外，在參數宣告結尾也可以註記該函式輸出之型別。</li>
 </ul>
-<pre><code class="javascript">function isPositive(input: number):boolean{
-    return input &gt; 0
-}</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isPositive</span>(<span class="params">input: number</span>):boolean&#123;</span><br><span class="line">	<span class="keyword">return</span> input &gt; <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>但JS裡，宣告函式的方法有很多種，其中一個是將函式最為值指派到變數。</li>
 </ul>
-<pre><code class="javascript">const isPositive:(input:number) =&gt; boolean = function(input){
-    return input &gt; 0
-}</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">isPositive</span>:<span class="function">(<span class="params">input:number</span>) =&gt;</span> boolean = <span class="keyword">function</span>(<span class="params">input</span>)&#123;</span><br><span class="line">	<span class="keyword">return</span> input &gt; <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>以上，也能把變數指派的函式，改成ES6箭頭函式<ul>
 <li>指派運算子(Assignment Operator ，就是指程式裡的等號)左方是函式的型別註記表示法，右方則是普通函式宣告</li>
 </ul>
 </li>
 </ul>
-<pre><code class="typescript">const isPositive:(input:number) =&gt; boolean = input =&gt; input &gt;0;</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">isPositive</span>:<span class="function">(<span class="params">input:<span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">boolean</span> = <span class="function"><span class="params">input</span> =&gt;</span> input &gt;<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>採用邊宣告函式、邊註記型別的方式定義函式</li>
 </ul>
-<pre><code class="typescript">const isPositive = function (input:number):boolean{
-    return input&gt;0
-}</code></pre>
-<pre><code class="typescript">const isPositive =  (input:number):boolean =&gt;  input&gt;0
-</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive = <span class="keyword">function</span> (<span class="params">input:<span class="built_in">number</span></span>):<span class="built_in">boolean</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> input&gt;<span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive =  (<span class="attr">input</span>:<span class="built_in">number</span>):<span class="function"><span class="params">boolean</span> =&gt;</span>  input&gt;<span class="number">0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="型別斷言語法"><a href="#型別斷言語法" class="headerlink" title="型別斷言語法"></a>型別斷言語法</h2><ul>
 <li>斷言(Assertion)的語法很簡單，看到有使用關鍵字 as 或者 <code>&lt;T&gt;(...)</code> 的格式就是斷言的用法。</li>
 <li>通常會使用斷言的情境，程式沒辦法推論某表達式的確切運算結果之型別，我們才會用選擇使出斷言來處理這種情境。</li>
@@ -252,13 +245,13 @@ const subscribed:boolean = true;</code></pre>
 </ul>
 </li>
 </ul>
-<pre><code class="typescript">const aNumber = returnsUnknow() as number;</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aNumber = <span class="title function_">returnsUnknow</span>() <span class="keyword">as</span> <span class="built_in">number</span>;</span><br></pre></td></tr></table></figure>
 <p>或是這樣：</p>
-<pre><code class="typescript">const aNumber = &lt;number&gt;(returnsUnkonw());</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aNumber = &lt;<span class="built_in">number</span>&gt;(<span class="title function_">returnsUnkonw</span>());</span><br></pre></td></tr></table></figure>
 <ul>
 <li>請注意：斷言的語法部分，沒有人斷言在變數的名稱宣告部分—也就是是說，如果你這樣寫是錯的：</li>
 </ul>
-<pre><code class="typescript">const aNumber as number = returnsUnknow(); //這是錯誤的</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aNumber <span class="keyword">as</span> <span class="built_in">number</span> = <span class="title function_">returnsUnknow</span>(); <span class="comment">//這是錯誤的</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>概念有點像，決斷地告訴程式，某表達式的運算結果之型別。</li>
 <li>變數本身不是被運算，而是被指派某個東西，而斷言應該是斷在被指派的值或表達式的運算結果上。</li>
@@ -266,15 +259,16 @@ const subscribed:boolean = true;</code></pre>
 <h4 id="複雜一點"><a href="#複雜一點" class="headerlink" title="複雜一點"></a>複雜一點</h4><ul>
 <li>函式宣告表達式有可以被斷言(畢竟函式作為表達式也會被當成值)</li>
 </ul>
-<pre><code class="typescript">const isPositive =(input =&gt; input &gt; 0) as (input: number) =&gt; boolean</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive =(<span class="function"><span class="params">input</span> =&gt;</span> input &gt; <span class="number">0</span>) <span class="keyword">as</span> (<span class="attr">input</span>: <span class="built_in">number</span>) =&gt; <span class="built_in">boolean</span></span><br></pre></td></tr></table></figure>
 <p>或者是：</p>
-<pre><code class="javascript">const isPositive = &lt;(input: number) =&gt; boolean&gt;(input =&gt; input &gt;0);</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive = &lt;<span class="function">(<span class="params">input: number</span>) =&gt;</span> boolean&gt;(<span class="function"><span class="params">input</span> =&gt;</span> input &gt;<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
 <ul>
 <li>上面斷言的寫法效果跟之前示範過基礎註記手法：</li>
 </ul>
-<pre><code class="typescript">const isPositive :(input: number) =&gt; boolean = input =&gt; input &gt;0;</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive :<span class="function">(<span class="params">input: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">boolean</span> = <span class="function"><span class="params">input</span> =&gt;</span> input &gt;<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
 <p>或者是</p>
-<pre><code class="typescript">const isPositive ＝(input: number)：boolean =&gt; input &gt;0;</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive ＝(<span class="attr">input</span>: <span class="built_in">number</span>)：<span class="built_in">boolean</span> =&gt; input &gt;<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
 <h2 id="說下，敘述式與表達式的定義與差別"><a href="#說下，敘述式與表達式的定義與差別" class="headerlink" title="說下，敘述式與表達式的定義與差別"></a>說下，敘述式與表達式的定義與差別</h2><ol>
 <li>敘述式：程式運行的流程，例如：JS 裡的判斷敘述式(if…else)以及迴圈敘述式(for 或者是 while 迴圈)。</li>
 <li>表達式代表的則是程式碼運算的流程，並且會將運算結果回傳。其中兩者最關鍵差異為：敘述式不會回傳值，表達式則會。</li>
@@ -282,43 +276,17 @@ const subscribed:boolean = true;</code></pre>
 <ul>
 <li>以下為常見的表達式範例：</li>
 </ul>
-<pre><code class="typescript"> //運算表達式 Arithmetic expression
- 1+2*3 ; //回傳解果為7
-//邏輯表達式 Logical Expression
-true &amp;&amp; (something === null || myAge &lt; 18) //回傳結果為 true 或 false
-
-//函式（或方法的呼叫） Function / Method Invocation Expression
-Math.pow(2,10) //回傳結果為 1024
-
-//三元運算子 Ternary Operator
-myAge &lt; 18 ? &#39;Youngster&#39; : &#39;Adult&#39;; //回傳結果為 &#39;Youngster&#39; 因為 myAge &lt; 18 </code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//運算表達式 Arithmetic expression</span></span><br><span class="line"> <span class="number">1</span>+<span class="number">2</span>*<span class="number">3</span> ; <span class="comment">//回傳解果為7</span></span><br><span class="line"><span class="comment">//邏輯表達式 Logical Expression</span></span><br><span class="line"><span class="literal">true</span> &amp;&amp; (something === <span class="literal">null</span> || myAge &lt; <span class="number">18</span>) <span class="comment">//回傳結果為 true 或 false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//函式（或方法的呼叫） Function / Method Invocation Expression</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>,<span class="number">10</span>) <span class="comment">//回傳結果為 1024</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//三元運算子 Ternary Operator</span></span><br><span class="line">myAge &lt; <span class="number">18</span> ? <span class="string">&#x27;Youngster&#x27;</span> : <span class="string">&#x27;Adult&#x27;</span>; <span class="comment">//回傳結果為 &#x27;Youngster&#x27; 因為 myAge &lt; 18 </span></span><br></pre></td></tr></table></figure>
 <p>而敘述式：</p>
-<pre><code class="javascript">if(/*expression 1*/){
-    //若 expression1 為 true 則執行
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="comment">/*expression 1*/</span>)&#123;</span><br><span class="line">	<span class="comment">//若 expression1 為 true 則執行</span></span><br><span class="line">	</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="comment">/*expression 2*/</span>)&#123;</span><br><span class="line">	<span class="comment">//若 expression2 為 true 則執行</span></span><br><span class="line">&#125; <span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="comment">//若 expression1、expression2 都不為 true 則執行此</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//迴圈敘述式 Looping Statement</span></span><br><span class="line"><span class="keyword">while</span> (<span class="comment">/*expression */</span>)&#123;</span><br><span class="line">	<span class="comment">//若 expression 為 true， 則重複執行直到 expression 為 false 時跳脫</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-}else if(/*expression 2*/){
-    //若 expression2 為 true 則執行
-} else{
-    //若 expression1、expression2 都不為 true 則執行此
-}
-
-//迴圈敘述式 Looping Statement
-while (/*expression */){
-    //若 expression 為 true， 則重複執行直到 expression 為 false 時跳脫
-}</code></pre>
 <ul>
 <li>按照上面敘述式的定義 — 由於敘述式是在敘述運行流程，而不會回傳值，所以你才不會在 JavaScript 裡面看到這樣的寫法：</li>
 </ul>
-<pre><code class="javascript">// JS 並有提供這寫法
-const status = if(Age &lt;18 ){
-    return &#39;Young&#39;
-}else{
-    return &#39;Adult&#39;
-}</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS 並有提供這寫法</span></span><br><span class="line"><span class="keyword">const</span> status = <span class="keyword">if</span>(<span class="title class_">Age</span> &lt;<span class="number">18</span> )&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>注意：敘述式不一定是多行式（或區塊式）地呈現的最佳案例：變數宣告的指派敘述式(Variable Declaration Assignment Statement)<pre><code class="javascript">//變數宣告的 指派敘述式
-const foo =123;</code></pre>
-</li>
+<li>注意：敘述式不一定是多行式（或區塊式）地呈現的最佳案例：變數宣告的指派敘述式(Variable Declaration Assignment Statement)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//變數宣告的 指派敘述式</span></span><br><span class="line"><span class="keyword">const</span> foo =<span class="number">123</span>;</span><br></pre></td></tr></table></figure></li>
 <li>請問上面指派式會回傳什麼結果 =&gt;數字 123 或 udefined。正解為 udefined<ul>
 <li>指派式的回傳結果為 undefined</li>
 </ul>
@@ -328,10 +296,7 @@ const foo =123;</code></pre>
 <h4 id="表達式什麼時候會以非單行的程式碼，也就是區塊的方式？"><a href="#表達式什麼時候會以非單行的程式碼，也就是區塊的方式？" class="headerlink" title="表達式什麼時候會以非單行的程式碼，也就是區塊的方式？"></a>表達式什麼時候會以非單行的程式碼，也就是區塊的方式？</h4><ul>
 <li>立即呼叫函式表達式(IIFE)</li>
 </ul>
-<pre><code class="javascript">const status = (funcrion(myAge){
-                                 if (myAge &lt;18){ return &#39;Young&#39;}
-                                    return &#39;Adult&#39;
-                                })(16) //假設填入參數為16，呼叫該函式的結果回傳 &#39;Young&#39;</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> status = (<span class="title function_">funcrion</span>(<span class="params">myAge</span>)&#123;</span><br><span class="line">								 <span class="keyword">if</span> (myAge &lt;<span class="number">18</span>)&#123; <span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span>&#125;</span><br><span class="line">									<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">								&#125;)(<span class="number">16</span>) <span class="comment">//假設填入參數為16，呼叫該函式的結果回傳 &#x27;Young&#x27;</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>當可以分清楚表達式與敘述式差別後，回歸型別斷言</li>
 <li>斷言的基礎語法<ul>
@@ -341,52 +306,13 @@ const foo =123;</code></pre>
 </li>
 </ul>
 <p>寫法如下：</p>
-<pre><code class="javascript">&lt;expression&gt; as T assertion
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;expression&gt; <span class="keyword">as</span> T assertion</span><br><span class="line"></span><br><span class="line">&lt;T assertion &gt;(&lt;expression&gt;)</span><br></pre></td></tr></table></figure>
 
-&lt;T assertion &gt;(&lt;expression&gt;)</code></pre>
-<pre><code class="typescript">//運算表達式
-(foo+bar*baz) as number;
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//運算表達式</span></span><br><span class="line">(foo+bar*baz) <span class="keyword">as</span> <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 邏輯表達式</span></span><br><span class="line">(<span class="title function_">isPositive</span>(num) &amp;&amp; <span class="title function_">idEven</span>(num)) <span class="keyword">as</span> <span class="built_in">boolean</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//function</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>, <span class="number">10</span>) <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">(myAge &lt;<span class="number">18</span> ? <span class="string">&#x27;Young&#x27;</span> : <span class="string">&#x27;Adult&#x27;</span>) <span class="keyword">as</span> <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//IIFE</span></span><br><span class="line">(<span class="title function_">funcrion</span>(<span class="params">myAge</span>)&#123;</span><br><span class="line">					 <span class="keyword">if</span> (myAge &lt;<span class="number">18</span>)&#123; <span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span>&#125;</span><br><span class="line">						<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">					&#125;)(<span class="number">16</span>) <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//只要是表達式，就算在其他敘述式、表達式內也能使用</span></span><br><span class="line"><span class="title function_">somefunction</span>(foo <span class="keyword">as</span> <span class="built_in">number</span> , bar <span class="keyword">as</span> <span class="built_in">string</span>) <span class="keyword">as</span> <span class="built_in">boolean</span></span><br><span class="line">					</span><br></pre></td></tr></table></figure>
 
-// 邏輯表達式
-(isPositive(num) &amp;&amp; idEven(num)) as boolean;
-
-//function
-Math.pow(2, 10) as number
-
-//
-(myAge &lt;18 ? &#39;Young&#39; : &#39;Adult&#39;) as string;
-
-//IIFE
-(funcrion(myAge){
-                     if (myAge &lt;18){ return &#39;Young&#39;}
-                        return &#39;Adult&#39;
-                    })(16) as number
-
-//只要是表達式，就算在其他敘述式、表達式內也能使用
-somefunction(foo as number , bar as string) as boolean
-</code></pre>
 <p>換種寫法：</p>
-<pre><code class="typescript">&lt;number&gt;(foo+bar*baz);
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="built_in">number</span>&gt;(foo+bar*baz);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 邏輯表達式</span></span><br><span class="line">&lt;<span class="built_in">boolean</span>&gt; (<span class="title function_">isPositive</span>(num) &amp;&amp; <span class="title function_">idEven</span>(num)) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//function</span></span><br><span class="line">&lt;<span class="built_in">number</span>&gt; <span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>, <span class="number">10</span>) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">&lt;<span class="built_in">string</span>&gt;(myAge &lt;<span class="number">18</span> ? <span class="string">&#x27;Young&#x27;</span> : <span class="string">&#x27;Adult&#x27;</span>) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//IIFE</span></span><br><span class="line"> &lt;<span class="built_in">number</span>&gt;(</span><br><span class="line">	 <span class="title function_">funcrion</span>(<span class="params">myAge</span>)&#123;</span><br><span class="line">					 <span class="keyword">if</span> (myAge &lt;<span class="number">18</span>)&#123; <span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span>&#125;</span><br><span class="line">						<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">					&#125;)(<span class="number">16</span>)</span><br><span class="line">   );</span><br><span class="line"><span class="comment">//只要是表達式，就算在其他敘述式、表達式內也能使用</span></span><br><span class="line">&lt;<span class="built_in">boolean</span>&gt;<span class="title function_">somefunction</span>(foo <span class="keyword">as</span> <span class="built_in">number</span> , bar <span class="keyword">as</span> <span class="built_in">string</span>) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-// 邏輯表達式
-&lt;boolean&gt; (isPositive(num) &amp;&amp; idEven(num)) ;
-
-//function
-&lt;number&gt; Math.pow(2, 10) ;
-
-//
-&lt;string&gt;(myAge &lt;18 ? &#39;Young&#39; : &#39;Adult&#39;) ;
-
-//IIFE
- &lt;number&gt;(
-     funcrion(myAge){
-                     if (myAge &lt;18){ return &#39;Young&#39;}
-                        return &#39;Adult&#39;
-                    })(16)
-   );
-//只要是表達式，就算在其他敘述式、表達式內也能使用
-&lt;boolean&gt;somefunction(foo as number , bar as string) 
-</code></pre>
 <p>以上針對註記 Annotation V.S. 斷言 Assertion 做個簡單整理～</p>
 
     </div>
@@ -471,7 +397,7 @@ somefunction(foo as number , bar as string) as boolean
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#註記-Annotation-V-S-斷言-Assertion"><span class="nav-number">1.</span> <span class="nav-text">註記 Annotation V.S. 斷言 Assertion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#註記與斷言"><span class="nav-number">2.</span> <span class="nav-text">註記與斷言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#型別斷言語法"><span class="nav-number">3.</span> <span class="nav-text">型別斷言語法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#複雜一點"><span class="nav-number">3.0.1.</span> <span class="nav-text">複雜一點</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#說下，敘述式與表達式的定義與差別"><span class="nav-number">4.</span> <span class="nav-text">說下，敘述式與表達式的定義與差別</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#表達式什麼時候會以非單行的程式碼，也就是區塊的方式？"><span class="nav-number">4.0.1.</span> <span class="nav-text">表達式什麼時候會以非單行的程式碼，也就是區塊的方式？</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%BB%E8%A8%98-Annotation-V-S-%E6%96%B7%E8%A8%80-Assertion"><span class="nav-number">1.</span> <span class="nav-text">註記 Annotation V.S. 斷言 Assertion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%BB%E8%A8%98%E8%88%87%E6%96%B7%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">註記與斷言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%8B%E5%88%A5%E6%96%B7%E8%A8%80%E8%AA%9E%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">型別斷言語法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A4%87%E9%9B%9C%E4%B8%80%E9%BB%9E"><span class="nav-number">3.0.1.</span> <span class="nav-text">複雜一點</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AA%AA%E4%B8%8B%EF%BC%8C%E6%95%98%E8%BF%B0%E5%BC%8F%E8%88%87%E8%A1%A8%E9%81%94%E5%BC%8F%E7%9A%84%E5%AE%9A%E7%BE%A9%E8%88%87%E5%B7%AE%E5%88%A5"><span class="nav-number">4.</span> <span class="nav-text">說下，敘述式與表達式的定義與差別</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E9%81%94%E5%BC%8F%E4%BB%80%E9%BA%BC%E6%99%82%E5%80%99%E6%9C%83%E4%BB%A5%E9%9D%9E%E5%96%AE%E8%A1%8C%E7%9A%84%E7%A8%8B%E5%BC%8F%E7%A2%BC%EF%BC%8C%E4%B9%9F%E5%B0%B1%E6%98%AF%E5%8D%80%E5%A1%8A%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%9F"><span class="nav-number">4.0.1.</span> <span class="nav-text">表達式什麼時候會以非單行的程式碼，也就是區塊的方式？</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

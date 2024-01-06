@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -221,24 +221,18 @@
 <h2 id="傳遞資料的方式："><a href="#傳遞資料的方式：" class="headerlink" title="傳遞資料的方式："></a>傳遞資料的方式：</h2><h3 id="靜態資料傳入"><a href="#靜態資料傳入" class="headerlink" title="靜態資料傳入"></a>靜態資料傳入</h3><ul>
 <li>預期將外層傳入一個url的變數，傳進給內層使用<ul>
 <li>photo為內部元件，在template 我希望能夠取得外層傳入的圖片(urlimg)</li>
-<li>故在 props 以此命名，並將它綁到 template<pre><code class="javascript">app.component(&#39;photo&#39;, {
-  props: [&#39;url&#39;],
-  template: `&lt;img :src=&quot;url&quot; class=&quot;img-thumbnail&quot; alt&gt;`
-});</code></pre>
-</li>
+<li>故在 props 以此命名，並將它綁到 template<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;photo&#x27;</span>, &#123;</span><br><span class="line">       <span class="attr">props</span>: [<span class="string">&#x27;url&#x27;</span>],</span><br><span class="line">       <span class="attr">template</span>: <span class="string">`&lt;img :src=&quot;url&quot; class=&quot;img-thumbnail&quot; alt&gt;`</span></span><br><span class="line">   &#125;);</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li>將上方的元件資料，加到外層元件：像是加入html屬性一樣<pre><code class="javascript">&lt;photo
-  url=&quot;https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=600&amp;q=80&quot;&gt;
-&lt;/photo&gt;</code></pre>
+<li>將上方的元件資料，加到外層元件：像是加入html屬性一樣<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;photo</span><br><span class="line">    url=<span class="string">&quot;https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=600&amp;q=80&quot;</span>&gt;</span><br><span class="line">&lt;/photo&gt;</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
 <p><img src="https://i.imgur.com/f079ziY.png" alt=""></p>
 <h3 id="動態資源"><a href="#動態資源" class="headerlink" title="動態資源"></a>動態資源</h3><ul>
 <li>使用 <code>v-bind</code>，綁定內部元件的props ，使資料可以跟外層元件連動</li>
-<li>記得使用口訣： 前內、後外 =&gt;前面就是props內的名稱，後面就是外層元件的名稱<br><img src="https://i.imgur.com/BMVZtkn.png" alt=""><pre><code class="htmlembedded">&lt;h3&gt;動態資源&lt;/h3&gt;
-&lt;p&gt;技巧：前內、後外&lt;/p&gt;
-&lt;photo v-bind:urlimg=&quot;imgUrl&quot;&gt;&lt;/photo&gt;</code></pre>
+<li>記得使用口訣： 前內、後外 =&gt;前面就是props內的名稱，後面就是外層元件的名稱<br><img src="https://i.imgur.com/BMVZtkn.png" alt=""><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;h3&gt;動態資源&lt;/h3&gt;</span><br><span class="line">&lt;p&gt;技巧：前內、後外&lt;/p&gt;</span><br><span class="line">&lt;photo v-bind:urlimg=&quot;imgUrl&quot;&gt;&lt;/photo&gt;</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
 <h2 id="資料傳遞為-單向數據流"><a href="#資料傳遞為-單向數據流" class="headerlink" title="資料傳遞為 單向數據流"></a>資料傳遞為 單向數據流</h2><ul>
@@ -249,21 +243,8 @@
 </ul>
 </li>
 </ul>
-<pre><code class="javascript">//外層元件綁定 url
-&lt;photo2 :url=&quot;imgUrl&quot;&gt;&lt;/photo2&gt;</code></pre>
-<pre><code class="javascript">const app = Vue.createApp({
-    data() {
-    return {
-      imgUrl: &#39;https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=600&amp;q=80&#39;,
-         };
-     },
-});
-
- app.component(&#39;photo2&#39;, {
-    props: [&#39;url&#39;],
-    template: `&lt;img :src=&quot;url&quot; class=&quot;img-thumbnail&quot; alt&gt;&lt;br&gt;
-    &lt;input type=&quot;text&quot; v-model=&quot;url&quot;&gt; {{ url }}`
-     })</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//外層元件綁定 url</span></span><br><span class="line">&lt;photo2 :url=<span class="string">&quot;imgUrl&quot;</span>&gt;&lt;/photo2&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line">    <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">imgUrl</span>: <span class="string">&#x27;https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=600&amp;q=80&#x27;</span>,</span><br><span class="line">         &#125;;</span><br><span class="line">     &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"> app.<span class="title function_">component</span>(<span class="string">&#x27;photo2&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">props</span>: [<span class="string">&#x27;url&#x27;</span>],</span><br><span class="line">    <span class="attr">template</span>: <span class="string">`&lt;img :src=&quot;url&quot; class=&quot;img-thumbnail&quot; alt&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">    &lt;input type=&quot;text&quot; v-model=&quot;url&quot;&gt; &#123;&#123; url &#125;&#125;`</span></span><br><span class="line">     &#125;)</span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/OmmIxpi.png" alt=""></p>
 <p><img src="https://i.imgur.com/2BqCNTp.png" alt=""></p>
 <h2 id="在內部元件，要為props來命名"><a href="#在內部元件，要為props來命名" class="headerlink" title="在內部元件，要為props來命名"></a>在內部元件，要為props來命名</h2><p>在命名上有些要注意的地方</p>
@@ -271,76 +252,24 @@
 <li>首字母大寫: PostData、SetItems</li>
 <li>駝峰命名法: postData、setItems<br>要注意：在 HTML 中使用時必須使用 kebab-case (短橫線分隔)且應該為小寫。</li>
 </ul>
-<pre><code class="javascript">&lt;div id=&quot;app&quot;&gt;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">&quot;app&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line"> <span class="language-xml"><span class="tag">&lt;<span class="name">photo3</span> <span class="attr">:super-url</span>=<span class="string">&quot;imgUrl&quot;</span> &gt;</span><span class="tag">&lt;/<span class="name">photo3</span>&gt;</span></span></span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;photo3&quot;</span>, &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">props</span>: [<span class="string">&quot;superUrl&quot;</span>],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">template</span>: <span class="string">`&lt;img :src=&quot;superUrl&quot; class=&quot;img-thumbnail alt &gt;&quot;`</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
- &lt;photo3 :super-url=&quot;imgUrl&quot; &gt;&lt;/photo3&gt;
-&lt;/div&gt;
-
-&lt;script&gt;
-Vue.component(&quot;photo3&quot;, {
-  props: [&quot;superUrl&quot;],
-  template: `&lt;img :src=&quot;superUrl&quot; class=&quot;img-thumbnail alt &gt;&quot;`
-});
-&lt;/script&gt;</code></pre>
 <p><img src="https://i.imgur.com/57P1JDW.png" alt=""></p>
 <h2 id="定義-Props-型別驗證"><a href="#定義-Props-型別驗證" class="headerlink" title="定義 Props 型別驗證"></a>定義 Props 型別驗證</h2><ul>
-<li><p>使用型別驗證，會改用大括號，裡面放入props名稱，並用物件形式加入設定的內容</p>
-<ul>
-<li><code>props:{
-  propC: {
+<li>使用型別驗證，會改用大括號，裡面放入props名稱，並用物件形式加入設定的內容<ul>
+<li><code>props:&#123;
+  propC: &#123;
   type: String,
   required: true,
-  }
-}</code></li>
+  &#125;
+&#125;</code></li>
 </ul>
 </li>
-<li><p>其中，可以針對該props 來設定：</p>
-<ul>
-<li><p><code>type</code>型別 ： 可以是 String、Number、Boolean、Array、Object、Date、Function、Symbol</p>
-</li>
-<li><p><code>default</code> ：如果該 prop 沒有接收到傳入的值，就會使用 default 的值作為預設值。</p>
-</li>
-<li><p><code>required</code> ： 是否為必填項，如果設為 true 則表示必須要有值傳入，若沒有，就會出現錯誤提示。</p>
-<pre><code class="javascript">app.component(&#39;props-validation&#39;, {
-props: {
-// 單一型別檢查，可接受的型別 String, Number, Object, Boolean, Function(在 Vue 中可使用 Function 驗證型別)
-// null, undefined 會直接通過驗證
-propA: Function,
-
-// 多個型別檢查
-propB: [String, Number],
-
-// 必要值
-propC: {
-  type: String,
-  required: true,
-},
-
-// 預設值
-propD: {
-  type: Number,
-  default: 300
-},
-
-// 自訂函式
-propE: {
-  type: Object,
-  default() {
-    return {
-      money: 300
-    }
-  }
-},
-
-// 自訂驗證
-propF: {
-  validator(value) {
-    return value &gt; 1000
-  }
-}, 
-},</code></pre>
-<p><a href="https://www.hexschool.com/courses/vue3.html" target="_blank" rel="noopener">六角學院</a><br><a href="https://ithelp.ithome.com.tw/articles/10254050" target="_blank" rel="noopener">[DAY12]跟 Vue.js 認識的30天 - Vue 模組資料傳遞(<code>props</code>)</a></p>
-</li>
+<li>其中，可以針對該props 來設定：<ul>
+<li><code>type</code>型別 ： 可以是 String、Number、Boolean、Array、Object、Date、Function、Symbol</li>
+<li><code>default</code> ：如果該 prop 沒有接收到傳入的值，就會使用 default 的值作為預設值。</li>
+<li><code>required</code> ： 是否為必填項，如果設為 true 則表示必須要有值傳入，若沒有，就會出現錯誤提示。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;props-validation&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">props</span>: &#123;</span><br><span class="line">      <span class="comment">// 單一型別檢查，可接受的型別 String, Number, Object, Boolean, Function(在 Vue 中可使用 Function 驗證型別)</span></span><br><span class="line">      <span class="comment">// null, undefined 會直接通過驗證</span></span><br><span class="line">      <span class="attr">propA</span>: <span class="title class_">Function</span>,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 多個型別檢查</span></span><br><span class="line">      <span class="attr">propB</span>: [<span class="title class_">String</span>, <span class="title class_">Number</span>],</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 必要值</span></span><br><span class="line">      <span class="attr">propC</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">        <span class="attr">required</span>: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 預設值</span></span><br><span class="line">      <span class="attr">propD</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">Number</span>,</span><br><span class="line">        <span class="attr">default</span>: <span class="number">300</span></span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 自訂函式</span></span><br><span class="line">      <span class="attr">propE</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">Object</span>,</span><br><span class="line">        <span class="title function_">default</span>(<span class="params"></span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">money</span>: <span class="number">300</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 自訂驗證</span></span><br><span class="line">      <span class="attr">propF</span>: &#123;</span><br><span class="line">        <span class="title function_">validator</span>(<span class="params">value</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> value &gt; <span class="number">1000</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, </span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
+<a target="_blank" rel="noopener" href="https://www.hexschool.com/courses/vue3.html">六角學院</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10254050">[DAY12]跟 Vue.js 認識的30天 - Vue 模組資料傳遞(<code>props</code>)</a></li>
 </ul>
 </li>
 </ul>
@@ -427,7 +356,7 @@ propF: {
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#傳遞資料的方式："><span class="nav-number">1.</span> <span class="nav-text">傳遞資料的方式：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#靜態資料傳入"><span class="nav-number">1.1.</span> <span class="nav-text">靜態資料傳入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#動態資源"><span class="nav-number">1.2.</span> <span class="nav-text">動態資源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#資料傳遞為-單向數據流"><span class="nav-number">2.</span> <span class="nav-text">資料傳遞為 單向數據流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在內部元件，要為props來命名"><span class="nav-number">3.</span> <span class="nav-text">在內部元件，要為props來命名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定義-Props-型別驗證"><span class="nav-number">4.</span> <span class="nav-text">定義 Props 型別驗證</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%82%B3%E9%81%9E%E8%B3%87%E6%96%99%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">傳遞資料的方式：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9C%E6%85%8B%E8%B3%87%E6%96%99%E5%82%B3%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">靜態資料傳入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8B%95%E6%85%8B%E8%B3%87%E6%BA%90"><span class="nav-number">1.2.</span> <span class="nav-text">動態資源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%82%B3%E9%81%9E%E7%82%BA-%E5%96%AE%E5%90%91%E6%95%B8%E6%93%9A%E6%B5%81"><span class="nav-number">2.</span> <span class="nav-text">資料傳遞為 單向數據流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%85%A7%E9%83%A8%E5%85%83%E4%BB%B6%EF%BC%8C%E8%A6%81%E7%82%BAprops%E4%BE%86%E5%91%BD%E5%90%8D"><span class="nav-number">3.</span> <span class="nav-text">在內部元件，要為props來命名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E7%BE%A9-Props-%E5%9E%8B%E5%88%A5%E9%A9%97%E8%AD%89"><span class="nav-number">4.</span> <span class="nav-text">定義 Props 型別驗證</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

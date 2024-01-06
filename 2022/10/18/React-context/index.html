@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Passing Data Deeply with Context 當裡面的子狀態，會想要往父層去找尋時，就可以使用Context 學習文件：React Docs 資料會和其他元件要共用 prop drilling 最基本使用   範例：Section.js \ Heading.js children 帶入元件的內容      將 app.js 改寫  import Heading from &amp;#3">
+  <meta name="description" content="Passing Data Deeply with Context 當裡面的子狀態，會想要往父層去找尋時，就可以使用Context 學習文件：React Docs 資料會和其他元件要共用 prop drilling 最基本使用   範例：Section.js \ Heading.js children 帶入元件的內容      將 app.js 改寫  12345678910111213141516">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React - 從官方文件學習 Context 的使用">
 <meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2022/10/18/React-context/index.html">
 <meta property="og:site_name" content="Let&#39;s Code">
-<meta property="og:description" content="Passing Data Deeply with Context 當裡面的子狀態，會想要往父層去找尋時，就可以使用Context 學習文件：React Docs 資料會和其他元件要共用 prop drilling 最基本使用   範例：Section.js \ Heading.js children 帶入元件的內容      將 app.js 改寫  import Heading from &amp;#3">
+<meta property="og:description" content="Passing Data Deeply with Context 當裡面的子狀態，會想要往父層去找尋時，就可以使用Context 學習文件：React Docs 資料會和其他元件要共用 prop drilling 最基本使用   範例：Section.js \ Heading.js children 帶入元件的內容      將 app.js 改寫  12345678910111213141516">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/SAaAzP0.png">
 <meta property="og:image" content="https://i.imgur.com/UnXwJxu.png">
@@ -211,7 +211,7 @@
       
         <h2 id="Passing-Data-Deeply-with-Context"><a href="#Passing-Data-Deeply-with-Context" class="headerlink" title="Passing Data Deeply with Context"></a>Passing Data Deeply with Context</h2><ul>
 <li>當裡面的子狀態，會想要往父層去找尋時，就可以使用Context</li>
-<li>學習文件：<a href="https://beta.reactjs.org/learn?fbclid=IwAR3OXxu3hHQCgDowMfBWzvRDIdPrZpS2-OCktxb_V9EnRYzNrPB_rZ7CrSI" target="_blank" rel="noopener">React Docs</a></li>
+<li>學習文件：<a target="_blank" rel="noopener" href="https://beta.reactjs.org/learn?fbclid=IwAR3OXxu3hHQCgDowMfBWzvRDIdPrZpS2-OCktxb_V9EnRYzNrPB_rZ7CrSI">React Docs</a></li>
 <li>資料會和其他元件要共用<ul>
 <li>prop drilling<ol>
 <li>最基本使用</li>
@@ -226,117 +226,42 @@
 <ol start="2">
 <li>將 app.js 改寫</li>
 </ol>
-<pre><code class="jsx">import Heading from &#39;./Heading.js&#39;;
-import Section from &#39;./Section.js&#39;;
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Heading</span> <span class="keyword">from</span> <span class="string">&#x27;./Heading.js&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Section</span> <span class="keyword">from</span> <span class="string">&#x27;./Section.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Page</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;1&#125;</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;2&#125;</span>&gt;</span>Heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;2&#125;</span>&gt;</span>Heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;2&#125;</span>&gt;</span>Heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;3&#125;</span>&gt;</span>Sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;3&#125;</span>&gt;</span>Sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;3&#125;</span>&gt;</span>Sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;4&#125;</span>&gt;</span>Sub-sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;4&#125;</span>&gt;</span>Sub-sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;4&#125;</span>&gt;</span>Sub-sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Section</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-export default function Page() {
-  return (
-    &lt;Section&gt;
-      &lt;Heading level={1}&gt;Title&lt;/Heading&gt;
-      &lt;Section&gt;
-        &lt;Heading level={2}&gt;Heading&lt;/Heading&gt;
-        &lt;Heading level={2}&gt;Heading&lt;/Heading&gt;
-        &lt;Heading level={2}&gt;Heading&lt;/Heading&gt;
-        &lt;Section&gt;
-          &lt;Heading level={3}&gt;Sub-heading&lt;/Heading&gt;
-          &lt;Heading level={3}&gt;Sub-heading&lt;/Heading&gt;
-          &lt;Heading level={3}&gt;Sub-heading&lt;/Heading&gt;
-          &lt;Section&gt;
-            &lt;Heading level={4}&gt;Sub-sub-heading&lt;/Heading&gt;
-            &lt;Heading level={4}&gt;Sub-sub-heading&lt;/Heading&gt;
-            &lt;Heading level={4}&gt;Sub-sub-heading&lt;/Heading&gt;
-          &lt;/Section&gt;
-        &lt;/Section&gt;
-      &lt;/Section&gt;
-    &lt;/Section&gt;
-  );
-}</code></pre>
+
 <p><img src="https://i.imgur.com/UnXwJxu.png" alt=""></p>
 <p>以上方式，看到 在 Heading 元件傳入參數<br>改寫為，在 section 元件就來控制裡面的 Heading 是什麼 level</p>
-<pre><code class="jsx">&lt;Section level={3}&gt;  
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Section</span> level=&#123;<span class="number">3</span>&#125;&gt;  </span><br><span class="line"></span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">Heading</span>&gt;</span>About<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span>  </span><br><span class="line">	</span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">Heading</span>&gt;</span>Photos<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span>  </span><br><span class="line">	</span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">Heading</span>&gt;</span>Videos<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span>  </span><br><span class="line"></span><br><span class="line">&lt;/<span class="title class_">Section</span>&gt;</span><br></pre></td></tr></table></figure>
 
-    &lt;Heading&gt;About&lt;/Heading&gt;  
-
-    &lt;Heading&gt;Photos&lt;/Heading&gt;  
-
-    &lt;Heading&gt;Videos&lt;/Heading&gt;  
-
-&lt;/Section&gt;</code></pre>
 <ol start="3">
 <li>實作<ol>
 <li><strong>Create</strong> a context.</li>
-<li><strong>Use</strong> that context，在子層<code>import { useContext } from &#39;react&#39;;</code></li>
+<li><strong>Use</strong> that context，在子層<code>import &#123; useContext &#125; from &#39;react&#39;;</code></li>
 <li>提供 context 的值</li>
 </ol>
 </li>
 </ol>
-<h4 id="Create-a-context"><a href="#Create-a-context" class="headerlink" title="Create  a context."></a>Create  a context.</h4><pre><code class="jsx">import { createContext } from &#39;react&#39;;
-
-export const LevelContext = createContext(1);
-</code></pre>
+<h4 id="Create-a-context"><a href="#Create-a-context" class="headerlink" title="Create  a context."></a>Create  a context.</h4><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createContext &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">LevelContext</span> = <span class="title function_">createContext</span>(<span class="number">1</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h4 id="Use-that-context"><a href="#Use-that-context" class="headerlink" title="Use that context"></a><strong>Use</strong> that context</h4><ul>
 <li>是 Heading 要往外層找資料，所以要在這裡使用 useContext</li>
 <li>要往外層的地方</li>
 <li>注意 level </li>
 </ul>
-<pre><code class="jsx">import { useContext } from &#39;react&#39;;
-import { LevelContext } from &#39;./LevelContext.js&#39;;
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useContext &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">LevelContext</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./LevelContext.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Heading</span>(<span class="params">&#123; children &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> level = <span class="title function_">useContext</span>(<span class="title class_">LevelContext</span>);</span><br><span class="line">  <span class="keyword">switch</span> (level) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h5</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h5</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h6</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span>;</span><br><span class="line">    <span class="attr">default</span>:</span><br><span class="line">      <span class="keyword">throw</span> <span class="title class_">Error</span>(<span class="string">&#x27;Unknown level: &#x27;</span> + level);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-export default function Heading({ children }) {
-  const level = useContext(LevelContext);
-  switch (level) {
-    case 1:
-      return &lt;h1&gt;{children}&lt;/h1&gt;;
-    case 2:
-      return &lt;h2&gt;{children}&lt;/h2&gt;;
-    case 3:
-      return &lt;h3&gt;{children}&lt;/h3&gt;;
-    case 4:
-      return &lt;h4&gt;{children}&lt;/h4&gt;;
-    case 5:
-      return &lt;h5&gt;{children}&lt;/h5&gt;;
-    case 6:
-      return &lt;h6&gt;{children}&lt;/h6&gt;;
-    default:
-      throw Error(&#39;Unknown level: &#39; + level);
-  }
-}</code></pre>
 <h4 id="Provide-the-context"><a href="#Provide-the-context" class="headerlink" title="Provide the context"></a>Provide the context</h4><ul>
 <li>建立 context 的 provider</li>
 <li>提供此資料的提供者、元件</li>
 <li>這個 provider 是放在最外層，所以在此範例應該放在 section 去改寫</li>
 </ul>
-<h5 id="原本的-section-js"><a href="#原本的-section-js" class="headerlink" title="原本的 section.js"></a>原本的 section.js</h5><pre><code class="jsx">export default function Section({ children }) {
-  return (
-    &lt;section className=&quot;section&quot;&gt;
-      {children}
-    &lt;/section&gt;
-  );
-}
-</code></pre>
+<h5 id="原本的-section-js"><a href="#原本的-section-js" class="headerlink" title="原本的 section.js"></a>原本的 section.js</h5><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Section</span>(<span class="params">&#123; children &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">section</span> <span class="attr">className</span>=<span class="string">&quot;section&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;children&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 <h5 id="改寫section-js"><a href="#改寫section-js" class="headerlink" title="改寫section.js"></a>改寫section.js</h5><ul>
 <li>level 從這邊拿</li>
 </ul>
-<pre><code class="jsx">import { LevelContext } from &#39;./LevelContext.js&#39;;  
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">LevelContext</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./LevelContext.js&#x27;</span>;  </span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Section</span>(<span class="params">&#123; level, children &#125;</span>) &#123;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (  </span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">section</span> <span class="attr">className</span>=<span class="string">&quot;section&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">LevelContext.Provider</span> <span class="attr">value</span>=<span class="string">&#123;level&#125;</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">		&#123;children&#125;  </span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">LevelContext.Provider</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span>  </span><br><span class="line"></span><br><span class="line">);  </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-export default function Section({ level, children }) {  
-
-return (  
-
-&lt;section className=&quot;section&quot;&gt;  
-
-    &lt;LevelContext.Provider value={level}&gt;  
-
-        {children}  
-
-    &lt;/LevelContext.Provider&gt;  
-
-&lt;/section&gt;  
-
-);  
-
-}</code></pre>
 <p><img src="https://i.imgur.com/pI528iX.jpg" alt=""></p>
 
     </div>
@@ -421,7 +346,7 @@ return (
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Passing-Data-Deeply-with-Context"><span class="nav-number">1.</span> <span class="nav-text">Passing Data Deeply with Context</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Create-a-context"><span class="nav-number">1.0.1.</span> <span class="nav-text">Create  a context.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Use-that-context"><span class="nav-number">1.0.2.</span> <span class="nav-text">Use that context</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Provide-the-context"><span class="nav-number">1.0.3.</span> <span class="nav-text">Provide the context</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#原本的-section-js"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">原本的 section.js</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#改寫section-js"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">改寫section.js</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Passing-Data-Deeply-with-Context"><span class="nav-number">1.</span> <span class="nav-text">Passing Data Deeply with Context</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Create-a-context"><span class="nav-number">1.0.1.</span> <span class="nav-text">Create  a context.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Use-that-context"><span class="nav-number">1.0.2.</span> <span class="nav-text">Use that context</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Provide-the-context"><span class="nav-number">1.0.3.</span> <span class="nav-text">Provide the context</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8E%9F%E6%9C%AC%E7%9A%84-section-js"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">原本的 section.js</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%94%B9%E5%AF%ABsection-js"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">改寫section.js</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

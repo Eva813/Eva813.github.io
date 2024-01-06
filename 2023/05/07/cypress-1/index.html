@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -212,21 +212,9 @@
 <p>每次在交付完成的任務給 PM 之前，總是會先自行反覆點擊測驗過才提能安心提供。但除了自己點擊之外，是否有其他更為簡易的方式可以進行測試呢？Cypress 是一個用於編寫端對端測試的 JavaScript 測試框架。他可以幫助我們做到基礎的自動化測試，今天就先來認識看看吧～</p>
 <h2 id="建立專案"><a href="#建立專案" class="headerlink" title="建立專案"></a>建立專案</h2><p>在本地建立一個 cypress-project 資料夾，進入該檔案夾<br><code>npm init -y</code><br><code>npm install cypress</code></p>
 <ul>
-<li>安裝完後<pre><code class="javaScript">{
-&quot;name&quot;: &quot;cypress-project-1&quot;,
-&quot;version&quot;: &quot;1.0.0&quot;,
-&quot;description&quot;: &quot;&quot;,
-&quot;main&quot;: &quot;index.js&quot;,
-&quot;scripts&quot;: {
-  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
-},
-&quot;keywords&quot;: [],
-&quot;author&quot;: &quot;&quot;,
-&quot;license&quot;: &quot;ISC&quot;,
-&quot;dependencies&quot;: {
-  &quot;cypress&quot;: &quot;^12.11.0&quot;
-}
-}</code></pre>
+<li>安裝完後<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;cypress-project-1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;description&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="string">&quot;main&quot;</span>: <span class="string">&quot;index.js&quot;</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;test&quot;</span>: <span class="string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;keywords&quot;</span>: [],</span><br><span class="line">  <span class="string">&quot;author&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="string">&quot;license&quot;</span>: <span class="string">&quot;ISC&quot;</span>,</span><br><span class="line">  <span class="string">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;cypress&quot;</span>: <span class="string">&quot;^12.11.0&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 </li>
 </ul>
 <h2 id="實作測試功能"><a href="#實作測試功能" class="headerlink" title="實作測試功能"></a>實作測試功能</h2><ul>
@@ -234,14 +222,8 @@
 <li>進行關鍵字搜尋</li>
 </ul>
 <p><img src="https://i.imgur.com/2FOKkBZ.png" alt=""></p>
-<h3 id="測試語法"><a href="#測試語法" class="headerlink" title="測試語法"></a>測試語法</h3><pre><code class="javaScript">  it(&#39;google search&#39;, () =&gt; {
-    //visit 進入不同網站
-    cy.visit(&#39;https://www.google.com.tw/?hl=zh_TW&#39;)
+<h3 id="測試語法"><a href="#測試語法" class="headerlink" title="測試語法"></a>測試語法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">it</span>(<span class="string">&#x27;google search&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//visit 進入不同網站</span></span><br><span class="line">  cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://www.google.com.tw/?hl=zh_TW&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  cy.<span class="title function_">get</span>(<span class="string">&#x27;#APjFqb&#x27;</span>).<span class="title function_">type</span>(<span class="string">&#x27;what is cypress.io&#123;Enter&#125;&#x27;</span>)</span><br><span class="line">  <span class="comment">//除了點擊搜尋按鈕之外，一般也會按下 enter鍵觸發</span></span><br><span class="line">  <span class="comment">// cy.contains(&#x27;Google 搜尋&#x27;).click()</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-    cy.get(&#39;#APjFqb&#39;).type(&#39;what is cypress.io{Enter}&#39;)
-    //除了點擊搜尋按鈕之外，一般也會按下 enter鍵觸發
-    // cy.contains(&#39;Google 搜尋&#39;).click()
-  })</code></pre>
 <h3 id="測試操作"><a href="#測試操作" class="headerlink" title="測試操作"></a>測試操作</h3><p><code>npx cypress open</code> 進入測試介面，選擇 E2E</p>
 <p><img src="https://i.imgur.com/rmkiayJ.png" alt=""></p>
 <ul>
@@ -346,7 +328,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#建立專案"><span class="nav-number">1.</span> <span class="nav-text">建立專案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#實作測試功能"><span class="nav-number">2.</span> <span class="nav-text">實作測試功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#測試語法"><span class="nav-number">2.1.</span> <span class="nav-text">測試語法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#測試操作"><span class="nav-number">2.2.</span> <span class="nav-text">測試操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#測試結果呈現"><span class="nav-number">2.3.</span> <span class="nav-text">測試結果呈現</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%B0%88%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">建立專案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E6%B8%AC%E8%A9%A6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">實作測試功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E8%AA%9E%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">測試語法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">測試操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E7%B5%90%E6%9E%9C%E5%91%88%E7%8F%BE"><span class="nav-number">2.3.</span> <span class="nav-text">測試結果呈現</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

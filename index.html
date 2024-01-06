@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -171,7 +171,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-01-06 12:15:17 / Modified: 13:22:16" itemprop="dateCreated datePublished" datetime="2024-01-06T12:15:17+08:00">2024-01-06</time>
+              <time title="Created: 2024-01-06 12:15:17 / Modified: 13:37:19" itemprop="dateCreated datePublished" datetime="2024-01-06T12:15:17+08:00">2024-01-06</time>
             </span>
 
           
@@ -190,100 +190,20 @@
 <ul>
 <li>創建一個包含三欄等寬的網格布局</li>
 </ul>
-<pre><code class="css">.content-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}</code></pre>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr <span class="number">1</span>fr <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>加入使用 using named grid lines，定義出欄的 content 範圍</p>
-<pre><code class="css">.content-grid {
-  display: grid;
-  grid-template-columns: 1fr [content-start] 1fr [content-end] 1fr;
-}</code></pre>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr [content-start] <span class="number">1</span>fr [content-end] <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>設計一個 class 給他，如果在 content-grid 以下的元素，會將以下的元素放在 content 之間</p>
 <ul>
 <li>應用到 <code>.content-grid</code> 內部的每一個直接子元素</li>
 </ul>
-<pre><code class="css">.content-grid {
-  display: grid;
-  grid-template-columns: 1fr [content-start] 1fr [content- end] 1fr;
-}
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr [content-start] <span class="number">1</span>fr [content- end] <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.content-grid</span> &gt; * &#123;</span><br><span class="line">  <span class="attribute">grid-column</span>: content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-.content-grid &gt; * {
-  grid-column: content;
-}</code></pre>
 <h3 id="Layout-grid-可以先設置："><a href="#Layout-grid-可以先設置：" class="headerlink" title="Layout grid 可以先設置："></a>Layout grid 可以先設置：</h3><ul>
 <li>就可以看到 content 範圍<br><img src="https://hackmd.io/_uploads/HyCjULL_p.png" alt="image"><br><img src="https://hackmd.io/_uploads/HkJWv8UO6.png" alt="image"></li>
 </ul>
-<h2 id="設置-breakout"><a href="#設置-breakout" class="headerlink" title="設置 breakout"></a>設置 breakout</h2><pre><code class="css">.content-grid {
-  display: grid;
-  grid-template-columns: 100px [breakout-start] 100px [content-start] 1fr [content-end] 100px [breakout-end] 100px;
-}
-
-.content-grid &gt; * {
-  grid-column: content;
-}
-
-.content-grid &gt; .breakout {
-  grid-column: breakout;
-}</code></pre>
-<p><img src="https://hackmd.io/_uploads/HycvDLIO6.png" alt="image"></p>
-<h2 id="不可缺的-full-width"><a href="#不可缺的-full-width" class="headerlink" title="不可缺的 full-width"></a>不可缺的 full-width</h2><ul>
-<li>利用網格線的 最左側以及最右側 grid line</li>
-</ul>
-<pre><code class="css">.content-grid {
-  display: grid;
-  grid-template-columns: [full-width-start] 100px [breakout-start] 100px [content-start] 1fr [content-end] 100px [breakout-end] 100px [full-width-end];
-}
-
-.content-grid &gt; * {
-  grid-column: content;
-}
-
-.content-grid &gt; .breakout {
-  grid-column: breakout;
-}
-
-.content-grid &gt; .full-width {
-  grid-column: full-width;
-}</code></pre>
-<ul>
-<li>希望區塊的背景可以 full-with 但內容符合文章(content)寬度<br><code>.content-grid &gt; .full-width</code></li>
-</ul>
-<pre><code class="css">.content-grid {
-  display: grid;
-
-  grid-template-columns: [full-width-start] 100px [breakout-start] 100px [content-start] 1fr [content-end] 100px [breakout-end] 100px [full-width-end];
-}
-
-.content-grid &gt; :not(.breakout, .full-width),
-.full-width &gt; :not(.breakout, .full-width) {
-  grid-column: content;
-}
-
-.content-grid &gt; .breakout {
-  grid-column: breakout;
-}
-
-.content-grid &gt; .full-width {
-  grid-column: full-width;
-  display: grid;
-  grid-template-columns: inherit;
-}</code></pre>
-<h2 id="更細微的調整，設置變數以符合-responsive"><a href="#更細微的調整，設置變數以符合-responsive" class="headerlink" title="更細微的調整，設置變數以符合 responsive"></a>更細微的調整，設置變數以符合 responsive</h2><pre><code class="css">.content-grid{
-     --padding-inline: 2rem ;
-     --content-max-width: 70ch;
-     --breakout-max-width: 85ch
-    --breakout-size: calc(
-(var(--breakout-max-width) - var(--content-max-width)) / 2
-);
-    display: grid;
-
-    grid-template-columns:
-    [full-width-start] minmax(var(--padding-inline), 1fr)
-    [breakout-start] minmax(0, var(--breakout-size))
-    [content-start] min(100% - (var(--padding-inline) * 2 ), var(--content-max-width)) [content-end] minmax(0, var(--breakout-size)) [breakout-end]
-    minmax(var(--padding-inline), 1fr) [full-width-end];
-}</code></pre>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/01/06/css-grid/#more" rel="contents">
@@ -355,98 +275,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>因工作需求需要製作簽名面板，查看套件使用度較高 <a href="https://www.npmjs.com/package/signature_pad" target="_blank" rel="noopener">signature_pad</a></p>
+          <p>因工作需求需要製作簽名面板，查看套件使用度較高 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/signature_pad">signature_pad</a></p>
 <ol>
 <li>在專案內安裝 signature_pad 套件 <code>npm i signature_pad</code></li>
 <li>嘗試將引入的簽名套件包成可以重複使用的元件。</li>
 </ol>
 <p>initializeSignaturePad : 進行初始化，如尺寸大小、筆的顏色、畫布背景色等。這邊將這些設置放在 props 讓使用時可以保有一些彈性空間。<br>resizeCanvas : 用於調整畫布的大小，目的是確保畫布的大小能夠適應不同的設備和螢幕解析度。<br>saveSignature\ clearSignature: 顧名思義就是儲存、清除簽名<br>注意：因為將簽名功能包成元件，使用 emit 將儲存的簽名傳到外層。</p>
-<pre><code class="javascript">&lt;template&gt;
-  &lt;div
-    class=&quot;signature-pad&quot;
-    :style=&quot;{ width: props.width, height: props.height }&quot;
-  &gt;
-    &lt;canvas ref=&quot;canvas&quot;&gt;&lt;/canvas&gt;
-    &lt;slot&gt;
-      &lt;button @click=&quot;clearSignature&quot;&gt;清除簽名&lt;/button&gt;
-      &lt;button @click=&quot;saveSignature&quot;&gt;儲存簽名&lt;/button&gt;
-    &lt;/slot&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    <span class="attr">class</span>=<span class="string">&quot;signature-pad&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    <span class="attr">:style</span>=<span class="string">&quot;&#123; width: props.width, height: props.height &#125;&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  &gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">ref</span>=<span class="string">&quot;canvas&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">slot</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;clearSignature&quot;</span>&gt;</span>清除簽名<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;saveSignature&quot;</span>&gt;</span>儲存簽名<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">import</span> &#123; onMounted, ref, watch, onUnmounted &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">import</span> <span class="title class_">SignaturePad</span> <span class="keyword">from</span> <span class="string">&quot;signature_pad&quot;</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> props = <span class="title function_">defineProps</span>(&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">width</span>: &#123; <span class="attr">type</span>: <span class="title class_">String</span>, <span class="attr">default</span>: <span class="string">&quot;100%&quot;</span> &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">height</span>: &#123; <span class="attr">type</span>: <span class="title class_">String</span>, <span class="attr">default</span>: <span class="string">&quot;300px&quot;</span> &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">penColor</span>: &#123; <span class="attr">type</span>: <span class="title class_">String</span>, <span class="attr">default</span>: <span class="string">&quot;black&quot;</span> &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">backgroundColor</span>: &#123; <span class="attr">type</span>: <span class="title class_">String</span>, <span class="attr">default</span>: <span class="string">&quot;white&quot;</span> &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">options</span>: &#123; <span class="attr">type</span>: <span class="title class_">Object</span>, <span class="attr">default</span>: <span class="function">() =&gt;</span> (&#123;&#125;) &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> canvas = <span class="title function_">ref</span>(<span class="literal">null</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">let</span> signaturePad = <span class="literal">null</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> <span class="title function_">initializeSignaturePad</span> = (<span class="params"></span>) =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">if</span> (canvas.<span class="property">value</span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    signaturePad = <span class="keyword">new</span> <span class="title class_">SignaturePad</span>(canvas.<span class="property">value</span>, &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      ...props.<span class="property">options</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="attr">penColor</span>: props.<span class="property">penColor</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="attr">backgroundColor</span>: props.<span class="property">backgroundColor</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    &#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> <span class="title function_">resizeCanvas</span> = (<span class="params"></span>) =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="comment">//window.devicePixelRatio 來獲取設備的像素密度，如果無法獲取到，則將ratio設為1。</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">const</span> ratio = <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="variable language_">window</span>.<span class="property">devicePixelRatio</span> || <span class="number">1</span>, <span class="number">1</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="comment">//根據畫布元素的寬度和高度，乘以ratio，來設定畫布的寬度和高度。為了確保畫布在高像素密度的設備上顯示正確。</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  canvas.<span class="property">value</span>.<span class="property">width</span> = canvas.<span class="property">value</span>.<span class="property">offsetWidth</span> * ratio;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  canvas.<span class="property">value</span>.<span class="property">height</span> = canvas.<span class="property">value</span>.<span class="property">offsetHeight</span> * ratio;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="comment">//獲取畫布的2D繪圖上下文，並使用scale方法將繪圖上下文的縮放比例設為ratio。</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  canvas.<span class="property">value</span>.<span class="title function_">getContext</span>(<span class="string">&quot;2d&quot;</span>).<span class="title function_">scale</span>(ratio, ratio);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  signaturePad.<span class="title function_">clear</span>(); <span class="comment">// Clears any existing drawing</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> emit = <span class="title function_">defineEmits</span>([<span class="string">&quot;clear&quot;</span>, <span class="string">&quot;save&quot;</span>]);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> <span class="title function_">saveSignature</span> = (<span class="params"></span>) =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">if</span> (signaturePad) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="keyword">const</span> signatureImage = signaturePad.<span class="title function_">toDataURL</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="title function_">emit</span>(<span class="string">&quot;save&quot;</span>, signatureImage);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">return</span> <span class="literal">null</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> <span class="title function_">clearSignature</span> = (<span class="params"></span>) =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">if</span> (signaturePad) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    signaturePad.<span class="title function_">clear</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="title function_">emit</span>(<span class="string">&quot;clear&quot;</span>); <span class="comment">// 發射清除事件</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// Initialize and resize canvas</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title function_">onMounted</span>(<span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="title function_">initializeSignaturePad</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;resize&quot;</span>, resizeCanvas);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="title function_">resizeCanvas</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title function_">onUnmounted</span>(<span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&quot;resize&quot;</span>, resizeCanvas);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// Watch for prop changes</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title function_">watch</span>(</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="function">() =&gt;</span> [props.<span class="property">penColor</span>, props.<span class="property">backgroundColor</span>, props.<span class="property">options</span>],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="title function_">initializeSignaturePad</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#123; <span class="attr">deep</span>: <span class="literal">true</span> &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-&lt;script setup&gt;
-import { onMounted, ref, watch, onUnmounted } from &quot;vue&quot;;
-import SignaturePad from &quot;signature_pad&quot;;
-
-const props = defineProps({
-  width: { type: String, default: &quot;100%&quot; },
-  height: { type: String, default: &quot;300px&quot; },
-  penColor: { type: String, default: &quot;black&quot; },
-  backgroundColor: { type: String, default: &quot;white&quot; },
-  options: { type: Object, default: () =&gt; ({}) },
-});
-
-const canvas = ref(null);
-let signaturePad = null;
-
-const initializeSignaturePad = () =&gt; {
-  if (canvas.value) {
-    signaturePad = new SignaturePad(canvas.value, {
-      ...props.options,
-      penColor: props.penColor,
-      backgroundColor: props.backgroundColor,
-    });
-  }
-};
-
-const resizeCanvas = () =&gt; {
-  //window.devicePixelRatio 來獲取設備的像素密度，如果無法獲取到，則將ratio設為1。
-  const ratio = Math.max(window.devicePixelRatio || 1, 1);
-  //根據畫布元素的寬度和高度，乘以ratio，來設定畫布的寬度和高度。為了確保畫布在高像素密度的設備上顯示正確。
-  canvas.value.width = canvas.value.offsetWidth * ratio;
-  canvas.value.height = canvas.value.offsetHeight * ratio;
-  //獲取畫布的2D繪圖上下文，並使用scale方法將繪圖上下文的縮放比例設為ratio。
-  canvas.value.getContext(&quot;2d&quot;).scale(ratio, ratio);
-  signaturePad.clear(); // Clears any existing drawing
-};
-
-const emit = defineEmits([&quot;clear&quot;, &quot;save&quot;]);
-
-const saveSignature = () =&gt; {
-  if (signaturePad) {
-    const signatureImage = signaturePad.toDataURL();
-    emit(&quot;save&quot;, signatureImage);
-  }
-  return null;
-};
-
-const clearSignature = () =&gt; {
-  if (signaturePad) {
-    signaturePad.clear();
-    emit(&quot;clear&quot;); // 發射清除事件
-  }
-};
-
-// Initialize and resize canvas
-onMounted(() =&gt; {
-  initializeSignaturePad();
-  window.addEventListener(&quot;resize&quot;, resizeCanvas);
-  resizeCanvas();
-});
-
-onUnmounted(() =&gt; {
-  window.removeEventListener(&quot;resize&quot;, resizeCanvas);
-});
-
-// Watch for prop changes
-watch(
-  () =&gt; [props.penColor, props.backgroundColor, props.options],
-  () =&gt; {
-    initializeSignaturePad();
-  },
-  { deep: true }
-);
-&lt;/script&gt;</code></pre>
 <h3 id="參考資料："><a href="#參考資料：" class="headerlink" title="參考資料："></a>參考資料：</h3><p><a href="https://github.com/WangShayne/vue3-signature">https://github.com/WangShayne/vue3-signature</a></p>
 
       
@@ -522,67 +358,29 @@ watch(
 
       
           <p>延續上次介紹常用的 Vue test util 語法，今天要再多介紹幾個。</p>
-<h2 id="text-與-html"><a href="#text-與-html" class="headerlink" title=".text() 與 .html()"></a><code>.text()</code> 與 <code>.html()</code></h2><pre><code class="javaScript">&lt;template&gt;
-  &lt;div class=&quot;hello&quot;&gt;
-    &lt;p&gt;
-      For a guide and recipes on how to configure / customize this project,&lt;br /&gt;
-      check out the
-      &lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;
-        vue-cli documentation
-      &lt;/a&gt;
-    &lt;/p&gt;
-  &lt;/div&gt;
-&lt;/template&gt;</code></pre>
+<h2 id="text-與-html"><a href="#text-與-html" class="headerlink" title=".text() 與 .html()"></a><code>.text()</code> 與 <code>.html()</code></h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;hello&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      For a guide and recipes on how to configure / customize this project,<span class="tag">&lt;<span class="name">br</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      check out the</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://cli.vuejs.org&quot;</span> <span class="attr">target</span>=<span class="string">&quot;_blank&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;noopener&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        vue-cli documentation</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>html</code> 若直接 console 出會將 template 呈現出來</p>
-<pre><code>html=&gt; &lt;div class=&quot;hello&quot;&gt;
-      &lt;p&gt; For a guide and recipes on how to configure / customize this project,&lt;br&gt; check out the &lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;&lt;/p&gt;
-    &lt;/div&gt;</code></pre><p>在測試當中，可以直接抓取該斷落的內容進行比對</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">html=&gt; &lt;div class=&quot;hello&quot;&gt;</span><br><span class="line">      &lt;p&gt; For a guide and recipes on how to configure / customize this project,&lt;br&gt; check out the &lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在測試當中，可以直接抓取該斷落的內容進行比對</p>
 <ol>
 <li>取得該段的 html</li>
 <li>取得該 DOM 元素，並進行 html 的比對</li>
 </ol>
-<pre><code class="javaScript">import { shallowMount } from &quot;@vue/test-utils&quot;;
-import HelloWorld from &quot;./HelloWorld.vue&quot;;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">HelloWorld</span> <span class="keyword">from</span> <span class="string">&quot;./HelloWorld.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;HelloWorld.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;html &amp; text&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">HelloWorld</span>);</span><br><span class="line">    <span class="comment">// console.log(&quot;html=&gt;&quot;, wrapper.html());</span></span><br><span class="line">    <span class="comment">// console.log(&quot;text=&gt;&quot;, wrapper.text());</span></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">html</span>()).<span class="title function_">toMatch</span>(</span><br><span class="line">      <span class="string">`&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;aLink_&gt;&quot;</span>, wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">html</span>())</span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">html</span>()).<span class="title function_">toMatch</span>(</span><br><span class="line">      <span class="string">`&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-describe(&quot;HelloWorld.vue&quot;, () =&gt; {
-  it(&quot;html &amp; text&quot;, () =&gt; {
-    const wrapper = shallowMount(HelloWorld);
-    // console.log(&quot;html=&gt;&quot;, wrapper.html());
-    // console.log(&quot;text=&gt;&quot;, wrapper.text());
-    expect(wrapper.html()).toMatch(
-      `&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`);
-    console.log(&quot;aLink_&gt;&quot;, wrapper.find(&#39;a&#39;).html())
-    expect(wrapper.find(&#39;a&#39;).html()).toMatch(
-      `&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`);
-  });
-});</code></pre>
 <h2 id="component-的簡易測試"><a href="#component-的簡易測試" class="headerlink" title="component 的簡易測試"></a>component 的簡易測試</h2><p>如課程範例為一個卡片，裡面有一個圖片元件(ImageBox)、內文元件(Content)</p>
 <p><img src="https://hackmd.io/_uploads/ryWgDUjoh.png" alt=""></p>
-<pre><code class="javascript">&lt;template&gt;
-  &lt;div id=&quot;CardBox&quot;&gt;
-    &lt;ImageBox /&gt;
-    &lt;Content v-if=&quot;isOpenContent&quot; /&gt;
-  &lt;/div&gt;
-&lt;/template&gt;</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;CardBox&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">ImageBox</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">Content</span> <span class="attr">v-if</span>=<span class="string">&quot;isOpenContent&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
 <p>test goal: 檢查 component 是否有隨狀態而成功渲染與否。</p>
 <h3 id="findComponent"><a href="#findComponent" class="headerlink" title="findComponent"></a>findComponent</h3><p>判斷 component 是否有存在<br>首先要如何抓元件？</p>
 <ol>
 <li>因頁面中是掛載組件，所以這邊使用 mount</li>
 </ol>
-<pre><code class="javaScript">import { mount } from &quot;@vue/test-utils&quot;;
-import CardBox from &quot;./index.vue&quot;;
-import ImageBox from &quot;./ImageBox.vue&quot;;
-import Content from &quot;./Content.vue&quot;;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; mount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">CardBox</span> <span class="keyword">from</span> <span class="string">&quot;./index.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ImageBox</span> <span class="keyword">from</span> <span class="string">&quot;./ImageBox.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Content</span> <span class="keyword">from</span> <span class="string">&quot;./Content.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;CardBox.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;findComponent function test&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">mount</span>(<span class="title class_">CardBox</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">findComponent</span>(<span class="title class_">ImageBox</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">findComponent</span>(<span class="title class_">Content</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-describe(&quot;CardBox.vue&quot;, () =&gt; {
-  it(&quot;findComponent function test&quot;, () =&gt; {
-    const wrapper = mount(CardBox);
-
-    expect(wrapper.findComponent(ImageBox).exists()).toBe(true);
-    expect(wrapper.findComponent(Content).exists()).toBe(true);
-  });
-});
-</code></pre>
 <ul>
 <li>findComponent(‘.class’)</li>
 <li>findComponent({name: a}) 組建名稱</li>
@@ -593,42 +391,18 @@ describe(&quot;CardBox.vue&quot;, () =&gt; {
 <li>此方式是會回傳陣列，要使用 <code>at()</code></li>
 <li>不支援 ref 查找</li>
 </ul>
-<pre><code class="javaScript">expect(wrapper.findAllComponents(ImageBox).at(0).exists()).toBe(true);</code></pre>
-<pre><code>Using find to search for a Component is deprecated and will be removed. Use findComponent instead. The find method will continue to work for finding elements using any valid selector（tag selectors (div, foo, bar), attribute selectors ([foo], [foo=&quot;bar&quot;])...）.</code></pre><h2 id="測試-class-and-attribute"><a href="#測試-class-and-attribute" class="headerlink" title="測試 class and attribute"></a>測試 class and attribute</h2><p>可以使用在狀態的切換或是驗證資料的對錯，可以用 class 存在與否驗證。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">expect</span>(wrapper.<span class="title function_">findAllComponents</span>(<span class="title class_">ImageBox</span>).<span class="title function_">at</span>(<span class="number">0</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Using find to search for a Component is deprecated and will be removed. Use findComponent instead. The find method will continue to work for finding elements using any valid selector（tag selectors (div, foo, bar), attribute selectors ([foo], [foo=&quot;bar&quot;])...）.</span><br></pre></td></tr></table></figure>
+
+<h2 id="測試-class-and-attribute"><a href="#測試-class-and-attribute" class="headerlink" title="測試 class and attribute"></a>測試 class and attribute</h2><p>可以使用在狀態的切換或是驗證資料的對錯，可以用 class 存在與否驗證。</p>
 <h3 id="attribute"><a href="#attribute" class="headerlink" title="attribute"></a>attribute</h3><ul>
 <li>資料在渲染的時候，是否有正確的塞入到 attribute。</li>
 <li>在做資料的渲然，將拿到的內容塞入 attribute 中，如 a link 的 href, img src</li>
 </ul>
 <p>範例題目延續上述使用得內文元件(Content)</p>
-<pre><code class="javaScript">&lt;script&gt;
-import { ref } from &quot;@vue/reactivity&quot;;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/reactivity&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">props</span>: &#123;</span><br><span class="line">    <span class="attr">styleColor</span>: &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">      <span class="attr">default</span>: <span class="string">&quot;red&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">setup</span>(<span class="params">props</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      props,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">h1</span> <span class="attr">:class</span>=<span class="string">&quot;[&#x27;card_title&#x27;, props.styleColor]&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      Vue  vue-test-utils</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:;&quot;</span>&gt;</span>click<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;card_text&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      Vue Test Utils (VTU) is a set of utility functions aimed to simplify testing Vue.js components. It provides some methods to mount and interact with Vue components in an isolated manner!</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-export default {
-  props: {
-    styleColor: {
-      type: String,
-      default: &quot;red&quot;,
-    },
-  },
-  setup(props) {
-    return {
-      props,
-    };
-  },
-};
-&lt;/script&gt;
-
-&lt;template&gt;
-  &lt;div class=&quot;content&quot;&gt;
-    &lt;h1 :class=&quot;[&#39;card_title&#39;, props.styleColor]&quot;&gt;
-      Vue  vue-test-utils
-    &lt;/h1&gt;
-    &lt;a href=&quot;javascript:;&quot;&gt;click&lt;/a&gt;
-    &lt;p class=&quot;card_text&quot;&gt;
-      Vue Test Utils (VTU) is a set of utility functions aimed to simplify testing Vue.js components. It provides some methods to mount and interact with Vue components in an isolated manner!
-    &lt;/p&gt;
-  &lt;/div&gt;
-&lt;/template&gt;</code></pre>
 <p>test goal: 測試 <code>&lt;h1&gt;</code> 有沒有存在 styleColor</p>
 <ul>
 <li>使用 <code>class()</code> 帶入參數，就會去檢查該 class 是否存在<br>測試架構：</li>
@@ -638,42 +412,11 @@ export default {
 <li>找到 h1 tag 並查看是否有 styleColor 傳入</li>
 <li>元件內的 a link 放入 href</li>
 </ol>
-<pre><code class="javaScript">import { shallowMount } from &quot;@vue/test-utils&quot;;
-import Content from &quot;./Content.vue&quot;;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Content</span> <span class="keyword">from</span> <span class="string">&quot;./Content.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Content.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;find component&quot;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">Content</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.card_title&#x27;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;check h1 tag have red class&quot;</span>, <span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">Content</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;h1&#x27;</span>).<span class="title function_">classes</span>(<span class="string">&#x27;red&#x27;</span>)).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;button is disabled attr&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">Content</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;red&#x27;</span>, wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">attributes</span>(<span class="string">&quot;href&quot;</span>))</span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">attributes</span>(<span class="string">&quot;href&quot;</span>)).<span class="title function_">toBe</span>(<span class="string">&quot;javascript:;&quot;</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-describe(&quot;Content.vue&quot;, () =&gt; {
-  it(&quot;find component&quot;,()=&gt;{
-    const wrapper = shallowMount(Content);
-
-    expect(wrapper.find(&#39;.card_title&#39;).exists()).toBe(true)
-  })
-  it(&quot;check h1 tag have red class&quot;, ()=&gt;{
-    const wrapper = shallowMount(Content);
-
-    expect(wrapper.find(&#39;h1&#39;).classes(&#39;red&#39;)).toBe(true);
-  })
-  it(&quot;button is disabled attr&quot;, () =&gt; {
-    const wrapper = shallowMount(Content);
-    console.log(&#39;red&#39;, wrapper.find(&#39;a&#39;).attributes(&quot;href&quot;))
-    expect(wrapper.find(&#39;a&#39;).attributes(&quot;href&quot;)).toBe(&quot;javascript:;&quot;);
-  })
-});</code></pre>
 <p>練習方式，聽完講師分享的操作之後，寫下測試目標的結構，就可以嘗試自己撰寫看看！</p>
 <h2 id="檢查是否可見-isVisible-amp-exists"><a href="#檢查是否可見-isVisible-amp-exists" class="headerlink" title="檢查是否可見 isVisible &amp; exists"></a>檢查是否可見 isVisible &amp; exists</h2><p>前面的範例練習，就可以看檔有使用 exists<br>在 vue template 中，有使用 <code>v-if</code>, <code>v-show</code> 來處理 div 顯示與否。<br><code>v-show</code> 會存在於 DOM 上。</p>
-<pre><code class="javaScript">import { shallowMount } from &quot;@vue/test-utils&quot;;
-import PhotoItem from &quot;./index.vue&quot;;
-
-describe(&quot;PhotoItem.vue&quot;, () =&gt; {
-  it(&quot;DOM is v-if or v-show hide&quot;, () =&gt; {
-    const wrapper = shallowMount(PhotoItem);
-
-    // exists 用來查看是否存在
-    expect(wrapper.find(&quot;#box1&quot;).exists()).toBe(false);
-    // isVisible 用來判斷DOM是否給 v-show 隱藏起來
-    expect(wrapper.find(&quot;#box2&quot;).isVisible()).toBe(false);
-  });
-
-});</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">PhotoItem</span> <span class="keyword">from</span> <span class="string">&quot;./index.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;PhotoItem.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;DOM is v-if or v-show hide&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">PhotoItem</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// exists 用來查看是否存在</span></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&quot;#box1&quot;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">false</span>);</span><br><span class="line">    <span class="comment">// isVisible 用來判斷DOM是否給 v-show 隱藏起來</span></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&quot;#box2&quot;</span>).<span class="title function_">isVisible</span>()).<span class="title function_">toBe</span>(<span class="literal">false</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -748,7 +491,7 @@ describe(&quot;PhotoItem.vue&quot;, () =&gt; {
 
       
           <p>因工作需求研究 Tab 切換，要使用 router 或是 製作組件 <code>v-if</code>, <code>v-else</code> 切換。<br>這裡的範例，建議可以使用 <code>isComponent</code> 方式，透過點擊頁籤按鈕執行元件的改變，並且使用 <code>keep-alive</code> 儲存資料</p>
-<p>資料來源：<a href="https://dev.to/reynoldadade/dynamic-components-a-vuejs-superpower-2olk" target="_blank" rel="noopener">https://dev.to/reynoldadade/dynamic-components-a-vuejs-superpower-2olk</a></p>
+<p>資料來源：<a target="_blank" rel="noopener" href="https://dev.to/reynoldadade/dynamic-components-a-vuejs-superpower-2olk">https://dev.to/reynoldadade/dynamic-components-a-vuejs-superpower-2olk</a></p>
 
       
     </div>
@@ -834,76 +577,35 @@ describe(&quot;PhotoItem.vue&quot;, () =&gt; {
 <li><code>have.class</code>：檢查元素是否具有特定的類名。</li>
 <li><code>contain</code>：檢查元素是否包含指定的文字內容。</li>
 </ol>
-<p>可根據具體需求進行選擇和使用<br><a href="https://docs.cypress.io/guides/references/assertions" target="_blank" rel="noopener">keywords</a></p>
+<p>可根據具體需求進行選擇和使用<br><a target="_blank" rel="noopener" href="https://docs.cypress.io/guides/references/assertions">keywords</a></p>
 <h3 id="這裡的練習範例，驗證當前網址（URL）的斷言方法。"><a href="#這裡的練習範例，驗證當前網址（URL）的斷言方法。" class="headerlink" title="這裡的練習範例，驗證當前網址（URL）的斷言方法。"></a>這裡的練習範例，驗證當前網址（URL）的斷言方法。</h3><p>include：確保當前網址包含特定的子字串。</p>
-<pre><code class="javascript">cy.url().should(&#39;include&#39;, &#39;/login&#39;);
-</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">url</span>().<span class="title function_">should</span>(<span class="string">&#x27;include&#x27;</span>, <span class="string">&#x27;/login&#x27;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>eq：確保當前網址與預期值完全相等。</p>
-<pre><code class="javascript">cy.url().should(&#39;eq&#39;, &#39;https://example.com/dashboard&#39;);
-</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">url</span>().<span class="title function_">should</span>(<span class="string">&#x27;eq&#x27;</span>, <span class="string">&#x27;https://example.com/dashboard&#x27;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>contain：檢查當前網址是否包含特定的字串。</p>
-<pre><code class="javascript">cy.url().should(&#39;contain&#39;, &#39;example.com&#39;);</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">url</span>().<span class="title function_">should</span>(<span class="string">&#x27;contain&#x27;</span>, <span class="string">&#x27;example.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
 <p>這些斷言方法可用於驗證當前網址是否符合預期，從而確保導航或操作正確導致了預期的網址變化。</p>
-<pre><code class="JS">describe(&quot;Assertion practice&quot;,()=&gt;{
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Assertion practice&quot;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&quot;explicit&quot;</span>, <span class="function">()=&gt;</span>&#123;</span><br><span class="line">	</span><br><span class="line">		cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#x27;</span>)</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//should + keyword end</span></span><br><span class="line">		</span><br><span class="line">		cy.<span class="title function_">url</span>().<span class="title function_">should</span>(<span class="string">&#x27;include&#x27;</span>, <span class="string">&#x27;orangehrmlive.com&#x27;</span>)</span><br><span class="line">		</span><br><span class="line">		cy.<span class="title function_">url</span>().<span class="title function_">should</span>(<span class="string">&#x27;eq&#x27;</span>, <span class="string">&#x27;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#x27;</span>)</span><br><span class="line">		</span><br><span class="line">		cy.<span class="title function_">url</span>().<span class="title function_">should</span>(<span class="string">&#x27;contain&#x27;</span>, <span class="string">&#x27;orangehrmlive&#x27;</span>)</span><br><span class="line">		</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-    it(&quot;explicit&quot;, ()=&gt;{
-
-        cy.visit(&#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
-
-        //should + keyword end
-
-        cy.url().should(&#39;include&#39;, &#39;orangehrmlive.com&#39;)
-
-        cy.url().should(&#39;eq&#39;, &#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
-
-        cy.url().should(&#39;contain&#39;, &#39;orangehrmlive&#39;)
-
-
-    })
-
-})
-</code></pre>
 <ul>
 <li>可以看到上述，有連續使用到 <code>url()</code></li>
 </ul>
-<pre><code class="JS">cy.url().should(&#39;include&#39;, &#39;orangehrmlive.com&#39;)
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">url</span>().<span class="title function_">should</span>(<span class="string">&#x27;include&#x27;</span>, <span class="string">&#x27;orangehrmlive.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line">.<span class="title function_">should</span>(<span class="string">&#x27;eq&#x27;</span>, <span class="string">&#x27;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#x27;</span>)</span><br><span class="line"></span><br><span class="line">.<span class="title function_">should</span>(<span class="string">&#x27;contain&#x27;</span>, <span class="string">&#x27;orangehrmlive&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-.should(&#39;eq&#39;, &#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">url</span>().<span class="title function_">should</span>(<span class="string">&#x27;include&#x27;</span>, <span class="string">&#x27;orangehrmlive.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line">.<span class="title function_">and</span>(<span class="string">&#x27;eq&#x27;</span>, <span class="string">&#x27;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#x27;</span>)</span><br><span class="line"></span><br><span class="line">.<span class="title function_">and</span>(<span class="string">&#x27;contain&#x27;</span>, <span class="string">&#x27;orangehrmlive&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-.should(&#39;contain&#39;, &#39;orangehrmlive&#39;)</code></pre>
-<pre><code class="JS">    cy.url().should(&#39;include&#39;, &#39;orangehrmlive.com&#39;)
-
-    .and(&#39;eq&#39;, &#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
-
-    .and(&#39;contain&#39;, &#39;orangehrmlive&#39;)</code></pre>
 <p>另外可以檢查進到頁面 logo 圖示的顯示</p>
-<pre><code class="JS">
-describe(&quot;Assertion practice&quot;,()=&gt;{
-  it(&quot;explicit&quot;, ()=&gt;{
-    cy.visit(&#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
-      //check logo 呈現與否
-    cy.get(&#39;.orangehrm-login-branding &gt; img&#39;).should(&#39;be.visible&#39;)
-    .and(&#39;exist&#39;)
-  })
-})
-</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Assertion practice&quot;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;explicit&quot;</span>, <span class="function">()=&gt;</span>&#123;</span><br><span class="line">    cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#x27;</span>)</span><br><span class="line">      <span class="comment">//check logo 呈現與否</span></span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&#x27;.orangehrm-login-branding &gt; img&#x27;</span>).<span class="title function_">should</span>(<span class="string">&#x27;be.visible&#x27;</span>)</span><br><span class="line">    .<span class="title function_">and</span>(<span class="string">&#x27;exist&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用者輸入框</li>
 </ul>
-<pre><code class="JS">
-describe(&quot;Assertion practice&quot;,()=&gt;{
-  it(&quot;explicit&quot;, ()=&gt;{
-    cy.visit(&#39;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#39;)
-
-    //檢查 username 得輸入
-    //取得 username 的輸入框,並且確保輸入的值
-    cy.get(&quot;input[placeholder=&#39;Username&#39;]&quot;).type(&quot;Admin&quot;)
-    cy.get(&quot;input[placeholder=&#39;Username&#39;]&quot;).should(&quot;have.value&quot;, &quot;Admin&quot;)
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Assertion practice&quot;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;explicit&quot;</span>, <span class="function">()=&gt;</span>&#123;</span><br><span class="line">    cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://opensource-demo.orangehrmlive.com/web/index.php/auth/login&#x27;</span>)</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//檢查 username 得輸入</span></span><br><span class="line">    <span class="comment">//取得 username 的輸入框,並且確保輸入的值</span></span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&quot;input[placeholder=&#x27;Username&#x27;]&quot;</span>).<span class="title function_">type</span>(<span class="string">&quot;Admin&quot;</span>)</span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&quot;input[placeholder=&#x27;Username&#x27;]&quot;</span>).<span class="title function_">should</span>(<span class="string">&quot;have.value&quot;</span>, <span class="string">&quot;Admin&quot;</span>)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
-  })
-})
-</code></pre>
 <h2 id="explicit-assertion"><a href="#explicit-assertion" class="headerlink" title="explicit assertion"></a>explicit assertion</h2><p>（顯式斷言）」是指明確使用斷言方法來檢查特定的條件或預期結果。<br>與隱含斷言不同，顯式斷言需要您明確指定斷言方法來進行驗證。</p>
 
       
@@ -974,23 +676,13 @@ describe(&quot;Assertion practice&quot;,()=&gt;{
       
           <p>有空就找找實作影片來練習一下～</p>
 <p>而今天的實作練習，訪問 momoshop 取得搜尋框元素 -&gt; 輸入搜尋的關鍵字(“雨傘”) -&gt; 點擊搜尋 -&gt;<br>查看搜尋後的項目是否包含關鍵字。</p>
-<pre><code class="JS">describe(&#39;CSSLocators&#39;,() =&gt; {
-  it(&quot;csslocators&quot;, ()=&gt;{
-    cy.visit(&quot;https://www.momoshop.com.tw/main/Main.jsp?momo=1&amp;gclid=CjwKCAjwpuajBhBpEiwA_ZtfhU9MqvxnVs7Kh8LTNDbmKzFsmDxY16QIaP7lci98eVgfRoNz8ychuRoCao0QAvD_BwE&quot;)
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;CSSLocators&#x27;</span>,<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;csslocators&quot;</span>, <span class="function">()=&gt;</span>&#123;</span><br><span class="line">    cy.<span class="title function_">visit</span>(<span class="string">&quot;https://www.momoshop.com.tw/main/Main.jsp?momo=1&amp;gclid=CjwKCAjwpuajBhBpEiwA_ZtfhU9MqvxnVs7Kh8LTNDbmKzFsmDxY16QIaP7lci98eVgfRoNz8ychuRoCao0QAvD_BwE&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//尋找某些關鍵字</span></span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&#x27;[name=&quot;keyword&quot;]&#x27;</span>).<span class="title function_">type</span>(<span class="string">&quot;雨傘&quot;</span>)</span><br><span class="line">    <span class="comment">//點擊搜尋按鈕</span></span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&quot;[title = &#x27;搜尋&#x27;]&quot;</span>).<span class="title function_">click</span>()  <span class="comment">//attribute</span></span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&#x27;.prdName&#x27;</span>).<span class="title function_">contains</span>(<span class="string">&#x27;傘&#x27;</span>)</span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&#x27;.prdName&#x27;</span>).<span class="title function_">contains</span>(<span class="string">&#x27;羽絨&#x27;</span>) <span class="comment">//Assertion</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-    //尋找某些關鍵字
-    cy.get(&#39;[name=&quot;keyword&quot;]&#39;).type(&quot;雨傘&quot;)
-    //點擊搜尋按鈕
-    cy.get(&quot;[title = &#39;搜尋&#39;]&quot;).click()  //attribute
-    cy.get(&#39;.prdName&#39;).contains(&#39;傘&#39;)
-    cy.get(&#39;.prdName&#39;).contains(&#39;羽絨&#39;) //Assertion
-  })
-})</code></pre>
 <p><img src="https://hackmd.io/_uploads/BytHdzdU2.png" alt=""></p>
-<p>在此文章主要針對取得 <code>css Locator</code> 進行系列操作。<br>可以使用 <code>#idName</code>, <code>.cssName</code>, <code>[title = &#39;搜尋&#39;]</code>, <code>[name = &#39;search&#39;]</code> 等方式<br>其實 cypress 官方網站也滿容易讀，可以根據我們想要在網頁上進行何種操作，搜尋相應的功能。<br>例如: Assertion <a href="https://docs.cypress.io/guides/references/assertions" target="_blank" rel="noopener">cypress-assertions</a></p>
+<p>在此文章主要針對取得 <code>css Locator</code> 進行系列操作。<br>可以使用 <code>#idName</code>, <code>.cssName</code>, <code>[title = &#39;搜尋&#39;]</code>, <code>[name = &#39;search&#39;]</code> 等方式<br>其實 cypress 官方網站也滿容易讀，可以根據我們想要在網頁上進行何種操作，搜尋相應的功能。<br>例如: Assertion <a target="_blank" rel="noopener" href="https://docs.cypress.io/guides/references/assertions">cypress-assertions</a></p>
 <p>小補充另一個取得定位的方式：<br>XPath：<br>  XPath是一種用於導航XML文件的語言，同樣也適用於HTML文件。它提供了一種根據元素在文檔層次結構中的路徑選擇元素的方法。XPath表達式非常強大且靈活，可以根據元素的屬性、文本內容等條件進行選擇。</p>
 <p>在Cypress中，您可以使用XPath選擇器，只需將選擇器字符串以 xpath 為前綴添加到命令中。例如：</p>
-<pre><code class="JS">  cy.xpath(&#39;//button[@id=&quot;submit-btn&quot;]&#39;).click();</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">xpath</span>(<span class="string">&#x27;//button[@id=&quot;submit-btn&quot;]&#x27;</span>).<span class="title function_">click</span>();</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -1062,21 +754,9 @@ describe(&quot;Assertion practice&quot;,()=&gt;{
 <p>每次在交付完成的任務給 PM 之前，總是會先自行反覆點擊測驗過才提能安心提供。但除了自己點擊之外，是否有其他更為簡易的方式可以進行測試呢？Cypress 是一個用於編寫端對端測試的 JavaScript 測試框架。他可以幫助我們做到基礎的自動化測試，今天就先來認識看看吧～</p>
 <h2 id="建立專案"><a href="#建立專案" class="headerlink" title="建立專案"></a>建立專案</h2><p>在本地建立一個 cypress-project 資料夾，進入該檔案夾<br><code>npm init -y</code><br><code>npm install cypress</code></p>
 <ul>
-<li>安裝完後<pre><code class="javaScript">{
-&quot;name&quot;: &quot;cypress-project-1&quot;,
-&quot;version&quot;: &quot;1.0.0&quot;,
-&quot;description&quot;: &quot;&quot;,
-&quot;main&quot;: &quot;index.js&quot;,
-&quot;scripts&quot;: {
-  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
-},
-&quot;keywords&quot;: [],
-&quot;author&quot;: &quot;&quot;,
-&quot;license&quot;: &quot;ISC&quot;,
-&quot;dependencies&quot;: {
-  &quot;cypress&quot;: &quot;^12.11.0&quot;
-}
-}</code></pre>
+<li>安裝完後<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;cypress-project-1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;description&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="string">&quot;main&quot;</span>: <span class="string">&quot;index.js&quot;</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;test&quot;</span>: <span class="string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;keywords&quot;</span>: [],</span><br><span class="line">  <span class="string">&quot;author&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="string">&quot;license&quot;</span>: <span class="string">&quot;ISC&quot;</span>,</span><br><span class="line">  <span class="string">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;cypress&quot;</span>: <span class="string">&quot;^12.11.0&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 </li>
 </ul>
 <h2 id="實作測試功能"><a href="#實作測試功能" class="headerlink" title="實作測試功能"></a>實作測試功能</h2><ul>
@@ -1084,14 +764,8 @@ describe(&quot;Assertion practice&quot;,()=&gt;{
 <li>進行關鍵字搜尋</li>
 </ul>
 <p><img src="https://i.imgur.com/2FOKkBZ.png" alt=""></p>
-<h3 id="測試語法"><a href="#測試語法" class="headerlink" title="測試語法"></a>測試語法</h3><pre><code class="javaScript">  it(&#39;google search&#39;, () =&gt; {
-    //visit 進入不同網站
-    cy.visit(&#39;https://www.google.com.tw/?hl=zh_TW&#39;)
+<h3 id="測試語法"><a href="#測試語法" class="headerlink" title="測試語法"></a>測試語法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">it</span>(<span class="string">&#x27;google search&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//visit 進入不同網站</span></span><br><span class="line">  cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://www.google.com.tw/?hl=zh_TW&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  cy.<span class="title function_">get</span>(<span class="string">&#x27;#APjFqb&#x27;</span>).<span class="title function_">type</span>(<span class="string">&#x27;what is cypress.io&#123;Enter&#125;&#x27;</span>)</span><br><span class="line">  <span class="comment">//除了點擊搜尋按鈕之外，一般也會按下 enter鍵觸發</span></span><br><span class="line">  <span class="comment">// cy.contains(&#x27;Google 搜尋&#x27;).click()</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-    cy.get(&#39;#APjFqb&#39;).type(&#39;what is cypress.io{Enter}&#39;)
-    //除了點擊搜尋按鈕之外，一般也會按下 enter鍵觸發
-    // cy.contains(&#39;Google 搜尋&#39;).click()
-  })</code></pre>
 <h3 id="測試操作"><a href="#測試操作" class="headerlink" title="測試操作"></a>測試操作</h3><p><code>npx cypress open</code> 進入測試介面，選擇 E2E</p>
 <p><img src="https://i.imgur.com/rmkiayJ.png" alt=""></p>
 <ul>
@@ -1193,62 +867,13 @@ describe(&quot;Assertion practice&quot;,()=&gt;{
 </li>
 <li>例如以下範例: 在 App.vue 中有包含數個元件</li>
 </ul>
-<pre><code class="vue"> //App.vue
-&lt;template&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> //App.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">	&lt;img class=&quot;logo&quot; alt=&quot;Vue logo&quot; src=&quot;./assets/logo.png&quot; /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;h1&gt;Test demo&lt;/h1&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;AddCount /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;HelloWorld /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;div class=&quot;itemFlex&quot;&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;CardBox v-for=&quot;i in 4&quot; :key=&quot;i&quot; /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;UserList /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;PhotoItem /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
 
-    &lt;img class=&quot;logo&quot; alt=&quot;Vue logo&quot; src=&quot;./assets/logo.png&quot; /&gt;
-
-    &lt;h1&gt;Test demo&lt;/h1&gt;
-
-    &lt;AddCount /&gt;
-
-    &lt;HelloWorld /&gt;
-
-    &lt;div class=&quot;itemFlex&quot;&gt;
-
-    &lt;CardBox v-for=&quot;i in 4&quot; :key=&quot;i&quot; /&gt;
-
-    &lt;/div&gt;
-
-    &lt;UserList /&gt;
-
-    &lt;PhotoItem /&gt;
-
-&lt;/template&gt;</code></pre>
 <ul>
 <li>測試元件</li>
 </ul>
-<pre><code class="javaScript">import { shallowMount, mount } from &quot;@vue/test-utils&quot;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount, mount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;@/App.vue&#x27;</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;App.vue test&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;測試組件 1&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="comment">//渲染出 App 元件</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">App</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">text</span>())</span><br><span class="line">		</span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&quot;Test demo&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;測試組件2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">const</span> wrapper = <span class="title function_">mount</span>(<span class="title class_">App</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">text</span>())</span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&quot;若你是寫過 Vue 但沒有寫過單元測試的工程師&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-import App from &#39;@/App.vue&#39;
-
-
-
-describe(&#39;App.vue test&#39;, () =&gt; {
-
-    it(&#39;測試組件 1&#39;, () =&gt; {
-
-        //渲染出 App 元件
-
-        const wrapper = shallowMount(App);
-
-        console.log(wrapper.text())
-
-        expect(wrapper.text()).toMatch(&quot;Test demo&quot;)
-
-    });
-
-    it(&#39;測試組件2&#39;, () =&gt; {
-
-    const wrapper = mount(App);
-
-    console.log(wrapper.text())
-
-    expect(wrapper.text()).toMatch(&quot;若你是寫過 Vue 但沒有寫過單元測試的工程師&quot;)
-
-    })
-
-})</code></pre>
 <p><img src="https://i.imgur.com/BcvGwlI.png" alt=""></p>
 <p>get 與 find 差異</p>
 <ul>
@@ -1264,24 +889,12 @@ describe(&#39;App.vue test&#39;, () =&gt; {
 <ul>
 <li>測試按鈕存不存在<ul>
 <li>exists : 驗證某元素是否存在</li>
-<li><a href="https://test-utils.vuejs.org/api/#exists" target="_blank" rel="noopener"> exists</a></li>
+<li><a target="_blank" rel="noopener" href="https://test-utils.vuejs.org/api/#exists"> exists</a></li>
 </ul>
 </li>
 </ul>
-<pre><code class="javaScript">describe(&#39;AddCount.vue&#39;, () =&gt; {
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;AddCount.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test 1 &#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">AddCount</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn&#x27;</span>))</span><br><span class="line">		</span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn&#x27;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-    it(&#39;test 1 &#39;, () =&gt; {
-
-        const wrapper = shallowMount(AddCount);
-
-        console.log(wrapper.find(&#39;.add-btn&#39;))
-
-        expect(wrapper.find(&#39;.add-btn&#39;).exists()).toBe(true)
-
-    })
-
-
-})</code></pre>
 <p><img src="https://i.imgur.com/0sBL0t6.png" alt=""></p>
 <p><img src="https://i.imgur.com/htkF4X5.png" alt=""></p>
 <h3 id="在情境應用"><a href="#在情境應用" class="headerlink" title="在情境應用"></a>在情境應用</h3><ul>
@@ -1289,73 +902,11 @@ describe(&#39;App.vue test&#39;, () =&gt; {
 <li>而再測試文件中就是要測試該按鈕在一開始並不會出現</li>
 </ul>
 <p><img src="https://i.imgur.com/YkBK6Ry.png" alt=""></p>
-<pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">AddCount</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/AddCount.vue&#x27;</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;AddCount.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test 1 &#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">AddCount</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn&#x27;</span>))</span><br><span class="line">	<span class="comment">// 找不到，並且回傳 false</span></span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn-err&#x27;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">false</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-import AddCount from &#39;@/components/AddCount.vue&#39;
-
-
-
-describe(&#39;AddCount.vue&#39;, () =&gt; {
-
-    it(&#39;test 1 &#39;, () =&gt; {
-
-        const wrapper = shallowMount(AddCount);
-
-        console.log(wrapper.find(&#39;.add-btn&#39;))
-    // 找不到，並且回傳 false
-        expect(wrapper.find(&#39;.add-btn-err&#39;).exists()).toBe(false)
-
-    })
-
-
-
-})</code></pre>
 <h2 id="find-與-findAll"><a href="#find-與-findAll" class="headerlink" title="find 與 findAll"></a>find 與 findAll</h2><p>以 v-for list 的範例</p>
-<pre><code class="vue">&lt;script&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">import &#123; ref &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">import data from &quot;./data.json&quot;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">	</span><br><span class="line">	setup() &#123;</span><br><span class="line">	</span><br><span class="line">		const employeeItem = ref(data);</span><br><span class="line">		</span><br><span class="line">		return &#123;</span><br><span class="line">		</span><br><span class="line">			employeeItem,</span><br><span class="line">		</span><br><span class="line">		&#125;;</span><br><span class="line">		</span><br><span class="line">	&#125;,</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">	&lt;ul class=&quot;item&quot;&gt;</span><br><span class="line">	</span><br><span class="line">		&lt;li class=&quot;user_list&quot; v-for=&quot;item in employeeItem&quot; :key=&quot;item.id&quot;&gt;</span><br><span class="line">		</span><br><span class="line">			&lt;div&gt;</span><br><span class="line">			</span><br><span class="line">				&lt;p&gt;員工編號: &#123;&#123; item.userId &#125;&#125;&lt;/p&gt;</span><br><span class="line">				</span><br><span class="line">				&lt;p&gt;姓名: &#123;&#123; item.username &#125;&#125;&lt;/p&gt;</span><br><span class="line">			</span><br><span class="line">			&lt;/div&gt;</span><br><span class="line">		</span><br><span class="line">		&lt;/li&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;/ul&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
 
-import { ref } from &quot;vue&quot;;
-
-import data from &quot;./data.json&quot;;
-
-export default {
-
-    setup() {
-
-        const employeeItem = ref(data);
-
-        return {
-
-            employeeItem,
-
-        };
-
-    },
-
-};
-
-&lt;/script&gt;
-
-
-
-&lt;template&gt;
-
-    &lt;ul class=&quot;item&quot;&gt;
-
-        &lt;li class=&quot;user_list&quot; v-for=&quot;item in employeeItem&quot; :key=&quot;item.id&quot;&gt;
-
-            &lt;div&gt;
-
-                &lt;p&gt;員工編號: {{ item.userId }}&lt;/p&gt;
-
-                &lt;p&gt;姓名: {{ item.username }}&lt;/p&gt;
-
-            &lt;/div&gt;
-
-        &lt;/li&gt;
-
-    &lt;/ul&gt;
-
-&lt;/template&gt;</code></pre>
 <p><img src="https://i.imgur.com/dqts5eV.png" alt=""></p>
 <p><img src="https://i.imgur.com/PXPy1as.png" alt=""></p>
 <p>如果是要抓元件中 list 有幾筆<br><code>wrapper.findAll(&#39;.user_list&#39;)</code> : 他會是一個陣列資料，其中包含好幾個 DOM wrapper </p>
@@ -1364,55 +915,12 @@ export default {
 <ul>
 <li>搭配使用 <code>at()</code> 用於找尋其中某一個物件</li>
 </ul>
-<pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">UserList</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/UserList.vue&#x27;</span></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;test UserList&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test Dom&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">UserList</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// console.log(wrapper.findAll(&#x27;.user_list&#x27;).at(0).text())</span></span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="title function_">at</span>(<span class="number">0</span>).<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&#x27;員工編號: 399&#x27;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-import UserList from &#39;@/components/UserList.vue&#39;
-
-
-describe(&#39;test UserList&#39;, () =&gt; {
-
-    it(&#39;test Dom&#39;, () =&gt; {
-
-        const wrapper = shallowMount(UserList);
-
-    // console.log(wrapper.findAll(&#39;.user_list&#39;).at(0).text())
-
-    expect(wrapper.findAll(&#39;.user_list&#39;).at(0).text()).toMatch(&#39;員工編號: 399&#39;)
-
-    })
-
-})</code></pre>
 <h3 id="另也可以測試所拿到的資料長度"><a href="#另也可以測試所拿到的資料長度" class="headerlink" title="另也可以測試所拿到的資料長度"></a>另也可以測試所拿到的資料長度</h3><ul>
 <li>測試 DOM 資料長度</li>
 </ul>
-<pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;
-
-import UserList from &#39;@/components/UserList.vue&#39;
-
-
-describe(&#39;test UserList&#39;, () =&gt; {
-
-    it(&#39;test Dom&#39;, () =&gt; {
-
-    const wrapper = shallowMount(UserList);
-
-    // console.log(wrapper.findAll(&#39;.user_list&#39;).at(0).text())
-
-    expect(wrapper.findAll(&#39;.user_list&#39;).at(0).text()).toMatch(&#39;員工編號: 399&#39;)
-
-    })
-
-    it(&#39;test List length&#39;, () =&gt; {
-
-    const wrapper = shallowMount(UserList);
-
-    console.log(wrapper.findAll(&#39;.user_list&#39;).length)
-
-    expect(wrapper.findAll(&#39;.user_list&#39;).length).toBe(6)
-
-    })
-
-})</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">UserList</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/UserList.vue&#x27;</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;test UserList&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test Dom&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">UserList</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// console.log(wrapper.findAll(&#x27;.user_list&#x27;).at(0).text())</span></span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="title function_">at</span>(<span class="number">0</span>).<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&#x27;員工編號: 399&#x27;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test List length&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">UserList</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="property">length</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="property">length</span>).<span class="title function_">toBe</span>(<span class="number">6</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -1487,7 +995,9 @@ describe(&#39;test UserList&#39;, () =&gt; {
 <li>可以進入該專案進行安裝<br><code>vue add unit-jest</code></li>
 </ul>
 <p>這裡創建的專案是使用 vue-cli 創建，並且在自選項目加入 unit test </p>
-<pre><code>vue create my-project</code></pre><h2 id="執行-test"><a href="#執行-test" class="headerlink" title="執行 test"></a>執行 test</h2><p><code>npm run test:unit</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create my-project</span><br></pre></td></tr></table></figure>
+
+<h2 id="執行-test"><a href="#執行-test" class="headerlink" title="執行 test"></a>執行 test</h2><p><code>npm run test:unit</code></p>
 <h2 id="更改預設的測試檔案位置"><a href="#更改預設的測試檔案位置" class="headerlink" title="更改預設的測試檔案位置"></a>更改預設的測試檔案位置</h2><p>component 與 測試的檔案，可以放在同一個資料夾中，以方便找尋</p>
 <ol>
 <li>建立 <code>jest.config.js</code> 來設定 jest </li>
@@ -1495,67 +1005,26 @@ describe(&#39;test UserList&#39;, () =&gt; {
 <ul>
 <li>testMatch: 指定從 src 資料夾開始找尋與 spec 相關的檔案</li>
 </ul>
-<pre><code class="javaScript">
-module.exports = {
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line"></span><br><span class="line">  <span class="attr">preset</span>: <span class="string">&quot;@vue/cli-plugin-unit-jest&quot;</span>,</span><br><span class="line"></span><br><span class="line">  <span class="attr">testMatch</span>: [<span class="string">&quot;**/src/**/*.spec.[jt]s?(x)&quot;</span>],</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-  preset: &quot;@vue/cli-plugin-unit-jest&quot;,
-
-  testMatch: [&quot;**/src/**/*.spec.[jt]s?(x)&quot;],
-
-};
-</code></pre>
 <p>**`</p>
 <h2 id="測試的基本架構"><a href="#測試的基本架構" class="headerlink" title="測試的基本架構"></a>測試的基本架構</h2><ul>
 <li>describe : 類似群組概念，可以包一個或多個相關的測試。</li>
 <li>it 與 test 一樣：其內容為測試的單位，裏面撰寫測試內容</li>
 <li>第一個參數，用來表示該測試的敘述（”Test to do list”, “Test to do 1”, “Test to do 2” ）</li>
 </ul>
-<pre><code class="javaScript">
-describe(&quot;Test to do list&quot;, () =&gt; {
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Test to do list&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 1&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">test</span>(<span class="string">&quot;Test to do 2&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
-  it(&quot;Test to do 1&quot;, () =&gt; {
-
-  });
-
-
-  test(&quot;Test to do 2&quot;, () =&gt; {
-
-  });
-
-});
-
-</code></pre>
 <ul>
 <li>it 也可以單獨另外撰寫</li>
 </ul>
-<pre><code class="javaScript">it(&#39;這是test case&#39;,()=&gt;{
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">it</span>(<span class="string">&#x27;這是test case&#x27;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-})</code></pre>
 <ul>
 <li>執行測試呈現的樣子</li>
 </ul>
-<pre><code class="javaScript">import { shallowMount } from &#39;@vue/test-utils&#39;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">HelloWorld</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/HelloWorld.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;HelloWorld.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;renders props.msg when passed&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> msg = <span class="string">&#x27;new message&#x27;</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">HelloWorld</span>, &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="attr">props</span>: &#123; msg &#125;</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(msg)</span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-import HelloWorld from &#39;@/components/HelloWorld.vue&#39;
-
-describe(&#39;HelloWorld.vue&#39;, () =&gt; {
-
-    it(&#39;renders props.msg when passed&#39;, () =&gt; {
-
-        const msg = &#39;new message&#39;
-
-        const wrapper = shallowMount(HelloWorld, {
-
-        props: { msg }
-
-    })
-
-        expect(wrapper.text()).toMatch(msg)
-        //
-    })
-
-})</code></pre>
 <ul>
 <li>wrapper 是指 HelloWorld 這個 component</li>
 <li>wrapper.text() : 會顯示此元件中所包含的文字</li>
@@ -1565,27 +1034,8 @@ describe(&#39;HelloWorld.vue&#39;, () =&gt; {
 </li>
 </ul>
 <p><img src="https://i.imgur.com/ejvXWQF.png" alt=""></p>
-<h2 id="expext-與斷言"><a href="#expext-與斷言" class="headerlink" title="expext 與斷言"></a>expext 與斷言</h2><pre><code class="javaScript">
+<h2 id="expext-與斷言"><a href="#expext-與斷言" class="headerlink" title="expext 與斷言"></a>expext 與斷言</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Test to do list&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 1&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(<span class="number">1</span> + <span class="number">1</span>).<span class="title function_">toBe</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 2&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(<span class="number">4</span> - <span class="number">1</span>).<span class="title function_">toBe</span>(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-describe(&quot;Test to do list&quot;, () =&gt; {
-
-
-  it(&quot;Test to do 1&quot;, () =&gt; {
-
-    expect(1 + 1).toBe(2);
-
-  });
-
-
-  it(&quot;Test to do 2&quot;, () =&gt; {
-
-    expect(4 - 1).toBe(3);
-
-  });
-
-});
-
-</code></pre>
 <ul>
 <li>expect: 預期需要匹配的項目，如放入變數、component、function</li>
 <li>toBe(百分之百準確): 斷言，用什麼方式來匹配，這裡使用 toBe 函式</li>
@@ -1667,216 +1117,72 @@ describe(&quot;Test to do list&quot;, () =&gt; {
       
           <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
 <h2 id="資料整理"><a href="#資料整理" class="headerlink" title="資料整理"></a>資料整理</h2><p>例如有兩個 interface 屬性一樣，差異在於 型別內容</p>
-<pre><code class="typeScript">interface DataA {
-  key:string
-  key2:number
-}
-
-interface DataB {
-  key:string
-  key2:boolean
-}
-</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">DataA</span> &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:<span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">DataB</span> &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:<span class="built_in">boolean</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li>使用 泛型 整理</li>
-<li>將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定<pre><code class="typeScript"></code></pre>
+<li>將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericsObj</span>&lt;T&gt; = &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:T</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">DataA</span> = <span class="title class_">GenericsObj</span>&lt;<span class="built_in">number</span>&gt;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">DataB</span> = <span class="title class_">GenericsObj</span>&lt;<span class="built_in">boolean</span>&gt;;</span><br><span class="line"><span class="comment">//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣</span></span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
-<p>type GenericsObj<T> = {<br>  key:string<br>  key2:T<br>}<br>type DataA = GenericsObj<number>;<br>type DataB = GenericsObj<boolean>;<br>//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣</p>
-<pre><code>
-範例2：
-```typeScript
-interface KeyPair&lt;T, U&gt; {
-  key: T;
-  value: U;
-}
+<p>範例2：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">KeyPair</span>&lt;T, U&gt; &#123;</span><br><span class="line">  <span class="attr">key</span>: T;</span><br><span class="line">  <span class="attr">value</span>: U;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp1</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">number</span>, <span class="built_in">string</span>&gt; = &#123; <span class="attr">key</span>: <span class="number">1</span>, <span class="attr">value</span>: <span class="string">&quot;str&quot;</span>&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp2</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; = &#123; <span class="attr">key</span>: <span class="string">&quot;str&quot;</span>, <span class="attr">value</span>: <span class="number">123</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">arr</span>:<span class="built_in">number</span>[] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">arrTwo</span>:<span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
 
-let kp1: KeyPair&lt;number, string&gt; = { key: 1, value: &quot;str&quot;}
-let kp2: KeyPair&lt;string, number&gt; = { key: &quot;str&quot;, value: 123}
-
-let arr:number[] = [1,2,3];
-let arrTwo:Array&lt;number&gt; = [1,2,3]</code></pre><h2 id="payload-應用"><a href="#payload-應用" class="headerlink" title="payload 應用"></a>payload 應用</h2><ul>
+<h2 id="payload-應用"><a href="#payload-應用" class="headerlink" title="payload 應用"></a>payload 應用</h2><ul>
 <li>這邊以 redux 中整理的 action 為範例</li>
 </ul>
-<pre><code class="typeScript">type userDataPayload = {
-  userId: string,
-  data:any
-}
-//負責生成 action 的函式
-const setUserDataAction = (payload:userDataPayload )=&gt;({
-  type: &#39;SET_USER_DATA&#39;,
-  payload
-})
-const resetUserDataAction =()=&gt;({
-  type: &#39;RESET_USER_DATA&#39;,
-})
-
-type CartDataPayload = {
-  product: string
-}
-const setCartDataAction =(payload:CartDataPayload)=&gt;({
-  type: &#39;SET_CART_DATA&#39;,
-  payload
-})
-
-type SetUserDataAction = {
-  type: &#39;SET_USER_DATA&#39;,
-  payload:userDataPayload
-}
-type ResetUserDataAction = {
-  type: &#39;RESET_USER_DATA&#39;
-}
-type SetCartDataAction = {
-  type: &#39;SET_CART_DATA&#39;,
-  payload:CartDataPayload
-}
-</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> userDataPayload = &#123;</span><br><span class="line">  <span class="attr">userId</span>: <span class="built_in">string</span>,</span><br><span class="line">  <span class="attr">data</span>:<span class="built_in">any</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//負責生成 action 的函式</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">setUserDataAction</span> = (<span class="params">payload:userDataPayload </span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_USER_DATA&#x27;</span>,</span><br><span class="line">  payload</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">resetUserDataAction</span> =(<span class="params"></span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;RESET_USER_DATA&#x27;</span>,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">CartDataPayload</span> = &#123;</span><br><span class="line">  <span class="attr">product</span>: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">setCartDataAction</span> =(<span class="params">payload:CartDataPayload</span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_CART_DATA&#x27;</span>,</span><br><span class="line">  payload</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetUserDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_USER_DATA&#x27;</span>,</span><br><span class="line">  <span class="attr">payload</span>:userDataPayload</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ResetUserDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;RESET_USER_DATA&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetCartDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_CART_DATA&#x27;</span>,</span><br><span class="line">  <span class="attr">payload</span>:<span class="title class_">CartDataPayload</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li>由上可以觀察到 SetUserDataAction、ResetUserDataAction、SetCartDataAction 整理為一個</li>
 <li>將 action 的型別整理，其key為type 與 payload</li>
 </ul>
-<pre><code class="typescript">type Action&lt;T,P&gt; = {
-  type: T,
-  payload:P
-}
-type ActionWithoutPayload&lt;T&gt; = {
-  type: T
-}
-
-type SetUserDataAction = Action&lt;&#39;SET_USER_DATA&#39;,userDataPayload&gt;
-type SetCartDataAction = Action&lt;&#39;SET_CART_DATA&#39;,CartDataPayload&gt;
-type ResetUserDataAction = ActionWithoutPayload&lt;&#39;RESET_USER_DATA&#39;&gt;
-
-//可以將action 中的 type 進行聚合
-type Actions = SET_USER_DATA | SET_CART_DATA | RESET_USER_DATA;</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Action</span>&lt;T,P&gt; = &#123;</span><br><span class="line">  <span class="attr">type</span>: T,</span><br><span class="line">  <span class="attr">payload</span>:P</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ActionWithoutPayload</span>&lt;T&gt; = &#123;</span><br><span class="line">  <span class="attr">type</span>: T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetUserDataAction</span> = <span class="title class_">Action</span>&lt;<span class="string">&#x27;SET_USER_DATA&#x27;</span>,userDataPayload&gt;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetCartDataAction</span> = <span class="title class_">Action</span>&lt;<span class="string">&#x27;SET_CART_DATA&#x27;</span>,<span class="title class_">CartDataPayload</span>&gt;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ResetUserDataAction</span> = <span class="title class_">ActionWithoutPayload</span>&lt;<span class="string">&#x27;RESET_USER_DATA&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以將action 中的 type 進行聚合</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Actions</span> = <span class="variable constant_">SET_USER_DATA</span> | <span class="variable constant_">SET_CART_DATA</span> | <span class="variable constant_">RESET_USER_DATA</span>;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>以下，進一步再將 Action 和 ActionWithoutPayload 進行整合，他們差異在與 payload </li>
 </ul>
-<pre><code class="typeScript">type Action&lt;T, P = null&gt; = p extends {} ? {type: T, payload: P} : {type: T};</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Action</span>&lt;T, P = <span class="literal">null</span>&gt; = p <span class="keyword">extends</span> &#123;&#125; ? &#123;<span class="attr">type</span>: T, <span class="attr">payload</span>: P&#125; : &#123;<span class="attr">type</span>: T&#125;;</span><br></pre></td></tr></table></figure>
+
 <p>型別參數動態生成不同型別</p>
-<h2 id="函式的泛型"><a href="#函式的泛型" class="headerlink" title="函式的泛型"></a>函式的泛型</h2><pre><code class="typeScript">const fn = (param: string | number):(string|number)[]=&gt;[param];
-fn(1);//number 陣列 number[];
-fn(&#39;hello&#39;) //string[]</code></pre>
+<h2 id="函式的泛型"><a href="#函式的泛型" class="headerlink" title="函式的泛型"></a>函式的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = (<span class="attr">param</span>: <span class="built_in">string</span> | <span class="built_in">number</span>):(<span class="built_in">string</span>|<span class="built_in">number</span>)[]=&gt;[param];</span><br><span class="line"><span class="title function_">fn</span>(<span class="number">1</span>);<span class="comment">//number 陣列 number[];</span></span><br><span class="line"><span class="title function_">fn</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">//string[]</span></span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/QZCK4Em.png" alt=""></p>
-<pre><code class="typeScript">const fn = &lt;T&gt;(param: T):(T)[]=&gt;[param];
-fn(1);//number 陣列 number[];
-fn(&#39;hello&#39;) //string[]</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = &lt;T&gt;(<span class="attr">param</span>: T):(T)[]=&gt;[param];</span><br><span class="line"><span class="title function_">fn</span>(<span class="number">1</span>);<span class="comment">//number 陣列 number[];</span></span><br><span class="line"><span class="title function_">fn</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">//string[]</span></span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/Yeeuum6.png" alt=""></p>
 <ul>
 <li>function 改寫方式</li>
 </ul>
-<pre><code class="typeScript">function fn&lt;T&gt;(param:T):T[]{
-  return [param]
-}</code></pre>
-<h2 id="type-的泛型"><a href="#type-的泛型" class="headerlink" title="type 的泛型"></a>type 的泛型</h2><pre><code class="typeScript">//共用模板
-type GenericList&lt;T&gt; = T[];
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fn&lt;T&gt;(<span class="attr">param</span>:T):T[]&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-type StrList = GenericList&lt;string&gt;;
-type BoolList = GenericList&lt;boolean&gt;;
 
-type GenericValObj&lt;T&gt; = {[key:string]:T} 
-type NumValObj = GenericValObj&lt;number&gt;
+<h2 id="type-的泛型"><a href="#type-的泛型" class="headerlink" title="type 的泛型"></a>type 的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//共用模板</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericList</span>&lt;T&gt; = T[];</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StrList</span> = <span class="title class_">GenericList</span>&lt;<span class="built_in">string</span>&gt;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">BoolList</span> = <span class="title class_">GenericList</span>&lt;<span class="built_in">boolean</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericValObj</span>&lt;T&gt; = &#123;[<span class="attr">key</span>:<span class="built_in">string</span>]:T&#125; </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NumValObj</span> = <span class="title class_">GenericValObj</span>&lt;<span class="built_in">number</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">numValObj</span>:<span class="title class_">NumValObj</span> = &#123;</span><br><span class="line">  <span class="attr">img_res_200</span>:<span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-const numValObj:NumValObj = {
-  img_res_200:200
-}
-</code></pre>
 <p><img src="https://i.imgur.com/sJFzEUg.png" alt=""></p>
 <p><img src="https://i.imgur.com/7P1MnFL.png" alt=""></p>
 <ul>
 <li>嘗試聚合資料</li>
 </ul>
-<pre><code class="typeScript">type GenericUnion&lt;T,U&gt; = T | U | T[] | U[];
-type strNumUnion = GenericUnion&lt;string,number&gt;
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">GenericUnion</span>&lt;T,U&gt; = T | U | T[] | U[];</span><br><span class="line"><span class="keyword">type</span> strNumUnion = <span class="title class_">GenericUnion</span>&lt;<span class="built_in">string</span>,<span class="built_in">number</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">val</span>:strNumUnion = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">val2</span>:strNumUnion = [<span class="string">&quot;123&quot;</span>]</span><br></pre></td></tr></table></figure>
 
-const val:strNumUnion = &quot;123&quot;
-const val2:strNumUnion = [&quot;123&quot;]</code></pre>
 <p><img src="https://i.imgur.com/y5Vl8M9.png" alt=""></p>
 <h2 id="將函式改寫為-共用的泛型型別"><a href="#將函式改寫為-共用的泛型型別" class="headerlink" title="將函式改寫為 共用的泛型型別"></a>將函式改寫為 共用的泛型型別</h2><ul>
 <li>將type 拉出來獨立撰寫，可以重複使用</li>
 </ul>
-<pre><code class="typeScript">const fn = &lt;T&gt;(param: T):(T)[]=&gt;{
-  return [param]
-};
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = &lt;T&gt;(<span class="attr">param</span>: T):(T)[]=&gt;&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//上面的函式也可以用於</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123;</span><br><span class="line">  <span class="attr">onFn</span>: <span class="keyword">typeof</span> fn</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//rewrite</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericFn</span> = &lt;T&gt;<span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn</span>:<span class="title class_">GenericFn</span> = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//共用，如下有個 interface 其中有個屬性的型別與 GenericFn 一樣，則可以共用</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123;</span><br><span class="line">  <span class="attr">onFn</span>:<span class="title class_">GenericFn</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-//上面的函式也可以用於
-interface Props {
-  onFn: typeof fn
-}
 
-//rewrite
-type GenericFn = &lt;T&gt;(param: T) =&gt; T[]
-const fn:GenericFn = (param) =&gt; {
-  return [param]
-}
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fn&lt;T&gt;(<span class="attr">param</span>:T):T[]&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//產生型別泛型</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnType</span> = <span class="keyword">typeof</span> fn ;</span><br></pre></td></tr></table></figure>
 
-//共用，如下有個 interface 其中有個屬性的型別與 GenericFn 一樣，則可以共用
-interface Props {
-  onFn:GenericFn
-}
-</code></pre>
-<pre><code class="typeScript">function fn&lt;T&gt;(param:T):T[]{
-  return [param]
-}
-
-//產生型別泛型
-type FnType = typeof fn ;</code></pre>
 <p><img src="https://i.imgur.com/yxsVm1s.png" alt=""></p>
 <p><img src="https://i.imgur.com/zYtwh7H.png" alt=""><br><img src="https://i.imgur.com/tPHEDZ7.png" alt=""></p>
-<h3 id="比較-lt-T-gt-位置差異"><a href="#比較-lt-T-gt-位置差異" class="headerlink" title="比較&lt;T&gt;位置差異"></a>比較<code>&lt;T&gt;</code>位置差異</h3><pre><code class="typeScript">type FnTypeA = &lt;T&gt;(param: T) =&gt; T[]
-type FnTypeB&lt;T&gt; = (param: T) =&gt; T[]
+<h3 id="比較-lt-T-gt-位置差異"><a href="#比較-lt-T-gt-位置差異" class="headerlink" title="比較&lt;T&gt;位置差異"></a>比較<code>&lt;T&gt;</code>位置差異</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">FnTypeA</span> = &lt;T&gt;<span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnTypeB</span>&lt;T&gt; = <span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn1</span>:<span class="title class_">FnTypeA</span> = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//必須指定好型別的 argument</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn2</span>:<span class="title class_">FnTypeB</span>&lt;<span class="built_in">string</span>&gt; = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//兩個函式在使用上會有差異：</span></span><br><span class="line"><span class="title function_">fn1</span>();</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn2</span>(<span class="string">&#x27;Hi&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-const fn1:FnTypeA = (param) =&gt; {
-  return [param]
-}
-
-//必須指定好型別的 argument
-const fn2:FnTypeB&lt;string&gt; = (param) =&gt; {
-  return [param]
-}
-
-//兩個函式在使用上會有差異：
-fn1();
-
-fn2(&#39;Hi&#39;)
-</code></pre>
 <p><img src="https://i.imgur.com/J3zJs2Y.png" alt=""></p>
 <p><img src="https://i.imgur.com/0wxPZk9.png" alt=""></p>
 <ul>
 <li>fn1 可以填入任何內容、可以動態填入型別<br><img src="https://i.imgur.com/pwfnIjO.png" alt=""><br><img src="https://i.imgur.com/6B8gtAc.png" alt=""><br><img src="https://i.imgur.com/OgPatHZ.png" alt=""></li>
 <li>fn2 只能填入 string 內容<br><img src="https://i.imgur.com/cwmVA5b.png" alt=""></li>
 </ul>
-<pre><code class="typeScript">export type ClickFn = &lt;Event&gt;(e:Event) =&gt; any
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">ClickFn</span> = &lt;<span class="title class_">Event</span>&gt;<span class="function">(<span class="params">e:Event</span>) =&gt;</span> <span class="built_in">any</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用 function 會無法重複使用寫好的型別</span></span><br><span class="line"><span class="comment">// 引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">handleClick</span>:<span class="title class_">ClickFn</span> = <span class="function">(<span class="params">e</span>)=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-//使用 function 會無法重複使用寫好的型別
-// 引用
-const handleClick:ClickFn = (e)=&gt;{
-
-}</code></pre>
-<h2 id="interface-的泛型"><a href="#interface-的泛型" class="headerlink" title="interface 的泛型"></a>interface 的泛型</h2><pre><code class="typeScript">export interface GenericI&lt;T&gt;{
-  [key:string]: T
-} 
-type NumValObj =  GenericI&lt;number&gt;;
-const numberValObj:NumValObj = {
-  res:123
-}
-
-//type寫法也可以一樣
-export type GenericT&lt;T&gt; = {
-  [key:string]: T
-}
-
-//API 的應用！！！
-//注意：in 寫法只用於 type 中
-export type GenericKeyValObj&lt;T extends  keyof any,P&gt; = {
-  [key in T ]: P
-}
-
-//可以應用於 API 
-
-type ApiKey = &#39;user&#39; | &#39;id&#39; | &#39;password&#39;; //將欄位值設定好
-type UserApiData = GenericKeyValObj&lt;ApiKey, string&gt;
-</code></pre>
+<h2 id="interface-的泛型"><a href="#interface-的泛型" class="headerlink" title="interface 的泛型"></a>interface 的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">GenericI</span>&lt;T&gt;&#123;</span><br><span class="line">  [<span class="attr">key</span>:<span class="built_in">string</span>]: T</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NumValObj</span> =  <span class="title class_">GenericI</span>&lt;<span class="built_in">number</span>&gt;;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">numberValObj</span>:<span class="title class_">NumValObj</span> = &#123;</span><br><span class="line">  <span class="attr">res</span>:<span class="number">123</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//type寫法也可以一樣</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">GenericT</span>&lt;T&gt; = &#123;</span><br><span class="line">  [<span class="attr">key</span>:<span class="built_in">string</span>]: T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//API 的應用！！！</span></span><br><span class="line"><span class="comment">//注意：in 寫法只用於 type 中</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">GenericKeyValObj</span>&lt;T <span class="keyword">extends</span>  keyof <span class="built_in">any</span>,P&gt; = &#123;</span><br><span class="line">  [key <span class="keyword">in</span> T ]: P</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以應用於 API </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ApiKey</span> = <span class="string">&#x27;user&#x27;</span> | <span class="string">&#x27;id&#x27;</span> | <span class="string">&#x27;password&#x27;</span>; <span class="comment">//將欄位值設定好</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">UserApiData</span> = <span class="title class_">GenericKeyValObj</span>&lt;<span class="title class_">ApiKey</span>, <span class="built_in">string</span>&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/dceV8io.png" alt=""></p>
 <ul>
 <li><p>可以很快的生成 API 的資料型別<br><img src="https://i.imgur.com/Vv3lVDC.png" alt=""></p>
@@ -1884,39 +1190,19 @@ type UserApiData = GenericKeyValObj&lt;ApiKey, string&gt;
 <li><p>其他範例</p>
 </li>
 </ul>
-<pre><code class="typeScript">//類似呼叫API的函式
-//Params : 參數
-//Res result : 回傳值
-type GenericApiFn&lt;Params, Res&gt; = (params:Params)=&gt; Res
-
-//組合其他泛型使用，也可以將原本泛型參數自己使用
-interface ApiContainerProps&lt;Params, Res&gt; {
-  initData: Res;
-  onAsyncCb: GenericApiFn&lt;Params, Res&gt;
-}
-</code></pre>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//類似呼叫API的函式</span></span><br><span class="line"><span class="comment">//Params : 參數</span></span><br><span class="line"><span class="comment">//Res result : 回傳值</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericApiFn</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt; = <span class="function">(<span class="params">params:Params</span>)=&gt;</span> <span class="title class_">Res</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//組合其他泛型使用，也可以將原本泛型參數自己使用</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ApiContainerProps</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt; &#123;</span><br><span class="line">  <span class="attr">initData</span>: <span class="title class_">Res</span>;</span><br><span class="line">  <span class="attr">onAsyncCb</span>: <span class="title class_">GenericApiFn</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li>interface 與 type 的泛型寫法</li>
 </ul>
-<pre><code class="typeScript">//interface 寫函式
-interface FnI {
-  &lt;T&gt;(param: T): T[]
-}
-//同等於
-type FnT = &lt;T&gt;(param:T)=&gt;T[]
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//interface 寫函式</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">FnI</span> &#123;</span><br><span class="line">  &lt;T&gt;(<span class="attr">param</span>: T): T[]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//同等於</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnT</span> = &lt;T&gt;<span class="function">(<span class="params">param:T</span>)=&gt;</span>T[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn</span>:<span class="title class_">FnT</span> = <span class="function">(<span class="params">param</span>)=&gt;</span>[param]</span><br></pre></td></tr></table></figure>
 
-const fn:FnT = (param)=&gt;[param]</code></pre>
 <ul>
 <li><code>&lt;T&gt;</code>位置的調動</li>
 </ul>
-<pre><code class="typeScript">//&lt;T&gt; 會影響整個 interface
-interface GenericFnI&lt;T&gt; {
-  (param: T): T[]
-}
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//&lt;T&gt; 會影響整個 interface</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">GenericFnI</span>&lt;T&gt; &#123;</span><br><span class="line">  (<span class="attr">param</span>: T): T[]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn2</span>: <span class="title class_">GenericFnI</span>&lt;<span class="built_in">string</span>&gt;= <span class="function">(<span class="params">param</span>)=&gt;</span>[param]</span><br></pre></td></tr></table></figure>
 
-const fn2: GenericFnI&lt;string&gt;= (param)=&gt;[param]</code></pre>
 <p>過去都未曾注意到泛型可以抽成共用還有 <code>&lt;T&gt;</code> 的位置所放的位置，會影響宣告，透過此次的教學，讓我對泛型可以應用於實際情況的案例，同樣未來在訂定 type 或 interface 時可以加以注意，思考是否可以改寫為泛型加以使用。</p>
-<p>參考資料<br><a href="https://www.youtube.com/watch?v=9hZbfX_Atpc&t=44s" target="_blank" rel="noopener">成為進階TS開發者的第一哩路 — 泛型簡介與基礎(1)</a><br><a href="https://www.youtube.com/watch?v=7yA4ALLoSxY" target="_blank" rel="noopener">成為進階TS開發者的第一哩路 — 泛型的函式, type和interface寫法一次說清楚！</a></p>
+<p>參考資料<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=9hZbfX_Atpc&t=44s">成為進階TS開發者的第一哩路 — 泛型簡介與基礎(1)</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=7yA4ALLoSxY">成為進階TS開發者的第一哩路 — 泛型的函式, type和interface寫法一次說清楚！</a></p>
 
       
     </div>

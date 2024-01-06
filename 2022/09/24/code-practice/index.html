@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -205,58 +205,20 @@
 <p>  Open brackets must be closed by the same type of brackets.<br>  Open brackets must be closed in the correct order.<br>  Every close bracket has a corresponding open bracket of the same type.</p>
 <p>  以字串帶入，並要確認傳入的字串中的大括號, 中括號等是否有兩倆配對</p>
 <p>Example 1: </p>
-<pre><code>Input: s = &quot;()&quot;
-Output: true</code></pre><pre><code>Input: s = &quot;()[]{}&quot;
-Output: true</code></pre><pre><code>Input: s = &quot;(]&quot;
-Output: false</code></pre><ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: s = &quot;()&quot;</span><br><span class="line">Output: true</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: s = &quot;()[]&#123;&#125;&quot;</span><br><span class="line">Output: true</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: s = &quot;(]&quot;</span><br><span class="line">Output: false</span><br></pre></td></tr></table></figure>
+
+<ol>
 <li>製作一個物件，為括號的配對</li>
 <li>存放括號的空物件</li>
 <li>將字串進行迭代判斷</li>
 </ol>
-<pre><code>  i 會loop 此字串
-  &quot;([]){}&quot;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">i 會loop 此字串</span><br><span class="line">&quot;([])&#123;&#125;&quot;</span><br><span class="line"></span><br><span class="line">第一圈：遇到 &quot;(&quot;</span><br><span class="line">stack = [ &quot;)&quot;]</span><br><span class="line"></span><br><span class="line">第二圈：遇到 &quot;[&quot;</span><br><span class="line">stack = [ &quot;)&quot;,&quot;]&quot;]</span><br><span class="line"></span><br><span class="line">第三圈：遇到 &quot;]&quot; , 此時，stack = [ &quot;)&quot;,&quot;]&quot;]</span><br><span class="line">進入第二個判斷：stack[stack.length - 1] === ch</span><br><span class="line">陣列的最後一個是否與 i=2 ,ch = &quot;]&quot; 互相配對，若配對成功則從陣列中刪除</span><br><span class="line"></span><br><span class="line">第四圈：遇到 &quot;)&quot; , 此時，stack = [ &quot;)&quot;]</span><br><span class="line">進入第二個判斷：stack[stack.length - 1] === ch</span><br><span class="line">陣列的最後一個是否與 i=3 ,ch = &quot;)&quot; 互相配對，若配對成功則從陣列中刪除</span><br><span class="line"></span><br><span class="line">第五圈：遇到 &quot;&#123;&quot; , 此時，stack = []</span><br><span class="line">stack = [ &quot;&#125;&quot;]</span><br><span class="line"></span><br><span class="line">第六圈：遇到 &quot;&#125;&quot; , 此時，stack = [ &quot;&#125;&quot;]</span><br><span class="line">進入第二個判斷：stack[stack.length - 1] === ch</span><br><span class="line">陣列的最後一個是否與 i=5 ,ch = &quot;&#125;&quot; 互相配對，若配對成功則從陣列中刪除</span><br><span class="line"></span><br><span class="line">  最後跳出陣列確認 stack.length === 0 =&gt; 為 0 表示皆配對成功</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-  第一圈：遇到 &quot;(&quot;
-  stack = [ &quot;)&quot;]
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> isValid = <span class="keyword">function</span> (<span class="params">s</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> hashMap = &#123; <span class="string">&quot;(&quot;</span>: <span class="string">&quot;)&quot;</span>, <span class="string">&quot;&#123;&quot;</span>: <span class="string">&quot;&#125;&quot;</span>, <span class="string">&quot;[&quot;</span>: <span class="string">&quot;]&quot;</span> &#125;;</span><br><span class="line">  <span class="keyword">const</span> stack = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> ch <span class="keyword">of</span> s) &#123;</span><br><span class="line">    <span class="keyword">if</span> (hashMap[ch]) &#123;</span><br><span class="line">      <span class="comment">// ch is an opening bracket</span></span><br><span class="line">      stack.<span class="title function_">push</span>(hashMap[ch]);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (stack.<span class="property">length</span> &gt; <span class="number">0</span> &amp;&amp; stack[stack.<span class="property">length</span> - <span class="number">1</span>] === ch) &#123;</span><br><span class="line">      <span class="comment">//當空陣列裡面有值且陣列的最後一個值和 key 是一樣的就從陣列中刪除</span></span><br><span class="line">      <span class="comment">// ch is a closing bracket and top of stack matches</span></span><br><span class="line">      stack.<span class="title function_">pop</span>();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// ch is a closing bracket and top of the stack doesn&#x27;t match</span></span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> stack.<span class="property">length</span> === <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-  第二圈：遇到 &quot;[&quot;
-  stack = [ &quot;)&quot;,&quot;]&quot;]
 
-  第三圈：遇到 &quot;]&quot; , 此時，stack = [ &quot;)&quot;,&quot;]&quot;]
-  進入第二個判斷：stack[stack.length - 1] === ch
-  陣列的最後一個是否與 i=2 ,ch = &quot;]&quot; 互相配對，若配對成功則從陣列中刪除
-
-  第四圈：遇到 &quot;)&quot; , 此時，stack = [ &quot;)&quot;]
-  進入第二個判斷：stack[stack.length - 1] === ch
-  陣列的最後一個是否與 i=3 ,ch = &quot;)&quot; 互相配對，若配對成功則從陣列中刪除
-
-  第五圈：遇到 &quot;{&quot; , 此時，stack = []
-  stack = [ &quot;}&quot;]
-
-  第六圈：遇到 &quot;}&quot; , 此時，stack = [ &quot;}&quot;]
-  進入第二個判斷：stack[stack.length - 1] === ch
-  陣列的最後一個是否與 i=5 ,ch = &quot;}&quot; 互相配對，若配對成功則從陣列中刪除
-
-    最後跳出陣列確認 stack.length === 0 =&gt; 為 0 表示皆配對成功
-
-</code></pre><pre><code class="JavaScript">  var isValid = function (s) {
-    const hashMap = { &quot;(&quot;: &quot;)&quot;, &quot;{&quot;: &quot;}&quot;, &quot;[&quot;: &quot;]&quot; };
-    const stack = [];
-    for (let ch of s) {
-      if (hashMap[ch]) {
-        // ch is an opening bracket
-        stack.push(hashMap[ch]);
-      } else if (stack.length &gt; 0 &amp;&amp; stack[stack.length - 1] === ch) {
-        //當空陣列裡面有值且陣列的最後一個值和 key 是一樣的就從陣列中刪除
-        // ch is a closing bracket and top of stack matches
-        stack.pop();
-      } else {
-        // ch is a closing bracket and top of the stack doesn&#39;t match
-        return false;
-      }
-    }
-    return stack.length === 0;
-  };</code></pre>
 
     </div>
 

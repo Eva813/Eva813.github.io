@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -212,44 +212,7 @@
 <li>訪問第一個節點為 list.val  ; 訪問第二個節點 list.next.val ; 訪問第三個節點list.next.next.val </li>
 <li>要將兩個 list 合併的方法，每次比較兩個 而最小的數挑出，放入新的 list</li>
 </ul>
-<pre><code class="JavaScript">/**
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
- */
-/**
- * @param {ListNode} list1
- * @param {ListNode} list2
- * @return {ListNode}
- */
-
-  var mergeTwoLists = function (l1, l2) {
-    //current
-    const dummy = new ListNode(-Infinity)
-    //point dummy node
-    let prev = dummy;
-    while (l1 &amp;&amp; l2) {
-      if (l1.val &lt;= l2.val) {
-        prev.next = l1;
-        //移動 prev list
-        prev = l1
-        //鏈錶指針 l1 就往後移動
-        l1 = l1.next
-      } else {
-        prev.next = l2;
-        prev = l2
-        l2 = l2.next
-      }
-    }
-    //如果 l1 是 null ,就是 l2
-    if (!l1) prev.next = l2;
-    if (!l2) prev.next = l1;
-    return dummy.next
-  };
-
-  mergeTwoLists([1, 100], [3, 4, 6, 8])</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * function ListNode(val, next) &#123;</span></span><br><span class="line"><span class="comment"> *     this.val = (val===undefined ? 0 : val)</span></span><br><span class="line"><span class="comment"> *     this.next = (next===undefined ? null : next)</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">ListNode</span>&#125; <span class="variable">list1</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">ListNode</span>&#125; <span class="variable">list2</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">ListNode</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> mergeTwoLists = <span class="keyword">function</span> (<span class="params">l1, l2</span>) &#123;</span><br><span class="line">    <span class="comment">//current</span></span><br><span class="line">    <span class="keyword">const</span> dummy = <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="title class_">Infinity</span>)</span><br><span class="line">    <span class="comment">//point dummy node</span></span><br><span class="line">    <span class="keyword">let</span> prev = dummy;</span><br><span class="line">    <span class="keyword">while</span> (l1 &amp;&amp; l2) &#123;</span><br><span class="line">      <span class="keyword">if</span> (l1.<span class="property">val</span> &lt;= l2.<span class="property">val</span>) &#123;</span><br><span class="line">        prev.<span class="property">next</span> = l1;</span><br><span class="line">        <span class="comment">//移動 prev list</span></span><br><span class="line">        prev = l1</span><br><span class="line">        <span class="comment">//鏈錶指針 l1 就往後移動</span></span><br><span class="line">        l1 = l1.<span class="property">next</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        prev.<span class="property">next</span> = l2;</span><br><span class="line">        prev = l2</span><br><span class="line">        l2 = l2.<span class="property">next</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果 l1 是 null ,就是 l2</span></span><br><span class="line">    <span class="keyword">if</span> (!l1) prev.<span class="property">next</span> = l2;</span><br><span class="line">    <span class="keyword">if</span> (!l2) prev.<span class="property">next</span> = l1;</span><br><span class="line">    <span class="keyword">return</span> dummy.<span class="property">next</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">mergeTwoLists</span>([<span class="number">1</span>, <span class="number">100</span>], [<span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>])</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -333,7 +296,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#題目："><span class="nav-number">1.</span> <span class="nav-text">題目：</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">題目：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
