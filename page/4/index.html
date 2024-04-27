@@ -146,6 +146,188 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/01/14/TS-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/14/TS-3/" class="post-title-link" itemprop="url">TypeScript - 註記(Annotation) 與斷言(Assertion)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-14 11:08:06" itemprop="dateCreated datePublished" datetime="2022-01-14T11:08:06+08:00">2022-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:34:26" itemprop="dateModified" datetime="2022-11-04T10:34:26+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>從開始學習前端之後，大多的學習資源都是來自線上課程、youtube 影片為主，鮮少透過閱讀書籍來學習相關知識，但自從進入公司之後，因為公司內有些程式書籍能夠借閱，先是從 JavaScript 大全開始，一開始閱讀起來真的滿痛苦，不知道該如何消化內容，直接順著讀過去又怕忘記，但目前還是順順的讀到了第8章～後來，找到的方式就是在筆記軟體上做些註記，工作上遇到相關的再回過頭看一次，加入筆記。</p>
+<p>而在此次，發現 TypeScript 即便已經看過介紹型別、基本使用基礎的影片後，仍然覺得不太足夠，所以就開始翻閱書籍 「讓 TypeScript 成為你全端開發的 ACE」，文中介紹滿多之前沒有注意到觀念、也有帶到不少 JavaScript 的觀念來呼應。所以本篇，多是來自於書中資訊，透過整理呈現。</p>
+<h2 id="註記-Annotation-V-S-斷言-Assertion"><a href="#註記-Annotation-V-S-斷言-Assertion" class="headerlink" title="註記 Annotation V.S. 斷言 Assertion"></a>註記 Annotation V.S. 斷言 Assertion</h2><ul>
+<li>型別註記：指在告訴 TS 編譯器：「任何被註記到的變數、函式的參數等，都必須遵照被註記過後的變數型別」。</li>
+<li>所以編譯器會隨時隨地的監測該變數有沒有出現型別衝突的可能—關鍵字為遵照。</li>
+<li>而，斷言型別則是無視 TS 編譯器分析整個程式碼的型別推論過程，果斷的告訴 TS 編譯器：「被斷言過後的表達式之運算結果就是某某型別」—關鍵意象是「覆蓋」該表達式的型別推論結果。</li>
+</ul>
+<h2 id="註記與斷言"><a href="#註記與斷言" class="headerlink" title="註記與斷言"></a>註記與斷言</h2><ul>
+<li>帶有冒號的相關語法</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">randomNumber</span>:<span class="built_in">number</span> = <span class="title class_">Math</span>.<span class="title function_">random</span>();</span><br><span class="line"><span class="keyword">const</span> <span class="attr">subscribed</span>:<span class="built_in">boolean</span> = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果遇到函式，參數(Argument)部分除了可以有類似註記方式標明輸入的參數型別外，在參數宣告結尾也可以註記該函式輸出之型別。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isPositive</span>(<span class="params">input: number</span>):boolean&#123;</span><br><span class="line">	<span class="keyword">return</span> input &gt; <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>但JS裡，宣告函式的方法有很多種，其中一個是將函式最為值指派到變數。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">isPositive</span>:<span class="function">(<span class="params">input:number</span>) =&gt;</span> boolean = <span class="keyword">function</span>(<span class="params">input</span>)&#123;</span><br><span class="line">	<span class="keyword">return</span> input &gt; <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>以上，也能把變數指派的函式，改成ES6箭頭函式<ul>
+<li>指派運算子(Assignment Operator ，就是指程式裡的等號)左方是函式的型別註記表示法，右方則是普通函式宣告</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">isPositive</span>:<span class="function">(<span class="params">input:<span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">boolean</span> = <span class="function"><span class="params">input</span> =&gt;</span> input &gt;<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>採用邊宣告函式、邊註記型別的方式定義函式</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive = <span class="keyword">function</span> (<span class="params">input:<span class="built_in">number</span></span>):<span class="built_in">boolean</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> input&gt;<span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive =  (<span class="attr">input</span>:<span class="built_in">number</span>):<span class="function"><span class="params">boolean</span> =&gt;</span>  input&gt;<span class="number">0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="型別斷言語法"><a href="#型別斷言語法" class="headerlink" title="型別斷言語法"></a>型別斷言語法</h2><ul>
+<li>斷言(Assertion)的語法很簡單，看到有使用關鍵字 as 或者 <code>&lt;T&gt;(...)</code> 的格式就是斷言的用法。</li>
+<li>通常會使用斷言的情境，程式沒辦法推論某表達式的確切運算結果之型別，我們才會用選擇使出斷言來處理這種情境。</li>
+<li>程式沒辦法推論？<ul>
+<li>使用第三方的資源（Third-party resources），如使用外來JSON API 獲得的內容之型別格式、讀取檔案轉成 JSON 物件的結果、使用套件提供的功能、呼叫會回傳未知結果的函式。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aNumber = <span class="title function_">returnsUnknow</span>() <span class="keyword">as</span> <span class="built_in">number</span>;</span><br></pre></td></tr></table></figure>
+<p>或是這樣：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aNumber = &lt;<span class="built_in">number</span>&gt;(<span class="title function_">returnsUnkonw</span>());</span><br></pre></td></tr></table></figure>
+<ul>
+<li>請注意：斷言的語法部分，沒有人斷言在變數的名稱宣告部分—也就是是說，如果你這樣寫是錯的：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aNumber <span class="keyword">as</span> <span class="built_in">number</span> = <span class="title function_">returnsUnknow</span>(); <span class="comment">//這是錯誤的</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>概念有點像，決斷地告訴程式，某表達式的運算結果之型別。</li>
+<li>變數本身不是被運算，而是被指派某個東西，而斷言應該是斷在被指派的值或表達式的運算結果上。</li>
+</ul>
+<h4 id="複雜一點"><a href="#複雜一點" class="headerlink" title="複雜一點"></a>複雜一點</h4><ul>
+<li>函式宣告表達式有可以被斷言(畢竟函式作為表達式也會被當成值)</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive =(<span class="function"><span class="params">input</span> =&gt;</span> input &gt; <span class="number">0</span>) <span class="keyword">as</span> (<span class="attr">input</span>: <span class="built_in">number</span>) =&gt; <span class="built_in">boolean</span></span><br></pre></td></tr></table></figure>
+<p>或者是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive = &lt;<span class="function">(<span class="params">input: number</span>) =&gt;</span> boolean&gt;(<span class="function"><span class="params">input</span> =&gt;</span> input &gt;<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>上面斷言的寫法效果跟之前示範過基礎註記手法：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive :<span class="function">(<span class="params">input: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">boolean</span> = <span class="function"><span class="params">input</span> =&gt;</span> input &gt;<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p>或者是</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive ＝(<span class="attr">input</span>: <span class="built_in">number</span>)：<span class="built_in">boolean</span> =&gt; input &gt;<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="說下，敘述式與表達式的定義與差別"><a href="#說下，敘述式與表達式的定義與差別" class="headerlink" title="說下，敘述式與表達式的定義與差別"></a>說下，敘述式與表達式的定義與差別</h2><ol>
+<li>敘述式：程式運行的流程，例如：JS 裡的判斷敘述式(if…else)以及迴圈敘述式(for 或者是 while 迴圈)。</li>
+<li>表達式代表的則是程式碼運算的流程，並且會將運算結果回傳。其中兩者最關鍵差異為：敘述式不會回傳值，表達式則會。</li>
+</ol>
+<ul>
+<li>以下為常見的表達式範例：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//運算表達式 Arithmetic expression</span></span><br><span class="line"> <span class="number">1</span>+<span class="number">2</span>*<span class="number">3</span> ; <span class="comment">//回傳解果為7</span></span><br><span class="line"><span class="comment">//邏輯表達式 Logical Expression</span></span><br><span class="line"><span class="literal">true</span> &amp;&amp; (something === <span class="literal">null</span> || myAge &lt; <span class="number">18</span>) <span class="comment">//回傳結果為 true 或 false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//函式（或方法的呼叫） Function / Method Invocation Expression</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>,<span class="number">10</span>) <span class="comment">//回傳結果為 1024</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//三元運算子 Ternary Operator</span></span><br><span class="line">myAge &lt; <span class="number">18</span> ? <span class="string">&#x27;Youngster&#x27;</span> : <span class="string">&#x27;Adult&#x27;</span>; <span class="comment">//回傳結果為 &#x27;Youngster&#x27; 因為 myAge &lt; 18 </span></span><br></pre></td></tr></table></figure>
+<p>而敘述式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="comment">/*expression 1*/</span>)&#123;</span><br><span class="line">	<span class="comment">//若 expression1 為 true 則執行</span></span><br><span class="line">	</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="comment">/*expression 2*/</span>)&#123;</span><br><span class="line">	<span class="comment">//若 expression2 為 true 則執行</span></span><br><span class="line">&#125; <span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="comment">//若 expression1、expression2 都不為 true 則執行此</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//迴圈敘述式 Looping Statement</span></span><br><span class="line"><span class="keyword">while</span> (<span class="comment">/*expression */</span>)&#123;</span><br><span class="line">	<span class="comment">//若 expression 為 true， 則重複執行直到 expression 為 false 時跳脫</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>按照上面敘述式的定義 — 由於敘述式是在敘述運行流程，而不會回傳值，所以你才不會在 JavaScript 裡面看到這樣的寫法：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS 並有提供這寫法</span></span><br><span class="line"><span class="keyword">const</span> status = <span class="keyword">if</span>(<span class="title class_">Age</span> &lt;<span class="number">18</span> )&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注意：敘述式不一定是多行式（或區塊式）地呈現的最佳案例：變數宣告的指派敘述式(Variable Declaration Assignment Statement)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//變數宣告的 指派敘述式</span></span><br><span class="line"><span class="keyword">const</span> foo =<span class="number">123</span>;</span><br></pre></td></tr></table></figure></li>
+<li>請問上面指派式會回傳什麼結果 =&gt;數字 123 或 udefined。正解為 udefined<ul>
+<li>指派式的回傳結果為 undefined</li>
+</ul>
+</li>
+<li>所以可以歸納出，javaScript 的變數宣告的指派式屬於敘述式，非表達式。</li>
+</ul>
+<h4 id="表達式什麼時候會以非單行的程式碼，也就是區塊的方式？"><a href="#表達式什麼時候會以非單行的程式碼，也就是區塊的方式？" class="headerlink" title="表達式什麼時候會以非單行的程式碼，也就是區塊的方式？"></a>表達式什麼時候會以非單行的程式碼，也就是區塊的方式？</h4><ul>
+<li>立即呼叫函式表達式(IIFE)</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> status = (<span class="title function_">funcrion</span>(<span class="params">myAge</span>)&#123;</span><br><span class="line">								 <span class="keyword">if</span> (myAge &lt;<span class="number">18</span>)&#123; <span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span>&#125;</span><br><span class="line">									<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">								&#125;)(<span class="number">16</span>) <span class="comment">//假設填入參數為16，呼叫該函式的結果回傳 &#x27;Young&#x27;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>當可以分清楚表達式與敘述式差別後，回歸型別斷言</li>
+<li>斷言的基礎語法<ul>
+<li>斷言的語法只能用在表達式上，因為表達式具備回傳值，敘述式則沒有</li>
+<li>因此，可以「斷言該表達式所運算結果之代表型別」</li>
+</ul>
+</li>
+</ul>
+<p>寫法如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;expression&gt; <span class="keyword">as</span> T assertion</span><br><span class="line"></span><br><span class="line">&lt;T assertion &gt;(&lt;expression&gt;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//運算表達式</span></span><br><span class="line">(foo+bar*baz) <span class="keyword">as</span> <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 邏輯表達式</span></span><br><span class="line">(<span class="title function_">isPositive</span>(num) &amp;&amp; <span class="title function_">idEven</span>(num)) <span class="keyword">as</span> <span class="built_in">boolean</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//function</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>, <span class="number">10</span>) <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">(myAge &lt;<span class="number">18</span> ? <span class="string">&#x27;Young&#x27;</span> : <span class="string">&#x27;Adult&#x27;</span>) <span class="keyword">as</span> <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//IIFE</span></span><br><span class="line">(<span class="title function_">funcrion</span>(<span class="params">myAge</span>)&#123;</span><br><span class="line">					 <span class="keyword">if</span> (myAge &lt;<span class="number">18</span>)&#123; <span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span>&#125;</span><br><span class="line">						<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">					&#125;)(<span class="number">16</span>) <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//只要是表達式，就算在其他敘述式、表達式內也能使用</span></span><br><span class="line"><span class="title function_">somefunction</span>(foo <span class="keyword">as</span> <span class="built_in">number</span> , bar <span class="keyword">as</span> <span class="built_in">string</span>) <span class="keyword">as</span> <span class="built_in">boolean</span></span><br><span class="line">					</span><br></pre></td></tr></table></figure>
+
+<p>換種寫法：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="built_in">number</span>&gt;(foo+bar*baz);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 邏輯表達式</span></span><br><span class="line">&lt;<span class="built_in">boolean</span>&gt; (<span class="title function_">isPositive</span>(num) &amp;&amp; <span class="title function_">idEven</span>(num)) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//function</span></span><br><span class="line">&lt;<span class="built_in">number</span>&gt; <span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>, <span class="number">10</span>) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">&lt;<span class="built_in">string</span>&gt;(myAge &lt;<span class="number">18</span> ? <span class="string">&#x27;Young&#x27;</span> : <span class="string">&#x27;Adult&#x27;</span>) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//IIFE</span></span><br><span class="line"> &lt;<span class="built_in">number</span>&gt;(</span><br><span class="line">	 <span class="title function_">funcrion</span>(<span class="params">myAge</span>)&#123;</span><br><span class="line">					 <span class="keyword">if</span> (myAge &lt;<span class="number">18</span>)&#123; <span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span>&#125;</span><br><span class="line">						<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">					&#125;)(<span class="number">16</span>)</span><br><span class="line">   );</span><br><span class="line"><span class="comment">//只要是表達式，就算在其他敘述式、表達式內也能使用</span></span><br><span class="line">&lt;<span class="built_in">boolean</span>&gt;<span class="title function_">somefunction</span>(foo <span class="keyword">as</span> <span class="built_in">number</span> , bar <span class="keyword">as</span> <span class="built_in">string</span>) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以上針對註記 Annotation V.S. 斷言 Assertion 做個簡單整理～</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/01/06/FormData-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1647,160 +1829,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/10/08/Sorting-Algorithms/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Code">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/08/Sorting-Algorithms/" class="post-title-link" itemprop="url">演算法入門 - Sorting-Algorithms</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-10-08 14:08:05" itemprop="dateCreated datePublished" datetime="2021-10-08T14:08:05+08:00">2021-10-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/glzKE9I.png" alt=""></p>
-<p>延續 Wilson Ren<a target="_blank" rel="noopener" href="https://www.udemy.com/course/algorithm-data-structure/?course_id=3819536&fbclid=IwAR3ugnEJMsniBCvoMHthf31EqEQeG9hCL3BQb2gWS7eAFZ4lcixmWOiwNAo">課程</a>來認識常見的排列方法！</p>
-<h2 id="排列的演算法介紹"><a href="#排列的演算法介紹" class="headerlink" title="排列的演算法介紹"></a>排列的演算法介紹</h2><p><img src="https://i.imgur.com/zeRjPef.png" alt=""></p>
-<ul>
-<li>在JS中，就有內建 <code>array.sort()</code><ul>
-<li>同樣在其他程式語言，都會有內建的 sorting function</li>
-<li>但還是需要知道他們是如何運作</li>
-</ul>
-</li>
-<li>總共有 6 種 sorting</li>
-<li>此篇文章會以前面兩種為主</li>
-</ul>
-<h2 id="Bubble-Sort"><a href="#Bubble-Sort" class="headerlink" title="Bubble Sort"></a>Bubble Sort</h2><ul>
-<li>冒泡排序</li>
-<li>會比較相鄰的元素，如果順序不對會互換element</li>
-<li>是相當簡單的演算法，在現實世界很少拿來使用，最常用在教學</li>
-<li>而像在python、java 他們內建的排序演算法，都不是用冒泡排序，多是用 quicksort,merge sort（比較複雜、但有效率）<h3 id="範例說明"><a href="#範例說明" class="headerlink" title="範例說明"></a>範例說明</h3><img src="https://i.imgur.com/pDdBK9i.png" alt=""></li>
-<li>比較array的最後兩個數字 =&gt; 發現順序不對就對調<br><img src="https://i.imgur.com/ElpC2qh.png" alt=""></li>
-<li>對調之後，再往下兩個元素<ul>
-<li>發現順序正確，不需更動<br><img src="https://i.imgur.com/mQuFUvU.png" alt=""></li>
-</ul>
-</li>
-<li>不更動之後，再往下兩個<br><img src="https://i.imgur.com/Qk1T9c3.png" alt=""><br>以此類推…</li>
-<li>小結：將找到的最小值，推到最左邊</li>
-</ul>
-<h3 id="要如何做-Bubble-Sort"><a href="#要如何做-Bubble-Sort" class="headerlink" title="要如何做 Bubble Sort"></a>要如何做 Bubble Sort</h3><ul>
-<li><p>先從一個陣列中2個數值比較開始思考</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for j from A.length-1 to 1;</span><br><span class="line">   if A[j] &lt; A[j-i] ;</span><br><span class="line">   swap A[j] and A[j-i]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>虛擬碼<br><img src="https://i.imgur.com/2VFPI3E.png" alt=""></p>
-</li>
-<li><p>i =&gt; sorted elements</p>
-</li>
-<li><p>j =&gt; adjacent elements(j是相對i而來)</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">bubbleSort</span>(<span class="params">arr</span>)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;arr.<span class="property">length</span>-<span class="number">2</span>;i++)&#123;</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">let</span> j=arr.<span class="property">length</span>-<span class="number">1</span>;j&gt;=i+<span class="number">1</span>;j--)&#123;</span><br><span class="line">        <span class="keyword">if</span> (arr[j]&lt;arr[j-<span class="number">1</span>])&#123;</span><br><span class="line">          <span class="comment">//swap arr[j] and arr[j-1]</span></span><br><span class="line">          <span class="keyword">let</span> temp=arr[j];</span><br><span class="line">          arr[j] = arr[j-<span class="number">1</span>];</span><br><span class="line">          arr[j-<span class="number">1</span>] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(arr);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">bubbleSort</span>([<span class="number">4</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">7</span>]);</span><br></pre></td></tr></table></figure></li>
-<li><p>加入隨機的數字，組成新的陣列</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">bubbleSort</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> step = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt;= arr.<span class="property">length</span> - <span class="number">2</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = arr.<span class="property">length</span> - <span class="number">1</span>; j &gt;= i + <span class="number">1</span>; j--) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[j] &lt; arr[j - <span class="number">1</span>]) &#123;</span><br><span class="line">        <span class="comment">// swap arr[j] and arr[j - 1]</span></span><br><span class="line">        <span class="keyword">let</span> temp = arr[j];</span><br><span class="line">        arr[j] = arr[j - <span class="number">1</span>];</span><br><span class="line">        arr[j - <span class="number">1</span>] = temp;</span><br><span class="line">        step++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;It takes &quot;</span> + step + <span class="string">&quot; steps to complete.&quot;</span>);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(arr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> test = [];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">  test.<span class="title function_">push</span>(<span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="number">100</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">bubbleSort</span>(test);</span><br></pre></td></tr></table></figure>
-<h2 id="Big-O-of-Bubble-Sort"><a href="#Big-O-of-Bubble-Sort" class="headerlink" title="Big O of Bubble Sort"></a>Big O of Bubble Sort</h2><p><img src="https://i.imgur.com/NSg6FSC.png" alt=""></p>
-</li>
-<li><p>最糟情況下： 由大到小，要排成 由小到大 =&gt; 他交換的次數會是 (n-1)+(n-2)+(n-3)+…+(n-n)次</p>
-</li>
-<li><p>最好的情況： 本身的arr就接近 小到大</p>
-<ul>
-<li>優化語法</li>
-<li>發現沒有任何elements被交換，就可以停止迴圈<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">bubbleSort</span>(<span class="params">arr</span>)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;arr.<span class="property">length</span>-<span class="number">2</span>;i++)&#123;</span><br><span class="line">      <span class="keyword">let</span> swapping=<span class="literal">false</span>;</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">let</span> j=arr.<span class="property">length</span>-<span class="number">1</span>;j&gt;=i+<span class="number">1</span>;j--)&#123;</span><br><span class="line">        <span class="keyword">if</span> (arr[j]&lt;arr[j-<span class="number">1</span>])&#123;</span><br><span class="line">          <span class="comment">//swap arr[j] and arr[j-1]</span></span><br><span class="line">          <span class="keyword">let</span> temp=arr[j];</span><br><span class="line">          arr[j] = arr[j-<span class="number">1</span>];</span><br><span class="line">          arr[j-<span class="number">1</span>] = temp;</span><br><span class="line">          swapping=<span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (swapping==<span class="literal">false</span>)&#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>平均情況還是用到 nested for loop</p>
-<ul>
-<li>O(n^2)</li>
-</ul>
-</li>
-</ul>
-<h2 id="Insertion-Sort"><a href="#Insertion-Sort" class="headerlink" title="Insertion Sort"></a>Insertion Sort</h2><p><img src="https://i.imgur.com/NwAm9cW.png" alt=""></p>
-<ul>
-<li>效率比 bubble sort 好一些</li>
-<li>理論上， 都是 O(n^2)</li>
-<li>不斷做插入的動作<h3 id="範例說明-1"><a href="#範例說明-1" class="headerlink" title="範例說明"></a>範例說明</h3><img src="https://i.imgur.com/HtfgFYG.png" alt=""></li>
-<li>先認為這條arr長度是1</li>
-<li>從陣列最前面開始，要將1插入4這個arr上</li>
-</ul>
-<p><img src="https://i.imgur.com/CrYGinm.png" alt=""></p>
-<ul>
-<li><p>數字2，要和左邊的數字作比較<br><img src="https://i.imgur.com/lb7mYhc.png" alt=""></p>
-</li>
-<li><p>數字3去比較<br><img src="https://i.imgur.com/gqnhQYA.png" alt=""></p>
-</li>
-</ul>
-<h3 id="虛擬碼"><a href="#虛擬碼" class="headerlink" title="虛擬碼"></a>虛擬碼</h3><p><img src="https://i.imgur.com/lNSbpjL.png" alt=""></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index 0,1,2,3,4</span><br><span class="line">value 1,2,3,4,0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>檢查這條arr的 index=1</li>
-<li>設定<code>key=A[j]</code>，並將key插入 sorted sequence <ul>
-<li>j 的前一格為 i</li>
-</ul>
-</li>
-<li>確認 i 有沒有大於key =&gt; 也就是對於key而言，要不斷地和它左邊的值比較<ul>
-<li>如果左邊的值比key大，就要讓他們互換</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">index 0,1,2,3,4</span><br><span class="line">value 1,2,3,4 (i),0 (j key)</span><br><span class="line"></span><br><span class="line">while i&gt;0 &amp;&amp; A[i] &gt; key</span><br><span class="line">  A[i+1] = A[i]</span><br><span class="line">  i -= 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>語法</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> unsorted = [<span class="number">14</span>, -<span class="number">4</span>, <span class="number">17</span>, <span class="number">6</span>, <span class="number">22</span>, <span class="number">1</span>, -<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="title function_">insertionSort</span>(unsorted);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">insertionSort</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">1</span>; j &lt;= arr.<span class="property">length</span> - <span class="number">1</span>; j++) &#123;</span><br><span class="line">    <span class="keyword">let</span> key = arr[j];</span><br><span class="line">    i = j - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &gt;= <span class="number">0</span> &amp;&amp; arr[i] &gt; key) &#123;</span><br><span class="line">      arr[i + <span class="number">1</span>] = arr[i];</span><br><span class="line">      i -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    arr[i + <span class="number">1</span>] = key;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(arr);</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/E8xWtkL.png" alt=""></p>
-<h2 id="Big-O"><a href="#Big-O" class="headerlink" title="Big O"></a>Big O</h2><p><img src="https://i.imgur.com/OVF4VRl.png" alt=""></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1872,16 +1900,16 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">58</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
