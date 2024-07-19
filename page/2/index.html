@@ -146,6 +146,127 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/01/28/vueTest-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/28/vueTest-1/" class="post-title-link" itemprop="url">Vue 單元測試 - 基礎入門</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-01-28 14:50:37 / Modified: 14:58:53" itemprop="dateCreated datePublished" datetime="2023-01-28T14:50:37+08:00">2023-01-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>為了不斷建立以及加深自己的技能，即便目前工作上未能使用，還是可以提前做些準備，之前看到 Mike 老師推出的 vue 單元測試，就先入手～<br>趁近期有空先來奠定下測試的基礎，未來可以在專案內練習撰寫！</p>
+<p><img src="https://i.imgur.com/xhxaYa1.jpg" alt=""></p>
+<h2 id="專案創建"><a href="#專案創建" class="headerlink" title="專案創建"></a>專案創建</h2><p>若一開始專案沒有選擇 jest 或加入測試 要如何在現有專案加入？</p>
+<ul>
+<li>可以進入該專案進行安裝<br><code>vue add unit-jest</code></li>
+</ul>
+<p>這裡創建的專案是使用 vue-cli 創建，並且在自選項目加入 unit test </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create my-project</span><br></pre></td></tr></table></figure>
+
+<h2 id="執行-test"><a href="#執行-test" class="headerlink" title="執行 test"></a>執行 test</h2><p><code>npm run test:unit</code></p>
+<h2 id="更改預設的測試檔案位置"><a href="#更改預設的測試檔案位置" class="headerlink" title="更改預設的測試檔案位置"></a>更改預設的測試檔案位置</h2><p>component 與 測試的檔案，可以放在同一個資料夾中，以方便找尋</p>
+<ol>
+<li>建立 <code>jest.config.js</code> 來設定 jest </li>
+</ol>
+<ul>
+<li>testMatch: 指定從 src 資料夾開始找尋與 spec 相關的檔案</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line"></span><br><span class="line">  <span class="attr">preset</span>: <span class="string">&quot;@vue/cli-plugin-unit-jest&quot;</span>,</span><br><span class="line"></span><br><span class="line">  <span class="attr">testMatch</span>: [<span class="string">&quot;**/src/**/*.spec.[jt]s?(x)&quot;</span>],</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>**`</p>
+<h2 id="測試的基本架構"><a href="#測試的基本架構" class="headerlink" title="測試的基本架構"></a>測試的基本架構</h2><ul>
+<li>describe : 類似群組概念，可以包一個或多個相關的測試。</li>
+<li>it 與 test 一樣：其內容為測試的單位，裏面撰寫測試內容</li>
+<li>第一個參數，用來表示該測試的敘述（”Test to do list”, “Test to do 1”, “Test to do 2” ）</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Test to do list&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 1&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">test</span>(<span class="string">&quot;Test to do 2&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>it 也可以單獨另外撰寫</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">it</span>(<span class="string">&#x27;這是test case&#x27;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>執行測試呈現的樣子</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">HelloWorld</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/HelloWorld.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;HelloWorld.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;renders props.msg when passed&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> msg = <span class="string">&#x27;new message&#x27;</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">HelloWorld</span>, &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="attr">props</span>: &#123; msg &#125;</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(msg)</span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>wrapper 是指 HelloWorld 這個 component</li>
+<li>wrapper.text() : 會顯示此元件中所包含的文字</li>
+<li><code>expect(wrapper.text()).toMatch(msg)</code>: <ul>
+<li>toMatch 有合乎</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/ejvXWQF.png" alt=""></p>
+<h2 id="expext-與斷言"><a href="#expext-與斷言" class="headerlink" title="expext 與斷言"></a>expext 與斷言</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Test to do list&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 1&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(<span class="number">1</span> + <span class="number">1</span>).<span class="title function_">toBe</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 2&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(<span class="number">4</span> - <span class="number">1</span>).<span class="title function_">toBe</span>(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>expect: 預期需要匹配的項目，如放入變數、component、function</li>
+<li>toBe(百分之百準確): 斷言，用什麼方式來匹配，這裡使用 toBe 函式</li>
+</ul>
+<h2 id="其他備註"><a href="#其他備註" class="headerlink" title="其他備註"></a>其他備註</h2><p>而官方網站已建議若要創建新專案可以使用 vite 為基礎的專案。所以新開的專案都是使用 Vitest (之後有機會再使用新專案來開看看)。<br>這邊因先根據教學來進行，故先使用 vue-test-utils + jest </p>
+<p><img src="https://i.imgur.com/yrD2UW0.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/01/25/TS-Generics/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1280,124 +1401,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/11/02/rect-test-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Code">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/02/rect-test-1/" class="post-title-link" itemprop="url">React 測試</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-11-02 15:43:21" itemprop="dateCreated datePublished" datetime="2022-11-02T15:43:21+08:00">2022-11-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:37:02" itemprop="dateModified" datetime="2022-11-04T10:37:02+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React-%E6%B8%AC%E8%A9%A6/" itemprop="url" rel="index"><span itemprop="name">React 測試</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>使用 JavaSript 要進行測試最常使用的就是使用 Jest ，另外依據使用的前端框架來搭配使用進行測試。<br>以下內文就先以一些範例來直接學習</p>
-<h2 id="testing-library"><a href="#testing-library" class="headerlink" title="testing-library"></a>testing-library</h2><ul>
-<li><p>當使創建一個 react 檔案，會預設加入的測試範例檔</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="title function_">test</span>(<span class="string">&#x27;renders learn react link&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> linkElement = screen.<span class="title function_">getByText</span>(<span class="regexp">/learn react/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(linkElement).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>screen  : it represent the whole document which we have rendered</p>
-</li>
-<li><p>getByText: 取得 text</p>
-<ul>
-<li><code>getByText(/learn react/i)</code></li>
-<li><code>expect(linkElement).toBeInTheDocument();</code></li>
-<li>期待變數得值，<code>toBeInTheDocument()</code></li>
-<li>檢測此項目是否存在於文件之中</li>
-<li><ul>
-<li><a href="https://github.com/testing-library/jest-dom#tobeinthedocument">toBeInTheDocument</a>：判斷一個 Element 是否存在於 DOM 中</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="撰寫測試的參考文件"><a href="#撰寫測試的參考文件" class="headerlink" title="撰寫測試的參考文件"></a>撰寫測試的參考文件</h3><p><a target="_blank" rel="noopener" href="https://testing-library.com/docs/queries/byrole">ByRole</a><br><a target="_blank" rel="noopener" href="https://www.w3.org/TR/html-aria/#docconformance"> role attribute</a></p>
-<h3 id="加入列表（list）測試"><a href="#加入列表（list）測試" class="headerlink" title="加入列表（list）測試"></a>加入列表（list）測試</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logo <span class="keyword">from</span> <span class="string">&#x27;./logo.svg&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./App.css&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Login</span> <span class="keyword">from</span> <span class="string">&#x27;./components/Login/Login&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> (</span><br><span class="line">	</span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;App&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;<span class="name">header</span> <span class="attr">className</span>=<span class="string">&quot;App-header&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">			</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;logo&#125;</span> <span class="attr">className</span>=<span class="string">&quot;App-logo&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;logo&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">			</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">			</span></span><br><span class="line"><span class="language-xml">			Edit <span class="tag">&lt;<span class="name">code</span>&gt;</span>src/App.js<span class="tag">&lt;/<span class="name">code</span>&gt;</span> and save to reload.</span></span><br><span class="line"><span class="language-xml">			</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;<span class="name">a</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">			</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">			<span class="attr">className</span>=<span class="string">&quot;App-link&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">			</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">			<span class="attr">href</span>=<span class="string">&quot;https://reactjs.org&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">			</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">			<span class="attr">target</span>=<span class="string">&quot;_blank&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">			</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">			<span class="attr">rel</span>=<span class="string">&quot;noopener noreferrer&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">	 <span class="attr">.</span>     &gt;</span>					</span></span><br><span class="line"><span class="language-xml">			</span></span><br><span class="line"><span class="language-xml">				Learn React</span></span><br><span class="line"><span class="language-xml">			</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">				</span></span><br><span class="line"><span class="language-xml">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>Apple<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">				</span></span><br><span class="line"><span class="language-xml">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>Banana<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">				</span></span><br><span class="line"><span class="language-xml">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>Kiwi<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">			</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;/<span class="name">header</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">App</span>;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;renders 3 list items&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> listItems = screen.<span class="title function_">getAllByRole</span>(<span class="string">&quot;listitem&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(listItems.<span class="property">length</span>).<span class="title function_">toEqual</span>(<span class="number">3</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>jest <a target="_blank" rel="noopener" href="https://jestjs.io/docs/expect">expect</a></li>
-<li>需要時到官網看相關使用的API<br><code>expect(listItems.length).toBe(3);</code><br><code>expect(listItems.length).toEqual(3);</code></li>
-</ul>
-<h3 id="測試-title"><a href="#測試-title" class="headerlink" title="測試 title"></a>測試 title</h3><ul>
-<li>getByTestId：運用此方法可以直接取得在元素上設置的 data-testid</li>
-<li>getByTitle : 取得在標籤設置 title 的元素</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- const a = 2</span></span><br><span class="line"><span class="comment">const b = 1 --&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">h1</span> <span class="attr">data-testid</span>=<span class="string">&quot;mytestid&quot;</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">title</span>=<span class="string">&quot;sum&quot;</span>&gt;</span>&#123;a + b&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;renders title&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>);</span><br><span class="line">	<span class="keyword">const</span> title = screen.<span class="title function_">getByTestId</span>(<span class="string">&quot;mytestid&quot;</span>);</span><br><span class="line">	<span class="title function_">expect</span>(title).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;sum should be 3&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> titleSum = screen.<span class="title function_">getByTitle</span>(<span class="string">&quot;sum&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(titleSum.<span class="property">textContent</span>).<span class="title function_">toBe</span>(<span class="string">&quot;3&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="運行測試"><a href="#運行測試" class="headerlink" title="運行測試"></a>運行測試</h3><p><code>npm run test</code></p>
-<ul>
-<li><p>透過測試所提供的錯誤提示，可以得知預期的結果以及實際運行後得到的值之間的差異</p>
-<p><img src="https://i.imgur.com/IT8leGK.png" alt=""></p>
-</li>
-</ul>
-<p>參考資料：<br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10281691">[Day29] React Testing Library 的一些實用的小技巧</a><br><a target="_blank" rel="noopener" href="https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/nextjs-testing-tutorial-1-ed4b27563761">Next.js | 初探單元測試，使用 Jest + React Testing Library</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1469,7 +1472,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1478,7 +1481,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">58</span>
+        <span class="site-state-item-count">59</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

@@ -146,6 +146,115 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/02/28/Vue-toRef/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Code">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/28/Vue-toRef/" class="post-title-link" itemprop="url">Vue.js 3 - toRef , toRefs</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-28 14:16:15" itemprop="dateCreated datePublished" datetime="2022-02-28T14:16:15+08:00">2022-02-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:33:54" itemprop="dateModified" datetime="2022-11-04T10:33:54+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="toRef"><a href="#toRef" class="headerlink" title="toRef"></a>toRef</h2><ul>
+<li>將…變成 ref<br>從 reactive 物件抽出包裝成一個 ref 的值，與原本物件 是連接的，所以修改時，原本的值也會跟著變動。</li>
+<li>只能處理一個屬性，須告知要輸入的屬性\物件</li>
+<li>注意: 更改原始物件內的值，所響應會跟著變動</li>
+</ul>
+<h3 id="在-prop-的應用"><a href="#在-prop-的應用" class="headerlink" title="在 prop 的應用"></a>在 prop 的應用</h3><ul>
+<li>來自的 props 是 物件資料，可以使用toRef<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">props</span>: &#123;</span><br><span class="line"> <span class="attr">apiUser</span>: &#123;</span><br><span class="line">   <span class="attr">required</span>: <span class="literal">true</span>,</span><br><span class="line">   <span class="attr">type</span>: <span class="title class_">Object</span></span><br><span class="line"> &#125;</span><br><span class="line">&#125;,</span><br><span class="line"><span class="title function_">setup</span>(<span class="params">props</span>) &#123;</span><br><span class="line">   <span class="keyword">const</span> userCopy = <span class="title function_">toRef</span>(props, <span class="string">&#x27;apiUser&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>範例二</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>姓名: &#123;&#123;person.name&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>年齡: &#123;&#123;person.age&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>職業描述: &#123;&#123;person.job.front.dec&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&#x27;person.name += ~&#x27;</span>&gt;</span>修改姓名<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&#x27;person.age ++ &#x27;</span>&gt;</span>增加年齡<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123;reactive&#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Demo&#x27;</span>,</span><br><span class="line">    <span class="title function_">setup</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">const</span> person = <span class="title function_">reactive</span>(&#123;</span><br><span class="line">            <span class="attr">name</span>: <span class="string">&#x27;Eva&#x27;</span>,</span><br><span class="line">            <span class="attr">age</span>: <span class="number">25</span>,</span><br><span class="line">            <span class="attr">job</span>:&#123;</span><br><span class="line">               <span class="attr">front</span>:&#123;</span><br><span class="line">                   <span class="attr">dec</span>:<span class="string">&#x27;前端工程師&#x27;</span></span><br><span class="line">               &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span>&#123;</span><br><span class="line">            person</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>要將以上的模板寫的更容易</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>姓名: &#123;&#123;name&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>年齡: &#123;&#123;age&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>職業描述: &#123;&#123;dec&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&#x27;name += ~&#x27;</span>&gt;</span>修改姓名<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&#x27;age ++ &#x27;</span>&gt;</span>增加年齡<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//就是返回普通的物件內容</span></span><br><span class="line">        <span class="keyword">return</span>&#123;</span><br><span class="line">            <span class="attr">name</span>: person.<span class="property">name</span>,</span><br><span class="line">            <span class="attr">age</span>: person.<span class="property">age</span>,</span><br><span class="line">            <span class="attr">dec</span>: person.<span class="property">job</span>.<span class="property">front</span>.<span class="property">dec</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>但此方式要注意，字串模板會無法響應更新的問題</p>
+</li>
+<li><p>使用 toRef 來達到響應</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123;reactive,toRef&#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Demo&#x27;</span>,</span><br><span class="line">    <span class="title function_">setup</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">const</span> person = <span class="title function_">reactive</span>(&#123;</span><br><span class="line">            <span class="attr">name</span>: <span class="string">&#x27;Eva&#x27;</span>,</span><br><span class="line">            <span class="attr">age</span>: <span class="number">25</span>,</span><br><span class="line">            <span class="attr">job</span>:&#123;</span><br><span class="line">               <span class="attr">front</span>:&#123;</span><br><span class="line">                   <span class="attr">dec</span>:<span class="string">&#x27;前端工程師&#x27;</span></span><br><span class="line">               &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//單一轉換</span></span><br><span class="line">        <span class="keyword">const</span> name2 = <span class="title function_">toRefs</span>(person,<span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span>&#123;</span><br><span class="line">            <span class="attr">name</span>: <span class="title function_">toRef</span>(person,<span class="string">&#x27;name&#x27;</span>),</span><br><span class="line">            <span class="attr">age</span>: <span class="title function_">toRef</span>(person,<span class="string">&#x27;age&#x27;</span>),</span><br><span class="line">            <span class="attr">dec</span>: <span class="title function_">toRef</span>(person.<span class="property">job</span>.<span class="property">front</span>,<span class="string">&#x27;dec&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="toRefs"><a href="#toRefs" class="headerlink" title="toRefs"></a>toRefs</h2><p>toRefs用來把響應式物件轉換成普通物件，把物件中的每一個屬性，包裹成ref物件<br>    * toRefs就是toRef的升級版，只是toRefs是把響應式物件進行轉換</p>
+<h3 id="延續上方，toRefs"><a href="#延續上方，toRefs" class="headerlink" title="延續上方，toRefs"></a>延續上方，toRefs</h3><ul>
+<li>可以批量處理，一個物件裡的屬性<ul>
+<li>只會將第一層展開，所以以下在 job 的內層 </li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>姓名: &#123;&#123;name&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>年齡: &#123;&#123;age&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>職業描述: &#123;&#123;job.front.dec&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&#x27;name += ~&#x27;</span>&gt;</span>修改姓名<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&#x27;age ++ &#x27;</span>&gt;</span>增加年齡<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123;reactive,toRefs&#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Demo&#x27;</span>,</span><br><span class="line">    <span class="title function_">setup</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">const</span> person = <span class="title function_">reactive</span>(&#123;</span><br><span class="line">            <span class="attr">name</span>: <span class="string">&#x27;Eva&#x27;</span>,</span><br><span class="line">            <span class="attr">age</span>: <span class="number">25</span>,</span><br><span class="line">            <span class="attr">job</span>:&#123;</span><br><span class="line">               <span class="attr">front</span>:&#123;</span><br><span class="line">                   <span class="attr">dec</span>:<span class="string">&#x27;前端工程師&#x27;</span></span><br><span class="line">               &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//可以批量處理，所以只需要傳入個物件，</span></span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">new</span> = <span class="title function_">toRefs</span>(person)</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//在物件中再放toRefs(person) ，會變成物件包物件，所以要展開</span></span><br><span class="line">        <span class="keyword">return</span>&#123;</span><br><span class="line">           ...<span class="title function_">toRefs</span>(person)</span><br><span class="line">            <span class="comment">// name: toRef(person,&#x27;name&#x27;),</span></span><br><span class="line">            <span class="comment">// age: toRef(person,&#x27;age&#x27;),</span></span><br><span class="line">            <span class="comment">// dec: toRef(person.job.front,&#x27;dec&#x27;)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/01/14/TS-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1671,164 +1780,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/10/09/js-pass/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Code">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/09/js-pass/" class="post-title-link" itemprop="url">JS基本觀念 - 認識 pass by value、pass by reference 、 pass by sharing，Javascript 又是哪一個？</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-10-09 12:18:41" itemprop="dateCreated datePublished" datetime="2021-10-09T12:18:41+08:00">2021-10-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/zT0UU5c.jpg" alt=""></p>
-<p>之所以會撰寫這篇文，是因為面試過程被考倒的觀念，才發現自己過去從沒注意到這部分啊，那就來寫篇文章來認識它們之中的傳遞方式。</p>
-<h2 id="首先，先從型別的認識開始"><a href="#首先，先從型別的認識開始" class="headerlink" title="首先，先從型別的認識開始"></a>首先，先從型別的認識開始</h2><p>在Javascript分兩大類，一種是基本型別(primitive type)，另一種是物件(Object)。</p>
-<ul>
-<li>Primitive type （以純值的形式存在）<br>Boolean<br>Null<br>Undefined<br>Number<br>BigInt<br>String<br>Symbol（於 ECMAScript 6 新定義）</li>
-<li>Object<br>物件型別指的是可能由零或多種不同型別 (包括純值與物件) 所組合成，例如object,array, function, map</li>
-</ul>
-<p>知道型別後，可以簡易的分類：</p>
-<ul>
-<li>primitive type會是 pass by value，</li>
-<li>object 是 pass by reference。</li>
-</ul>
-<h2 id="接下來來觀察，它們之間不同"><a href="#接下來來觀察，它們之間不同" class="headerlink" title="接下來來觀察，它們之間不同"></a>接下來來觀察，它們之間不同</h2><h3 id="pass-by-value"><a href="#pass-by-value" class="headerlink" title="pass by value"></a>pass by value</h3><p>範例1：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x=<span class="number">10</span>;</span><br><span class="line"><span class="keyword">let</span> y=x;</span><br><span class="line"></span><br><span class="line">x=<span class="number">20</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(x); <span class="comment">//20</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(y); <span class="comment">//10</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>注意：x和y是兩個獨立變數 （先記著這點）<ul>
-<li>值會存入該變數<br><code>var y = x;</code> 看起來會像是y的內容要複製x，但可以的話要理解為，變數 y 是去建立了一個新的值，然後將變數 x 的內容複製了一份過來。</li>
-</ul>
-</li>
-<li>因為兩的變數，各自獨立，所以當變數 x 的內容後來經過更新變成 20 之後，變數 y 的內容依舊保持原來的 10 而不受影響。</li>
-</ul>
-<p>範例2</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num=<span class="number">3</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;num start:&quot;</span>,num);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">passByValue</span>(<span class="params">func_num</span>)&#123;</span><br><span class="line">  func_num=<span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">passByValue</span>(num);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;num end:&quot;</span>, num);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="結果："><a href="#結果：" class="headerlink" title="結果："></a>結果：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">num <span class="attr">start</span>:<span class="number">3</span></span><br><span class="line">num <span class="attr">end</span>: <span class="number">3</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>先是宣告新變數</li>
-<li>隨後建立<code>passByValue()</code> 函式</li>
-<li>呼叫<code>passByValue(num)</code> 複製變數num的值，3傳入<code>passByValue(func_num)</code>。<ul>
-<li>一開始 值會是3</li>
-<li>遇到<code>func_num=5;</code> =&gt; 將值改為 5</li>
-</ul>
-</li>
-<li>但因為出去了函式範圍(scope)，最終的值 <code>num end:3</code></li>
-</ul>
-<h3 id="pass-by-refrence"><a href="#pass-by-refrence" class="headerlink" title="pass by refrence"></a>pass by refrence</h3><p>範例</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x=&#123;<span class="attr">value</span>:<span class="number">10</span>&#125;;</span><br><span class="line"><span class="keyword">let</span> y=x;</span><br><span class="line"></span><br><span class="line">x.<span class="property">value</span>=<span class="number">20</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(x); <span class="comment">//&#123;value:20&#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(y); <span class="comment">//&#123;value:20&#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>( x === y );  <span class="comment">//true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="拆解說明一下"><a href="#拆解說明一下" class="headerlink" title="拆解說明一下"></a>拆解說明一下</h3><ul>
-<li>當宣告一個物件</li>
-<li>JavaScript 會在記憶體的某處建立起一個物件 (圖右側)，然後再將這個 <code>x</code>變數指向新生成的物件</li>
-</ul>
-<p><img src="https://i.imgur.com/LPwkZAg.png" alt=""></p>
-<ul>
-<li>接著，當我們宣告了第二個變數 y ，並且透過 = 將y 指向 x 的位置。</li>
-<li>接著當我們更新了 x.value 的內容後， y.value 的內容也被更新了。</li>
-</ul>
-<p><img src="https://i.imgur.com/vFUhP6X.png" alt=""></p>
-<p>範例2</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1=&#123;<span class="attr">item</span>:<span class="string">&quot;unchanged&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;obj1 start:&quot;</span>,obj1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">passByReference</span>(<span class="params">ref</span>)&#123;</span><br><span class="line">  ref.<span class="property">item</span>= <span class="string">&quot;changed&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">passByReference</span>(obj1);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;obj end&quot;</span>, obj1);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="結果"><a href="#結果" class="headerlink" title="結果"></a>結果</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">obj1 <span class="attr">start</span>:&#123;<span class="attr">item</span>: <span class="string">&quot;unchanged&quot;</span>&#125;</span><br><span class="line">obj1 <span class="attr">end</span>:&#123;<span class="attr">item</span>:<span class="string">&quot;changed&quot;</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>當執行passByReference(obj1) 。想像他是個地址(0x0016)，進入函式中將地址複製，傳入。<ul>
-<li>此時他的value 是個地址(0x0016)</li>
-</ul>
-</li>
-<li>進入函式，遇到<code>ref.item</code><ul>
-<li>de-reference ，進入原本的記憶體位置，找到item，並改變他的值</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/3Ytn7bk.png" alt=""></p>
-<h4 id="在不一般情況下，基本型別是-pass-by-value，而物件型別是-pass-by-reference的方式，但總有例外的時候。"><a href="#在不一般情況下，基本型別是-pass-by-value，而物件型別是-pass-by-reference的方式，但總有例外的時候。" class="headerlink" title="在不一般情況下，基本型別是 pass by value，而物件型別是 pass by reference的方式，但總有例外的時候。"></a>在不一般情況下，基本型別是 pass by value，而物件型別是 pass by reference的方式，但總有例外的時候。</h4><h3 id="pass-by-sharing"><a href="#pass-by-sharing" class="headerlink" title="pass by  sharing"></a>pass by  sharing</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1=&#123;<span class="attr">item</span>:<span class="string">&quot;unchanged&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;obj1 start:&quot;</span>,obj1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">passBySharing</span>(<span class="params">ref</span>)&#123;</span><br><span class="line">  ref=&#123; <span class="attr">item</span>: <span class="string">&quot;changed&quot;</span>&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">passBySharing</span>(obj1);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;obj end&quot;</span>, obj1);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">obj1 <span class="attr">start</span>:&#123;<span class="attr">item</span>: <span class="string">&quot;unchanged&quot;</span>&#125;</span><br><span class="line">obj1 <span class="attr">end</span>:&#123;<span class="attr">item</span>:<span class="string">&quot;unchanged&quot;</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>傳入之前start 沒有改變</li>
-<li>呼叫函式，並進入<code>passBySharing()</code>，還是複製地址，傳入</li>
-<li>遇到<code>ref=&#123; item: &quot;changed&quot;&#125;;</code>，會直接覆蓋地址(有點類似pass by value)<ul>
-<li>這並不是直接更改物件特性</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/Kst3565.png" alt=""></p>
-<h2 id="最後，來說說-JavaScript-屬於？"><a href="#最後，來說說-JavaScript-屬於？" class="headerlink" title="最後，來說說 JavaScript 屬於？"></a>最後，來說說 JavaScript 屬於？</h2><p>看了多篇文章，實在也是有點混亂，該認為三種形式都有呢？還是就是Pass by sharing、Pass by reference呢？ 那例外情形又該如何解釋？</p>
-<p>所以這邊的結尾，直接引用Kuro、Huli老師文章的資訊，供給大家參考。</p>
-<p>從Kuro Hsu 的<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10191057">文章</a>、<a target="_blank" rel="noopener" href="https://www.tenlong.com.tw/products/9789864344130">書</a><br>提及認為 JavaScript 應該更屬於 Pass by sharing 的形式。</p>
-<ul>
-<li>JavaScript 不屬於單純的傳值或傳址。</li>
-</ul>
-<p>參考 ECMA-262-3 in detail. Chapter 8. Evaluation strategy</p>
-<blockquote>
-<p>Regardless of usage concept of reference in this case, this strategy should not be confused with the “call by reference” discussed above. The value of the argument is not a direct alias, but the copy of the address.<br>由於在 JavaScript 的物件類型是可變的 (mutable)，當物件更新時，會影響到所有引用這個物件的變數與其副本，修改時會變動到原本的參考，但當賦與新值時，會產生新的實體參考。</p>
-</blockquote>
-<p>另外在 Huli 的文章中：</p>
-<blockquote>
-<p>依據細分程度的不同，下面幾句話都是正確的：<br>JavaScript 裡面只有 pass by value<br>JavaScript 的 primitive type 是 pass by value，object 是 pass by sharing</p>
-</blockquote>
-<hr>
-<h2 id="最終來個綜合練習："><a href="#最終來個綜合練習：" class="headerlink" title="最終來個綜合練習："></a>最終來個綜合練習：</h2><p>相信在最後的這個練習，可以更清楚，pass by value，pass by reference，pass by sharing</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">changeStuff</span>(<span class="params">num,obj,obj2</span>)&#123;</span><br><span class="line">  num=num*<span class="number">10</span>;</span><br><span class="line">  obj.<span class="property">item</span>=<span class="string">&quot;changed&quot;</span>;</span><br><span class="line">  obj=&#123;<span class="attr">item</span>:<span class="string">&quot;changed&quot;</span>&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> num=<span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> obj=&#123;<span class="attr">item</span>: <span class="string">&quot;unchanged&quot;</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> obj2= &#123;<span class="attr">item</span>: <span class="string">&quot;unchanged&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="title function_">changeStuff</span>(num, obj, obj2);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(num);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">item</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">item</span>);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console=&gt; 10 &quot;changed&quot; &quot;unchanged&quot;</span><br></pre></td></tr></table></figure>
-
-<p>參考資料：<br><a target="_blank" rel="noopener" href="https://medium.com/@mengchiang000/js%E5%9F%BA%E6%9C%AC%E8%A7%80%E5%BF%B5-call-by-value-%E9%82%84%E6%98%AFreference-%E5%8F%88%E6%88%96%E6%98%AF-sharing-22a87ca478fc">JS基本觀念：call by value 還是reference 又或是 sharing?</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10191057">重新認識 JavaScript: Day 05 JavaScript 是「傳值」或「傳址」？</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=1YFss_4B_o4&t=302s">Tech Talk: Pass By Sharing with Javascript</a><br><a target="_blank" rel="noopener" href="https://blog.techbridge.cc/2018/06/23/javascript-call-by-value-or-reference/">深入探討 JavaScript 中的參數傳遞：call by value 還是 reference？</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1900,7 +1851,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">90</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1909,7 +1860,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">58</span>
+        <span class="site-state-item-count">59</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
