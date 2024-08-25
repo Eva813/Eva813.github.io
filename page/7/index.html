@@ -146,6 +146,137 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/01/22/js-guessNumber/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/22/js-guessNumber/" class="post-title-link" itemprop="url">JS實作- 猜數字遊戲</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-22 09:28:14" itemprop="dateCreated datePublished" datetime="2021-01-22T09:28:14+08:00">2021-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://eva813.github.io/Eva_portfolio/guessNumber/guessNumber.html">成品</a></p>
+<h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><ul>
+<li>練習語音辨識的使用： speech recognition API<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition">SpeechRecognition-MDN</a></li>
+</ul>
+</li>
+<li>根據不同情形，有不一樣的回覆<ul>
+<li>依據猜測數字的情形給予：go higher,go lower</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/IjVZV5d.png" alt=""></p>
+<ul>
+<li>數字猜中後，會出現恭喜答對等敘述，並呈現<code>Play Again</code>的按鈕</li>
+</ul>
+<p><img src="https://i.imgur.com/MhtrTrR.png" alt=""></p>
+<h2 id="js部分"><a href="#js部分" class="headerlink" title="js部分"></a>js部分</h2><h3 id="1-設定隨機數字"><a href="#1-設定隨機數字" class="headerlink" title="1.設定隨機數字"></a>1.設定隨機數字</h3><ul>
+<li><code>Math.floor(Math.random() * 100) + 1</code>取得1-100</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 取得隨1-100隨機數字</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">theRandomNum</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="number">100</span>) + <span class="number">1</span>;</span><br><span class="line">  <span class="comment">//沒有加1，數字會是0-99</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> randomNum = <span class="title function_">theRandomNum</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;randomNum:&#x27;</span>, randomNum);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SpeechRecognition"><a href="#2-SpeechRecognition" class="headerlink" title="2.SpeechRecognition"></a>2.SpeechRecognition</h3><ul>
+<li>第一步要先將SpeechRecognition設為全域變數<ul>
+<li>檢查瀏覽器是否有支援不需要 prefix 的 speechRecognition 介面，若沒有則將 webkit 標頭的 webkitSpeechRecognition 指定給該全域變數，</li>
+</ul>
+</li>
+<li>要使用 speechRecognition ，必須透過 SpeechRecognition 建構式建立一個物件實例。</li>
+<li><code>recognition.onresult</code> 設定取得語音辨識的結果</li>
+<li>執行<code>writeMessage(myWord);checkNumber(myWord);</code>兩個函式<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> <span class="title class_">SpeechRecognition</span> = <span class="variable language_">window</span>.<span class="property">SpeechRecognition</span> || <span class="variable language_">window</span>.<span class="property">webkitSpeechRecognition</span>;</span><br><span class="line">  <span class="keyword">var</span> recognition = <span class="keyword">new</span> <span class="title class_">SpeechRecognition</span>();</span><br><span class="line">  <span class="comment">//設定辨識語言。</span></span><br><span class="line">  recognition.<span class="property">lang</span> = <span class="string">&#x27;zh-tw&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (e) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">error</span>(e);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 開始語音辨識</span></span><br><span class="line">recognition.<span class="title function_">start</span>();</span><br><span class="line"><span class="comment">//取得語音辨識的結果</span></span><br><span class="line">recognition.<span class="property">onresult</span> = <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="comment">//console.log(event);</span></span><br><span class="line">  <span class="keyword">let</span> myWord = event.<span class="property">results</span>[<span class="number">0</span>][<span class="number">0</span>].<span class="property">transcript</span></span><br><span class="line">  <span class="comment">//console.log(&#x27;You said: &#x27;, myWord);</span></span><br><span class="line">  <span class="title function_">writeMessage</span>(myWord);</span><br><span class="line">  <span class="title function_">checkNumber</span>(myWord);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>簡易測試，取得得語音辨識 :point_down: <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//取得語音辨識的結果</span></span><br><span class="line">recognition.<span class="property">onresult</span> = <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;You said: &#x27;</span>, event.<span class="property">results</span>[<span class="number">0</span>][<span class="number">0</span>].<span class="property">transcript</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/QLWaJB0.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/FfF5Aqv.png" alt=""></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API">Using the Web Speech API</a><br><a target="_blank" rel="noopener" href="https://www.freecodecamp.org/news/how-to-build-a-simple-speech-recognition-app-a65860da6108/">How to build a simple speech recognition app</a></p>
+<h3 id="3-記錄下使用者所說的話"><a href="#3-記錄下使用者所說的話" class="headerlink" title="3.記錄下使用者所說的話"></a>3.記錄下使用者所說的話</h3><ul>
+<li>在<code>msg</code>的div插入辨識語言的結果文字<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">writeMessage</span>(<span class="params">myWord</span>) &#123;</span><br><span class="line">  $(<span class="string">&#x27;#msg&#x27;</span>).<span class="title function_">html</span>(<span class="string">`</span></span><br><span class="line"><span class="string">  &lt;div&gt;You said:&lt;/div&gt;</span></span><br><span class="line"><span class="string">    &lt;span class=&quot;box&quot;&gt;<span class="subst">$&#123;myWord&#125;</span>&lt;/span&gt;</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">  `</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-核對隨機數字與猜的數字是否一致"><a href="#4-核對隨機數字與猜的數字是否一致" class="headerlink" title="4.核對隨機數字與猜的數字是否一致"></a>4.核對隨機數字與猜的數字是否一致</h3></li>
+<li>設定當辨識到的不是數字：This is not a valid number</li>
+<li>當範圍不在1-100之間：Number must be between 1 and 100</li>
+<li>猜中數字的結果：Congrats! You have guessed the number!</li>
+<li>數字猜測GO LOWER,GO HIGHER<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">checkNumber</span>(<span class="params">myWord</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> number = +myWord; <span class="comment">//轉為數字</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="title class_">Number</span>.<span class="built_in">isNaN</span>(number)) &#123;</span><br><span class="line">    $(<span class="string">&#x27;#msg&#x27;</span>).<span class="title function_">append</span>(<span class="string">`&lt;div&gt;This is not a valid number&lt;/div&gt;`</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//設定語句</span></span><br><span class="line">  <span class="keyword">if</span> (number &gt; <span class="number">100</span> || number &lt; <span class="number">1</span>) &#123;</span><br><span class="line">    $(<span class="string">&#x27;#msg&#x27;</span>).<span class="title function_">append</span>(<span class="string">`&lt;div&gt;Number must be between 1 and 100&lt;/div&gt;`</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (number === randomNum) &#123;</span><br><span class="line">    $(<span class="string">&#x27;body&#x27;</span>).<span class="title function_">html</span>(<span class="string">`</span></span><br><span class="line"><span class="string">    &lt;h2&gt;Congrats! You have guessed the number! &lt;br&gt;&lt;br&gt; </span></span><br><span class="line"><span class="string">    It was <span class="subst">$&#123;number&#125;</span>&lt;/h2&gt;</span></span><br><span class="line"><span class="string">    &lt;button class=&quot;play-again&quot; id=&quot;play-again&quot; &gt; Play Again &lt;/button&gt;</span></span><br><span class="line"><span class="string">    `</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (number &gt; randomNum) &#123;</span><br><span class="line">    $(<span class="string">&#x27;#msg&#x27;</span>).<span class="title function_">append</span>(<span class="string">`&lt;div&gt;GO LOWER&lt;/div&gt;`</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    $(<span class="string">&#x27;#msg&#x27;</span>).<span class="title function_">append</span>(<span class="string">`&lt;div&gt;GO HIGHER&lt;/div&gt;`</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>透過 Number.isNaN() 語法可以判斷，若回傳 true，則表示值為 NaN，否則為 false</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN">Number.isNaN()</a></p>
+<h3 id="5-使猜數字可以持續猜，直到答對為止"><a href="#5-使猜數字可以持續猜，直到答對為止" class="headerlink" title="5.使猜數字可以持續猜，直到答對為止"></a>5.使猜數字可以持續猜，直到答對為止</h3><ul>
+<li><code>recognition.onend</code>使用於控制語音識別的服務，並應用在結束語音識別時的情境。</li>
+<li><code>recognition.start();</code>每次數字猜完後，都會重新開始語音識別，直到猜中。</li>
+<li>在數字猜中後，會出現<code>play again</code>按鈕，所以要設定此按鈕，按下後能夠重新開始遊戲 =&gt;<code>window.location.reload()</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//https://stackoverflow.com/questions/51080738/how-to-make-speech-recognition-continous-for-a-fix-time-period</span></span><br><span class="line">recognition.<span class="property">onend</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  recognition.<span class="title function_">start</span>();</span><br><span class="line">  <span class="comment">//點擊按鈕，重啟遊戲畫面</span></span><br><span class="line">  $(<span class="string">&#x27;body&#x27;</span>).<span class="title function_">find</span>(<span class="string">&#x27;#play-again&#x27;</span>).<span class="title function_">click</span>(</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">window</span>.<span class="property">location</span>.<span class="title function_">reload</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10187827">實戰智慧插座 14 - 我說開燈就開燈 ( 語音辨識 )</a></p>
+<hr>
+<p>其他參考資料:<br><a target="_blank" rel="noopener" href="https://tutorialzine.com/2017/08/converting-from-speech-to-text-with-javascript">Converting from Speech to Text with JavaScript</a><br><a target="_blank" rel="noopener" href="https://davidwalsh.name/speech-recognition">JavaScript Speech Recognition</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10248999">Day21 – Speech Recognition (lukechu)</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10196577">Day 21 - Speech Detection (Arel)</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10224891?sc=rss.qu">DAY20 : Speech Detection (BROWN)</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2021/01/16/js-countDown/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1649,130 +1780,6 @@ justify-content: center;</code>使水平、垂直置中<figure class="highlight 
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2020/12/28/js-browser/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/28/js-browser/" class="post-title-link" itemprop="url">JS-browser</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-12-28 18:47:58" itemprop="dateCreated datePublished" datetime="2020-12-28T18:47:58+08:00">2020-12-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/NdO4OR5.png" alt=""></p>
-<h2 id="1-DOM-與樹狀結構"><a href="#1-DOM-與樹狀結構" class="headerlink" title="1. DOM 與樹狀結構"></a>1. DOM 與樹狀結構</h2><p><img src="https://i.imgur.com/uZDTql8.png" alt=""></p>
-<ul>
-<li>DOM: document:網頁內部<blockquote>
-<p>KURO 老師:<br>DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。</p>
-</blockquote>
-</li>
-</ul>
-<blockquote>
-<p>Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西<br> <img src="https://i.imgur.com/tPHGSL4.png" alt=""></p>
-</blockquote>
-<h3 id="API-Application-Programming-Interface"><a href="#API-Application-Programming-Interface" class="headerlink" title="API (Application Programming Interface)"></a>API (Application Programming Interface)</h3><ul>
-<li>應用程式 編程 介面<h2 id="document-物件-API-文件"><a href="#document-物件-API-文件" class="headerlink" title="document 物件 API 文件"></a>document 物件 API 文件</h2></li>
-<li><h4 id="getElementsByTagName-抓取html中某tag的元素"><a href="#getElementsByTagName-抓取html中某tag的元素" class="headerlink" title="getElementsByTagName : 抓取html中某tag的元素"></a><code>getElementsByTagName</code> : 抓取html中某tag的元素</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&#x27;div&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/hSmfZ9u.png" alt=""></li>
-</ul>
-<p><img src="https://i.imgur.com/yNOOK2m.png" alt=""></p>
-<ul>
-<li><h4 id="getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取"><a href="#getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取" class="headerlink" title="getElementsByClassName: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)"></a><code>getElementsByClassName</code>: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)</h4></li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">getElementsByClassName</span>(<span class="string">&#x27;block1&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/d7ZlZnr.png" alt=""></p>
-<ul>
-<li><h4 id="getElementById-注意：getElement-沒有加s！這是用來抓取指定ID"><a href="#getElementById-注意：getElement-沒有加s！這是用來抓取指定ID" class="headerlink" title="getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID"></a><code>getElementById</code> : 注意：getElement 沒有加s！這是用來抓取指定ID</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;myyo&quot;</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myyo&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/1ouq4WA.png" alt=""></p>
-</li>
-<li><h4 id="querySelector-後面接的是css選擇器"><a href="#querySelector-後面接的是css選擇器" class="headerlink" title="querySelector: 後面接的是css選擇器"></a><code>querySelector</code>: 後面接的是css選擇器</h4></li>
-<li><p>只會針對元素的第一筆資料，其他並不會被選入這時候可以使用</p>
-<ul>
-<li>選擇tag標籤：(‘div’)：注意：使用此方式當html有多個div，他只會選擇到第一個符合的</li>
-<li>選擇cass : (‘.calssName’)</li>
-<li>選擇id : (‘#idName’)</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/QzoOo6r.png" alt=""></p>
-<p><img src="https://i.imgur.com/pSMPFCJ.png" alt=""></p>
-<ul>
-<li><p>也可以選區某一tag下的tag</p>
-<ul>
-<li><code>querySelector(&#39;div &gt; a&#39;)</code><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;myyo&quot;</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;div &gt; a&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/I9qr8LD.png" alt=""></li>
-</ul>
-</li>
-<li><h4 id="querySelectorAll-可以選取多個元素"><a href="#querySelectorAll-可以選取多個元素" class="headerlink" title="querySelectorAll: 可以選取多個元素"></a><code>querySelectorAll</code>: 可以選取多個元素</h4></li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;myyo&quot;</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;div&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/jFPYIO0.png" alt="Eloquent JavaScript, 3rd Edition"></p>
-<h3 id="順利選則元素之後，嘗試做些改變"><a href="#順利選則元素之後，嘗試做些改變" class="headerlink" title="順利選則元素之後，嘗試做些改變"></a>順利選則元素之後，嘗試做些改變</h3><p>可以看看，js如何與瀏覽器互動 -&gt;<a target="_blank" rel="noopener" href="https://hackmd.io/yGiTI8qVRLWmDCpD1w7HcA?view">JavaScript 與瀏覽器的溝通</a></p>
-<h3 id="BOM-與-window-物件"><a href="#BOM-與-window-物件" class="headerlink" title="BOM 與 window 物件"></a>BOM 與 window 物件</h3><ul>
-<li>BOM (Browser Object Model，瀏覽器物件模型)，是瀏覽器所有功能的核心，與網頁的內容無關。<ul>
-<li>window是瀏覽器的根物件，也是BOM的瀏覽器模型</li>
-</ul>
-</li>
-<li>window.location.hrrf =&gt; 可以知道現在網址<br><img src="https://i.imgur.com/8EeLLGQ.png" alt=""></li>
-<li>window.history.back(); =&gt; 回到網頁瀏覽的上一頁<br><img src="https://i.imgur.com/kBtDslP.png" alt=""></li>
-</ul>
-<p><img src="https://i.imgur.com/jyPOjvH.png" alt=""></p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10202689">Day03-深入理解網頁架構：DOM</a><br><a target="_blank" rel="noopener" href="https://hsuchihting.github.io/javascript/20200615/1316819935/">JS 筆記 - 認識 DOM 文件物件模型</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/Document">MDN-Document</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/jsref/dom_obj_document.asp">The HTML DOM Document Object</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10211614">JavaScript 基礎知識-querySelectorAll</a><br><a target="_blank" rel="noopener" href="https://eloquentjavascript.net/14_dom.html">The Document Object Model</a><br><a target="_blank" rel="noopener" href="https://www.happycoding.today/posts/43">JavaScript入門系列：BOM和DOM筆記</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1844,7 +1851,7 @@ justify-content: center;</code>使水平、垂直置中<figure class="highlight 
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">92</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1853,7 +1860,7 @@ justify-content: center;</code>使水平、垂直置中<figure class="highlight 
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-count">60</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

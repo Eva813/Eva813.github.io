@@ -146,6 +146,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2024/08/24/quasar-monthlyPicker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/08/24/quasar-monthlyPicker/" class="post-title-link" itemprop="url">自訂 Quasar 日期選擇器：實現 Year/Month 選擇功能</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-08-24 19:46:38" itemprop="dateCreated datePublished" datetime="2024-08-24T19:46:38+08:00">2024-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-25 08:51:07" itemprop="dateModified" datetime="2024-08-25T08:51:07+08:00">2024-08-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://hackmd.io/_uploads/B1UukbOo0.png" alt="image"></p>
+<p>在 Quasar 的日期選擇器，要使用 QInput + QDate 方式，可以參考文件 <a target="_blank" rel="noopener" href="https://quasar.dev/vue-components/date/#with-qinput">Date Picker</a>。</p>
+<p>但在此次功能需求，是讓使用者只能選擇年/月。所以首先依循查詢結果，找到 <a href="https://github.com/quasarframework/quasar/discussions/13101">monthpicker</a> ，在其中 <a target="_blank" rel="noopener" href="https://codepen.io/metalsadman/pen/xxYBqMo">codepen - QDate: DATE YEAR/MONTH PICKER</a>，透過設置 setView 屬性，使得選擇器界面可以顯示年、月以及日的選擇視圖。</p>
+<h2 id="自制-monthlyPicker"><a href="#自制-monthlyPicker" class="headerlink" title="自制 monthlyPicker"></a>自制 monthlyPicker</h2><p>因此參考上方的方式，建立一個 monthlyPicker 元件。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;q-mr-md&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">q-input</span></span></span><br><span class="line"><span class="tag">      <span class="attr">dense</span></span></span><br><span class="line"><span class="tag">      <span class="attr">v-model</span>=<span class="string">&quot;monthValue&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">id</span>=<span class="string">&quot;date-input&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">class</span>=<span class="string">&quot;single-month-picker&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">readonly</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">template</span> <span class="attr">v-slot:append</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">q-icon</span></span></span><br><span class="line"><span class="tag">          <span class="attr">name</span>=<span class="string">&quot;fa-regular fa-calendar&quot;</span></span></span><br><span class="line"><span class="tag">          <span class="attr">class</span>=<span class="string">&quot;cursor-pointer&quot;</span></span></span><br><span class="line"><span class="tag">          <span class="attr">size</span>=<span class="string">&quot;1.1rem&quot;</span></span></span><br><span class="line"><span class="tag">        &gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">q-popup-proxy</span> <span class="attr">cover</span> <span class="attr">transition-show</span>=<span class="string">&quot;scale&quot;</span> <span class="attr">transition-hide</span>=<span class="string">&quot;scale&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;q-date__header flex column items-start&quot;</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">span</span> @<span class="attr">click</span>=<span class="string">&quot;handleToMonthView&quot;</span> <span class="attr">class</span>=<span class="string">&quot;cursor-pointer&quot;</span></span></span><br><span class="line"><span class="tag">                &gt;</span>&#123;&#123; &quot;Year - Month&quot; &#125;&#125;&lt;/span</span><br><span class="line">              &gt;</span><br><span class="line">              <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;text-h5 cursor-pointer&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;handleToYearView&quot;</span>&gt;</span></span><br><span class="line">                &#123;&#123; monthValue &#125;&#125;</span><br><span class="line">              <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">q-date</span></span></span><br><span class="line"><span class="tag">              <span class="attr">class</span>=<span class="string">&quot;date-disable-btn&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">dense</span></span></span><br><span class="line"><span class="tag">              <span class="attr">ref</span>=<span class="string">&quot;dateRef&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">v-model</span>=<span class="string">&quot;monthValue&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">default-view</span>=<span class="string">&quot;Years&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">emit-immediately</span></span></span><br><span class="line"><span class="tag">              @<span class="attr">update:model-value</span>=<span class="string">&quot;onUpdate&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">mask</span>=<span class="string">&quot;YYYY-MM&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">minimal</span></span></span><br><span class="line"><span class="tag">              <span class="attr">years-in-month-view</span></span></span><br><span class="line"><span class="tag">              <span class="attr">:navigation-min-year-month</span>=<span class="string">&quot;minYearMonth&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">:navigation-max-year-month</span>=<span class="string">&quot;maxYearMonth&quot;</span></span></span><br><span class="line"><span class="tag">            &gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row items-center justify-end date-action-btn&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">q-btn</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">dense</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">flat</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">v-close-popup</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">class</span>=<span class="string">&quot;btn--no-hover&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">label</span>=<span class="string">&quot;Close&quot;</span></span></span><br><span class="line"><span class="tag">                  <span class="attr">color</span>=<span class="string">&quot;primary&quot;</span></span></span><br><span class="line"><span class="tag">                /&gt;</span></span><br><span class="line">              <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">q-date</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">q-popup-proxy</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">q-icon</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">q-input</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup lang=<span class="string">&quot;ts&quot;</span>&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; date, <span class="title class_">QDate</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;quasar&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> emit = <span class="title function_">defineEmits</span>([<span class="string">&#x27;selectedDate&#x27;</span>])</span><br><span class="line"><span class="keyword">const</span> props = <span class="title function_">defineProps</span>(&#123;</span><br><span class="line">    <span class="attr">month</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">        <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> monthValue = <span class="title function_">ref</span>(props.<span class="property">month</span>)</span><br><span class="line"><span class="keyword">const</span> dateRef = ref&lt;<span class="title class_">InstanceType</span>&lt;<span class="keyword">typeof</span> <span class="title class_">QDate</span>&gt; | <span class="literal">null</span>&gt;(<span class="literal">null</span>)</span><br><span class="line"><span class="keyword">const</span> currentView = ref&lt;<span class="string">&#x27;Years&#x27;</span> | <span class="string">&#x27;Months&#x27;</span> | <span class="string">&#x27;Days&#x27;</span>&gt;(<span class="string">&#x27;Years&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// computed</span></span><br><span class="line"><span class="keyword">const</span> minYearMonth = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> oneYearAgo = date.<span class="title function_">subtractFromDate</span>(<span class="keyword">new</span> <span class="title class_">Date</span>(), &#123; <span class="attr">month</span>: <span class="number">13</span> &#125;)</span><br><span class="line">    <span class="keyword">return</span> date.<span class="title function_">formatDate</span>(oneYearAgo, <span class="string">&#x27;YYYY/MM&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> maxYearMonth = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> oneMonthAgo = date.<span class="title function_">subtractFromDate</span>(<span class="keyword">new</span> <span class="title class_">Date</span>(), &#123; <span class="attr">month</span>: <span class="number">1</span> &#125;)</span><br><span class="line">    <span class="keyword">return</span> date.<span class="title function_">formatDate</span>(oneMonthAgo, <span class="string">&#x27;YYYY/MM&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">onUpdate</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">emit</span>(<span class="string">&#x27;selectedDate&#x27;</span>, date.<span class="title function_">formatDate</span>(<span class="keyword">new</span> <span class="title class_">Date</span>(monthValue.<span class="property">value</span>), <span class="string">&#x27;YYYY-MM&#x27;</span>))</span><br><span class="line">    <span class="title function_">setCalendarView</span>(<span class="string">&#x27;Months&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">handleToMonthView</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">setCalendarView</span>(<span class="string">&#x27;Months&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">handleToYearView</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">setCalendarView</span>(<span class="string">&#x27;Years&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">setCalendarView</span> = (<span class="params">view: <span class="string">&#x27;Years&#x27;</span> | <span class="string">&#x27;Months&#x27;</span></span>) =&gt; &#123;</span><br><span class="line">    currentView.<span class="property">value</span> = view</span><br><span class="line">    dateRef.<span class="property">value</span>?.<span class="title function_">setView</span>(view)</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="簡要說明"><a href="#簡要說明" class="headerlink" title="簡要說明"></a>簡要說明</h3><ul>
+<li>QDate 組件：設置 default-view 為 Years，讓選擇器初始顯示年份視圖。mask 設置為 YYYY-MM，確保輸出格式為年-月。</li>
+<li>計算屬性：透過 minYearMonth 和 maxYearMonth 屬性，限制使用者只能選擇過去一年內的日期範圍。</li>
+<li>視圖切換：通過 handleToMonthView 和 handleToYearView 函數來實現視圖切換，並且用 setCalendarView 函數來控制視圖變更。</li>
+</ul>
+<h2 id="外層使用該元件方式"><a href="#外層使用該元件方式" class="headerlink" title="外層使用該元件方式"></a>外層使用該元件方式</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">monthly-picker</span> <span class="attr">:month</span>=<span class="string">&quot;selectedMonth&quot;</span> @<span class="attr">selectedDate</span>=<span class="string">&quot;handleDateSelected&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>你選擇的月份是：&#123;&#123; selectedMonth &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span> <span class="attr">lang</span>=<span class="string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">MonthlyPicker</span> <span class="keyword">from</span> <span class="string">&quot;./components/MonthlyPicker.vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> selectedMonth = <span class="title function_">ref</span>(<span class="string">&quot;2024-08&quot;</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> <span class="title function_">handleDateSelected</span> = (<span class="params">date: string</span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">    selectedMonth.<span class="property">value</span> = date;</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2024/08/18/download-file/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -169,10 +247,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-08-18 13:51:02 / Modified: 14:25:36" itemprop="dateCreated datePublished" datetime="2024-08-18T13:51:02+08:00">2024-08-18</time>
+              <time title="Created: 2024-08-18 13:51:02" itemprop="dateCreated datePublished" datetime="2024-08-18T13:51:02+08:00">2024-08-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-24 20:06:46" itemprop="dateModified" datetime="2024-08-24T20:06:46+08:00">2024-08-24</time>
+              </span>
 
           
 
@@ -195,11 +279,14 @@
 <h3 id="new-Blob-res-data-type-…-做了什麼？"><a href="#new-Blob-res-data-type-…-做了什麼？" class="headerlink" title="new Blob([res.data], { type: … }) 做了什麼？"></a>new Blob([res.data], { type: … }) 做了什麼？</h3><p>這里，用 new Blob() 創建了一個 Blob 對象。<br>res.data 是從後端 API 接收到的文件數據。<br>我們將這個數據放入 Blob 中，同時指定了文件的類型，即 <code>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</code>，這是 Excel 文件的 MIME 類型。這樣瀏覽器就能識別出這是一個 Excel 文件。</p>
 <h3 id="動態創建一個-lt-a-gt-標簽，並通過模擬點擊觸發文件下載。"><a href="#動態創建一個-lt-a-gt-標簽，並通過模擬點擊觸發文件下載。" class="headerlink" title="動態創建一個 &lt;a&gt; 標簽，並通過模擬點擊觸發文件下載。"></a>動態創建一個 <code>&lt;a&gt;</code> 標簽，並通過模擬點擊觸發文件下載。</h3><p>使用 window.URL.createObjectURL(blob) 創建了一個特殊的 URL，它指向我們剛才創建的 Blob 對象。<br>可以理解為它生成了一個臨時的下載地址，使用者可以透過這個地址下載文件。<br>接著 document.createElement(“a”) 創建 <code>&lt;a&gt;</code> 標籤，接下來要利用這個標籤來實現文件下載。<br>也就是 link.href = downloadUrl; 給 <code>&lt;a&gt;</code> 標籤賦值，將剛才生成的 downloadUrl 設定為這個 <code>&lt;a&gt;</code> 標籤的 link 地址 (href)，也就是說，點擊這個 link 會指向我們的 Blob 物件（即文件資料）。</p>
 <h3 id="設定文件名並觸發下載"><a href="#設定文件名並觸發下載" class="headerlink" title="設定文件名並觸發下載"></a>設定文件名並觸發下載</h3><p>使用 setAttribute 方法給<code>&lt;a&gt;</code> 標籤添加一個 download 屬性，並設定文件名為 “export.xlsx”。這樣，當用戶點擊鏈接時，瀏覽器會提示下載文件，並自動將文件保存為 export.xlsx。<br>document.body.appendChild 將 <code>&lt;a&gt;</code> 標籤臨時加到 document 的 body 中。雖然使用者不會看到這個 link，但它在頁面上是存在的。<br>然後模擬一次使用者點擊這個連結 (link.click())，觸發文件的下載過程。<br>link.remove();下載操作完成後，我們把這個臨時創建的 <code>&lt;a&gt;</code> 標籤從頁面中移除。</p>
-<h2 id="使用-header-的-content-disposition-取得檔名"><a href="#使用-header-的-content-disposition-取得檔名" class="headerlink" title="使用 header 的 content-disposition 取得檔名"></a>使用 header 的 content-disposition 取得檔名</h2><p>有時，後端會通過 Content-Disposition 頭信息傳遞文件名。為了確保下載時使用正確的文件名，我們可以從響應頭中解析文件名。<br>這時候要注意前端， axios 是如何處理 response (你能拿到的回傳內容是否有無 header)<br>需要從回傳的 response headers 取得檔名，這樣才能下載時有正確的檔名。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">headers</span>:&#123;</span><br><span class="line">    <span class="string">&quot;access-control-allow-origin&quot;</span>: <span class="string">&quot;http://localhost:5143&quot;</span>,</span><br><span class="line">    <span class="string">&quot;access-control-expose-headers&quot;</span>: <span class="string">&quot;*&quot;</span>,</span><br><span class="line">    <span class="string">&quot;content-disposition&quot;</span>: <span class="string">&quot;attachment; filename=123123_202408.xlsx; filename*=UTF-8&#x27;&#x27;123123_202408.xlsx&quot;</span>,</span><br><span class="line">    <span class="string">&quot;content-length&quot;</span>: <span class="string">&quot;12111&quot;</span>,</span><br><span class="line">    <span class="string">&quot;content-type&quot;</span>: <span class="string">&quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&quot;</span>,</span><br><span class="line">     ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">handleExportFile</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    $q.<span class="property">loading</span>.<span class="title function_">show</span>();</span><br><span class="line">    <span class="keyword">const</span> data = &#123;</span><br><span class="line">      <span class="attr">sourceId</span>: <span class="title class_">Number</span>(route.<span class="property">params</span>.<span class="property">id</span>),</span><br><span class="line">      <span class="attr">month</span>: followQuery.<span class="property">month</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="title function_">getFollowMonthlySummaryDownload</span>(data);</span><br><span class="line">    $q.<span class="property">loading</span>.<span class="title function_">hide</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> blob = <span class="keyword">new</span> <span class="title class_">Blob</span>([res.<span class="property">data</span>], &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&quot;</span>,</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> downloadUrl = <span class="variable language_">window</span>.<span class="property">URL</span>.<span class="title function_">createObjectURL</span>(blob);</span><br><span class="line">    <span class="keyword">const</span> link = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    link.<span class="property">href</span> = downloadUrl;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 解析 content-disposition 來取得檔名</span></span><br><span class="line">    <span class="keyword">const</span> contentDisposition = res.<span class="property">headers</span>[<span class="string">&quot;content-disposition&quot;</span>];</span><br><span class="line">    <span class="keyword">let</span> fileName = <span class="string">&quot;default-filename.xlsx&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (contentDisposition) &#123;</span><br><span class="line">      <span class="keyword">const</span> fileNameMatch = contentDisposition.<span class="title function_">match</span>(</span><br><span class="line">        <span class="regexp">/filename\*=UTF-8&#x27;&#x27;([^;]+)/</span></span><br><span class="line">      );</span><br><span class="line">      <span class="keyword">if</span> (fileNameMatch) &#123;</span><br><span class="line">        <span class="comment">// 使用 decodeURIComponent 解碼 UTF-8 編碼的檔名</span></span><br><span class="line">        fileName = <span class="built_in">decodeURIComponent</span>(fileNameMatch[<span class="number">1</span>]);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 如果沒有 UTF-8 檔名，嘗試匹配普通檔名</span></span><br><span class="line">        <span class="keyword">const</span> fileNameSimpleMatch =</span><br><span class="line">          contentDisposition.<span class="title function_">match</span>(<span class="regexp">/filename=([^;]+)/</span>);</span><br><span class="line">        <span class="keyword">if</span> (fileNameSimpleMatch) &#123;</span><br><span class="line">          fileName = fileNameSimpleMatch[<span class="number">1</span>].<span class="title function_">trim</span>();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    link.<span class="title function_">setAttribute</span>(<span class="string">&quot;download&quot;</span>, fileName);</span><br><span class="line">    <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(link);</span><br><span class="line">    link.<span class="title function_">click</span>();</span><br><span class="line">    link.<span class="title function_">remove</span>();</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">window</span>.<span class="property">URL</span>.<span class="title function_">revokeObjectURL</span>(downloadUrl);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/08/18/download-file/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -930,109 +1017,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2023/05/07/cypress-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/05/07/cypress-1/" class="post-title-link" itemprop="url">自動化測試 E2E - cypress</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-05-07 12:48:47 / Modified: 13:15:42" itemprop="dateCreated datePublished" datetime="2023-05-07T12:48:47+08:00">2023-05-07</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/E2E/" itemprop="url" rel="index"><span itemprop="name">E2E</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/AE7iJQ1.png" alt=""></p>
-<p>每次在交付完成的任務給 PM 之前，總是會先自行反覆點擊測驗過才提能安心提供。但除了自己點擊之外，是否有其他更為簡易的方式可以進行測試呢？Cypress 是一個用於編寫端對端測試的 JavaScript 測試框架。他可以幫助我們做到基礎的自動化測試，今天就先來認識看看吧～</p>
-<h2 id="建立專案"><a href="#建立專案" class="headerlink" title="建立專案"></a>建立專案</h2><p>在本地建立一個 cypress-project 資料夾，進入該檔案夾<br><code>npm init -y</code><br><code>npm install cypress</code></p>
-<ul>
-<li>安裝完後<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;cypress-project-1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;description&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="string">&quot;main&quot;</span>: <span class="string">&quot;index.js&quot;</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;test&quot;</span>: <span class="string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;keywords&quot;</span>: [],</span><br><span class="line">  <span class="string">&quot;author&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="string">&quot;license&quot;</span>: <span class="string">&quot;ISC&quot;</span>,</span><br><span class="line">  <span class="string">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;cypress&quot;</span>: <span class="string">&quot;^12.11.0&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<h2 id="實作測試功能"><a href="#實作測試功能" class="headerlink" title="實作測試功能"></a>實作測試功能</h2><ul>
-<li>訪問 google 頁面</li>
-<li>進行關鍵字搜尋</li>
-</ul>
-<p><img src="https://i.imgur.com/2FOKkBZ.png" alt=""></p>
-<h3 id="測試語法"><a href="#測試語法" class="headerlink" title="測試語法"></a>測試語法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">it</span>(<span class="string">&#x27;google search&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//visit 進入不同網站</span></span><br><span class="line">  cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://www.google.com.tw/?hl=zh_TW&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  cy.<span class="title function_">get</span>(<span class="string">&#x27;#APjFqb&#x27;</span>).<span class="title function_">type</span>(<span class="string">&#x27;what is cypress.io&#123;Enter&#125;&#x27;</span>)</span><br><span class="line">  <span class="comment">//除了點擊搜尋按鈕之外，一般也會按下 enter鍵觸發</span></span><br><span class="line">  <span class="comment">// cy.contains(&#x27;Google 搜尋&#x27;).click()</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="測試操作"><a href="#測試操作" class="headerlink" title="測試操作"></a>測試操作</h3><p><code>npx cypress open</code> 進入測試介面，選擇 E2E</p>
-<p><img src="https://i.imgur.com/rmkiayJ.png" alt=""></p>
-<ul>
-<li>選擇要測試的檔案：</li>
-</ul>
-<p><img src="https://i.imgur.com/W6yP5nu.png" alt=""></p>
-<ul>
-<li>透過選取器可以找到相對應的元素，並針對該元素下指令<ul>
-<li>這邊我們就是拿到 搜尋框，並進行關鍵字的輸入<br><img src="https://i.imgur.com/RZ5EjKZ.png" alt=""></li>
-</ul>
-</li>
-</ul>
-<h3 id="測試結果呈現"><a href="#測試結果呈現" class="headerlink" title="測試結果呈現"></a>測試結果呈現</h3><ul>
-<li>會進到 google 頁面</li>
-<li>在輸入框輸入 what is cypress.io ,點擊 Enter 搜尋</li>
-</ul>
-<p><img src="https://i.imgur.com/a37BYX1.png" alt=""></p>
-<p><img src="https://i.imgur.com/8QbuLdQ.jpg" alt=""></p>
-<p>小結：</p>
-<p>cy.visit(url)：訪問指定網址。<br>cy.get()：使用 cy.get() 方法選擇元素。我們可以使用不同的選擇器（如：CSS 選擇器）來指向特定元素。<br>type()： 使用 type() 方法在輸入框中輸入內容。<br>click()：使用 cy.get() 定位到這些元素，然後使用 click() 方法模擬點擊操作。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1104,7 +1088,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">92</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1113,7 +1097,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-count">60</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
