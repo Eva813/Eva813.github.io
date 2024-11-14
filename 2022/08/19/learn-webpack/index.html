@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"github.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="經常使用 vue 或 Ｒeact 等前端框架來進行專案開發，但沒有機會好好來認識下他背後的打包工具：webpack趁著這次六角釋出的基礎 webpack 教學，順道來記錄一下。 前端壓縮打包工具 從官網的圖，很明顯地就可以看到將左側複雜的檔案進行壓縮，並做項目管理 在 Vue , React 的背後都有使用 webpack使用 webpack   安裝建立 webpack 需要使用到 npm 初始">
 <meta property="og:type" content="article">
 <meta property="og:title" content="快速認識 webpack">
-<meta property="og:url" content="https://github.com/Eva813/Eva813.github.io.git/2022/08/19/learn-webpack/index.html">
+<meta property="og:url" content="https://eva813.github.io/2022/08/19/learn-webpack/index.html">
 <meta property="og:site_name" content="Let&#39;s Coding">
 <meta property="og:description" content="經常使用 vue 或 Ｒeact 等前端框架來進行專案開發，但沒有機會好好來認識下他背後的打包工具：webpack趁著這次六角釋出的基礎 webpack 教學，順道來記錄一下。 前端壓縮打包工具 從官網的圖，很明顯地就可以看到將左側複雜的檔案進行壓縮，並做項目管理 在 Vue , React 的背後都有使用 webpack使用 webpack   安裝建立 webpack 需要使用到 npm 初始">
 <meta property="og:locale" content="en_US">
@@ -46,7 +46,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.imgur.com/EXBNQe0.png">
 
-<link rel="canonical" href="https://github.com/Eva813/Eva813.github.io.git/2022/08/19/learn-webpack/">
+<link rel="canonical" href="https://eva813.github.io/2022/08/19/learn-webpack/">
 
 
 <script id="page-configurations">
@@ -193,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Eva813/Eva813.github.io.git/2022/08/19/learn-webpack/">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/08/19/learn-webpack/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/eva-round.png">
@@ -295,11 +295,11 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">//預設路徑位置</span></span><br><span class="line">  <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="comment">//輸出位置名稱(filename),檔案位置</span></span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.css$/i</span>, <span class="comment">//只要副檔名為 .css 就會使用以下</span></span><br><span class="line">        <span class="attr">use</span>: [<span class="string">&quot;style-loader&quot;</span>, <span class="string">&quot;css-loader&quot;</span>],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>裝入 sass-loader<br><img src="https://i.imgur.com/UTFdYXm.png" alt=""><br><a href="https://github.com/webpack-contrib/sass-loader">sass-loader</a></li>
+<li>裝入 sass-loader<br><img src="https://i.imgur.com/UTFdYXm.png" alt=""><br><a target="_blank" rel="noopener" href="https://github.com/webpack-contrib/sass-loader">sass-loader</a></li>
 </ul>
 <h2 id="載入-webpack-測試伺服器"><a href="#載入-webpack-測試伺服器" class="headerlink" title="載入 webpack 測試伺服器"></a>載入 webpack 測試伺服器</h2><ul>
 <li>建立即時更新的方式</li>
-<li><a href="https://github.com/webpack/webpack-dev-server">webpack-dev-server</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/webpack/webpack-dev-server">webpack-dev-server</a></li>
 <li><code>npm install webpack-dev-server --save-dev</code></li>
 <li>在 <code>webpack.config.js</code> 檔案設定</li>
 <li><a target="_blank" rel="noopener" href="https://webpack.js.org/configuration/dev-server/#devserver">dev-server</a></li>
@@ -444,7 +444,7 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
   </div>
 
