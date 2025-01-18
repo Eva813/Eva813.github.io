@@ -174,6 +174,221 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/12/23/signaturePad-component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/12/23/signaturePad-component/" class="post-title-link" itemprop="url">製作簽名面板元件</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-12-23 12:49:11" itemprop="dateCreated datePublished" datetime="2023-12-23T12:49:11+08:00">2023-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-14 20:33:09" itemprop="dateModified" datetime="2024-11-14T20:33:09+08:00">2024-11-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>因工作需求需要製作簽名面板，查看套件使用度較高 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/signature_pad">signature_pad</a></p>
+<ol>
+<li>在專案內安裝 signature_pad 套件 <code>npm i signature_pad</code></li>
+<li>嘗試將引入的簽名套件包成可以重複使用的元件。</li>
+</ol>
+<p>initializeSignaturePad : 進行初始化，如尺寸大小、筆的顏色、畫布背景色等。這邊將這些設置放在 props 讓使用時可以保有一些彈性空間。<br>resizeCanvas : 用於調整畫布的大小，目的是確保畫布的大小能夠適應不同的設備和螢幕解析度。<br>saveSignature\ clearSignature: 顧名思義就是儲存、清除簽名<br>注意：因為將簽名功能包成元件，使用 emit 將儲存的簽名傳到外層。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    <span class="attr">class</span>=<span class="string">&quot;signature-pad&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    <span class="attr">:style</span>=<span class="string">&quot;&#123; width: props.width, height: props.height &#125;&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  &gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">ref</span>=<span class="string">&quot;canvas&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">slot</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;clearSignature&quot;</span>&gt;</span>清除簽名<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;saveSignature&quot;</span>&gt;</span>儲存簽名<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">import</span> &#123; onMounted, ref, watch, onUnmounted &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">import</span> <span class="title class_">SignaturePad</span> <span class="keyword">from</span> <span class="string">&quot;signature_pad&quot;</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> props = <span class="title function_">defineProps</span>(&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">width</span>: &#123; <span class="attr">type</span>: <span class="title class_">String</span>, <span class="attr">default</span>: <span class="string">&quot;100%&quot;</span> &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">height</span>: &#123; <span class="attr">type</span>: <span class="title class_">String</span>, <span class="attr">default</span>: <span class="string">&quot;300px&quot;</span> &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">penColor</span>: &#123; <span class="attr">type</span>: <span class="title class_">String</span>, <span class="attr">default</span>: <span class="string">&quot;black&quot;</span> &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">backgroundColor</span>: &#123; <span class="attr">type</span>: <span class="title class_">String</span>, <span class="attr">default</span>: <span class="string">&quot;white&quot;</span> &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">options</span>: &#123; <span class="attr">type</span>: <span class="title class_">Object</span>, <span class="attr">default</span>: <span class="function">() =&gt;</span> (&#123;&#125;) &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> canvas = <span class="title function_">ref</span>(<span class="literal">null</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">let</span> signaturePad = <span class="literal">null</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> <span class="title function_">initializeSignaturePad</span> = (<span class="params"></span>) =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">if</span> (canvas.<span class="property">value</span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    signaturePad = <span class="keyword">new</span> <span class="title class_">SignaturePad</span>(canvas.<span class="property">value</span>, &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      ...props.<span class="property">options</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="attr">penColor</span>: props.<span class="property">penColor</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="attr">backgroundColor</span>: props.<span class="property">backgroundColor</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    &#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> <span class="title function_">resizeCanvas</span> = (<span class="params"></span>) =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="comment">//window.devicePixelRatio 來獲取設備的像素密度，如果無法獲取到，則將ratio設為1。</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">const</span> ratio = <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="variable language_">window</span>.<span class="property">devicePixelRatio</span> || <span class="number">1</span>, <span class="number">1</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="comment">//根據畫布元素的寬度和高度，乘以ratio，來設定畫布的寬度和高度。為了確保畫布在高像素密度的設備上顯示正確。</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  canvas.<span class="property">value</span>.<span class="property">width</span> = canvas.<span class="property">value</span>.<span class="property">offsetWidth</span> * ratio;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  canvas.<span class="property">value</span>.<span class="property">height</span> = canvas.<span class="property">value</span>.<span class="property">offsetHeight</span> * ratio;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="comment">//獲取畫布的2D繪圖上下文，並使用scale方法將繪圖上下文的縮放比例設為ratio。</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  canvas.<span class="property">value</span>.<span class="title function_">getContext</span>(<span class="string">&quot;2d&quot;</span>).<span class="title function_">scale</span>(ratio, ratio);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  signaturePad.<span class="title function_">clear</span>(); <span class="comment">// Clears any existing drawing</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> emit = <span class="title function_">defineEmits</span>([<span class="string">&quot;clear&quot;</span>, <span class="string">&quot;save&quot;</span>]);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> <span class="title function_">saveSignature</span> = (<span class="params"></span>) =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">if</span> (signaturePad) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="keyword">const</span> signatureImage = signaturePad.<span class="title function_">toDataURL</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="title function_">emit</span>(<span class="string">&quot;save&quot;</span>, signatureImage);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">return</span> <span class="literal">null</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> <span class="title function_">clearSignature</span> = (<span class="params"></span>) =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">if</span> (signaturePad) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    signaturePad.<span class="title function_">clear</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="title function_">emit</span>(<span class="string">&quot;clear&quot;</span>); <span class="comment">// 發射清除事件</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// Initialize and resize canvas</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title function_">onMounted</span>(<span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="title function_">initializeSignaturePad</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;resize&quot;</span>, resizeCanvas);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="title function_">resizeCanvas</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title function_">onUnmounted</span>(<span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&quot;resize&quot;</span>, resizeCanvas);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// Watch for prop changes</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title function_">watch</span>(</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="function">() =&gt;</span> [props.<span class="property">penColor</span>, props.<span class="property">backgroundColor</span>, props.<span class="property">options</span>],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="title function_">initializeSignaturePad</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#123; <span class="attr">deep</span>: <span class="literal">true</span> &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="參考資料："><a href="#參考資料：" class="headerlink" title="參考資料："></a>參考資料：</h3><p><a target="_blank" rel="noopener" href="https://github.com/WangShayne/vue3-signature">https://github.com/WangShayne/vue3-signature</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/08/05/vueTest-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/05/vueTest-3/" class="post-title-link" itemprop="url">vueTest - Vue test util (2)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-05 12:31:08" itemprop="dateCreated datePublished" datetime="2023-08-05T12:31:08+08:00">2023-08-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-12-23 12:47:18" itemprop="dateModified" datetime="2023-12-23T12:47:18+08:00">2023-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>延續上次介紹常用的 Vue test util 語法，今天要再多介紹幾個。</p>
+<h2 id="text-與-html"><a href="#text-與-html" class="headerlink" title=".text() 與 .html()"></a><code>.text()</code> 與 <code>.html()</code></h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;hello&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      For a guide and recipes on how to configure / customize this project,<span class="tag">&lt;<span class="name">br</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      check out the</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://cli.vuejs.org&quot;</span> <span class="attr">target</span>=<span class="string">&quot;_blank&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;noopener&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        vue-cli documentation</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>html</code> 若直接 console 出會將 template 呈現出來</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">html=&gt; &lt;div class=&quot;hello&quot;&gt;</span><br><span class="line">      &lt;p&gt; For a guide and recipes on how to configure / customize this project,&lt;br&gt; check out the &lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在測試當中，可以直接抓取該斷落的內容進行比對</p>
+<ol>
+<li>取得該段的 html</li>
+<li>取得該 DOM 元素，並進行 html 的比對</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">HelloWorld</span> <span class="keyword">from</span> <span class="string">&quot;./HelloWorld.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;HelloWorld.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;html &amp; text&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">HelloWorld</span>);</span><br><span class="line">    <span class="comment">// console.log(&quot;html=&gt;&quot;, wrapper.html());</span></span><br><span class="line">    <span class="comment">// console.log(&quot;text=&gt;&quot;, wrapper.text());</span></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">html</span>()).<span class="title function_">toMatch</span>(</span><br><span class="line">      <span class="string">`&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;aLink_&gt;&quot;</span>, wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">html</span>())</span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">html</span>()).<span class="title function_">toMatch</span>(</span><br><span class="line">      <span class="string">`&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="component-的簡易測試"><a href="#component-的簡易測試" class="headerlink" title="component 的簡易測試"></a>component 的簡易測試</h2><p>如課程範例為一個卡片，裡面有一個圖片元件(ImageBox)、內文元件(Content)</p>
+<p><img src="https://hackmd.io/_uploads/ryWgDUjoh.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;CardBox&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">ImageBox</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">Content</span> <span class="attr">v-if</span>=<span class="string">&quot;isOpenContent&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>test goal: 檢查 component 是否有隨狀態而成功渲染與否。</p>
+<h3 id="findComponent"><a href="#findComponent" class="headerlink" title="findComponent"></a>findComponent</h3><p>判斷 component 是否有存在<br>首先要如何抓元件？</p>
+<ol>
+<li>因頁面中是掛載組件，所以這邊使用 mount</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; mount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">CardBox</span> <span class="keyword">from</span> <span class="string">&quot;./index.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ImageBox</span> <span class="keyword">from</span> <span class="string">&quot;./ImageBox.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Content</span> <span class="keyword">from</span> <span class="string">&quot;./Content.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;CardBox.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;findComponent function test&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">mount</span>(<span class="title class_">CardBox</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">findComponent</span>(<span class="title class_">ImageBox</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">findComponent</span>(<span class="title class_">Content</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>findComponent(‘.class’)</li>
+<li>findComponent({name: a}) 組建名稱</li>
+<li>findComponent({ref: ‘ref’}) 組件實體：綁在 DOM 上的 ref</li>
+<li>findComponent(component) 取得組件：抓取導入的組件</li>
+</ul>
+<h3 id="findAllComponents"><a href="#findAllComponents" class="headerlink" title="findAllComponents"></a>findAllComponents</h3><ul>
+<li>此方式是會回傳陣列，要使用 <code>at()</code></li>
+<li>不支援 ref 查找</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">expect</span>(wrapper.<span class="title function_">findAllComponents</span>(<span class="title class_">ImageBox</span>).<span class="title function_">at</span>(<span class="number">0</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Using find to search for a Component is deprecated and will be removed. Use findComponent instead. The find method will continue to work for finding elements using any valid selector（tag selectors (div, foo, bar), attribute selectors ([foo], [foo=&quot;bar&quot;])...）.</span><br></pre></td></tr></table></figure>
+
+<h2 id="測試-class-and-attribute"><a href="#測試-class-and-attribute" class="headerlink" title="測試 class and attribute"></a>測試 class and attribute</h2><p>可以使用在狀態的切換或是驗證資料的對錯，可以用 class 存在與否驗證。</p>
+<h3 id="attribute"><a href="#attribute" class="headerlink" title="attribute"></a>attribute</h3><ul>
+<li>資料在渲染的時候，是否有正確的塞入到 attribute。</li>
+<li>在做資料的渲然，將拿到的內容塞入 attribute 中，如 a link 的 href, img src</li>
+</ul>
+<p>範例題目延續上述使用得內文元件(Content)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/reactivity&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">props</span>: &#123;</span><br><span class="line">    <span class="attr">styleColor</span>: &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">      <span class="attr">default</span>: <span class="string">&quot;red&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">setup</span>(<span class="params">props</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      props,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">h1</span> <span class="attr">:class</span>=<span class="string">&quot;[&#x27;card_title&#x27;, props.styleColor]&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      Vue  vue-test-utils</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:;&quot;</span>&gt;</span>click<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;card_text&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      Vue Test Utils (VTU) is a set of utility functions aimed to simplify testing Vue.js components. It provides some methods to mount and interact with Vue components in an isolated manner!</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>test goal: 測試 <code>&lt;h1&gt;</code> 有沒有存在 styleColor</p>
+<ul>
+<li>使用 <code>class()</code> 帶入參數，就會去檢查該 class 是否存在<br>測試架構：</li>
+</ul>
+<ol>
+<li>先確定該元件有被渲染出來</li>
+<li>找到 h1 tag 並查看是否有 styleColor 傳入</li>
+<li>元件內的 a link 放入 href</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Content</span> <span class="keyword">from</span> <span class="string">&quot;./Content.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Content.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;find component&quot;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">Content</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.card_title&#x27;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;check h1 tag have red class&quot;</span>, <span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">Content</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;h1&#x27;</span>).<span class="title function_">classes</span>(<span class="string">&#x27;red&#x27;</span>)).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;button is disabled attr&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">Content</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;red&#x27;</span>, wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">attributes</span>(<span class="string">&quot;href&quot;</span>))</span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">attributes</span>(<span class="string">&quot;href&quot;</span>)).<span class="title function_">toBe</span>(<span class="string">&quot;javascript:;&quot;</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>練習方式，聽完講師分享的操作之後，寫下測試目標的結構，就可以嘗試自己撰寫看看！</p>
+<h2 id="檢查是否可見-isVisible-amp-exists"><a href="#檢查是否可見-isVisible-amp-exists" class="headerlink" title="檢查是否可見 isVisible &amp; exists"></a>檢查是否可見 isVisible &amp; exists</h2><p>前面的範例練習，就可以看檔有使用 exists<br>在 vue template 中，有使用 <code>v-if</code>, <code>v-show</code> 來處理 div 顯示與否。<br><code>v-show</code> 會存在於 DOM 上。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">PhotoItem</span> <span class="keyword">from</span> <span class="string">&quot;./index.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;PhotoItem.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;DOM is v-if or v-show hide&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">PhotoItem</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// exists 用來查看是否存在</span></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&quot;#box1&quot;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">false</span>);</span><br><span class="line">    <span class="comment">// isVisible 用來判斷DOM是否給 v-show 隱藏起來</span></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&quot;#box2&quot;</span>).<span class="title function_">isVisible</span>()).<span class="title function_">toBe</span>(<span class="literal">false</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/08/03/vue-isComponent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1101,200 +1316,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/12/21/rotate-image/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/12/21/rotate-image/" class="post-title-link" itemprop="url">Leetcode rotate-image</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-12-21 09:46:00 / Modified: 17:56:31" itemprop="dateCreated datePublished" datetime="2022-12-21T09:46:00+08:00">2022-12-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index"><span itemprop="name">Leetcode</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一開始看到題目，看到2維陣列就會有些緊張，想著是否要拆開，或是要如何從圖示去轉陣列，寫得很亂又雜還是解不出來。<br>看完其他教學才知道可以從斜對角開始調換，最後再將左右做調換。</p>
-<p>You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).</p>
-<p>You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.</p>
-<p> <img src="https://i.imgur.com/0khxyek.png" alt=""></p>
-<p><img src="https://i.imgur.com/LjKoWWh.jpg" alt=""></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> rotate = <span class="keyword">function</span> (<span class="params">matrix</span>) &#123;</span><br><span class="line">  <span class="comment">//斜對角</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; matrix.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; matrix.<span class="property">length</span>; j++) &#123;</span><br><span class="line">      <span class="keyword">let</span> temp = matrix[i][j];</span><br><span class="line">      matrix[i][j] = matrix[j][i];</span><br><span class="line">      matrix[j][i] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//reverse</span></span><br><span class="line">  <span class="comment">// Secondly Make Reflected Image Of Matrix</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; matrix.<span class="property">length</span>; i++) &#123;</span><br><span class="line">      <span class="comment">//最左和最右調換，為兩兩調換，所以j的長度為matrix長度除以2</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; matrix.<span class="property">length</span> / <span class="number">2</span>; j++) &#123;</span><br><span class="line">      <span class="keyword">var</span> <span class="title class_">Temp</span> = matrix[i][j]</span><br><span class="line">      <span class="comment">//右側最後的值為長度-1</span></span><br><span class="line">      matrix[i][j] = matrix[i][matrix.<span class="property">length</span> - <span class="number">1</span> - j]</span><br><span class="line">      matrix[i][matrix.<span class="property">length</span> - <span class="number">1</span> - j] = <span class="title class_">Temp</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> matrix;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>參考資料：<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=swlO6KKh8yk">Rotate Image - LeetCode 48 - JavaScript</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/12/01/React-Middleware/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/12/01/React-Middleware/" class="post-title-link" itemprop="url">Redux Toolkit - RTK Query中間層非同步Fetch API的處理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-12-01 12:55:30 / Modified: 21:08:43" itemprop="dateCreated datePublished" datetime="2022-12-01T12:55:30+08:00">2022-12-01</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>當發起 dispatch 到 UI 更新之間做什麼事情</p>
-<ul>
-<li><p>希望 dispath 有能力可以再去做其他事情（所以會在過程中去做一些邏輯）</p>
-</li>
-<li><p>希望過程中可以再做些事情（UI 從 dispatch 到真正渲染之間）</p>
-<p><img src="https://i.imgur.com/FROBvmD.png" alt=""><br><a target="_blank" rel="noopener" href="https://redux.js.org/understanding/history-and-design/middleware">Middleware</a></p>
-</li>
-<li><p>實際上是一個 function</p>
-</li>
-<li><p>next 是 dispatch 的意思，next 所代表的是傳入 action ，會調用下一個 dispatch 來執行所傳入的這個 action </p>
-</li>
-</ul>
-<p>以官網範例：</p>
-<ul>
-<li>他是 3 個函式包在一起</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">logger</span> = store =&gt; <span class="function"><span class="params">nextDispatch</span> =&gt;</span> <span class="function"><span class="params">action</span> =&gt;</span> &#123;  </span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;dispatching&#x27;</span>, action)  </span><br><span class="line">	<span class="keyword">let</span> result = <span class="title function_">nextDispatch</span>(action)  </span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;next state&#x27;</span>, store.<span class="title function_">getState</span>())  </span><br><span class="line">	<span class="keyword">return</span> result  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在專案建立<br>位置：src / middleware</p>
-<h3 id="簡易說明"><a href="#簡易說明" class="headerlink" title="簡易說明"></a>簡易說明</h3><p>在 return 最後的 function 之前，第二個 function 就是將原有的 dispatch 丟到最後的 function 中，再 return 出去。<br>在取的 dispatch 之前，會再拿到 store 也是使用 api 時候會回傳進來的東西。<br>當 middleware 建立好之後，要到 store 當案進行宣告</p>
-<h3 id="combineReducers"><a href="#combineReducers" class="headerlink" title="combineReducers"></a>combineReducers</h3><ul>
-<li>建立的 slice夾中可能會有多個 reducer，例如 todoReducer, friendReducer, phoneReduce…</li>
-</ul>
-<p>Middleware 與 store 的建立<br><img src="https://i.imgur.com/H7EOAfX.png" alt=""></p>
-<p>在 middleware 去寫功能的時後，主要分為兩個部分</p>
-<ol>
-<li>在 dispach 之前要做什麼事情</li>
-<li>在 dispach 之後要做什麼事情</li>
-</ol>
-<h2 id="RTK-Query"><a href="#RTK-Query" class="headerlink" title="RTK Query"></a>RTK Query</h2><p>使用 middileware 去定義我們的 reducers 會分成多個階段</p>
-<ul>
-<li>pedding</li>
-<li>success</li>
-<li>error<br>針對每一次 API 取資料，加入到  reducers 中，此方式會使得 reducer 變得龐大、複雜。<br>RTK Query 協助將所有關於 call API 或是 獲取資料過程的功能，將他包裝成一個攻能，並且完全獨立於 reducer 或 redux 的邏輯</li>
-<li>可以使用 RTK Query 中的 hook 去獲取當前 data , error 狀態等<br><a target="_blank" rel="noopener" href="https://redux-toolkit.js.org/rtk-query/overview">官方文件</a></li>
-</ul>
-<h2 id="建立-api"><a href="#建立-api" class="headerlink" title="建立 api"></a>建立 api</h2><p>educerPath =&gt; 最後會產生 reducer ，所包含內容會有 pedding, success,error 等狀態<br>baseQuery =&gt; 就是放入 baseUrl<br>endpoint =&gt; 放入 query 資訊<br>    any : 表示會回傳一個 any 結果<br>    string : 需要傳入 string 的 input </p>
-<p>json placeholder</p>
-<p><img src="https://i.imgur.com/40MQaiu.png" alt=""></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApi, fetchBaseQuery &#125; <span class="keyword">from</span> <span class="string">&#x27;@reduxjs/toolkit/query/react&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> todoApiService = <span class="title function_">createApi</span>(&#123;</span><br><span class="line"></span><br><span class="line">		<span class="attr">reducerPath</span>: <span class="string">&#x27;todoApi&#x27;</span>,</span><br><span class="line">		</span><br><span class="line">		<span class="attr">baseQuery</span>: <span class="title function_">fetchBaseQuery</span>(&#123; <span class="attr">baseUrl</span>: <span class="string">&#x27;https://jsonplaceholder.typicode.com/&#x27;</span> &#125;),</span><br><span class="line">		</span><br><span class="line">		<span class="attr">endpoints</span>: <span class="function">(<span class="params">builder</span>) =&gt;</span> (&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// getPokemonByName: builder.query&lt;Pokemon, string&gt;(&#123;</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">// query: (name) =&gt; `pokemon/$&#123;name&#125;`,</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">// &#125;),</span></span><br><span class="line">		</span><br><span class="line">		<span class="attr">getTodoApi</span>: builder.<span class="property">query</span>&lt;any, string&gt;(&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="attr">query</span>: <span class="function">(<span class="params">id</span>) =&gt;</span> <span class="string">`todos/<span class="subst">$&#123;id&#125;</span>`</span>,</span><br><span class="line"></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	&#125;),</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// Export hooks for usage in functional components, which are  </span></span><br><span class="line"><span class="comment">// auto-generated based on the defined endpoints </span></span><br><span class="line"><span class="comment">// 以下會自動對應產生</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> &#123; useGetTodoApiQuery &#125; = todoApiService</span><br></pre></td></tr></table></figure>
-
-<h2 id="至-store-新增-todoAPI"><a href="#至-store-新增-todoAPI" class="headerlink" title="至  store 新增 todoAPI"></a>至  store 新增 todoAPI</h2><p><img src="https://i.imgur.com/ChMTJOz.png" alt=""></p>
-<h2 id="引用-API-hook"><a href="#引用-API-hook" class="headerlink" title="引用 API hook"></a>引用 API hook</h2><p><code>import &#123; useGetTodoApiQuery &#125; from &#39;./services/todoApi&#39;;</code></p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./App.css&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> styled <span class="keyword">from</span> <span class="string">&#x27;styled-components&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; useAppSelector, useAppDispatch &#125; <span class="keyword">from</span> <span class="string">&#x27;./hooks&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; addTodo, addTimestamp &#125; <span class="keyword">from</span> <span class="string">&#x27;./slice/todo&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; useState &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useGetTodoApiQuery &#125; <span class="keyword">from</span> <span class="string">&#x27;./services/todoApi&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Wrapper</span> = styled.<span class="property">div</span><span class="string">`</span></span><br><span class="line"><span class="string">  padding: 1.5rem;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Title</span> = styled.<span class="property">h2</span><span class="string">`</span></span><br><span class="line"><span class="string">  font-weight: 900;</span></span><br><span class="line"><span class="string">  margin-top: 2rem;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">NoteInput</span> = styled.<span class="property">input</span><span class="string">`</span></span><br><span class="line"><span class="string">  width: 100%;</span></span><br><span class="line"><span class="string">  height: 40px;</span></span><br><span class="line"><span class="string">  border-radius: 10px;</span></span><br><span class="line"><span class="string">  padding-left: .5rem;</span></span><br><span class="line"><span class="string">  box-sizing: border-box;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">SubmitBtn</span> = styled.<span class="property">button</span><span class="string">`</span></span><br><span class="line"><span class="string">  width: 100%;</span></span><br><span class="line"><span class="string">  box-sizing: border-box;</span></span><br><span class="line"><span class="string">  height: 40px;</span></span><br><span class="line"><span class="string">  background: #000;</span></span><br><span class="line"><span class="string">  display: flex;</span></span><br><span class="line"><span class="string">  justify-content: center;</span></span><br><span class="line"><span class="string">  align-items: center;</span></span><br><span class="line"><span class="string">  color: #fff;</span></span><br><span class="line"><span class="string">  border-radius: 10px;</span></span><br><span class="line"><span class="string">  border: 0;</span></span><br><span class="line"><span class="string">  font-weight: 900;</span></span><br><span class="line"><span class="string">  margin-top: 1rem;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  :active &#123;</span></span><br><span class="line"><span class="string">    background: #000000be;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Item</span> = styled.<span class="property">div</span><span class="string">`</span></span><br><span class="line"><span class="string">  margin-top: 1rem;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &gt; b &#123;</span></span><br><span class="line"><span class="string">    margin-right: .5rem;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> todoReducer = <span class="title function_">useAppSelector</span>(<span class="function"><span class="params">state</span> =&gt;</span> state.<span class="property">todoReducer</span>)</span><br><span class="line">  <span class="keyword">const</span> todoList = todoReducer.<span class="property">todoList</span></span><br><span class="line">  <span class="keyword">const</span> dispatch = <span class="title function_">useAppDispatch</span>()</span><br><span class="line">  <span class="keyword">const</span> [text, setText] = <span class="title function_">useState</span>(<span class="string">&quot;&quot;</span>)</span><br><span class="line">  <span class="keyword">const</span> &#123; data, error, isLoading &#125; = <span class="title function_">useGetTodoApiQuery</span>(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">  <span class="comment">//api 獲取資料</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;data:&#x27;</span>, data)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;error:&#x27;</span>, error)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;isLoading:&#x27;</span>, isLoading)</span><br><span class="line"></span><br><span class="line">  <span class="comment">//處裡 data 可能 undefined 的問題</span></span><br><span class="line">  <span class="keyword">const</span> &#123; userId = <span class="string">&#x27;N/A&#x27;</span>, title = <span class="string">&#x27;N/A&#x27;</span> &#125; = data || &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Wrapper</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>TODO LIST<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">NoteInput</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">value</span>=<span class="string">&#123;text&#125;</span> <span class="attr">onChange</span>=<span class="string">&#123;(e:</span> <span class="attr">React.ChangeEvent</span>&lt;<span class="attr">HTMLInputElement</span>&gt;</span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">        setText(e.target.value)</span></span><br><span class="line"><span class="language-xml">      &#125;&#125; /&gt;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">SubmitBtn</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-xml">        if (text === &#x27;&#x27;) &#123;</span></span><br><span class="line"><span class="language-xml">          alert(&#x27;請輸入TODO內容&#x27;)</span></span><br><span class="line"><span class="language-xml">          return</span></span><br><span class="line"><span class="language-xml">        &#125;</span></span><br><span class="line"><span class="language-xml">        dispatch(addTodo(text))</span></span><br><span class="line"><span class="language-xml">        setText(&#x27;&#x27;)</span></span><br><span class="line"><span class="language-xml">      &#125;&#125;&gt;</span></span><br><span class="line"><span class="language-xml">        Submit</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">SubmitBtn</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-xml">        dispatch(addTimestamp())</span></span><br><span class="line"><span class="language-xml">      &#125;&#125;&gt;</span></span><br><span class="line"><span class="language-xml">        Record Timestamp</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>List<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;</span></span><br><span class="line"><span class="language-xml">        todoList.map((todo, index) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">          return <span class="tag">&lt;<span class="name">Item</span> <span class="attr">key</span>=<span class="string">&#123;todo&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">b</span>&gt;</span>&#123;index + 1&#125;<span class="tag">&lt;/<span class="name">b</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            &#123;todo&#125;</span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        &#125;)</span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>List2<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;</span></span><br><span class="line"><span class="language-xml">        isLoading &amp;&amp; <span class="tag">&lt;<span class="name">p</span>&gt;</span> 正在載入資料...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">      &#123;</span></span><br><span class="line"><span class="language-xml">        !isLoading &amp;&amp;</span></span><br><span class="line"><span class="language-xml">        (</span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            &#123;/* <span class="tag">&lt;<span class="name">p</span>&gt;</span>User ID:&#123;data?.userId&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>Usr Title:&#123;data?.title&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span> */&#125;</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>User ID:&#123;userId&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>Usr Title:&#123;title&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        )</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Wrapper</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  );</span></span><br><span class="line"><span class="language-xml">&#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">export default App;</span></span><br><span class="line"><span class="language-xml"></span></span><br></pre></td></tr></table></figure>
-
-
-<p>若是使用 react thunk </p>
-<ul>
-<li>這裡的 middleware 的 reducer 中的 status 要自己去定義</li>
-<li>優點：可以完全掌控自己 reducer 的內容</li>
-<li>但相對也會較為繁瑣</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1366,18 +1387,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">95</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
