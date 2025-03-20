@@ -174,6 +174,256 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/08/18/download-file/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/08/18/download-file/" class="post-title-link" itemprop="url">如何在前端實現文件下載：以 Excel 文件為例</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-08-18 13:51:02" itemprop="dateCreated datePublished" datetime="2024-08-18T13:51:02+08:00">2024-08-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-14 20:31:52" itemprop="dateModified" datetime="2024-11-14T20:31:52+08:00">2024-11-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在前端開發中，有時需要從後端提供數據並生成文件提供用戶下載。以下將以下載 Excel 為例，介绍如何使用 axios 從後端取得文件，並在前端處理文件的下載過程。我们還會顯示如何從 HTTP header 中提取文件名，以 f 確保下載的文件命名正確。</p>
+<h2 id="Api-設定"><a href="#Api-設定" class="headerlink" title="Api 設定"></a>Api 設定</h2><p>要記得設置告诉 axios 期望接收的類型為 blob，若是不設置，則會預設為 json，收到的資料會是亂碼。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">exportFile</span>(<span class="params">searchData</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> axios.<span class="title function_">get</span>(<span class="string">&quot;/data/export&quot;</span>, &#123;</span><br><span class="line">    <span class="attr">params</span>: searchData,</span><br><span class="line">    <span class="attr">responseType</span>: <span class="string">&quot;blob&quot;</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="前端處理文件下載"><a href="#前端處理文件下載" class="headerlink" title="前端處理文件下載"></a>前端處理文件下載</h2><p>獲取到後端返回的文件數據後，我們需要在前端將其轉換為可下載的文件格式。以下是一個完整的示例，展示瞭如何將 blob 數據生成 Excel 文件並觸發下載。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">handleExportFile</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="title function_">exportFile</span>(data);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> blob = <span class="keyword">new</span> <span class="title class_">Blob</span>([res.<span class="property">data</span>], &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&quot;</span>,</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> downloadUrl = <span class="variable language_">window</span>.<span class="property">URL</span>.<span class="title function_">createObjectURL</span>(blob);</span><br><span class="line">    <span class="keyword">const</span> link = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    link.<span class="property">href</span> = downloadUrl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> fileName = <span class="string">&quot;export.xlsx&quot;</span>;</span><br><span class="line">    link.<span class="title function_">setAttribute</span>(<span class="string">&quot;download&quot;</span>, fileName);</span><br><span class="line">    <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(link);</span><br><span class="line">    link.<span class="title function_">click</span>();</span><br><span class="line">    link.<span class="title function_">remove</span>();</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">window</span>.<span class="property">URL</span>.<span class="title function_">revokeObjectURL</span>(downloadUrl);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="new-Blob-res-data-type-…-做了什麼？"><a href="#new-Blob-res-data-type-…-做了什麼？" class="headerlink" title="new Blob([res.data], { type: … }) 做了什麼？"></a>new Blob([res.data], { type: … }) 做了什麼？</h3><p>這里，用 new Blob() 創建了一個 Blob 對象。<br>res.data 是從後端 API 接收到的文件數據。<br>我們將這個數據放入 Blob 中，同時指定了文件的類型，即 <code>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</code>，這是 Excel 文件的 MIME 類型。這樣瀏覽器就能識別出這是一個 Excel 文件。</p>
+<h3 id="動態創建一個-lt-a-gt-標簽，並通過模擬點擊觸發文件下載。"><a href="#動態創建一個-lt-a-gt-標簽，並通過模擬點擊觸發文件下載。" class="headerlink" title="動態創建一個 &lt;a&gt; 標簽，並通過模擬點擊觸發文件下載。"></a>動態創建一個 <code>&lt;a&gt;</code> 標簽，並通過模擬點擊觸發文件下載。</h3><p>使用 window.URL.createObjectURL(blob) 創建了一個特殊的 URL，它指向我們剛才創建的 Blob 對象。<br>可以理解為它生成了一個臨時的下載地址，使用者可以透過這個地址下載文件。<br>接著 document.createElement(“a”) 創建 <code>&lt;a&gt;</code> 標籤，接下來要利用這個標籤來實現文件下載。<br>也就是 link.href = downloadUrl; 給 <code>&lt;a&gt;</code> 標籤賦值，將剛才生成的 downloadUrl 設定為這個 <code>&lt;a&gt;</code> 標籤的 link 地址 (href)，也就是說，點擊這個 link 會指向我們的 Blob 物件（即文件資料）。</p>
+<h3 id="設定文件名並觸發下載"><a href="#設定文件名並觸發下載" class="headerlink" title="設定文件名並觸發下載"></a>設定文件名並觸發下載</h3><p>使用 setAttribute 方法給<code>&lt;a&gt;</code> 標籤添加一個 download 屬性，並設定文件名為 “export.xlsx”。這樣，當用戶點擊鏈接時，瀏覽器會提示下載文件，並自動將文件保存為 export.xlsx。<br>document.body.appendChild 將 <code>&lt;a&gt;</code> 標籤臨時加到 document 的 body 中。雖然使用者不會看到這個 link，但它在頁面上是存在的。<br>然後模擬一次使用者點擊這個連結 (link.click())，觸發文件的下載過程。<br>link.remove();下載操作完成後，我們把這個臨時創建的 <code>&lt;a&gt;</code> 標籤從頁面中移除。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/08/18/download-file/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/07/19/vue-tiptap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/07/19/vue-tiptap/" class="post-title-link" itemprop="url">使用 Vue3 與 Tiptap 打造文字編輯器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-07-19 14:49:26 / Modified: 14:58:16" itemprop="dateCreated datePublished" datetime="2024-07-19T14:49:26+08:00">2024-07-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在現代網頁應用中，強大的文字編輯器是必不可少的。Tiptap 是一款基於 ProseMirror 的高擴展性編輯器。本文將介紹如何在 Vue3 中使用 Tiptap，並結合 Vuetify 實現文字編輯器。</p>
+<h2 id="官網文件"><a href="#官網文件" class="headerlink" title="官網文件"></a>官網文件</h2><p>首先官網：<a target="_blank" rel="noopener" href="https://tiptap.dev/docs/editor/getting-started/install/vue3">https://tiptap.dev/docs/editor/getting-started/install/vue3</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">editor-content</span> <span class="attr">:editor</span>=<span class="string">&quot;editor&quot;</span> /&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">import</span> &#123; useEditor, <span class="title class_">EditorContent</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@tiptap/vue-3&#x27;</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">import</span> <span class="title class_">StarterKit</span> <span class="keyword">from</span> <span class="string">&#x27;@tiptap/starter-kit&#x27;</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">const</span> editor = <span class="title function_">useEditor</span>(&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="attr">content</span>: <span class="string">&#x27;&lt;p&gt;I’m running Tiptap with Vue.js. 🎉&lt;/p&gt;&#x27;</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="attr">extensions</span>: [<span class="title class_">StarterKit</span>],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>根據對應 EXTENSIONS 找出如何加入在編輯器，如：bold, italic</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">     &lt;button @click=<span class="string">&quot;editor.chain().focus().toggleBold().run()&quot;</span> :<span class="keyword">class</span>=<span class="string">&quot;&#123; &#x27;is-active&#x27;: editor.isActive(&#x27;bold&#x27;) &#125;&quot;</span>&gt;</span><br><span class="line">      <span class="title class_">Toggle</span> bold</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;editor.chain().focus().toggleItalic().run()&quot;</span> <span class="attr">:class</span>=<span class="string">&quot;&#123; &#x27;is-active&#x27;: editor.isActive(&#x27;italic&#x27;) &#125;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      Toggle italic</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/19/vue-tiptap/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/04/27/vitest-i18n/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/27/vitest-i18n/" class="post-title-link" itemprop="url">vitest-i18n</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-04-27 13:12:36 / Modified: 14:42:21" itemprop="dateCreated datePublished" datetime="2024-04-27T13:12:36+08:00">2024-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Test/" itemprop="url" rel="index"><span itemprop="name">Test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近嘗試在專案內加入測試，詢問朋友後建議先從 utils 中共用的邏輯函式開始，而在共用的邏輯函式中，會有幾個是 i18n 相關的函式。<br>因為頁面中常會用到將數值，轉換為顯示在畫面上的文字，如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">getType</span> = (<span class="params"><span class="keyword">type</span>: <span class="built_in">number</span></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> (<span class="keyword">type</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Auto&#x27;</span>)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Manual&#x27;</span>)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Mix&#x27;</span>)</span><br><span class="line">        <span class="attr">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在進行測試時，總想說是否要先選定一語系，如中文\英文，然後確認他轉換的是否為該文字<br>但是經過嘗試後，覺得或許不應該是檢查轉換後的文字，應該要以對應 key 來檢查。<br>參考 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/72260793/how-to-mock-stub-vue-i18n">overflow</a></p>
+<ul>
+<li>因此專案是使用 quasar，所以在 i18n.t 方法，引入的位置是 boot/i18n.ts</li>
+<li>在測試中，可以執行測試函式，帶入對應數值，並檢查是否回傳對應的 key</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 在測試中覆寫模擬 i18n.t 方法</span></span><br><span class="line">vi.<span class="title function_">mock</span>(<span class="string">&#x27;../../../src/boot/i18n&#x27;</span>, <span class="function">() =&gt;</span> (&#123;</span><br><span class="line">    <span class="attr">i18n</span>: &#123;</span><br><span class="line">        <span class="attr">global</span>: &#123;</span><br><span class="line">            <span class="attr">t</span>: <span class="function">(<span class="params">key: <span class="built_in">string</span></span>) =&gt;</span> key, <span class="comment">// 提供模擬的 t 函式</span></span><br><span class="line">            <span class="attr">locale</span>: <span class="string">&#x27;en&#x27;</span> <span class="comment">// 假設默認的 locale 值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;getType&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 0&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">0</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Auto&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 1&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">1</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Manual&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">2</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Mix&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return null for an unknown type&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">999</span>)).<span class="title function_">toBeNull</span>()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="小結上述方式："><a href="#小結上述方式：" class="headerlink" title="小結上述方式："></a>小結上述方式：</h3><p>使用全局模擬，vi.mock 全局模擬 i18n.t 方法，並提供模擬的 t 函式，這樣就可以在測試中，直接檢查是否回傳對應的 key，而不用檢查轉換後的文字。</p>
+<p>另外，在跨頁面也會有共用的下拉選單，將此下拉選單的選項，也提取出來，並進行測試。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> directionOpt = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> ([</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">t</span>(<span class="string">&#x27;Shared.right&#x27;</span>), <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">t</span>(<span class="string">&#x27;Shared.wrong&#x27;</span>), <span class="attr">value</span>: <span class="number">1</span> &#125;</span><br><span class="line">]))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原本也想是否直接檢查 key 是否正確即可。但基於困惑，就嘗試丟 chatGpt 詢問</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/27/vitest-i18n/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/01/06/css-grid/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -844,427 +1094,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/01/31/vueTest-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/31/vueTest-2/" class="post-title-link" itemprop="url">vueTest - Vue test util (1)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-31 13:45:08" itemprop="dateCreated datePublished" datetime="2023-01-31T13:45:08+08:00">2023-01-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-05 12:31:50" itemprop="dateModified" datetime="2023-08-05T12:31:50+08:00">2023-08-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>測試 App.vue<ul>
-<li>引入 <code>@vue/test-utils</code> 使用 shallowMount 方法</li>
-<li>shallowMount 可以渲染出組件<h2 id="shallowMount-mount"><a href="#shallowMount-mount" class="headerlink" title="shallowMount , mount"></a>shallowMount , mount</h2>shallowMount : 只會渲染該元件當層的資料內容<br>mount : 深度渲染，會將元件內所包含的其他元件一起都渲染出</li>
-</ul>
-</li>
-<li>例如以下範例: 在 App.vue 中有包含數個元件</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> //App.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">	&lt;img class=&quot;logo&quot; alt=&quot;Vue logo&quot; src=&quot;./assets/logo.png&quot; /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;h1&gt;Test demo&lt;/h1&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;AddCount /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;HelloWorld /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;div class=&quot;itemFlex&quot;&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;CardBox v-for=&quot;i in 4&quot; :key=&quot;i&quot; /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;UserList /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;PhotoItem /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>測試元件</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount, mount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;@/App.vue&#x27;</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;App.vue test&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;測試組件 1&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="comment">//渲染出 App 元件</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">App</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">text</span>())</span><br><span class="line">		</span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&quot;Test demo&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;測試組件2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">const</span> wrapper = <span class="title function_">mount</span>(<span class="title class_">App</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">text</span>())</span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&quot;若你是寫過 Vue 但沒有寫過單元測試的工程師&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/BcvGwlI.png" alt=""></p>
-<p>get 與 find 差異</p>
-<ul>
-<li>抓取某個元件中 DOM 元素</li>
-<li>兩者差異在於<ul>
-<li>使用 get ，如果找不到元素會報錯，並且直接中斷測試的運行</li>
-<li>使用 find 會依據 <code>exists()</code> 回傳布林值</li>
-</ul>
-</li>
-</ul>
-<p><code>&lt;button id=&quot;add&quot; class=&quot;add-btn&quot; @click=&quot;add&quot;&gt;add 按鈕&lt;/button&gt;</code></p>
-<p><img src="https://i.imgur.com/TWuFWX3.png" alt=""></p>
-<ul>
-<li>測試按鈕存不存在<ul>
-<li>exists : 驗證某元素是否存在</li>
-<li><a target="_blank" rel="noopener" href="https://test-utils.vuejs.org/api/#exists"> exists</a></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;AddCount.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test 1 &#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">AddCount</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn&#x27;</span>))</span><br><span class="line">		</span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn&#x27;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/0sBL0t6.png" alt=""></p>
-<p><img src="https://i.imgur.com/htkF4X5.png" alt=""></p>
-<h3 id="在情境應用"><a href="#在情境應用" class="headerlink" title="在情境應用"></a>在情境應用</h3><ul>
-<li>在 AddCount 加入 <code>isOpen=ref(false)</code> 來判斷 button 是否在一開始要呈現</li>
-<li>而再測試文件中就是要測試該按鈕在一開始並不會出現</li>
-</ul>
-<p><img src="https://i.imgur.com/YkBK6Ry.png" alt=""></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">AddCount</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/AddCount.vue&#x27;</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;AddCount.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test 1 &#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">AddCount</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn&#x27;</span>))</span><br><span class="line">	<span class="comment">// 找不到，並且回傳 false</span></span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn-err&#x27;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">false</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="find-與-findAll"><a href="#find-與-findAll" class="headerlink" title="find 與 findAll"></a>find 與 findAll</h2><p>以 v-for list 的範例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">import &#123; ref &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">import data from &quot;./data.json&quot;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">	</span><br><span class="line">	setup() &#123;</span><br><span class="line">	</span><br><span class="line">		const employeeItem = ref(data);</span><br><span class="line">		</span><br><span class="line">		return &#123;</span><br><span class="line">		</span><br><span class="line">			employeeItem,</span><br><span class="line">		</span><br><span class="line">		&#125;;</span><br><span class="line">		</span><br><span class="line">	&#125;,</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">	&lt;ul class=&quot;item&quot;&gt;</span><br><span class="line">	</span><br><span class="line">		&lt;li class=&quot;user_list&quot; v-for=&quot;item in employeeItem&quot; :key=&quot;item.id&quot;&gt;</span><br><span class="line">		</span><br><span class="line">			&lt;div&gt;</span><br><span class="line">			</span><br><span class="line">				&lt;p&gt;員工編號: &#123;&#123; item.userId &#125;&#125;&lt;/p&gt;</span><br><span class="line">				</span><br><span class="line">				&lt;p&gt;姓名: &#123;&#123; item.username &#125;&#125;&lt;/p&gt;</span><br><span class="line">			</span><br><span class="line">			&lt;/div&gt;</span><br><span class="line">		</span><br><span class="line">		&lt;/li&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;/ul&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/dqts5eV.png" alt=""></p>
-<p><img src="https://i.imgur.com/PXPy1as.png" alt=""></p>
-<p>如果是要抓元件中 list 有幾筆<br><code>wrapper.findAll(&#39;.user_list&#39;)</code> : 他會是一個陣列資料，其中包含好幾個 DOM wrapper </p>
-<p><img src="https://i.imgur.com/I5lNSRX.png" alt=""></p>
-<p>注意：<br>    <code>TypeError: wrapper.findAll(...).text is not a function</code></p>
-<ul>
-<li>搭配使用 <code>at()</code> 用於找尋其中某一個物件</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">UserList</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/UserList.vue&#x27;</span></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;test UserList&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test Dom&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">UserList</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// console.log(wrapper.findAll(&#x27;.user_list&#x27;).at(0).text())</span></span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="title function_">at</span>(<span class="number">0</span>).<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&#x27;員工編號: 399&#x27;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="另也可以測試所拿到的資料長度"><a href="#另也可以測試所拿到的資料長度" class="headerlink" title="另也可以測試所拿到的資料長度"></a>另也可以測試所拿到的資料長度</h3><ul>
-<li>測試 DOM 資料長度</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">UserList</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/UserList.vue&#x27;</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;test UserList&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test Dom&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">UserList</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// console.log(wrapper.findAll(&#x27;.user_list&#x27;).at(0).text())</span></span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="title function_">at</span>(<span class="number">0</span>).<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&#x27;員工編號: 399&#x27;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test List length&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">UserList</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="property">length</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="property">length</span>).<span class="title function_">toBe</span>(<span class="number">6</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/01/28/vueTest-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/28/vueTest-1/" class="post-title-link" itemprop="url">Vue 單元測試 - 基礎入門</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-01-28 14:50:37 / Modified: 14:58:53" itemprop="dateCreated datePublished" datetime="2023-01-28T14:50:37+08:00">2023-01-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>為了不斷建立以及加深自己的技能，即便目前工作上未能使用，還是可以提前做些準備，之前看到 Mike 老師推出的 vue 單元測試，就先入手～<br>趁近期有空先來奠定下測試的基礎，未來可以在專案內練習撰寫！</p>
-<p><img src="https://i.imgur.com/xhxaYa1.jpg" alt=""></p>
-<h2 id="專案創建"><a href="#專案創建" class="headerlink" title="專案創建"></a>專案創建</h2><p>若一開始專案沒有選擇 jest 或加入測試 要如何在現有專案加入？</p>
-<ul>
-<li>可以進入該專案進行安裝<br><code>vue add unit-jest</code></li>
-</ul>
-<p>這裡創建的專案是使用 vue-cli 創建，並且在自選項目加入 unit test </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create my-project</span><br></pre></td></tr></table></figure>
-
-<h2 id="執行-test"><a href="#執行-test" class="headerlink" title="執行 test"></a>執行 test</h2><p><code>npm run test:unit</code></p>
-<h2 id="更改預設的測試檔案位置"><a href="#更改預設的測試檔案位置" class="headerlink" title="更改預設的測試檔案位置"></a>更改預設的測試檔案位置</h2><p>component 與 測試的檔案，可以放在同一個資料夾中，以方便找尋</p>
-<ol>
-<li>建立 <code>jest.config.js</code> 來設定 jest </li>
-</ol>
-<ul>
-<li>testMatch: 指定從 src 資料夾開始找尋與 spec 相關的檔案</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line"></span><br><span class="line">  <span class="attr">preset</span>: <span class="string">&quot;@vue/cli-plugin-unit-jest&quot;</span>,</span><br><span class="line"></span><br><span class="line">  <span class="attr">testMatch</span>: [<span class="string">&quot;**/src/**/*.spec.[jt]s?(x)&quot;</span>],</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>**`</p>
-<h2 id="測試的基本架構"><a href="#測試的基本架構" class="headerlink" title="測試的基本架構"></a>測試的基本架構</h2><ul>
-<li>describe : 類似群組概念，可以包一個或多個相關的測試。</li>
-<li>it 與 test 一樣：其內容為測試的單位，裏面撰寫測試內容</li>
-<li>第一個參數，用來表示該測試的敘述（”Test to do list”, “Test to do 1”, “Test to do 2” ）</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Test to do list&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 1&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">test</span>(<span class="string">&quot;Test to do 2&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>it 也可以單獨另外撰寫</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">it</span>(<span class="string">&#x27;這是test case&#x27;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>執行測試呈現的樣子</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">HelloWorld</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/HelloWorld.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;HelloWorld.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;renders props.msg when passed&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> msg = <span class="string">&#x27;new message&#x27;</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">HelloWorld</span>, &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="attr">props</span>: &#123; msg &#125;</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(msg)</span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>wrapper 是指 HelloWorld 這個 component</li>
-<li>wrapper.text() : 會顯示此元件中所包含的文字</li>
-<li><code>expect(wrapper.text()).toMatch(msg)</code>: <ul>
-<li>toMatch 有合乎</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/ejvXWQF.png" alt=""></p>
-<h2 id="expext-與斷言"><a href="#expext-與斷言" class="headerlink" title="expext 與斷言"></a>expext 與斷言</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Test to do list&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 1&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(<span class="number">1</span> + <span class="number">1</span>).<span class="title function_">toBe</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 2&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(<span class="number">4</span> - <span class="number">1</span>).<span class="title function_">toBe</span>(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>expect: 預期需要匹配的項目，如放入變數、component、function</li>
-<li>toBe(百分之百準確): 斷言，用什麼方式來匹配，這裡使用 toBe 函式</li>
-</ul>
-<h2 id="其他備註"><a href="#其他備註" class="headerlink" title="其他備註"></a>其他備註</h2><p>而官方網站已建議若要創建新專案可以使用 vite 為基礎的專案。所以新開的專案都是使用 Vitest (之後有機會再使用新專案來開看看)。<br>這邊因先根據教學來進行，故先使用 vue-test-utils + jest </p>
-<p><img src="https://i.imgur.com/yrD2UW0.png" alt=""></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/01/25/TS-Generics/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/25/TS-Generics/" class="post-title-link" itemprop="url">TS - Generics 泛型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-25 14:27:13" itemprop="dateCreated datePublished" datetime="2023-01-25T14:27:13+08:00">2023-01-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-01-27 13:15:30" itemprop="dateModified" datetime="2023-01-27T13:15:30+08:00">2023-01-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
-<h2 id="資料整理"><a href="#資料整理" class="headerlink" title="資料整理"></a>資料整理</h2><p>例如有兩個 interface 屬性一樣，差異在於 型別內容</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">DataA</span> &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:<span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">DataB</span> &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:<span class="built_in">boolean</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用 泛型 整理</li>
-<li>將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericsObj</span>&lt;T&gt; = &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:T</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">DataA</span> = <span class="title class_">GenericsObj</span>&lt;<span class="built_in">number</span>&gt;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">DataB</span> = <span class="title class_">GenericsObj</span>&lt;<span class="built_in">boolean</span>&gt;;</span><br><span class="line"><span class="comment">//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>範例2：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">KeyPair</span>&lt;T, U&gt; &#123;</span><br><span class="line">  <span class="attr">key</span>: T;</span><br><span class="line">  <span class="attr">value</span>: U;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp1</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">number</span>, <span class="built_in">string</span>&gt; = &#123; <span class="attr">key</span>: <span class="number">1</span>, <span class="attr">value</span>: <span class="string">&quot;str&quot;</span>&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp2</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; = &#123; <span class="attr">key</span>: <span class="string">&quot;str&quot;</span>, <span class="attr">value</span>: <span class="number">123</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">arr</span>:<span class="built_in">number</span>[] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">arrTwo</span>:<span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
-
-<h2 id="payload-應用"><a href="#payload-應用" class="headerlink" title="payload 應用"></a>payload 應用</h2><ul>
-<li>這邊以 redux 中整理的 action 為範例</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> userDataPayload = &#123;</span><br><span class="line">  <span class="attr">userId</span>: <span class="built_in">string</span>,</span><br><span class="line">  <span class="attr">data</span>:<span class="built_in">any</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//負責生成 action 的函式</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">setUserDataAction</span> = (<span class="params">payload:userDataPayload </span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_USER_DATA&#x27;</span>,</span><br><span class="line">  payload</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">resetUserDataAction</span> =(<span class="params"></span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;RESET_USER_DATA&#x27;</span>,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">CartDataPayload</span> = &#123;</span><br><span class="line">  <span class="attr">product</span>: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">setCartDataAction</span> =(<span class="params">payload:CartDataPayload</span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_CART_DATA&#x27;</span>,</span><br><span class="line">  payload</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetUserDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_USER_DATA&#x27;</span>,</span><br><span class="line">  <span class="attr">payload</span>:userDataPayload</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ResetUserDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;RESET_USER_DATA&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetCartDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_CART_DATA&#x27;</span>,</span><br><span class="line">  <span class="attr">payload</span>:<span class="title class_">CartDataPayload</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>由上可以觀察到 SetUserDataAction、ResetUserDataAction、SetCartDataAction 整理為一個</li>
-<li>將 action 的型別整理，其key為type 與 payload</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Action</span>&lt;T,P&gt; = &#123;</span><br><span class="line">  <span class="attr">type</span>: T,</span><br><span class="line">  <span class="attr">payload</span>:P</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ActionWithoutPayload</span>&lt;T&gt; = &#123;</span><br><span class="line">  <span class="attr">type</span>: T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetUserDataAction</span> = <span class="title class_">Action</span>&lt;<span class="string">&#x27;SET_USER_DATA&#x27;</span>,userDataPayload&gt;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetCartDataAction</span> = <span class="title class_">Action</span>&lt;<span class="string">&#x27;SET_CART_DATA&#x27;</span>,<span class="title class_">CartDataPayload</span>&gt;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ResetUserDataAction</span> = <span class="title class_">ActionWithoutPayload</span>&lt;<span class="string">&#x27;RESET_USER_DATA&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以將action 中的 type 進行聚合</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Actions</span> = <span class="variable constant_">SET_USER_DATA</span> | <span class="variable constant_">SET_CART_DATA</span> | <span class="variable constant_">RESET_USER_DATA</span>;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>以下，進一步再將 Action 和 ActionWithoutPayload 進行整合，他們差異在與 payload </li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Action</span>&lt;T, P = <span class="literal">null</span>&gt; = p <span class="keyword">extends</span> &#123;&#125; ? &#123;<span class="attr">type</span>: T, <span class="attr">payload</span>: P&#125; : &#123;<span class="attr">type</span>: T&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>型別參數動態生成不同型別</p>
-<h2 id="函式的泛型"><a href="#函式的泛型" class="headerlink" title="函式的泛型"></a>函式的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = (<span class="attr">param</span>: <span class="built_in">string</span> | <span class="built_in">number</span>):(<span class="built_in">string</span>|<span class="built_in">number</span>)[]=&gt;[param];</span><br><span class="line"><span class="title function_">fn</span>(<span class="number">1</span>);<span class="comment">//number 陣列 number[];</span></span><br><span class="line"><span class="title function_">fn</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">//string[]</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/QZCK4Em.png" alt=""></p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = &lt;T&gt;(<span class="attr">param</span>: T):(T)[]=&gt;[param];</span><br><span class="line"><span class="title function_">fn</span>(<span class="number">1</span>);<span class="comment">//number 陣列 number[];</span></span><br><span class="line"><span class="title function_">fn</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">//string[]</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/Yeeuum6.png" alt=""></p>
-<ul>
-<li>function 改寫方式</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fn&lt;T&gt;(<span class="attr">param</span>:T):T[]&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="type-的泛型"><a href="#type-的泛型" class="headerlink" title="type 的泛型"></a>type 的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//共用模板</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericList</span>&lt;T&gt; = T[];</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StrList</span> = <span class="title class_">GenericList</span>&lt;<span class="built_in">string</span>&gt;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">BoolList</span> = <span class="title class_">GenericList</span>&lt;<span class="built_in">boolean</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericValObj</span>&lt;T&gt; = &#123;[<span class="attr">key</span>:<span class="built_in">string</span>]:T&#125; </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NumValObj</span> = <span class="title class_">GenericValObj</span>&lt;<span class="built_in">number</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">numValObj</span>:<span class="title class_">NumValObj</span> = &#123;</span><br><span class="line">  <span class="attr">img_res_200</span>:<span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/sJFzEUg.png" alt=""></p>
-<p><img src="https://i.imgur.com/7P1MnFL.png" alt=""></p>
-<ul>
-<li>嘗試聚合資料</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">GenericUnion</span>&lt;T,U&gt; = T | U | T[] | U[];</span><br><span class="line"><span class="keyword">type</span> strNumUnion = <span class="title class_">GenericUnion</span>&lt;<span class="built_in">string</span>,<span class="built_in">number</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">val</span>:strNumUnion = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">val2</span>:strNumUnion = [<span class="string">&quot;123&quot;</span>]</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/y5Vl8M9.png" alt=""></p>
-<h2 id="將函式改寫為-共用的泛型型別"><a href="#將函式改寫為-共用的泛型型別" class="headerlink" title="將函式改寫為 共用的泛型型別"></a>將函式改寫為 共用的泛型型別</h2><ul>
-<li>將type 拉出來獨立撰寫，可以重複使用</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = &lt;T&gt;(<span class="attr">param</span>: T):(T)[]=&gt;&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//上面的函式也可以用於</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123;</span><br><span class="line">  <span class="attr">onFn</span>: <span class="keyword">typeof</span> fn</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//rewrite</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericFn</span> = &lt;T&gt;<span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn</span>:<span class="title class_">GenericFn</span> = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//共用，如下有個 interface 其中有個屬性的型別與 GenericFn 一樣，則可以共用</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123;</span><br><span class="line">  <span class="attr">onFn</span>:<span class="title class_">GenericFn</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fn&lt;T&gt;(<span class="attr">param</span>:T):T[]&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//產生型別泛型</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnType</span> = <span class="keyword">typeof</span> fn ;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/yxsVm1s.png" alt=""></p>
-<p><img src="https://i.imgur.com/zYtwh7H.png" alt=""><br><img src="https://i.imgur.com/tPHEDZ7.png" alt=""></p>
-<h3 id="比較-lt-T-gt-位置差異"><a href="#比較-lt-T-gt-位置差異" class="headerlink" title="比較&lt;T&gt;位置差異"></a>比較<code>&lt;T&gt;</code>位置差異</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">FnTypeA</span> = &lt;T&gt;<span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnTypeB</span>&lt;T&gt; = <span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn1</span>:<span class="title class_">FnTypeA</span> = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//必須指定好型別的 argument</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn2</span>:<span class="title class_">FnTypeB</span>&lt;<span class="built_in">string</span>&gt; = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//兩個函式在使用上會有差異：</span></span><br><span class="line"><span class="title function_">fn1</span>();</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn2</span>(<span class="string">&#x27;Hi&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/J3zJs2Y.png" alt=""></p>
-<p><img src="https://i.imgur.com/0wxPZk9.png" alt=""></p>
-<ul>
-<li>fn1 可以填入任何內容、可以動態填入型別<br><img src="https://i.imgur.com/pwfnIjO.png" alt=""><br><img src="https://i.imgur.com/6B8gtAc.png" alt=""><br><img src="https://i.imgur.com/OgPatHZ.png" alt=""></li>
-<li>fn2 只能填入 string 內容<br><img src="https://i.imgur.com/cwmVA5b.png" alt=""></li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">ClickFn</span> = &lt;<span class="title class_">Event</span>&gt;<span class="function">(<span class="params">e:Event</span>) =&gt;</span> <span class="built_in">any</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用 function 會無法重複使用寫好的型別</span></span><br><span class="line"><span class="comment">// 引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">handleClick</span>:<span class="title class_">ClickFn</span> = <span class="function">(<span class="params">e</span>)=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="interface-的泛型"><a href="#interface-的泛型" class="headerlink" title="interface 的泛型"></a>interface 的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">GenericI</span>&lt;T&gt;&#123;</span><br><span class="line">  [<span class="attr">key</span>:<span class="built_in">string</span>]: T</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NumValObj</span> =  <span class="title class_">GenericI</span>&lt;<span class="built_in">number</span>&gt;;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">numberValObj</span>:<span class="title class_">NumValObj</span> = &#123;</span><br><span class="line">  <span class="attr">res</span>:<span class="number">123</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//type寫法也可以一樣</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">GenericT</span>&lt;T&gt; = &#123;</span><br><span class="line">  [<span class="attr">key</span>:<span class="built_in">string</span>]: T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//API 的應用！！！</span></span><br><span class="line"><span class="comment">//注意：in 寫法只用於 type 中</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">GenericKeyValObj</span>&lt;T <span class="keyword">extends</span>  keyof <span class="built_in">any</span>,P&gt; = &#123;</span><br><span class="line">  [key <span class="keyword">in</span> T ]: P</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以應用於 API </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ApiKey</span> = <span class="string">&#x27;user&#x27;</span> | <span class="string">&#x27;id&#x27;</span> | <span class="string">&#x27;password&#x27;</span>; <span class="comment">//將欄位值設定好</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">UserApiData</span> = <span class="title class_">GenericKeyValObj</span>&lt;<span class="title class_">ApiKey</span>, <span class="built_in">string</span>&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/dceV8io.png" alt=""></p>
-<ul>
-<li><p>可以很快的生成 API 的資料型別<br><img src="https://i.imgur.com/Vv3lVDC.png" alt=""></p>
-</li>
-<li><p>其他範例</p>
-</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//類似呼叫API的函式</span></span><br><span class="line"><span class="comment">//Params : 參數</span></span><br><span class="line"><span class="comment">//Res result : 回傳值</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericApiFn</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt; = <span class="function">(<span class="params">params:Params</span>)=&gt;</span> <span class="title class_">Res</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//組合其他泛型使用，也可以將原本泛型參數自己使用</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ApiContainerProps</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt; &#123;</span><br><span class="line">  <span class="attr">initData</span>: <span class="title class_">Res</span>;</span><br><span class="line">  <span class="attr">onAsyncCb</span>: <span class="title class_">GenericApiFn</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>interface 與 type 的泛型寫法</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//interface 寫函式</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">FnI</span> &#123;</span><br><span class="line">  &lt;T&gt;(<span class="attr">param</span>: T): T[]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//同等於</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnT</span> = &lt;T&gt;<span class="function">(<span class="params">param:T</span>)=&gt;</span>T[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn</span>:<span class="title class_">FnT</span> = <span class="function">(<span class="params">param</span>)=&gt;</span>[param]</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>&lt;T&gt;</code>位置的調動</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//&lt;T&gt; 會影響整個 interface</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">GenericFnI</span>&lt;T&gt; &#123;</span><br><span class="line">  (<span class="attr">param</span>: T): T[]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn2</span>: <span class="title class_">GenericFnI</span>&lt;<span class="built_in">string</span>&gt;= <span class="function">(<span class="params">param</span>)=&gt;</span>[param]</span><br></pre></td></tr></table></figure>
-
-<p>過去都未曾注意到泛型可以抽成共用還有 <code>&lt;T&gt;</code> 的位置所放的位置，會影響宣告，透過此次的教學，讓我對泛型可以應用於實際情況的案例，同樣未來在訂定 type 或 interface 時可以加以注意，思考是否可以改寫為泛型加以使用。</p>
-<p>參考資料<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=9hZbfX_Atpc&t=44s">成為進階TS開發者的第一哩路 — 泛型簡介與基礎(1)</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=7yA4ALLoSxY">成為進階TS開發者的第一哩路 — 泛型的函式, type和interface寫法一次說清楚！</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1332,18 +1165,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">101</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
