@@ -174,6 +174,282 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/01/10/js-exchangeRate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/10/js-exchangeRate/" class="post-title-link" itemprop="url">JS實作- exchangeRate匯率轉換器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-10 09:50:30" itemprop="dateCreated datePublished" datetime="2021-01-10T09:50:30+08:00">2021-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="實作需求分析"><a href="#實作需求分析" class="headerlink" title="實作需求分析"></a>實作需求分析</h2><p><img src="https://i.imgur.com/cu80NjP.png" alt=""></p>
+<ul>
+<li>抓取api提供的匯率資料：使用jQuery,ajax</li>
+<li>選擇不同幣別，進行匯率換算</li>
+<li>swap按鈕，使幣別交換</li>
+</ul>
+<h4 id="完成後的成品"><a href="#完成後的成品" class="headerlink" title="完成後的成品"></a>完成後的<a href="https://eva813.github.io/Eva_portfolio/exchangeRate/exchangeRate.html">成品</a></h4><h2 id="jQuery-ajax-使用"><a href="#jQuery-ajax-使用" class="headerlink" title="jQuery.ajax 使用"></a>jQuery.ajax 使用</h2><ul>
+<li>參考資料：<a target="_blank" rel="noopener" href="https://api.jquery.com/jquery.ajax/">jQuery.ajax()
+</a></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&quot;get&quot;</span>,</span><br><span class="line">  <span class="attr">url</span>: <span class="string">&quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&quot;</span>,</span><br><span class="line"> </span><br><span class="line">&#125;)</span><br><span class="line">  .<span class="title function_">done</span>(<span class="keyword">function</span>(<span class="params"> some_data </span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">    <span class="comment">//成功抓到值的話，就會印出抓取到的資料</span></span><br><span class="line">  &#125;).<span class="title function_">fail</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">  </span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/S1kOYmH.png" alt=""></p>
+<ul>
+<li>應用於exchangeRate:<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">`https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/<span class="subst">$&#123;currency_one&#125;</span>`</span>,  <span class="comment">//注意符號</span></span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;get&#x27;</span>,<span class="comment">//get,post,put</span></span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="comment">//console.log(data);</span></span><br><span class="line">      <span class="keyword">const</span> rate = data.<span class="property">conversion_rates</span>[currency_two];</span><br><span class="line">      <span class="comment">//console.log(rate);</span></span><br><span class="line">      $(<span class="string">&#x27;#rate&#x27;</span>).<span class="title function_">text</span>(<span class="string">`1 <span class="subst">$&#123;currency_one&#125;</span> = <span class="subst">$&#123;rate&#125;</span> <span class="subst">$&#123;currency_two&#125;</span>`</span>);</span><br><span class="line">      $(<span class="string">&#x27;#amount-two&#x27;</span>).<span class="title function_">val</span>((amountOne * rate).<span class="title function_">toFixed</span>(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><h4 id="詳細說明可以參照內文：計算匯率calculate函式"><a href="#詳細說明可以參照內文：計算匯率calculate函式" class="headerlink" title="詳細說明可以參照內文：計算匯率calculate函式"></a>詳細說明可以參照內文：<a href="#計算匯率calculate-函式">計算匯率calculate函式</a></h4></li>
+</ul>
+<h4 id="其他參考資料："><a href="#其他參考資料：" class="headerlink" title="其他參考資料："></a>其他參考資料：</h4><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=z-hN7GY5K7g">[ Alex 宅開發 ] 👨‍💻從 jQuery 入門到認識 JavaScript #5 Ajax 與非同步功能操作與原始碼探索</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- `url`:來源，api的位置在哪裏</span><br><span class="line">- `type`:api的呼叫方式</span><br><span class="line">- `dataType`:它回給你的資料類型</span><br><span class="line">- `data`:你要傳給它什麼</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">$.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">  <span class="attr">url</span>: data.<span class="property">json</span>,</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;get&#x27;</span>,<span class="comment">//get,post,put,path,delete</span></span><br><span class="line">  <span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>, <span class="comment">//html,xml,text,jsonp</span></span><br><span class="line">  <span class="attr">data</span>: &#123;&#125;</span><br><span class="line"></span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">res</span>) &#123;</span><br><span class="line">  <span class="comment">//response &lt;-&gt; request</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(res);</span><br><span class="line">  <span class="keyword">return</span> def.<span class="title function_">resolve</span>();</span><br><span class="line">&#125;), <span class="keyword">function</span> (<span class="params">err</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(err);</span><br><span class="line">  <span class="keyword">return</span> def.<span class="title function_">reject</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="計算匯率calculate-函式"><a href="#計算匯率calculate-函式" class="headerlink" title="計算匯率calculate 函式"></a>計算匯率calculate 函式</h2><ul>
+<li>此函式為抓取匯率api的資料並帶入計算匯率</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">calculate</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> currency_one = $(<span class="string">&quot;#currency-one&quot;</span>).<span class="title function_">val</span>();</span><br><span class="line">  <span class="keyword">var</span> currency_two = $(<span class="string">&#x27;#currency-two&#x27;</span>).<span class="title function_">val</span>();</span><br><span class="line">  <span class="keyword">var</span> amountOne = $(<span class="string">&#x27;#amount-one&#x27;</span>).<span class="title function_">val</span>();</span><br><span class="line">  <span class="keyword">var</span> amountTwo = $(<span class="string">&#x27;#amount-two&#x27;</span>).<span class="title function_">val</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//https://app.exchangerate-api.com/dashboard/confirmed</span></span><br><span class="line"></span><br><span class="line">  $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">`https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/<span class="subst">$&#123;currency_one&#125;</span>`</span>,<span class="comment">//注意符號</span></span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;get&#x27;</span>,<span class="comment">//抓取值</span></span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="comment">//console.log(data);  //查看抓到的物件</span></span><br><span class="line">      </span><br><span class="line">      <span class="keyword">const</span> rate = data.<span class="property">conversion_rates</span>[currency_two];</span><br><span class="line">      <span class="comment">//console.log(rate);</span></span><br><span class="line">      </span><br><span class="line">      $(<span class="string">&#x27;#rate&#x27;</span>).<span class="title function_">text</span>(<span class="string">`1 <span class="subst">$&#123;currency_one&#125;</span> = <span class="subst">$&#123;rate&#125;</span> <span class="subst">$&#123;currency_two&#125;</span>`</span>);</span><br><span class="line">      </span><br><span class="line">      <span class="comment">//將值帶入</span></span><br><span class="line">      $(<span class="string">&#x27;#amount-two&#x27;</span>).<span class="title function_">val</span>((amountOne * rate).<span class="title function_">toFixed</span>(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函式說明"><a href="#函式說明" class="headerlink" title="函式說明:"></a>函式說明:</h3><h4 id="1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量"><a href="#1-先將要抓取的值，宣告變數-分別有選擇的國家幣別、兌換的數量" class="headerlink" title="1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量"></a>1.先將要抓取的值，宣告變數;分別有選擇的國家幣別、兌換的數量</h4><h4 id="2-串接資料"><a href="#2-串接資料" class="headerlink" title="2.串接資料"></a>2.串接資料</h4><p> (1). 抓取資料的位置<br><code>url: https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/$&#123;currency_one&#125;</code></p>
+<p>注意網址：<br><code>&quot;https://v6.exchangerate-api.com/v6/06f04b805743079a1966771a/latest/USD&quot;</code><br>注意網址後面有修改，要抓取會變動的變數： ${currency_one}</p>
+<p> (2) 檢查是否有抓到要的資料：</p>
+<ul>
+<li>宣告：<code>const rate = data.conversion_rates[currency_two];</code></li>
+<li>console.log(rate); </li>
+</ul>
+<p><img src="https://i.imgur.com/LKGiCmN.png" alt=""></p>
+<ul>
+<li>確定抓取的值是否正確：<code>console.log($(&#39;#amount-two&#39;).val());</code></li>
+</ul>
+<p><img src="https://i.imgur.com/r9Nx25o.png" alt=""></p>
+<ul>
+<li>將計算匯率帶入<br><code>$(&#39;#amount-two&#39;).val((amountOne * rate).toFixed(2));</code></li>
+</ul>
+<p><img src="https://i.imgur.com/oMBuNFV.png" alt=""></p>
+<h2 id="其他輸入值的抓取與連動"><a href="#其他輸入值的抓取與連動" class="headerlink" title="其他輸入值的抓取與連動"></a>其他輸入值的抓取與連動</h2><ul>
+<li><h4 id="currency-one的改變，會連動上面的函式計算結果"><a href="#currency-one的改變，會連動上面的函式計算結果" class="headerlink" title="#currency-one的改變，會連動上面的函式計算結果"></a><code>#currency-one的改變</code>，會連動上面的函式計算結果</h4></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&quot;#currency-one&quot;</span>).<span class="title function_">change</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&quot;#rate&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;&quot;</span>); </span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//抓取amountone</span></span><br><span class="line">$(<span class="string">&quot;#amount-one&quot;</span>).<span class="title function_">on</span>(<span class="string">&quot;input&quot;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&quot;#rate&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">$(<span class="string">&quot;#currency-two&quot;</span>).<span class="title function_">change</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&quot;#rate&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//抓取amountTwo</span></span><br><span class="line">$(<span class="string">&quot;#amount-two&quot;</span>).<span class="title function_">on</span>(<span class="string">&quot;input&quot;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&quot;#rate&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h4 id="發現使用-append-，會出現累積div文字的問題"><a href="#發現使用-append-，會出現累積div文字的問題" class="headerlink" title="發現使用.append()，會出現累積div文字的問題"></a>發現使用<code>.append()</code>，會出現累積div文字的問題</h4></li>
+<li><p>(1) 清除函式<code>.append()</code>，累積div文字呈現的問題<br><code>$(&quot;#rate&quot;).html(&quot;&quot;);</code></p>
+</li>
+<li><p>(2) 將原本使用<code>.append()</code>的地方，修改為<code>.text()</code>, <code>$(&#39;#rate&#39;).text(`1 $&#123;currency_one&#125; = $&#123;rate&#125; $&#123;currency_two&#125;`);</code></p>
+<ul>
+<li>位置：<a href="#計算匯率calculate-函式">計算匯率calculate函式</a></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/GTMuXY0.png" alt=""></p>
+<p><img src="https://i.imgur.com/TvspVAq.png" alt=""></p>
+<h2 id="swap按鈕-（使幣別交換）"><a href="#swap按鈕-（使幣別交換）" class="headerlink" title="swap按鈕 （使幣別交換）"></a>swap按鈕 （使幣別交換）</h2><ul>
+<li>宣告一個變數，紀錄交換前的幣別<code>let temp = $(&quot;#currency-one&quot;).val();</code></li>
+<li>確認是否宣告正確：<code>console.log(temp);</code></li>
+</ul>
+<p><img src="https://i.imgur.com/gkYsHxQ.png" alt=""></p>
+<p><img src="https://i.imgur.com/fAZmC0Q.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//swap按鈕</span></span><br><span class="line">$(<span class="string">&#x27;#swap&#x27;</span>).<span class="title function_">click</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> temp = $(<span class="string">&quot;#currency-one&quot;</span>).<span class="title function_">val</span>();<span class="comment">//設一個變數來存放currency-one</span></span><br><span class="line">  $(<span class="string">&quot;#currency-one&quot;</span>).<span class="title function_">val</span>($(<span class="string">&quot;#currency-two&quot;</span>).<span class="title function_">val</span>());</span><br><span class="line">  $(<span class="string">&quot;#currency-two&quot;</span>).<span class="title function_">val</span>(temp);</span><br><span class="line">  <span class="title function_">calculate</span>();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title function_">calculate</span>(); <span class="comment">//放於最後</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>console.log($(&quot;#currency-one&quot;).val());</code></li>
+<li><code>console.log($(&quot;#currency-two&quot;).val());</code></li>
+</ul>
+<p><img src="https://i.imgur.com/o4JLcIF.png" alt=""></p>
+<hr>
+<p>參考資料：<br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10192175">重新認識 JavaScript: Day 16 那些你知道與不知道的事件們</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2020/12/28/js-browser/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/28/js-browser/" class="post-title-link" itemprop="url">JS-browser</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-28 18:47:58" itemprop="dateCreated datePublished" datetime="2020-12-28T18:47:58+08:00">2020-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/NdO4OR5.png" alt=""></p>
+<h2 id="1-DOM-與樹狀結構"><a href="#1-DOM-與樹狀結構" class="headerlink" title="1. DOM 與樹狀結構"></a>1. DOM 與樹狀結構</h2><p><img src="https://i.imgur.com/uZDTql8.png" alt=""></p>
+<ul>
+<li>DOM: document:網頁內部<blockquote>
+<p>KURO 老師:<br>DOM 是一個將 HTML 文件以樹狀的結構來表示的模型，而組合起來的樹狀圖，我們稱之為「DOM Tree」。</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>Huli 老師:瀏覽器提供該橋樑，讓我們用js去改面畫面的東西<br> <img src="https://i.imgur.com/tPHGSL4.png" alt=""></p>
+</blockquote>
+<h3 id="API-Application-Programming-Interface"><a href="#API-Application-Programming-Interface" class="headerlink" title="API (Application Programming Interface)"></a>API (Application Programming Interface)</h3><ul>
+<li>應用程式 編程 介面<h2 id="document-物件-API-文件"><a href="#document-物件-API-文件" class="headerlink" title="document 物件 API 文件"></a>document 物件 API 文件</h2></li>
+<li><h4 id="getElementsByTagName-抓取html中某tag的元素"><a href="#getElementsByTagName-抓取html中某tag的元素" class="headerlink" title="getElementsByTagName : 抓取html中某tag的元素"></a><code>getElementsByTagName</code> : 抓取html中某tag的元素</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&#x27;div&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/hSmfZ9u.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/yNOOK2m.png" alt=""></p>
+<ul>
+<li><h4 id="getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取"><a href="#getElementsByClassName-抓取html中某class元素-有好幾個相同名稱的class，會一並抓取" class="headerlink" title="getElementsByClassName: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)"></a><code>getElementsByClassName</code>: 抓取html中某class元素(有好幾個相同名稱的class，會一並抓取)</h4></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">getElementsByClassName</span>(<span class="string">&#x27;block1&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/d7ZlZnr.png" alt=""></p>
+<ul>
+<li><h4 id="getElementById-注意：getElement-沒有加s！這是用來抓取指定ID"><a href="#getElementById-注意：getElement-沒有加s！這是用來抓取指定ID" class="headerlink" title="getElementById : 注意：getElement 沒有加s！這是用來抓取指定ID"></a><code>getElementById</code> : 注意：getElement 沒有加s！這是用來抓取指定ID</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;myyo&quot;</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myyo&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/1ouq4WA.png" alt=""></p>
+</li>
+<li><h4 id="querySelector-後面接的是css選擇器"><a href="#querySelector-後面接的是css選擇器" class="headerlink" title="querySelector: 後面接的是css選擇器"></a><code>querySelector</code>: 後面接的是css選擇器</h4></li>
+<li><p>只會針對元素的第一筆資料，其他並不會被選入這時候可以使用</p>
+<ul>
+<li>選擇tag標籤：(‘div’)：注意：使用此方式當html有多個div，他只會選擇到第一個符合的</li>
+<li>選擇cass : (‘.calssName’)</li>
+<li>選擇id : (‘#idName’)</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/QzoOo6r.png" alt=""></p>
+<p><img src="https://i.imgur.com/pSMPFCJ.png" alt=""></p>
+<ul>
+<li><p>也可以選區某一tag下的tag</p>
+<ul>
+<li><code>querySelector(&#39;div &gt; a&#39;)</code><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;myyo&quot;</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;div &gt; a&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/I9qr8LD.png" alt=""></li>
+</ul>
+</li>
+<li><h4 id="querySelectorAll-可以選取多個元素"><a href="#querySelectorAll-可以選取多個元素" class="headerlink" title="querySelectorAll: 可以選取多個元素"></a><code>querySelectorAll</code>: 可以選取多個元素</h4></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>DOM</span><br><span class="line">  <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;block1&quot;</span>&gt;</span></span><br><span class="line">    hello~</span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;myyo&quot;</span>&gt;</span></span><br><span class="line">    yo!</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> elements = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;div&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(elements);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/jFPYIO0.png" alt="Eloquent JavaScript, 3rd Edition"></p>
+<h3 id="順利選則元素之後，嘗試做些改變"><a href="#順利選則元素之後，嘗試做些改變" class="headerlink" title="順利選則元素之後，嘗試做些改變"></a>順利選則元素之後，嘗試做些改變</h3><p>可以看看，js如何與瀏覽器互動 -&gt;<a target="_blank" rel="noopener" href="https://hackmd.io/yGiTI8qVRLWmDCpD1w7HcA?view">JavaScript 與瀏覽器的溝通</a></p>
+<h3 id="BOM-與-window-物件"><a href="#BOM-與-window-物件" class="headerlink" title="BOM 與 window 物件"></a>BOM 與 window 物件</h3><ul>
+<li>BOM (Browser Object Model，瀏覽器物件模型)，是瀏覽器所有功能的核心，與網頁的內容無關。<ul>
+<li>window是瀏覽器的根物件，也是BOM的瀏覽器模型</li>
+</ul>
+</li>
+<li>window.location.hrrf =&gt; 可以知道現在網址<br><img src="https://i.imgur.com/8EeLLGQ.png" alt=""></li>
+<li>window.history.back(); =&gt; 回到網頁瀏覽的上一頁<br><img src="https://i.imgur.com/kBtDslP.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/jyPOjvH.png" alt=""></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10202689">Day03-深入理解網頁架構：DOM</a><br><a target="_blank" rel="noopener" href="https://hsuchihting.github.io/javascript/20200615/1316819935/">JS 筆記 - 認識 DOM 文件物件模型</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/Document">MDN-Document</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/jsref/dom_obj_document.asp">The HTML DOM Document Object</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10211614">JavaScript 基礎知識-querySelectorAll</a><br><a target="_blank" rel="noopener" href="https://eloquentjavascript.net/14_dom.html">The Document Object Model</a><br><a target="_blank" rel="noopener" href="https://www.happycoding.today/posts/43">JavaScript入門系列：BOM和DOM筆記</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2020/12/27/js-array/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1863,255 +2139,6 @@ console.log(&#39;bow!bow!～～&#39;) &#125;</code></li>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2020/11/28/csscoke-NO013/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/28/csscoke-NO013/" class="post-title-link" itemprop="url">Amos金魚都能懂的切版教學影片- csscoke NO013</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-11-28 19:54:27" itemprop="dateCreated datePublished" datetime="2020-11-28T19:54:27+08:00">2020-11-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-11-14 20:31:21" itemprop="dateModified" datetime="2024-11-14T20:31:21+08:00">2024-11-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CSS/" itemprop="url" rel="index"><span itemprop="name">CSS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://eva813.github.io/my-projects/coke-NO013(v1).html">My page</a><br><img src="https://i.imgur.com/BplwB2k.png" alt=""></p>
-<h2 id="HTML架構"><a href="#HTML架構" class="headerlink" title="HTML架構"></a>HTML架構</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;side-menu&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;search&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-search&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">id</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-users&quot;</span> <span class="attr">aria-hidden</span>=<span class="string">&quot;true&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>鐵人賽<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">id</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-gavel&quot;</span> <span class="attr">aria-hidden</span>=<span class="string">&quot;true&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>暴力班<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">id</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-object-group&quot;</span> <span class="attr">aria-hidden</span>=<span class="string">&quot;true&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>RWD 醬子<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">id</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-globe&quot;</span> <span class="attr">aria-hidden</span>=<span class="string">&quot;true&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>金魚網頁<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">id</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-cutlery&quot;</span> <span class="attr">aria-hidden</span>=<span class="string">&quot;true&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>金魚切版<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="side-menu"><a href="#side-menu" class="headerlink" title=".side-menu"></a>.side-menu</h2><ul>
-<li>設定寬度、背景色彩</li>
-<li>利用flex排列，並設定直向<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.side-menu</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">background-image</span>: <span class="built_in">linear-gradient</span>(<span class="number">0deg</span>, <span class="number">#13547a</span>, <span class="number">#80d0c7</span>);</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">flex-direction</span>: column;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="側邊選單裡的選項（nav）"><a href="#側邊選單裡的選項（nav）" class="headerlink" title="側邊選單裡的選項（nav）"></a>側邊選單裡的選項（nav）</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">nav</span> <span class="selector-tag">a</span> &#123;</span><br><span class="line">   <span class="comment">/* 讓a可以一行一行排列 */</span></span><br><span class="line">   <span class="attribute">display</span>: block;</span><br><span class="line">   <span class="attribute">padding</span>: <span class="number">10px</span>;</span><br><span class="line">   <span class="attribute">text-decoration</span>: none;</span><br><span class="line">   <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">   <span class="attribute">position</span>: relative;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li><h3 id="設定底線，利用＋篩選器"><a href="#設定底線，利用＋篩選器" class="headerlink" title="設定底線，利用＋篩選器"></a>設定底線，利用＋篩選器</h3></li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">nav</span> <span class="selector-tag">a</span>+<span class="selector-tag">a</span> &#123;</span><br><span class="line">      <span class="attribute">border-top</span>: <span class="number">1px</span> solid <span class="number">#fff</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用此方式，會讓線滿版，無法單獨調整間距<br><img src="https://i.imgur.com/HDrjfjS.png" alt=""></li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">nav</span> <span class="selector-tag">a</span>+<span class="selector-tag">a</span><span class="selector-pseudo">::before</span> &#123;</span><br><span class="line">      <span class="attribute">content</span>: <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">      <span class="attribute">position</span>: absolute;</span><br><span class="line">      <span class="attribute">border-top</span>: <span class="number">1px</span> solid <span class="built_in">rgba</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, .<span class="number">4</span>);</span><br><span class="line">      <span class="attribute">left</span>: <span class="number">10px</span>;</span><br><span class="line">      <span class="attribute">right</span>: <span class="number">10px</span>;</span><br><span class="line">      <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/Vj3cZFy.png" alt=""></p>
-<h2 id="form-搜尋表"><a href="#form-搜尋表" class="headerlink" title="form 搜尋表"></a>form 搜尋表</h2><p><img src="https://i.imgur.com/JQygAWh.png" alt=""></p>
-<ul>
-<li>讓inpt與button可以緊密並排</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> &#123;</span><br><span class="line">      <span class="attribute">display</span>: flex;</span><br><span class="line">      <span class="attribute">margin</span>: <span class="number">0</span> <span class="number">10px</span> <span class="number">50px</span>;&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p><img src="https://i.imgur.com/EGk8tt6.png" alt=""></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> <span class="selector-tag">input</span>,</span><br><span class="line">   <span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> <span class="selector-tag">button</span> &#123;</span><br><span class="line">     <span class="attribute">border</span>: none;</span><br><span class="line">     <span class="attribute">padding</span>: <span class="number">5px</span> <span class="number">10px</span>;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/I6Ceugc.png" alt=""></p>
-<ul>
-<li>讓form增加框線<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> &#123;</span><br><span class="line">     </span><br><span class="line">     <span class="comment">/* 設定表單外框形狀有圓弧形 */</span></span><br><span class="line">     <span class="attribute">border-radius</span>: <span class="number">100px</span>;</span><br><span class="line">     <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="built_in">rgba</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, .<span class="number">4</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><img src="https://i.imgur.com/iTiqU93.png" alt=""></p>
-<ul>
-<li>調整寬度</li>
-<li>但要注意的是，如此調整後就蓋住了form的框線</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 寬度300，左右2邊有10px，剩下280，希望左邊選單大一點點 */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> <span class="selector-tag">input</span> &#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">230px</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> <span class="selector-tag">button</span> &#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-<p><img src="https://i.imgur.com/5nxR9Ru.png" alt=""></p>
-<ul>
-<li>設背景顏色為透明</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> <span class="selector-tag">input</span>,</span><br><span class="line">    <span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> <span class="selector-tag">button</span> &#123;</span><br><span class="line">      <span class="attribute">border</span>: none;</span><br><span class="line">      <span class="attribute">padding</span>: <span class="number">5px</span> <span class="number">10px</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* 設定透明才會讓，form表單的框顯示清楚 */</span></span><br><span class="line">      <span class="attribute">background-color</span>: transparent;</span><br><span class="line">      <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/HpJUlbq.png" alt=""></p>
-<ul>
-<li>取消focus的外框<br><img src="https://i.imgur.com/jEv9f9o.png" alt=""></li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> <span class="selector-tag">input</span><span class="selector-pseudo">:focus</span>,</span><br><span class="line">    <span class="selector-class">.side-menu</span> <span class="selector-tag">form</span> <span class="selector-tag">button</span><span class="selector-pseudo">:focus</span> &#123;</span><br><span class="line">      <span class="attribute">outline</span>: none;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/NrGoGVN.png" alt=""></p>
-<h3 id="動畫"><a href="#動畫" class="headerlink" title="動畫"></a>動畫</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 動畫：讓icon消失，文字左縮 */</span></span><br><span class="line">   <span class="selector-tag">nav</span> <span class="selector-tag">a</span> <span class="selector-class">.fa</span> &#123;</span><br><span class="line">     <span class="attribute">margin-right</span>: -<span class="number">1.1em</span>;</span><br><span class="line">     <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">0</span>);</span><br><span class="line">     <span class="attribute">transition</span>: .<span class="number">3s</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="selector-tag">nav</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.fa</span> &#123;</span><br><span class="line">     <span class="attribute">margin-right</span>: <span class="number">0em</span>;</span><br><span class="line">     <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1</span>);</span><br><span class="line">   &#125;`</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2020/11/28/csscoke-NO006/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/28/csscoke-NO006/" class="post-title-link" itemprop="url">Amos金魚都能懂的切版教學影片-csscoke NO006</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-11-28 18:46:11" itemprop="dateCreated datePublished" datetime="2020-11-28T18:46:11+08:00">2020-11-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-11-14 20:30:55" itemprop="dateModified" datetime="2024-11-14T20:30:55+08:00">2024-11-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CSS/" itemprop="url" rel="index"><span itemprop="name">CSS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://eva813.github.io/my-projects/coke-NO006(v1).html">my_page</a><br><img src="https://i.imgur.com/tYapgm2.png" alt=""></p>
-<p>此切版主要是針對footer區域的切版練習，有四個欄位，最下方有copy right區域。</p>
-<h2 id="我製作時遇到的問題："><a href="#我製作時遇到的問題：" class="headerlink" title="我製作時遇到的問題："></a>我製作時遇到的問題：</h2><ul>
-<li>copyright一直跟左邊的item並行，是因為container的範圍應該只要涵蓋四個item就好</li>
-</ul>
-<p><img src="https://i.imgur.com/sU1bBXb.png" alt=""></p>
-<ul>
-<li>設定nav的display:flex;並讓設定方向為colum</li>
-</ul>
-<p><img src="https://i.imgur.com/CYzhwHq.png" alt=""></p>
-<h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;main-footer&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;footer-item&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h4</span>&gt;</span>關於暴力課程<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 課程目標<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 辦學理念<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 課程宗旨<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;footer-item&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h4</span>&gt;</span>課程列表<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 暴力網頁入門班<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> RWD網頁深入理解<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> CSS3互動動畫設計<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> Bootstrap框架實務<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;footer-item&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h4</span>&gt;</span>服務項目<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 網站建置顧問<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 網站設計建置<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 網站規劃<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-angle-right&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 企業教育訓練<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;footer-item footer-subs&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h4</span>&gt;</span>訂閱電子報<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;訂閱&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;copyright&quot;</span>&gt;</span></span><br><span class="line">      Copyright <span class="symbol">&amp;copy;</span> 2019 金魚都能懂得這個網頁畫面怎麼切</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在大區塊先訂出寬度，並讓他們橫向排列</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.main-footer</span> &#123;</span><br><span class="line">     <span class="comment">/* 讓上面有距離出來 */</span></span><br><span class="line">     <span class="attribute">padding</span>: <span class="number">150px</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>;</span><br><span class="line">     <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(-<span class="number">20deg</span>, <span class="number">#3f5494</span>, <span class="number">#08c7a5</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="selector-class">.main-footer</span> <span class="selector-class">.container</span> &#123;</span><br><span class="line">     <span class="attribute">display</span>: flex;</span><br><span class="line">     <span class="attribute">width</span>: <span class="number">1200px</span>;</span><br><span class="line">     <span class="attribute">margin</span>: auto;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/jVPxmCS.png" alt=""></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer-item</span> &#123;</span><br><span class="line">  <span class="comment">/* 使用flex的排版特性，來進行欄位大小的配置 */</span></span><br><span class="line">  <span class="attribute">width</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">flex-grow</span>: <span class="number">1</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span> <span class="number">20px</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/vpFKfJ8.png" alt=""></p>
-<h2 id="copyright"><a href="#copyright" class="headerlink" title="copyright"></a>copyright</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.copyright</span> &#123;</span><br><span class="line">      <span class="attribute">text-align</span>: center;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* 這裡也加距離 */</span></span><br><span class="line">      <span class="attribute">margin</span>: <span class="number">150px</span>;</span><br><span class="line">      <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">0</span>;</span><br><span class="line">      <span class="attribute">background-color</span>: <span class="number">#3e5293</span>;</span><br><span class="line">      <span class="attribute">color</span>: <span class="number">#70f6df</span>;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">      <span class="comment">/* 左方有一個空格，沒有填滿 */</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/vhMFqSF.png" alt=""></p>
-<h2 id="nav區"><a href="#nav區" class="headerlink" title="nav區"></a>nav區</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer-item</span> <span class="selector-tag">nav</span> &#123;</span><br><span class="line">     <span class="comment">/* 設定直向排列之後，裡面的小項目就會排列整齊 */</span></span><br><span class="line">     <span class="attribute">display</span>: flex;</span><br><span class="line">     <span class="attribute">flex-direction</span>: column;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-
-<p><img src="https://i.imgur.com/8joRYrl.png" alt=""></p>
-<h4 id="訂閱電子報的區域"><a href="#訂閱電子報的區域" class="headerlink" title="訂閱電子報的區域"></a>訂閱電子報的區域</h4><ul>
-<li>再給予一個class名稱，在設定css時比較有指向性</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;footer-item footer-subs&quot;&gt;</span><br><span class="line">        &lt;h4&gt;訂閱電子報&lt;/h4&gt;</span><br><span class="line">        &lt;form&gt;</span><br><span class="line">          &lt;input type=&quot;text&quot; name=&quot;&quot;&gt;</span><br><span class="line">          &lt;input type=&quot;submit&quot; value=&quot;訂閱&quot;&gt;</span><br><span class="line">        &lt;/form&gt;</span><br><span class="line">      &lt;/div&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="訂閱電子報的居中"><a href="#訂閱電子報的居中" class="headerlink" title="訂閱電子報的居中"></a>訂閱電子報的居中</h2><p><img src="https://i.imgur.com/2PBp5rH.png" alt=""></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/* footer-item是flex的項目，所以他的高度和其他地方等高，但這個訂閱電子報欄位內容，並沒有等高&lt;所以讓footer-item設定flex，設定直排，讓表單上下的距離能夠撐開 */</span></span><br><span class="line"><span class="selector-class">.footer-subs</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">flex-direction</span>: column;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.footer-subs</span> <span class="selector-tag">form</span> &#123;</span><br><span class="line">  <span class="comment">/* 這裏的flex是為了讓輸入框與訂閱紐能夠並排 */</span></span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="comment">/* 這裏的margin與寬度的設定是為了讓輸入框能夠整個居中   */</span></span><br><span class="line">  <span class="attribute">margin</span>: auto <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/NCJMKxk.png" alt=""></p>
-<h2 id="最後的調整"><a href="#最後的調整" class="headerlink" title="最後的調整"></a>最後的調整</h2><p><img src="https://i.imgur.com/YRqfCso.png" alt=""></p>
-<ul>
-<li>因為copyright的margin:150px; &gt; 應該修改為margin: 150px 0 0 ;(只有上面有margin)</li>
-</ul>
-<p><img src="https://i.imgur.com/Rn0pOpz.png" alt=""></p>
-<p><a href="https://eva813.github.io/my-projects/coke-NO006(v2).html">t_page</a></p>
-<hr>
-<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10208741">Day24 Flex 空間分配 flex-grow / flex-shrink / flex-basis</a><br><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1511769483.html">HTML中button和input button的區別</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2183,7 +2210,7 @@ console.log(&#39;bow!bow!～～&#39;) &#125;</code></li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">101</span>
+          <span class="site-state-item-count">103</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
