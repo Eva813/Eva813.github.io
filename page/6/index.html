@@ -174,6 +174,401 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/12/10/Nuxt3-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/10/Nuxt3-1/" class="post-title-link" itemprop="url">Nuxt3-取得資料的方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-10 20:08:43" itemprop="dateCreated datePublished" datetime="2021-12-10T20:08:43+08:00">2021-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:34:59" itemprop="dateModified" datetime="2022-11-04T10:34:59+08:00">2022-11-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/FAgr4vk.png" alt=""></p>
+<h2 id="useAsyncData"><a href="#useAsyncData" class="headerlink" title="useAsyncData"></a>useAsyncData</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="attr">data</span>: <span class="title class_">Ref</span>&lt;<span class="title class_">DataT</span>&gt;,</span><br><span class="line">  <span class="attr">pending</span>: <span class="title class_">Ref</span>&lt;boolean&gt;,</span><br><span class="line">  <span class="attr">refresh</span>: <span class="function">(<span class="params">force?: boolean</span>) =&gt;</span> <span class="title class_">Promise</span>&lt;<span class="keyword">void</span>&gt;,</span><br><span class="line">  error?: any</span><br><span class="line">&#125; = <span class="title function_">useAsyncData</span>(</span><br><span class="line">  <span class="attr">key</span>: string,</span><br><span class="line">  <span class="attr">fn</span>: <span class="function">() =&gt;</span> <span class="title class_">Object</span>,</span><br><span class="line">  options?: &#123; <span class="attr">lazy</span>: boolean, <span class="attr">server</span>: boolean &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>頁面、組件中都可以使用useAsyncData 取得資料</li>
+<li>Key ：寫一個唯一的id<br>請求資料的函式</li>
+<li>使用 useAsyncData 會回傳物件<br>data : 返回的資料<br>pedding : 指出資料是否被取得<br>refresh : 是否要刷新資料<h3 id="Option-介紹"><a href="#Option-介紹" class="headerlink" title="Option 介紹"></a>Option 介紹</h3></li>
+<li>Lazy 延遲載入，直到數據獲取時，才顯示於頁面</li>
+<li>默認會是 false</li>
+<li>Server 頁面是在server端要載入，就可以設定為true</li>
+<li>Pick 從回傳的資料中，選擇要使用的key值</li>
+</ul>
+<h3 id="useAsyncData撰寫方式的範例"><a href="#useAsyncData撰寫方式的範例" class="headerlink" title="useAsyncData撰寫方式的範例"></a>useAsyncData撰寫方式的範例</h3><ul>
+<li>本地建立資料夾<ul>
+<li>server/api/count.ts</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = <span class="number">0</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> () =&gt; &#123;</span><br><span class="line">  counter++</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(counter)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>app.vue</code>，使用 useAsyncData</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">const</span> &#123; data &#125; = <span class="keyword">await</span> <span class="title function_">useAsyncData</span>(<span class="string">&#x27;count&#x27;</span>, <span class="function">() =&gt;</span> $fetch(<span class="string">&#x27;/api/count&#x27;</span>))</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  Page visits: &#123;&#123; data &#125;&#125;</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="useFetch"><a href="#useFetch" class="headerlink" title="useFetch"></a>useFetch</h2><ul>
+<li>頁面、組件中可以使用useFetch獲取任意URL資源</li>
+<li>useFetch包裝 了useAsyncData 和 $fetch</li>
+<li>會根據 URL 自動生成 Key，也會去推斷API 的類型a<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="attr">data</span>: <span class="title class_">Ref</span>&lt;<span class="title class_">DataT</span>&gt;,</span><br><span class="line">  <span class="attr">pending</span>: <span class="title class_">Ref</span>&lt;boolean&gt;,</span><br><span class="line">  <span class="attr">refresh</span>: <span class="function">(<span class="params">force?: boolean</span>) =&gt;</span> <span class="title class_">Promise</span>&lt;<span class="keyword">void</span>&gt;,</span><br><span class="line">  error?: any</span><br><span class="line">&#125; = <span class="title function_">useFetch</span>(<span class="attr">url</span>: string, options?)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">const</span> &#123; data &#125; = <span class="keyword">await</span> <span class="title function_">useFetch</span>(<span class="string">&#x27;/api/count&#x27;</span>)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  Page visits: &#123;&#123; data.count &#125;&#125;</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="補充：其他2個類似方式"><a href="#補充：其他2個類似方式" class="headerlink" title="補充：其他2個類似方式"></a>補充：其他2個類似方式</h2><ul>
+<li>useLazyAsyncData : 方法等於useAsyncData，僅設置了lazy選項為true</li>
+<li>useLazyFetch : 方法等於useFetch，僅設置了lazy選項為true</li>
+</ul>
+<h2 id="實作範例："><a href="#實作範例：" class="headerlink" title="實作範例："></a>實作範例：</h2><ul>
+<li><code>/api/mountains/everest</code><ul>
+<li>API 會產生的物件資料</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;title&quot;</span>: <span class="string">&quot;Mount Everest&quot;</span>,</span><br><span class="line">  <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Mount Everest is Earth&#x27;s highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas. The China–Nepal border runs across its summit point&quot;</span>,</span><br><span class="line">  <span class="string">&quot;height&quot;</span>: <span class="string">&quot;8,848 m&quot;</span>,</span><br><span class="line">  <span class="string">&quot;countries&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;China&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Nepal&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;continent&quot;</span>: <span class="string">&quot;Asia&quot;</span>,</span><br><span class="line">  <span class="string">&quot;image&quot;</span>: <span class="string">&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Everest_kalapatthar.jpg/600px-Everest_kalapatthar.jpg&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Nuxt 3 為了提高效率會在取得資料後，緩存在當前頁面的payload<br>官方建議：如果只打算在組件中使用到 title 和 description ，你可以使用關鍵的屬性運用即可<br>選項中加入 pick，裡面的值就是取得資料中的key值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="attr">data</span>: mountain &#125; = <span class="keyword">await</span> <span class="title function_">useFetch</span>(<span class="string">&#x27;/api/mountains/everest&#x27;</span>, &#123; <span class="attr">pick</span>: [<span class="string">&#x27;title&#x27;</span>, <span class="string">&#x27;description&#x27;</span>] &#125;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; mountain.title &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; mountain.description &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://v3.nuxtjs.org/docs/usage/data-fetching">參考資料</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/11/27/TS-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/27/TS-2/" class="post-title-link" itemprop="url">TypeScript 基礎介紹 (2)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-11-27 09:44:33" itemprop="dateCreated datePublished" datetime="2021-11-27T09:44:33+08:00">2021-11-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:34:23" itemprop="dateModified" datetime="2022-11-04T10:34:23+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
+<p>要熟悉 TypeScript 的型別訂定，並不容易，而且撰寫時也會花費較多的時間，但好處是減少程式碼的錯誤，也讓協作者更容易解讀對方撰寫的程式碼。<br>萬事起頭難，不同的地方就是多讀幾次，或是尋找相關的範例來相呼應！</p>
+<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><p>傳統方法中，JavaScript 透過建構函式實現類別的概念，透過原型鏈實現繼承。而在 ES6 中，我們終於迎來了 class。</p>
+<ul>
+<li><p>定義一切事務的抽象特點</p>
+</li>
+<li><p>object  ：class 的實例  new Class 生成</p>
+</li>
+<li><p>物件導向 OOP(Object Oriented Programming) ：三大特性 封裝、繼承、多型</p>
+<ul>
+<li>封裝（Encapsulation）：將對資料的操作細節隱藏起來，只暴露對外的介面。外界呼叫端不需要（也不可能）知道細節，就能透過對外提供的介面來訪問該物件，同時也保證了外界無法任意更改物件內部的資料</li>
+<li>繼承（Inheritance）：子類別繼承父類別，子類別除了擁有父類別的所有特性外，還有一些更具體的特性</li>
+<li>多型（Polymorphism）：由繼承而產生了相關的不同的類別，對同一個方法可以有不同的響應<h3 id="複習下-ES6-撰寫方式"><a href="#複習下-ES6-撰寫方式" class="headerlink" title="複習下 ES6 撰寫方式"></a>複習下 ES6 撰寫方式</h3></li>
+</ul>
+</li>
+<li><p>使用 class 定義類別，使用 constructor 定義建構函式。</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125; </span><br><span class="line">    run () &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span> is running`</span> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> snake = <span class="keyword">new</span> <span class="title class_">Animal</span>(<span class="string">&#x27;lily&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(snake.<span class="title function_">run</span>()); <span class="comment">// lily is running</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 繼承的特性（繼承父類的屬性及方法）， 繼承 run 的方法</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Animal</span> &#123;</span><br><span class="line">  <span class="title function_">bark</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span> is barking`</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> bao = <span class="keyword">new</span> <span class="title class_">Dog</span>(<span class="string">&#x27;bao&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(bao.<span class="title function_">run</span>()) <span class="comment">// bao is running</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(bao.<span class="title function_">bark</span>()) <span class="comment">// bao is  barking</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 extends 關鍵字實現繼承</li>
+<li>这里我们重寫構造函式，注意在子類的構造函式中，必須使用 super 調用父類的方法，否則會報錯。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Animal</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(name)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>) <span class="comment">//maomao</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">run</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">// run 方法重寫</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Meow, &#x27;</span> + <span class="variable language_">super</span>.<span class="title function_">run</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> maomao = <span class="keyword">new</span> <span class="title class_">Cat</span>(<span class="string">&#x27;maomao&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(maomao.<span class="title function_">run</span>()) <span class="comment">//Meow, maomao is runing</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="TypeScript-中的-class"><a href="#TypeScript-中的-class" class="headerlink" title="TypeScript 中的 class"></a>TypeScript 中的 class</h4><p>TypeScript 可以使用三種訪問修飾符（Access Modifiers）</p>
+<ul>
+<li>public 修飾的屬性或方法是公有的，可以在任何地方被調用到，預設所有的屬性和方法都是 public 的</li>
+<li>private 修飾的屬性或方法是私有的，不能在声明它的类的外部調用</li>
+<li>protected 修飾的屬性或方法是受保护的，它和 private 類似，區别是它在子類中也是允许被訪問的<br>例子說明：</li>
+<li>name 被設定為了 public，所以直接訪問實例的 name 屬性是允許的。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="title class_">Animal</span>(<span class="string">&#x27;Jack&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="property">name</span>); <span class="comment">// Jack</span></span><br><span class="line">a.<span class="property">name</span> = <span class="string">&#x27;Tom&#x27;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="property">name</span>); <span class="comment">// Tom</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>希望有的屬性是無法直接存取的，這時候就可以用 private 了：</li>
+<li>name 設為 private</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="title class_">Animal</span>(<span class="string">&#x27;Jack&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="property">name</span>); <span class="comment">// Jack</span></span><br><span class="line">a.<span class="property">name</span> = <span class="string">&#x27;Tom&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.ts(9,13): error TS2341: Property &#x27;name&#x27; is private and only accessible within class &#x27;Animal&#x27;.</span></span><br><span class="line"><span class="comment">// index.ts(10,1): error TS2341: Property &#x27;name&#x27; is private and only accessible within class &#x27;Animal&#x27;.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用 private 修飾的屬性或方法，在子類別中也是不允許訪問的：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Animal</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">super</span>(name);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.ts(11,17): error TS2341: Property &#x27;name&#x27; is private and only accessible within class &#x27;Animal&#x27;.</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>而如果是用 protected 修飾，則允許在子類別中訪問：</li>
+<li>將上述程式碼修改一下</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">protected</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="類別-class-的型別"><a href="#類別-class-的型別" class="headerlink" title="類別 class 的型別"></a>類別 class 的型別</h3><p>給類別加上 TypeScript 的型別很簡單，與介面類似：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">sayHi</span>(): <span class="built_in">string</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`My name is <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">a</span>: <span class="title class_">Animal</span> = <span class="keyword">new</span> <span class="title class_">Animal</span>(<span class="string">&#x27;Jack&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="title function_">sayHi</span>()); <span class="comment">// My name is Jack</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://willh.gitbook.io/typescript-tutorial/advanced/class">類別</a></p>
+<h3 id="class-與-interface"><a href="#class-與-interface" class="headerlink" title="class 與 interface"></a>class 與 interface</h3><ul>
+<li>介面（Interfaces）：不同類別之間公有的屬性或方法，可以抽象成一個介面。介面可以被類別實現（implements）。一個類別只能繼承自另一個類別，但是可以實現多個介面</li>
+<li>在 物件導向 世界中，一個 class 只能繼承自另外一個class</li>
+<li>有時候不同 class 之前，可以有共同的特性，使用子類繼承父類的方法很難來完成</li>
+<li>class 可以使用 implements 來實現 interface （提高 OOP 的靈活性）</li>
+</ul>
+<h4 id="範例一："><a href="#範例一：" class="headerlink" title="範例一："></a>範例一：</h4><ul>
+<li>有 車子和手機，都有打開radio的功能</li>
+<li>可以將兩個共有的抽取為一個 interface</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>  &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params">trigger: <span class="built_in">boolean</span></span>) &#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cellphone</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params">trigger: <span class="built_in">boolean</span></span>) &#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="可以將兩個共有的抽取為一個-interface"><a href="#可以將兩個共有的抽取為一個-interface" class="headerlink" title="可以將兩個共有的抽取為一個 interface"></a>可以將兩個共有的抽取為一個 interface</h4><ul>
+<li>void =&gt; 代表什麼都不返回</li>
+<li>在class 後面放入  implements 讓類去實現它</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Radio</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="attr">trigger</span>: <span class="built_in">boolean</span>): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">implements</span> <span class="title class_">Radio</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params">trigger</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">123</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cellphone</span> <span class="keyword">implements</span> <span class="title class_">Radio</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="範例二"><a href="#範例二" class="headerlink" title="範例二"></a>範例二</h4><ul>
+<li>新特性為 檢查電池的容量</li>
+<li>是手機有，但汽車沒有的</li>
+<li>所以新建立一個 interface （檢查battery）<ul>
+<li>此功能只有手機有，所以放在手機的class</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Battery</span> &#123;</span><br><span class="line">  <span class="title function_">checkBatteryStatus</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 要實現多个介面，我们只需要中間用 都好 隔开即可。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cellphone</span> <span class="keyword">implements</span> <span class="title class_">Radio</span>, <span class="title class_">Battery</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">checkBatteryStatus</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="此外-interface-之間有繼承關係"><a href="#此外-interface-之間有繼承關係" class="headerlink" title="此外 interface 之間有繼承關係"></a>此外 interface 之間有繼承關係</h4><ul>
+<li>建立 radioWithBattery 繼承 Radio ，裡面再放入檢查電量的設定</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> radioWithBattery <span class="keyword">extends</span> <span class="title class_">Radio</span> &#123;</span><br><span class="line">  <span class="title function_">checkBatteryStatus</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cellphone</span> <span class="keyword">implements</span> radioWithBattery &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">checkBatteryStatus</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://willh.gitbook.io/typescript-tutorial/advanced/class-and-interfaces">類別與介面</a></p>
+<h2 id="enum-列舉"><a href="#enum-列舉" class="headerlink" title="enum 列舉"></a>enum 列舉</h2><ul>
+<li>常數指執行程序中不會被改變的值，在 JS 中我們一般會用 const 來宣告</li>
+<li>但有些取值是在一定範圍內的一系列常數。<ul>
+<li>如：一周內七天、三原色(紅、黃、藍)、方向(上、下、左、右)<h3 id="範例一"><a href="#範例一" class="headerlink" title="範例一"></a>範例一</h3></li>
+</ul>
+</li>
+<li>數字列舉</li>
+<li>列舉成員會被賦值為從0，開始遞增</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 數字列舉，一个數字列舉可以用 enum 这个關鍵詞來定義，我们定義一系列的方向，然后这里面的值，列舉成员会被赋值为從 0 开始遞增的數字,</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Direction</span> &#123;</span><br><span class="line">  <span class="title class_">Up</span>,</span><br><span class="line">  <span class="title class_">Down</span>,</span><br><span class="line">  <span class="title class_">Left</span>,</span><br><span class="line">  <span class="title class_">Right</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Direction</span>.<span class="property">Up</span>) <span class="comment">//0</span></span><br><span class="line"><span class="comment">// 還有一个神奇的點是這個列舉还做了反向映射</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Direction</span>[<span class="number">0</span>]) <span class="comment">//up</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/VMRV8oM.png" alt=""></p>
+<ul>
+<li>可以手動賦予值</li>
+<li>未手動賦值的列舉項會接著上一個列舉項遞增。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  <span class="title class_">Up</span> = <span class="number">10</span>,</span><br><span class="line">  <span class="title class_">Down</span>,</span><br><span class="line">  <span class="title class_">Left</span>,</span><br><span class="line">  <span class="title class_">Right</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Direction</span>.<span class="property">Down</span>) <span class="comment">// 11 ，後面的項目數值會遞增</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Direction</span>[<span class="number">0</span>]) <span class="comment">//up</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="範例二-1"><a href="#範例二-1" class="headerlink" title="範例二"></a>範例二</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串列舉</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Direction</span> &#123;</span><br><span class="line">  <span class="title class_">Up</span> = <span class="string">&#x27;UP&#x27;</span>,</span><br><span class="line">  <span class="title class_">Down</span> = <span class="string">&#x27;DOWN&#x27;</span>,</span><br><span class="line">  <span class="title class_">Left</span> = <span class="string">&#x27;LEFT&#x27;</span>,</span><br><span class="line">  <span class="title class_">Right</span> = <span class="string">&#x27;RIGHT&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> value = <span class="string">&#x27;UP&#x27;</span></span><br><span class="line"><span class="keyword">if</span> (value === <span class="title class_">Direction</span>.<span class="property">Up</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;go up!&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="範例三"><a href="#範例三" class="headerlink" title="範例三"></a>範例三</h3><ul>
+<li>常數列舉<ul>
+<li>編譯後的邏輯變少了</li>
+<li>使用常數列舉會內連列舉的用法並且不會將設定的列舉編譯成 JS 程式碼</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span>  <span class="keyword">enum</span> <span class="title class_">Direction</span> &#123;</span><br><span class="line">  <span class="title class_">Up</span> = <span class="string">&#x27;UP&#x27;</span>,</span><br><span class="line">  <span class="title class_">Down</span> = <span class="string">&#x27;DOWN&#x27;</span>,</span><br><span class="line">  <span class="title class_">Left</span> = <span class="string">&#x27;LEFT&#x27;</span>,</span><br><span class="line">  <span class="title class_">Right</span> = <span class="string">&#x27;RIGHT&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> value = <span class="string">&#x27;UP&#x27;</span></span><br><span class="line"><span class="keyword">if</span> (value === <span class="title class_">Direction</span>.<span class="property">Up</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;go up!&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/Fp2XF0y.png" alt=""></p>
+<hr>
+<h2 id="泛型-Generics"><a href="#泛型-Generics" class="headerlink" title="泛型 Generics"></a>泛型 Generics</h2><ul>
+<li>要解決什麼問題<ul>
+<li>建立函式 echo 參數為 arg ，接著宣告變數傳入參數</li>
+<li>但其中的型別沒有設定</li>
+<li>傳入和返回的型別無法統一</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">echo</span>(<span class="params">arg</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> arg</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">echo</span>(<span class="number">123</span>)</span><br><span class="line"><span class="comment">// 這時候我們發現了一個問題，我们傳入了數字，但是返回了 any</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/lo6XFH8.png" alt=""></p>
+<ul>
+<li>當在建構 function、internet及Class 時，你會希望這些component都能被重複運用的 Generic(泛型)提供了一個彈性的作法。</li>
+<li>語法是: <code>&lt;T&gt;</code></li>
+</ul>
+<h3 id="範例一-1"><a href="#範例一-1" class="headerlink" title="範例一"></a>範例一</h3><ul>
+<li>泛型（Generics）是指在定義function、internet及Class的时候，不预先指定具體的型別，而在使用的时候再指定型別的一種特性。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> echo&lt;T&gt;(<span class="attr">arg</span>: T): T &#123;</span><br><span class="line">  <span class="keyword">return</span> arg</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">echo</span>(<span class="number">123</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/X4quRIj.png" alt=""></p>
+<h3 id="範例二-傳入多個"><a href="#範例二-傳入多個" class="headerlink" title="範例二 傳入多個"></a>範例二 傳入多個</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> swap&lt;T, U&gt;(<span class="attr">tuple</span>: [T, U]): [U, T] &#123;</span><br><span class="line">  <span class="keyword">return</span> [tuple[<span class="number">1</span>], tuple[<span class="number">0</span>]]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">swap</span>([<span class="string">&#x27;string&#x27;</span>, <span class="number">123</span>])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/hJ5IqSY.png" alt=""></p>
+<h3 id="泛型第二部分-约束泛型"><a href="#泛型第二部分-约束泛型" class="headerlink" title="泛型第二部分 - 约束泛型"></a>泛型第二部分 - 约束泛型</h3><ul>
+<li>帶有「限制」的泛型</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> echoWithArr&lt;T&gt;(<span class="attr">arg</span>: T): T &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(arg.<span class="property">length</span>)</span><br><span class="line">  <span class="keyword">return</span> arg</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 上例中，泛型 T 不一定包含属性 length，我们可以给他傳入任意型別，當然有些不包括 length 属性，那样就會報錯</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 我們使用了 extends 約束了泛型 T 必須符合介面 IWithLength 的形狀，也就是必須包含 length 屬性。</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">IWithLength</span> &#123;</span><br><span class="line">  <span class="attr">length</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> echoWithLength&lt;T <span class="keyword">extends</span> <span class="title class_">IWithLength</span>&gt;(<span class="attr">arg</span>: T): T &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(arg.<span class="property">length</span>)</span><br><span class="line">  <span class="keyword">return</span> arg</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">echoWithLength</span>(<span class="string">&#x27;str&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> result3 = <span class="title function_">echoWithLength</span>(&#123;<span class="attr">length</span>: <span class="number">10</span>&#125;)</span><br><span class="line"><span class="keyword">const</span> result4 = <span class="title function_">echoWithLength</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">//此時如果呼叫 loggingIdentity 的時候，傳入的 arg 不包含 length，那麼在編譯階段就會報錯了</span></span><br><span class="line"><span class="title function_">echoWithLength</span>(<span class="number">7</span>);</span><br><span class="line"><span class="comment">// index.ts(10,17): error TS2345: Argument of type &#x27;7&#x27; is not assignable to parameter of type &#x27;Lengthwise&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="泛型第三部分-泛型在-class-和-interface-中的使用"><a href="#泛型第三部分-泛型在-class-和-interface-中的使用" class="headerlink" title="泛型第三部分 - 泛型在 class 和 interface 中的使用"></a>泛型第三部分 - 泛型在 class 和 interface 中的使用</h3><ol>
+<li>泛型在 class 的使用</li>
+</ol>
+<ul>
+<li>在第一個程式中存在一个问题，它允許你向 Queue 中添加任何型別的數據，當然，當數據被彈出隊列时，也可以是任意類型</li>
+<li>在下方的範例中，看起来可以向隊列中添加 string 型別的數據，但是那麼在使用的過程中，就會出現無法捕捉的錯誤</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> data = [];</span><br><span class="line">  <span class="title function_">push</span>(<span class="params">item</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">data</span>.<span class="title function_">push</span>(item)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">pop</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">data</span>.<span class="title function_">shift</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> <span class="title class_">Queue</span>()</span><br><span class="line">queue.<span class="title function_">push</span>(<span class="number">1</span>)</span><br><span class="line">queue.<span class="title function_">push</span>(<span class="string">&#x27;str&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">pop</span>().<span class="title function_">toFixed</span>())</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">pop</span>().<span class="title function_">toFixed</span>())</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> data = [];</span><br><span class="line">  <span class="title function_">push</span>(<span class="params">item: T</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">data</span>.<span class="title function_">push</span>(item)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">pop</span>(): T &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">data</span>.<span class="title function_">shift</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> <span class="title class_">Queue</span>&lt;<span class="built_in">number</span>&gt;()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>泛型在  interface 中的使用</li>
+</ol>
+<ul>
+<li>之前提過可以使用介面的方式來定義一個函式需要符合的形狀</li>
+<li>當然也可以使用含有泛型的介面來定義函式的形狀：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//泛型和 interface</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">KeyPair</span>&lt;T, U&gt; &#123;</span><br><span class="line">  <span class="attr">key</span>: T;</span><br><span class="line">  <span class="attr">value</span>: U;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp1</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">number</span>, <span class="built_in">string</span>&gt; = &#123; <span class="attr">key</span>: <span class="number">1</span>, <span class="attr">value</span>: <span class="string">&quot;str&quot;</span>&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp2</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; = &#123; <span class="attr">key</span>: <span class="string">&quot;str&quot;</span>, <span class="attr">value</span>: <span class="number">123</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">arr</span>:<span class="built_in">number</span>[] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">arrTwo</span>:<span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/6GXBwCI.png" alt=""></p>
+<p>interface 搭配泛型之后，可以靈活的返回不同的型別</p>
+<ul>
+<li><p>創建一个拥有特定型別的容器，class 和 泛型 仿佛给一个容器貼上標籤一样</p>
+</li>
+<li><p>泛型就好像一个可變的參數，在用的时候傳入，生成这個不同型別的一个容器，</p>
+</li>
+<li><p>上個部分的用它来靈活的约束参数的型別，不需要參數是一个特别死板的型別，不希望他是一个特定 string、number 型別，我要傳入的参數必须有某某屬性、某某方法，否則就會報錯。</p>
+</li>
+<li><p>在函式使用的时候，函式的这个型別推斷，不會進入到函式中，所以使用表達式，没法明確建立型別的绑定，用泛型可以让我们打破這個鴻溝，這個时候就可以返回它傳入的類型。</p>
+<h2 id="Type-Aliases"><a href="#Type-Aliases" class="headerlink" title="Type Aliases"></a>Type Aliases</h2></li>
+<li><p>就是给型別起一個别名，讓它可以更方便的被重用。</p>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">sum</span>: <span class="function">(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span></span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">sum</span>(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">PlusType</span> = <span class="function">(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">sum2</span>: <span class="title class_">PlusType</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 支持聯合</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StrOrNumber</span> = <span class="built_in">string</span> | <span class="built_in">number</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">result2</span>: <span class="title class_">StrOrNumber</span> = <span class="string">&#x27;123&#x27;</span></span><br><span class="line">result2 = <span class="number">123</span> <span class="comment">//沒有錯</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 字符串字面量 ，類似在列舉的常數變量</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Directions</span> = <span class="string">&#x27;Up&#x27;</span> | <span class="string">&#x27;Down&#x27;</span> | <span class="string">&#x27;Left&#x27;</span> | <span class="string">&#x27;Right&#x27;</span></span><br><span class="line"><span class="comment">// 使toWhere 這個變量為 Direction 類型</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">toWhere</span>: <span class="title class_">Directions</span> = <span class="string">&#x27;Up&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>我們使用 type 定了一個字串字面量型別 EventNames，它只能取三種字串中的一種。<br>注意，型別別名與字串字面量型別都是使用 type 進行定義。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">EventNames</span> = <span class="string">&#x27;click&#x27;</span> | <span class="string">&#x27;scroll&#x27;</span> | <span class="string">&#x27;mousemove&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">handleEvent</span>(<span class="params">ele: Element, event: EventNames</span>) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">handleEvent</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;hello&#x27;</span>), <span class="string">&#x27;scroll&#x27;</span>);  <span class="comment">// 沒問題</span></span><br><span class="line"><span class="title function_">handleEvent</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;world&#x27;</span>), <span class="string">&#x27;dbclick&#x27;</span>); <span class="comment">// 報錯，event 不能為 &#x27;dbclick&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// index.ts(7,47): error TS2345: Argument of type &#x27;&quot;dbclick&quot;&#x27; is not assignable to parameter of type &#x27;EventNames&#x27;.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Intersection-Types"><a href="#Intersection-Types" class="headerlink" title="Intersection Types"></a>Intersection Types</h2><ul>
+<li>使用 <code>&amp;</code> 符號</li>
+<li>經過上面的 type 使 IName 就有了 name 和 age兩個屬性在裡面<ul>
+<li>和interface 的 extends 有點類似，都是為了實現物件形狀組合和擴展</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">IName</span>  &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">IPerson</span> = <span class="title class_">IName</span> &amp; &#123; <span class="attr">age</span>: <span class="built_in">number</span> &#125;</span><br><span class="line"><span class="comment">// 經過上面的 type 使 IName 就有了 name 和 age兩個屬性在裡面</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">person</span>: <span class="title class_">IPerson</span> = &#123; <span class="attr">name</span>: <span class="string">&#x27;hello&#x27;</span>, <span class="attr">age</span>: <span class="number">12</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>什麼时候用介面，什麼时候用 Type Aliases：</p>
+<ul>
+<li>interface 是 docker typing 的實現方式，是一種獨特類型，和extends class  implememts 有關的用interface ，</li>
+<li>和交叉，聯合型別的有關的用 Type Aliases；</li>
+</ul>
+<h2 id="內建物件"><a href="#內建物件" class="headerlink" title="內建物件"></a>內建物件</h2><h3 id="DOM-和-BOM-的內建物件"><a href="#DOM-和-BOM-的內建物件" class="headerlink" title="DOM 和 BOM 的內建物件"></a>DOM 和 BOM 的內建物件</h3><p>DOM 和 BOM 提供的內建物件有：<br>Document、HTMLElement、Event、NodeList 等。<br>TypeScript 中會經常用到這些型別：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">body</span>: <span class="title class_">HTMLElement</span> = <span class="variable language_">document</span>.<span class="property">body</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">allDiv</span>: <span class="title class_">NodeList</span> = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span>(<span class="params">e: MouseEvent</span>) &#123;</span><br><span class="line">  <span class="comment">// Do something</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="ECMAScript-的內建物件"><a href="#ECMAScript-的內建物件" class="headerlink" title="ECMAScript 的內建物件"></a>ECMAScript 的內建物件</h3><ul>
+<li>Boolean、Error、Date、RegExp 等。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">b</span>: <span class="title class_">Boolean</span> = <span class="keyword">new</span> <span class="title class_">Boolean</span>(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="attr">e</span>: <span class="title class_">Error</span> = <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Error occurred&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="attr">d</span>: <span class="title class_">Date</span> = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="attr">r</span>: <span class="title class_">RegExp</span> = <span class="regexp">/[a-z]/</span>;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/Microsoft/TypeScript/tree/main/src/lib">TypeScript 內置</a></p>
+<h2 id="Utility-Types"><a href="#Utility-Types" class="headerlink" title="Utility Types"></a>Utility Types</h2><p><a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/utility-types.html">官方</a><br>Typescript 還提供了一些功能性，帮助性的型別，這些型別，大家在 JS 的世界是看不到的，這些型別叫做 utility types，提供一些簡潔明快而且非常方便的功能。</p>
+<ul>
+<li>使用  Partial</li>
+<li>Omit</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// partial，它可以把傳入的型別都變成可選</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">IPerson</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span></span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">viking</span>: <span class="title class_">IPerson</span> = &#123; <span class="attr">name</span>: <span class="string">&#x27;viking&#x27;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">IPartial</span> = <span class="title class_">Partial</span>&lt;<span class="title class_">IPerson</span>&gt;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">viking2</span>: <span class="title class_">IPartial</span> = &#123; &#125; <span class="comment">//可以都不傳，也不會報錯</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Omit，它返回的型別可以忽略傳入型別的某个屬性</span></span><br><span class="line"><span class="comment">// 以下範例 將 name 忽略掉</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">IOmit</span> = <span class="title class_">Omit</span>&lt;<span class="title class_">IPerson</span>, <span class="string">&#x27;name&#x27;</span>&gt;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">viking3</span>: <span class="title class_">IOmit</span> = &#123; <span class="attr">age</span>: <span class="number">20</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>資料來源：</p>
+<ol>
+<li>線上課程：實戰 Vue3.0(正式版) + TS </li>
+<li><a target="_blank" rel="noopener" href="https://willh.gitbook.io/typescript-tutorial/">TypeScript 新手指南</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/11/27/TS-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1472,272 +1867,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/09/21/vue-emit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/21/vue-emit/" class="post-title-link" itemprop="url">Vue.js 3 -  資料傳遞 emit</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-21 12:42:48" itemprop="dateCreated datePublished" datetime="2021-09-21T12:42:48+08:00">2021-09-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:33:34" itemprop="dateModified" datetime="2022-11-04T10:33:34+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>圖示：<br><img src="https://i.imgur.com/PxIIobu.png" alt=""></p>
-<h2 id="emit-實作練習"><a href="#emit-實作練習" class="headerlink" title="emit 實作練習"></a>emit 實作練習</h2><p><img src="https://i.imgur.com/7guYdVb.png" alt=""></p>
-<ul>
-<li>透過點擊add按鈕，觸發外層元件數值的改變<ul>
-<li>先定義外層接收資料方式</li>
-<li>定義內層的 $emit 觸發方法</li>
-<li>使用 v-on 的方式觸發外層方法（口訣：前內、後外）</li>
-</ul>
-</li>
-</ul>
-<h3 id="外層元件"><a href="#外層元件" class="headerlink" title="外層元件"></a>外層元件</h3><ul>
-<li>定義接收方法：當內層傳給你的時候，要做什麼事<ul>
-<li><code>addNumber()</code>使num 增加1<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line">            <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">              <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="attr">num</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="attr">text</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">              &#125;;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">methods</span>: &#123;</span><br><span class="line">              <span class="title function_">addNumber</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;addnumber&#x27;</span>);</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">num</span>++;</span><br><span class="line">              &#125;,</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="內層元件"><a href="#內層元件" class="headerlink" title="內層元件"></a>內層元件</h3><ul>
-<li>在方法內建立函式，來觸發資料傳遞</li>
-<li>並將<code>click</code>綁到內部元件的按鈕上。使點擊時候，會觸發$emit<ul>
-<li>emit 名稱<code>emit-num</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;button-counter&#x27;</span>, &#123;</span><br><span class="line">            <span class="attr">methods</span>: &#123;</span><br><span class="line">              <span class="title function_">click</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;inner,click&#x27;</span>);</span><br><span class="line">                <span class="variable language_">this</span>.$emit(<span class="string">&#x27;emit-num&#x27;</span>);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">template</span>: <span class="string">`&lt;button type=&quot;button&quot; @click=&quot;click&quot;&gt;add&lt;/button&gt;`</span></span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/W1s9mhp.png" alt=""></p>
-<h2 id="建立內外層元件的溝通橋樑"><a href="#建立內外層元件的溝通橋樑" class="headerlink" title="建立內外層元件的溝通橋樑"></a>建立內外層元件的溝通橋樑</h2><ul>
-<li>使用 v-on 的方式觸發外層方法（口訣：前內、後外）<ul>
-<li>在 div內放入子元件<code>button-counter</code></li>
-<li><code>:emit-num=&quot;addNumber&quot;</code></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">&quot;app&quot;</span>&gt;</span><br><span class="line">          &#123;&#123; num &#125;&#125;</span><br><span class="line">    &lt;button-counter v-<span class="attr">on</span>:emit-num=<span class="string">&quot;addNumber&quot;</span>&gt;&lt;/button-counter&gt;</span><br><span class="line">     &lt;/div&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="練習二，資料接收"><a href="#練習二，資料接收" class="headerlink" title="練習二，資料接收"></a>練習二，資料接收</h2><h3 id="外層元件-1"><a href="#外層元件-1" class="headerlink" title="外層元件"></a>外層元件</h3><ul>
-<li>接收方法為 <code>getData</code> 接收 text<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line">            <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">              <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="attr">text</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">              &#125;;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">methods</span>: &#123;</span><br><span class="line">           </span><br><span class="line">              <span class="title function_">getData</span>(<span class="params">value</span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;getData&#x27;</span>, text);</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">text</span> = value;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="內層元件-1"><a href="#內層元件-1" class="headerlink" title="內層元件"></a>內層元件</h3><ul>
-<li>建立觸發傳遞的方式<ul>
-<li>將內層元件<code>text: &#39;內部資料&#39;</code> 傳遞到外層<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;button-text&#x27;</span>, &#123;</span><br><span class="line">    <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">text</span>: <span class="string">&#x27;內部資料&#x27;</span>,</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;,</span><br><span class="line">    <span class="attr">methods</span>: &#123;</span><br><span class="line">      <span class="title function_">emitText</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">emit</span>(<span class="string">&#x27;emit-text&#x27;</span>, <span class="variable language_">this</span>.<span class="property">text</span>)</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">     <span class="attr">template</span>: <span class="string">`&lt;button type=&quot;button&quot; @click=&quot;emitText&quot;&gt;emit data&lt;/button&gt;`</span></span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="建立內外橋樑"><a href="#建立內外橋樑" class="headerlink" title="建立內外橋樑"></a>建立內外橋樑</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;h3&gt;傳遞資料狀態&lt;/h3&gt;</span><br><span class="line"> 內部傳來的文字：&#123;&#123; text &#125;&#125;&lt;br&gt;</span><br><span class="line"> <span class="language-xml"><span class="tag">&lt;<span class="name">button-text</span> @<span class="attr">emit-text</span>=<span class="string">&quot;getData&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">button-text</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/avhMirS.png" alt=""></li>
-</ul>
-</li>
-</ul>
-<h2 id="emit-命名"><a href="#emit-命名" class="headerlink" title="emit 命名"></a>emit 命名</h2><p>與 props 命名一樣需要注意：</p>
-<ul>
-<li>在內層若以駝峰命名 <code>emitText</code><ul>
-<li>也可以一開始內層就是用<code>-</code> 來命名即可，如<code>emit-text</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">emitText</span>(<span class="params"></span>) &#123;</span><br><span class="line">       <span class="variable language_">this</span>.<span class="title function_">emit</span>(<span class="string">&#x27;emitText&#x27;</span>, <span class="variable language_">this</span>.<span class="property">text</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>到了要綁定的 template 上，<code>emit-text</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button-text @emit-text=<span class="string">&quot;getData&quot;</span>&gt;&lt;/button-text&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/09/21/vue-props/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/21/vue-props/" class="post-title-link" itemprop="url">Vue.js 3 -  資料傳遞 props</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-21 11:42:48" itemprop="dateCreated datePublished" datetime="2021-09-21T11:42:48+08:00">2021-09-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:33:39" itemprop="dateModified" datetime="2022-11-04T10:33:39+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>因為Vue每個元件都是各自獨立，所以我們無法在各自元件去調整資料，而直接修改另一個元件的資料。<br>所以，要使元件之間可以相互溝通，就需要使用資料傳遞方式。<br>在傳遞方式：</p>
-<ul>
-<li>外層傳遞內層 : props</li>
-<li>內層向外傳遞 : emit<br>當外層元件，要將資料往內層元件丟時，此過程就是使用props。</li>
-</ul>
-<p><img src="https://i.imgur.com/FTbHDPk.png" alt=""></p>
-<h2 id="傳遞資料的方式："><a href="#傳遞資料的方式：" class="headerlink" title="傳遞資料的方式："></a>傳遞資料的方式：</h2><h3 id="靜態資料傳入"><a href="#靜態資料傳入" class="headerlink" title="靜態資料傳入"></a>靜態資料傳入</h3><ul>
-<li>預期將外層傳入一個url的變數，傳進給內層使用<ul>
-<li>photo為內部元件，在template 我希望能夠取得外層傳入的圖片(urlimg)</li>
-<li>故在 props 以此命名，並將它綁到 template<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;photo&#x27;</span>, &#123;</span><br><span class="line">       <span class="attr">props</span>: [<span class="string">&#x27;url&#x27;</span>],</span><br><span class="line">       <span class="attr">template</span>: <span class="string">`&lt;img :src=&quot;url&quot; class=&quot;img-thumbnail&quot; alt&gt;`</span></span><br><span class="line">   &#125;);</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>將上方的元件資料，加到外層元件：像是加入html屬性一樣<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;photo</span><br><span class="line">    url=<span class="string">&quot;https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=600&amp;q=80&quot;</span>&gt;</span><br><span class="line">&lt;/photo&gt;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><img src="https://i.imgur.com/f079ziY.png" alt=""></p>
-<h3 id="動態資源"><a href="#動態資源" class="headerlink" title="動態資源"></a>動態資源</h3><ul>
-<li>使用 <code>v-bind</code>，綁定內部元件的props ，使資料可以跟外層元件連動</li>
-<li>記得使用口訣： 前內、後外 =&gt;前面就是props內的名稱，後面就是外層元件的名稱<br><img src="https://i.imgur.com/BMVZtkn.png" alt=""><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;h3&gt;動態資源&lt;/h3&gt;</span><br><span class="line">&lt;p&gt;技巧：前內、後外&lt;/p&gt;</span><br><span class="line">&lt;photo v-bind:urlimg=&quot;imgUrl&quot;&gt;&lt;/photo&gt;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="資料傳遞為-單向數據流"><a href="#資料傳遞為-單向數據流" class="headerlink" title="資料傳遞為 單向數據流"></a>資料傳遞為 單向數據流</h2><ul>
-<li>外部所定義的資料，當往內層傳遞，是單向性</li>
-<li>不能試圖使用v-model或各種方式，來改變props傳入的內容<ul>
-<li>以下範例：在子元件 <code>photo2</code> 放入 <code>input</code>綁定 <code>v-model</code></li>
-<li>當嘗試在輸入框修改網址，會出現錯誤</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//外層元件綁定 url</span></span><br><span class="line">&lt;photo2 :url=<span class="string">&quot;imgUrl&quot;</span>&gt;&lt;/photo2&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line">    <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">imgUrl</span>: <span class="string">&#x27;https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=600&amp;q=80&#x27;</span>,</span><br><span class="line">         &#125;;</span><br><span class="line">     &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"> app.<span class="title function_">component</span>(<span class="string">&#x27;photo2&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">props</span>: [<span class="string">&#x27;url&#x27;</span>],</span><br><span class="line">    <span class="attr">template</span>: <span class="string">`&lt;img :src=&quot;url&quot; class=&quot;img-thumbnail&quot; alt&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">    &lt;input type=&quot;text&quot; v-model=&quot;url&quot;&gt; &#123;&#123; url &#125;&#125;`</span></span><br><span class="line">     &#125;)</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/OmmIxpi.png" alt=""></p>
-<p><img src="https://i.imgur.com/2BqCNTp.png" alt=""></p>
-<h2 id="在內部元件，要為props來命名"><a href="#在內部元件，要為props來命名" class="headerlink" title="在內部元件，要為props來命名"></a>在內部元件，要為props來命名</h2><p>在命名上有些要注意的地方</p>
-<ul>
-<li>首字母大寫: PostData、SetItems</li>
-<li>駝峰命名法: postData、setItems<br>要注意：在 HTML 中使用時必須使用 kebab-case (短橫線分隔)且應該為小寫。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">&quot;app&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line"> <span class="language-xml"><span class="tag">&lt;<span class="name">photo3</span> <span class="attr">:super-url</span>=<span class="string">&quot;imgUrl&quot;</span> &gt;</span><span class="tag">&lt;/<span class="name">photo3</span>&gt;</span></span></span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;photo3&quot;</span>, &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">props</span>: [<span class="string">&quot;superUrl&quot;</span>],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">template</span>: <span class="string">`&lt;img :src=&quot;superUrl&quot; class=&quot;img-thumbnail alt &gt;&quot;`</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/57P1JDW.png" alt=""></p>
-<h2 id="定義-Props-型別驗證"><a href="#定義-Props-型別驗證" class="headerlink" title="定義 Props 型別驗證"></a>定義 Props 型別驗證</h2><ul>
-<li>使用型別驗證，會改用大括號，裡面放入props名稱，並用物件形式加入設定的內容<ul>
-<li><code>props:&#123;
-  propC: &#123;
-  type: String,
-  required: true,
-  &#125;
-&#125;</code></li>
-</ul>
-</li>
-<li>其中，可以針對該props 來設定：<ul>
-<li><code>type</code>型別 ： 可以是 String、Number、Boolean、Array、Object、Date、Function、Symbol</li>
-<li><code>default</code> ：如果該 prop 沒有接收到傳入的值，就會使用 default 的值作為預設值。</li>
-<li><code>required</code> ： 是否為必填項，如果設為 true 則表示必須要有值傳入，若沒有，就會出現錯誤提示。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;props-validation&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">props</span>: &#123;</span><br><span class="line">      <span class="comment">// 單一型別檢查，可接受的型別 String, Number, Object, Boolean, Function(在 Vue 中可使用 Function 驗證型別)</span></span><br><span class="line">      <span class="comment">// null, undefined 會直接通過驗證</span></span><br><span class="line">      <span class="attr">propA</span>: <span class="title class_">Function</span>,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 多個型別檢查</span></span><br><span class="line">      <span class="attr">propB</span>: [<span class="title class_">String</span>, <span class="title class_">Number</span>],</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 必要值</span></span><br><span class="line">      <span class="attr">propC</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">        <span class="attr">required</span>: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 預設值</span></span><br><span class="line">      <span class="attr">propD</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">Number</span>,</span><br><span class="line">        <span class="attr">default</span>: <span class="number">300</span></span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 自訂函式</span></span><br><span class="line">      <span class="attr">propE</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">Object</span>,</span><br><span class="line">        <span class="title function_">default</span>(<span class="params"></span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">money</span>: <span class="number">300</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 自訂驗證</span></span><br><span class="line">      <span class="attr">propF</span>: &#123;</span><br><span class="line">        <span class="title function_">validator</span>(<span class="params">value</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> value &gt; <span class="number">1000</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, </span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
-<a target="_blank" rel="noopener" href="https://www.hexschool.com/courses/vue3.html">六角學院</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10254050">[DAY12]跟 Vue.js 認識的30天 - Vue 模組資料傳遞(<code>props</code>)</a></li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1809,18 +1938,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-count">68</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
