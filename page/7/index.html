@@ -174,6 +174,118 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/09/20/Vue-modify/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/20/Vue-modify/" class="post-title-link" itemprop="url">Vue.js 3 - v-on 修飾符</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-09-20 15:06:46" itemprop="dateCreated datePublished" datetime="2021-09-20T15:06:46+08:00">2021-09-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:33:42" itemprop="dateModified" datetime="2022-11-04T10:33:42+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/NBBY8vo.png" alt=""></p>
+<p>修飾符有分為：<br>1.按件修飾符<br>2.滑鼠修飾符<br>3.事件修飾符</p>
+<p><a target="_blank" rel="noopener" href="https://codepen.io/Eva-go/pen/RwgMXGN">codepen</a></p>
+<h2 id="按鍵修飾符"><a href="#按鍵修飾符" class="headerlink" title="按鍵修飾符"></a>按鍵修飾符</h2><h3 id="1-1-別名修飾"><a href="#1-1-別名修飾" class="headerlink" title="1-1. 別名修飾"></a>1-1. 別名修飾</h3><ul>
+<li>在特定按鍵，按下去的時候觸發<ul>
+<li><code>.enter</code>, <code>.tab</code>, <code>.delete</code>, <code>.esc</code>, <code>.space</code>, <code>.up</code>, <code>.down</code>, <code>.left</code>, <code>.righ</code></li>
+</ul>
+</li>
+<li>使用<code>.enter</code>只有再按下 enter 鍵才會觸發</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">h6</span> <span class="attr">class</span>=<span class="string">&quot;mt-3&quot;</span>&gt;</span>別名修飾<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">v-model</span>=<span class="string">&quot;text&quot;</span> @<span class="attr">keyup.enter</span>=<span class="string">&quot;trigger(&#x27;enter&#x27;)&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">     </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">   <span class="attr">trigger</span>: <span class="keyword">function</span>(<span class="params">name</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(name, <span class="string">&#x27;此事件被觸發了&#x27;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-相應按鍵時才觸發的監聽器"><a href="#1-2-相應按鍵時才觸發的監聽器" class="headerlink" title="1-2. 相應按鍵時才觸發的監聽器"></a>1-2. 相應按鍵時才觸發的監聽器</h3><ul>
+<li>僅在按下相應按鍵時才觸發鼠標或鍵盤事件的監聽器</li>
+<li><code>.ctrl</code>, <code>.alt</code>, <code>.shift</code>, <code>.meta</code></li>
+<li>此範例為 <code>@keyup.shift.enter</code><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h6</span> <span class="attr">class</span>=<span class="string">&quot;mt-3&quot;</span>&gt;</span>相應按鍵時才觸發的監聽器<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">v-model</span>=<span class="string">&quot;text&quot;</span> @<span class="attr">keyup.shift.enter</span>=<span class="string">&quot;trigger(&#x27;shift + Enter&#x27;)&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/gQjWYVy.png" alt=""></li>
+</ul>
+<ol start="2">
+<li>滑鼠修飾符<br><code>.left</code> 只當點擊鼠標左鍵時觸發。<br><code>.right</code> 只當點擊鼠標右鍵時觸發。<br><code>.middle</code> 只當點擊鼠標中鍵時觸發。</li>
+</ol>
+<ul>
+<li>按下滑鼠右鍵<br><code>&lt;span class=&quot;box&quot; @click.right=&quot;trigger(&#39;right button&#39;)&quot;&gt;</code></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>滑鼠修飾符<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h6</span> <span class="attr">class</span>=<span class="string">&quot;mt-3&quot;</span>&gt;</span>滑鼠修飾符<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;p-3 bg-primary&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> @<span class="attr">click.right</span>=<span class="string">&quot;trigger(&#x27;right button&#x27;)&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/lddG6zT.png" alt=""></p>
+<ol start="3">
+<li>事件修飾符</li>
+</ol>
+<ul>
+<li>不會限定，是使用滑鼠還是鍵盤，是針對事件本身來進行修飾<br><code>.stop</code> - 調用 <code>event.stopPropagation()</code>。<br><code>.prevent</code> - 調用 <code>event.preventDefault()</code>。<br><code>.capture</code> - 添加事件偵聽器時使用 capture 模式。<br><code>.self</code> - 只當事件是從偵聽器綁定的元素本身觸發時才觸發回調。<br><code>.once</code> - 只觸發一次回調。</li>
+<li>常用的是 <code>&lt;a&gt;</code>外部連結：移除預設事件<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>事件修飾符<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.stop - 調用 event.stopPropagation()。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>.prevent - 調用 event.preventDefault()。<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.capture - 添加事件偵聽器時使用 capture 模式。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.self - 只當事件是從偵聽器綁定的元素本身觸發時才觸發回調。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.once - 只觸發一次回調。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://www.google.com/&quot;</span> @<span class="attr">click.prevent</span>=<span class="string">&quot;trigger(&#x27;prevent&#x27;)&quot;</span>&gt;</span>加入 Prevent<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>資料來源：<br>六角學院 - Vue 3.js</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/06/11/node-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1578,184 +1690,6 @@ css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class=
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/02/23/API-youtube/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/23/API-youtube/" class="post-title-link" itemprop="url">API-youtube</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-23 14:47:04" itemprop="dateCreated datePublished" datetime="2021-02-23T14:47:04+08:00">2021-02-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Ajax-%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">Ajax 實作練習</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/HyrwBQl.png" alt=""></p>
-<p><a href="https://eva813.github.io/Eva_portfolio/YoutubeAPI/YoutubeAPI.html">成品</a></p>
-<h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><ul>
-<li>搜尋框，輸入搜尋關鍵字，下方會列出5筆列表<ul>
-<li>有圖片縮圖、影片標題、影片描述</li>
-</ul>
-</li>
-<li>按下next page 會取得下5筆資料</li>
-<li>按下prev page，會取得上5筆資料</li>
-</ul>
-<p>ajax 在同一個頁面，不做刷新就可以改變頁面的內容。<br>q: query</p>
-<h2 id="youtube-API-application-programming-interface-資料查看"><a href="#youtube-API-application-programming-interface-資料查看" class="headerlink" title="youtube API(application programming interface)資料查看"></a>youtube API(application programming interface)資料查看</h2><p><a target="_blank" rel="noopener" href="https://developers.google.com/youtube/v3/docs/">YouTube 資料 API 參考手冊</a></p>
-<p>取得授權：<a target="_blank" rel="noopener" href="https://console.developers.google.com/projectselector2/apis/credentials?pli=1&supportedpurview=project">憑證</a></p>
-<p><img src="https://i.imgur.com/asf7coq.png" alt=""></p>
-<p>API 金鑰:AIzaSyCKPRCaNS-PQJLl2jzoQEf-O4I0tnrtd8M</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jQuery API D ocument =&gt; 表示看官方文件</span><br><span class="line">串API =&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="檢視範例，ajax資料的情形"><a href="#檢視範例，ajax資料的情形" class="headerlink" title="檢視範例，ajax資料的情形"></a>檢視範例，ajax資料的情形</h4><p><img src="https://i.imgur.com/wc6VWtV.png" alt=""></p>
-<p><img src="https://i.imgur.com/tSYR4vu.png" alt=""></p>
-<h2 id="JS-部分"><a href="#JS-部分" class="headerlink" title="JS 部分"></a>JS 部分</h2><h3 id="1-嘗試串接Youtube-API"><a href="#1-嘗試串接Youtube-API" class="headerlink" title="1.嘗試串接Youtube API"></a>1.嘗試串接Youtube API</h3><ul>
-<li>首先需考量，我們所需要的資料參數有哪些(</li>
-<li>在抓取成功的部分，要設置抓取五筆搜尋到的五筆資料，並將其呈現於頁面<ul>
-<li>除了5筆資料外，還需要跳轉上、下頁的按鈕<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getVideo</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> value = $(<span class="string">&#x27;#search-field&#x27;</span>).<span class="title function_">val</span>();</span><br><span class="line">  <span class="keyword">let</span> youtubeURL = <span class="string">&quot;https://www.googleapis.com/youtube/v3/search&quot;</span>;</span><br><span class="line">  $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;GET&quot;</span>,</span><br><span class="line">    <span class="attr">url</span>: youtubeURL,</span><br><span class="line">    <span class="attr">data</span>: &#123;<span class="comment">//將要放入網址的參數放在這</span></span><br><span class="line">      <span class="attr">part</span>:</span><br><span class="line">        <span class="string">&#x27;id,snippet&#x27;</span>,<span class="comment">// 必填，把需要的資訊列出來</span></span><br><span class="line">      <span class="attr">q</span>: value,<span class="comment">// 查詢文字</span></span><br><span class="line">      <span class="attr">maxResults</span>: <span class="number">5</span>,<span class="comment">// 預設為五筆資料，可以設定1~50</span></span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;video&quot;</span>,</span><br><span class="line">      <span class="attr">key</span>: <span class="string">&#x27;AIzaSyCKPRCaNS-PQJLl2jzoQEf-O4I0tnrtd8M&#x27;</span><span class="comment">// 使用 API 只能取得公開的播放清單</span></span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="comment">//console.log(data);</span></span><br><span class="line">      <span class="keyword">let</span> nextPageToken = data.<span class="property">nextPageToken</span>;</span><br><span class="line">      <span class="keyword">let</span> prevPageToken = data.<span class="property">prevPageToken</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//試著將收到的資料傳入，並呈現於畫面中</span></span><br><span class="line">      <span class="title function_">insertItems</span>(data);</span><br><span class="line"></span><br><span class="line">      <span class="title function_">getBtn</span>(data, prevPageToken, nextPageToken)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;, <span class="attr">error</span>: <span class="keyword">function</span> (<span class="params">err</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;oh no&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-網址放入參數<br><a target="_blank" rel="noopener" href="https://pjchender.blogspot.com/2018/08/js-javascript-url-parameters.html">[JS] 使用 JavaScript 解析網址與處理網址中的參數（URL Parameters）</a></li>
-</ul>
-</li>
-</ul>
-<h3 id="2-將資料呈現於頁面-insertItems"><a href="#2-將資料呈現於頁面-insertItems" class="headerlink" title="2.將資料呈現於頁面(insertItems())"></a>2.將資料呈現於頁面(insertItems())</h3><ul>
-<li>透過迴圈方式將要抓取的資料依序填入</li>
-<li>觀察原本畫面結構，並依據去找尋資料中符合的資料<ul>
-<li>videoId、videoTitle、description、channelTitle…</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">insertItems</span>(<span class="params">item</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> output = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  $.<span class="title function_">each</span>(item.<span class="property">items</span>, <span class="keyword">function</span> (<span class="params">index, value</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> videoId = item.<span class="property">items</span>[index].<span class="property">id</span>.<span class="property">videoId</span>;</span><br><span class="line">    <span class="keyword">let</span> videoTitle = item.<span class="property">items</span>[index].<span class="property">snippet</span>.<span class="property">title</span>;</span><br><span class="line">    <span class="keyword">let</span> description = item.<span class="property">items</span>[index].<span class="property">snippet</span>.<span class="property">description</span>;</span><br><span class="line">    <span class="keyword">let</span> thumbnailURL = item.<span class="property">items</span>[index].<span class="property">snippet</span>.<span class="property">thumbnails</span>.<span class="property">high</span>.<span class="property">url</span>;<span class="comment">//高解析度影片縮圖</span></span><br><span class="line">    <span class="keyword">let</span> channelTitle = item.<span class="property">items</span>[index].<span class="property">snippet</span>.<span class="property">channelTitle</span>;</span><br><span class="line">    <span class="keyword">let</span> publishedDate = item.<span class="property">items</span>[index].<span class="property">snippet</span>.<span class="property">publishedAt</span>;</span><br><span class="line">    <span class="comment">// 按鈕</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    output += <span class="string">`&lt;li&gt;&lt;div class=&quot;list-left&quot;&gt;</span></span><br><span class="line"><span class="string">    &lt;img src=&quot; <span class="subst">$&#123;thumbnailURL&#125;</span>&quot;&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">    &lt;div class=&quot;list-right&quot;&gt;</span></span><br><span class="line"><span class="string">    &lt;h3&gt;</span></span><br><span class="line"><span class="string">    &lt;a data-fancybox data-type=&quot;iframe&quot; data-src=&quot;https://www.youtube.com/embed/<span class="subst">$&#123;videoId&#125;</span>&quot; &quot;href=&quot;javascript:;&quot;&gt; <span class="subst">$&#123;videoTitle&#125;</span> &lt;/a&gt;&lt;/h3&gt; &lt;small&gt;By &lt;span class=&quot;cTitle&quot;&gt; <span class="subst">$&#123;channelTitle&#125;</span>&lt;/span&gt; on <span class="subst">$&#123;publishedDate&#125;</span>&lt;/small&gt;</span></span><br><span class="line"><span class="string">    &lt;p&gt; <span class="subst">$&#123;description&#125;</span> &lt;p&gt;&lt;/div&gt;&lt;/li&gt; &lt;div classs=&quot;clearfix&quot;&gt;&lt;/div&gt; </span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line"></span><br><span class="line">    $(<span class="string">&#x27;#results&#x27;</span>).<span class="title function_">html</span>(output);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-製作上、下頁的按鈕鍵"><a href="#3-製作上、下頁的按鈕鍵" class="headerlink" title="3.製作上、下頁的按鈕鍵"></a>3.製作上、下頁的按鈕鍵</h2><ul>
-<li>注意該函式要帶入的參數有哪些</li>
-<li>我們要判斷為，在第一頁時，只有下一頁的按鈕<ul>
-<li>判斷方式為，<code>(!prevPageToken)</code>沒有上一頁的token</li>
-<li>（截圖）</li>
-</ul>
-</li>
-<li>在判斷之中，我們需要將要插入的標籤與內容，放入，並append到畫面要呈現的位置</li>
-<li>注意：在插入的button之中，加入<code>data-token=&quot;$&#123;nextPageToken&#125;&quot; data-query=&quot;$&#123;value&#125;&quot;</code>，用於後續抓取屬性內容。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getBtn</span>(<span class="params">value, prevPageToken, nextPageToken</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(nextPageToken)</span><br><span class="line">  <span class="keyword">if</span> (!prevPageToken) &#123;</span><br><span class="line">    <span class="keyword">var</span> btnOutput = $(<span class="string">`&lt;div class=&quot;button-container&quot;&gt;</span></span><br><span class="line"><span class="string">    &lt;button id=&quot;next-button&quot; class=&quot;paging-button&quot; data-token=&quot;<span class="subst">$&#123;nextPageToken&#125;</span>&quot; data-query=&quot;<span class="subst">$&#123;value&#125;</span>&quot; onclick=&quot;pressNext();&quot;&gt; Next Page&lt;/button&gt;&lt;/div&gt;`</span></span><br><span class="line">    )</span><br><span class="line">    $(<span class="string">&quot;#buttons&quot;</span>).<span class="title function_">append</span>(btnOutput);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> btnOutput = $(<span class="string">`&lt;div class=&quot;button-container&quot;&gt;&lt;button id=&quot;prev-button&quot; class=&quot;paging-button&quot; data-token=&quot;<span class="subst">$&#123;prevPageToken&#125;</span>&quot; data-query=&quot;<span class="subst">$&#123;value&#125;</span>&quot; onclick=&quot;pressPrev();&quot;&gt; Prev Page&lt;/button&gt;  </span></span><br><span class="line"><span class="string">    &lt;button id=&quot;next-button&quot; class=&quot;paging-button&quot;  data-token=&quot;<span class="subst">$&#123;nextPageToken&#125;</span>&quot; data-query=&quot;<span class="subst">$&#123;value&#125;</span>&quot; onclick=&quot;pressNext();&quot;&gt;Next Page&lt;/button&gt;&lt;/div&gt;`</span>)</span><br><span class="line">    $(<span class="string">&quot;#buttons&quot;</span>).<span class="title function_">append</span>(btnOutput);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://developers.google.com/youtube/v3/guides/implementation/pagination">Youtube:Implementation: Pagination</a></p>
-<h2 id="4-下一頁點下後，下五筆的資料"><a href="#4-下一頁點下後，下五筆的資料" class="headerlink" title="4.下一頁點下後，下五筆的資料"></a>4.下一頁點下後，下五筆的資料</h2><ul>
-<li>同樣以ajax的方式來抓取<ul>
-<li>在參數的地方我們要抓取的是，按取下一頁的token</li>
-</ul>
-</li>
-<li>success之中所應用的函示，同樣為插入5筆的資料，以及上下頁的按鈕</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//取得下一頁的資料</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">pressNext</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> youtubeURL = <span class="string">&quot;https://www.googleapis.com/youtube/v3/search&quot;</span>;</span><br><span class="line">  <span class="keyword">let</span> token = $(<span class="string">&#x27;#next-button&#x27;</span>).<span class="title function_">data</span>(<span class="string">&#x27;token&#x27;</span>);</span><br><span class="line">  <span class="keyword">let</span> value = $(<span class="string">&#x27;#search-field&#x27;</span>).<span class="title function_">val</span>();</span><br><span class="line">  $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;GET&quot;</span>,</span><br><span class="line">    <span class="attr">url</span>: youtubeURL,</span><br><span class="line">    <span class="attr">data</span>: &#123;<span class="comment">//將要放入網址的參數放在這</span></span><br><span class="line">      <span class="attr">part</span>:</span><br><span class="line">        <span class="string">&#x27;id,snippet&#x27;</span>,<span class="comment">// 必填，把需要的資訊列出來</span></span><br><span class="line">      <span class="attr">q</span>: value,<span class="comment">// 查詢文字</span></span><br><span class="line">      <span class="attr">pageToken</span>: token,</span><br><span class="line">      <span class="attr">maxResults</span>: <span class="number">5</span>,<span class="comment">// 預設為五筆資料，可以設定1~50</span></span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;video&quot;</span>,</span><br><span class="line"></span><br><span class="line">      <span class="attr">key</span>: <span class="string">&#x27;AIzaSyCKPRCaNS-PQJLl2jzoQEf-O4I0tnrtd8M&#x27;</span><span class="comment">// 使用 API 只能取得公開的播放清單</span></span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">      <span class="keyword">let</span> nextPageToken = data.<span class="property">nextPageToken</span>;</span><br><span class="line">      <span class="keyword">let</span> prevPageToken = data.<span class="property">prevPageToken</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 清空內容</span></span><br><span class="line">      $(<span class="string">&#x27;#results&#x27;</span>).<span class="title function_">html</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">      $(<span class="string">&#x27;#buttons&#x27;</span>).<span class="title function_">html</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">      <span class="comment">//試著將收到的資料傳入，並呈現於畫面中</span></span><br><span class="line">      <span class="title function_">insertItems</span>(data);</span><br><span class="line"></span><br><span class="line">      <span class="title function_">getBtn</span>(data, prevPageToken, nextPageToken)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;, <span class="attr">error</span>: <span class="keyword">function</span> (<span class="params">err</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;oh no&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-上一頁"><a href="#5-上一頁" class="headerlink" title="5.上一頁"></a>5.上一頁</h3><ul>
-<li>同樣的抓取方式，只有要帶入的資料有些差異</li>
-<li><code>token = $(&#39;#prev-button&#39;).data(&#39;token&#39;);</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//前一頁</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">pressPrev</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 清空內容</span></span><br><span class="line">  $(<span class="string">&#x27;#results&#x27;</span>).<span class="title function_">html</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">  $(<span class="string">&#x27;#buttons&#x27;</span>).<span class="title function_">html</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">  <span class="keyword">let</span> youtubeURL = <span class="keyword">new</span> <span class="title function_">URL</span>(<span class="string">`https://www.googleapis.com/youtube/v3/search?`</span>);</span><br><span class="line">  <span class="keyword">let</span> token = $(<span class="string">&#x27;#prev-button&#x27;</span>).<span class="title function_">data</span>(<span class="string">&#x27;token&#x27;</span>);</span><br><span class="line">  <span class="keyword">let</span> value = $(<span class="string">&#x27;#search-field&#x27;</span>).<span class="title function_">val</span>();</span><br><span class="line">  $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;GET&quot;</span>,</span><br><span class="line">    <span class="attr">url</span>: youtubeURL,</span><br><span class="line">    <span class="attr">data</span>: &#123;<span class="comment">//將要放入網址的參數放在這</span></span><br><span class="line">      <span class="attr">part</span>:</span><br><span class="line">        <span class="string">&#x27;id,snippet&#x27;</span>,<span class="comment">// 必填，把需要的資訊列出來</span></span><br><span class="line">      <span class="attr">q</span>: value,<span class="comment">// 查詢文字</span></span><br><span class="line">      <span class="attr">pageToken</span>: token,</span><br><span class="line">      <span class="attr">maxResults</span>: <span class="number">5</span>,<span class="comment">// 預設為五筆資料，可以設定1~50</span></span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;video&quot;</span>,</span><br><span class="line"></span><br><span class="line">      <span class="attr">key</span>: <span class="string">&#x27;AIzaSyCKPRCaNS-PQJLl2jzoQEf-O4I0tnrtd8M&#x27;</span><span class="comment">// 使用 API 只能取得公開的播放清單</span></span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">      <span class="keyword">let</span> nextPageToken = data.<span class="property">nextPageToken</span>;</span><br><span class="line">      <span class="keyword">let</span> prevPageToken = data.<span class="property">prevPageToken</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 清空內容</span></span><br><span class="line">      $(<span class="string">&#x27;#results&#x27;</span>).<span class="title function_">html</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">      $(<span class="string">&#x27;#buttons&#x27;</span>).<span class="title function_">html</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">      <span class="comment">//試著將收到的資料傳入，並呈現於畫面中</span></span><br><span class="line">      <span class="title function_">insertItems</span>(data);</span><br><span class="line"></span><br><span class="line">      <span class="title function_">getBtn</span>(data, prevPageToken, nextPageToken)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;, <span class="attr">error</span>: <span class="keyword">function</span> (<span class="params">err</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;oh no&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/177833/">HTML5 自定義屬性 data-* 和 jQuery.data 詳解<br>2018.06.20</a><br><a target="_blank" rel="noopener" href="https://pjchender.blogspot.com/2017/01/html-5-data-attribute.html">[技術分享] 什麼是 HTML 5 中的資料屬性（data-* attribute）</a></p>
-<h3 id="6-運用fancybox的方式彈出"><a href="#6-運用fancybox的方式彈出" class="headerlink" title="6.運用fancybox的方式彈出"></a>6.運用fancybox的方式彈出</h3><ul>
-<li><p>使用fancyBox展示影片</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://fancyapps.com/fancybox/3/docs/#iframe">fancybox Documention</a></li>
-<li><a target="_blank" rel="noopener" href="https://cdnjs.com/libraries/fancybox">fancybox-CDN</a></li>
-</ul>
-</li>
-<li><p>使用iframe連結欲嵌入的外部影片連結</p>
-<ul>
-<li>iframe 是框架的一種，也稱為內置框架或內聯框架，用來在網頁內嵌入另外一個網頁<br><a target="_blank" rel="noopener" href="https://fancyapps.com/fancybox/3/docs/#iframe"></a></li>
-</ul>
-</li>
-<li><p>透過CDN方式連結fancybox套件</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- fancyBox --&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css&quot;</span> /&gt;</span></span></span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在我們點選該影片名稱區，插入影片id</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;h3&gt;<span class="language-xml"><span class="tag">&lt;<span class="name">a</span> <span class="attr">data-fancybox</span> <span class="attr">data-type</span>=<span class="string">&quot;iframe&quot;</span> <span class="attr">data-src</span>=<span class="string">&quot;https://www.youtube.com/embed/$&#123;videoId&#125;&quot;</span> &quot;<span class="attr">href</span>=<span class="string">&quot;javascript:;&quot;</span>&gt;</span> $&#123;videoTitle&#125; </span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span>&lt;/h3&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;[data-fancybox]&#x27;</span>).<span class="title function_">fancybox</span>(&#123;</span><br><span class="line">  toolbar  : <span class="literal">false</span>,</span><br><span class="line">  smallBtn : <span class="literal">true</span>,</span><br><span class="line">  iframe : &#123;</span><br><span class="line">    preload : <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="https://orow.github.io/2019/03/16/jQuery-youtube-search/">[jQuery] - 練習-Youtube Search Engine</a></p>
-</li>
-</ul>
-<hr>
-<p>補充知識：<br>XMLHttpRequest(XHR):是一種規範，用來發ajax使用</p>
-<p>token(令牌)：唯一的、可以認證身份或取得資料</p>
-<p>GET:向伺服器發request，（伺服器會告訴我們要發伺服器的網址，我們向它請求資訊）</p>
-<h4 id="用瀏覽器debug"><a href="#用瀏覽器debug" class="headerlink" title="用瀏覽器debug"></a>用瀏覽器debug</h4><p><img src="https://i.imgur.com/IlQ8Glx.png" alt=""></p>
-<ul>
-<li>可在watch加上要觀察的變數<br><img src="https://i.imgur.com/7RcELS4.png" alt=""></li>
-</ul>
-<hr>
-<p>參考資料<br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10194007">[30apis] Day 7 : YouTube Data API + 基礎 Fetch API</a><br><a target="_blank" rel="noopener" href="https://www.c-sharpcorner.com/article/how-to-implement-youtube-video-search-using-youtube-data-api-v3-in-wordpress-web2/">How To Implement A Youtube Video Search Using Youtube Data API V3</a><br><a target="_blank" rel="noopener" href="https://hackmd.io/@c36ICNyhQE6-iTXKxoIocg/S1eYdtA1P">Youtube Data API 使用手札</a><br><a target="_blank" rel="noopener" href="https://a42033.gitbooks.io/api/content/Youtube/youtube_data_api/applicate.html">Youtube Data API 申請</a><br><a target="_blank" rel="noopener" href="https://console.cloud.google.com/iam-admin/quotas?hl=zh-tw&_ga=2.128962188.1087850229.1615615433-929425058.1615373715&orgonly=true&angularJsUrl=%2Fprojectselector%2Fiam-admin%2Fquotas%3Fhl%3Dzh-tw%26_ga%3D2.128962188.1087850229.1615615433-929425058.1615373715%26supportedpurview%3Dproject%26orgonly%3Dtrue%26folder%3Dtrue%26organizationId%3Dtrue&project=my-youtube-api-307211&folder=&organizationId=&supportedpurview=project">配額</a></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;error&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;code&quot;</span>: <span class="number">403</span>,</span><br><span class="line">    <span class="string">&quot;message&quot;</span>: <span class="string">&quot;The request cannot be completed because you have exceeded your \u003ca href=\&quot;/youtube/v3/getting-started#quota\&quot;\u003equota\u003c/a\u003e.&quot;</span>,</span><br><span class="line">    <span class="string">&quot;errors&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;message&quot;</span>: <span class="string">&quot;The request cannot be completed because you have exceeded your \u003ca href=\&quot;/youtube/v3/getting-started#quota\&quot;\u003equota\u003c/a\u003e.&quot;</span>,</span><br><span class="line">        <span class="string">&quot;domain&quot;</span>: <span class="string">&quot;youtube.quota&quot;</span>,</span><br><span class="line">        <span class="string">&quot;reason&quot;</span>: <span class="string">&quot;quotaExceeded&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31075893/im-getting-favicon-ico-error">favicon.ico error</a></p>
-<p>問題：</p>
-<ul>
-<li>script.js: Allow attribute will take precedence over ‘allowfullscreen’.<br><img src="https://i.imgur.com/0JiThlt.png" alt=""></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1827,18 +1761,18 @@ css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class=
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">105</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-count">67</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -174,6 +174,107 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/01/10/localstorage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/10/localstorage/" class="post-title-link" itemprop="url">認識什麼是LocalStorage</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-10 10:36:26" itemprop="dateCreated datePublished" datetime="2021-01-10T10:36:26+08:00">2021-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/qCvmh4b.png" alt=""></p>
+<h2 id="認識-Web-Storage："><a href="#認識-Web-Storage：" class="headerlink" title="認識 Web Storage："></a>認識 Web Storage：</h2><p>HTML5 的 Web Storage 是一種可讓網頁將資料儲存於本地端的技術，其作用如同 cookie。</p>
+<p>Cookie 儲存空間很小，最多僅能儲存4KB的資料。<br>HTML5 Web Storage 的儲存空間則大得多(儲存資料容量至少5MB以上)。</p>
+<p><img src="https://i.imgur.com/tq8wugy.png" alt=""></p>
+<h2 id="localStorage-與-sessionStorage"><a href="#localStorage-與-sessionStorage" class="headerlink" title="localStorage 與  sessionStorage"></a>localStorage 與  sessionStorage</h2><p>Web Storage 提供兩個物件可以將資料存在 client 端，一種是 localStorage，另一種是 sessionStorage</p>
+<ul>
+<li>localStorage:可以跨瀏覽器分頁（tab）存取，且資料存取沒有期限，除非手動從本地端清除。</li>
+<li>sessionStorage:生命週期較短，每次分頁或瀏覽器關掉後就會清除。</li>
+</ul>
+<p>基本操作：</p>
+<ul>
+<li>設置資料：<code>localStorage.setItem(key, value)</code></li>
+<li>取得資料：<code>let storageValue = localStorage.getItem(key, value)</code></li>
+<li>清除資料：<code>localStorage.removeItem(key)</code></li>
+<li>清除全部資料：<code>localStorage.clear()</code><blockquote>
+<p>只要將localStorage替換sessionStorage即可</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h3><p>儲存在本地端的資料，格式為 key : value，需注意的是「value 的型態只有 String」!</p>
+<h2 id="找到儲存的資料"><a href="#找到儲存的資料" class="headerlink" title="找到儲存的資料"></a>找到儲存的資料</h2><ul>
+<li>在 DevTools console </li>
+</ul>
+<p><img src="https://i.imgur.com/jZNIas5.png" alt=""></p>
+<p><img src="https://i.imgur.com/7SkvJ8q.png" alt=""></p>
+<p><img src="https://i.imgur.com/ZoLQ4yV.png" alt=""></p>
+<h2 id="JSON-字串轉換"><a href="#JSON-字串轉換" class="headerlink" title="JSON 字串轉換"></a>JSON 字串轉換</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;2&#x27;</span>,<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>( arr + <span class="string">&quot; is &quot;</span> + <span class="title function_">typeof</span>(arr));</span><br><span class="line"><span class="comment">// 1,2,c is object</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-轉換成字串-JSON-stringify"><a href="#1-轉換成字串-JSON-stringify" class="headerlink" title="1.轉換成字串 JSON.stringify"></a>1.轉換成字串 JSON.stringify</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arrToStr = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(arr);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/0lfiqLV.png" alt=""></p>
+<h4 id="2-轉換回原本格式-JSON-parse"><a href="#2-轉換回原本格式-JSON-parse" class="headerlink" title="2.轉換回原本格式 JSON.parse"></a>2.轉換回原本格式 JSON.parse</h4><ul>
+<li>會把一個JSON字串轉換成 JavaScript的數值或是物件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> parse = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(arrToStr);</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/3chwLJF.png" alt=""></p>
+<p>參考資料：<br><a target="_blank" rel="noopener" href="https://medium.com/%E9%BA%A5%E5%85%8B%E7%9A%84%E5%8D%8A%E8%B7%AF%E5%87%BA%E5%AE%B6%E7%AD%86%E8%A8%98/javascript-localstorage-%E7%9A%84%E4%BD%BF%E7%94%A8-e0da6f402453">[JavaScript] localStorage 的使用</a><br><a target="_blank" rel="noopener" href="https://yakimhsu.com/project/project_w7_storage.html">[第七週] 瀏覽器資料儲存 - Cookie、LocalStorage、SessionStorage</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10223253">[Day16] JavaScript - 前端資料存</a><br><a target="_blank" rel="noopener" href="https://tools.wingzero.tw/article/sn/28">HTML5 的 Web Storage- local storage 與 session storage</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10203525">Day20 localStorage、sessionStorage</a><br><a target="_blank" rel="noopener" href="https://medium.com/itsems-frontend/javascript-json-stringify-and-json-parse-7a1251d3824c">[JavaScript] JSON.stringify() and JSON.parse()：變 JSON 和變物件</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/01/10/js-expenseTracker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1889,141 +1990,6 @@ console.log(&#39;bow!bow!～～&#39;) &#125;</code></li>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2020/12/13/portfolio-web-page/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/13/portfolio-web-page/" class="post-title-link" itemprop="url">CSS練習- portfolio web page 作品集網頁</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-12-13 13:48:00" itemprop="dateCreated datePublished" datetime="2020-12-13T13:48:00+08:00">2020-12-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/3DLhHgL.png" alt=""></p>
-<h2 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h2><p><a href="https://eva813.github.io/Eva_portfolio/portfolio01/portfolio01.html">成品</a></p>
-<ul>
-<li>這是一個展現作品集的一頁式網頁<ul>
-<li>頁面的排版主要使用grid執行</li>
-<li>網頁整的色調，練習<code>:root</code>設定</li>
-<li>練習聯絡欄的排版</li>
-</ul>
-</li>
-<li>另外，有使用到一些些js的部分，如設定滾動的效果、點擊後畫面的變化，但因主要練習排版，所以筆記內容並未多加提及</li>
-</ul>
-<p><img src="https://i.imgur.com/gpZLEE8.png" alt=""></p>
-<h2 id="HEADER"><a href="#HEADER" class="headerlink" title="HEADER"></a>HEADER</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--===== HEADER =====--&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">&quot;l-header&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">&quot;nav bd-grid&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;nav__logo&quot;</span>&gt;</span>Jhon Doe<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;nav_manue&quot;</span> <span class="attr">id</span>=<span class="string">&quot;nav-menu&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;nav_list&quot;</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav_item&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#home&quot;</span> <span class="attr">class</span>=<span class="string">&quot;nav_link&quot;</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav_item&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#abour&quot;</span> <span class="attr">class</span>=<span class="string">&quot;nav_link&quot;</span>&gt;</span>About<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav_item&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#skills&quot;</span> <span class="attr">class</span>=<span class="string">&quot;nav_link&quot;</span>&gt;</span>Skills<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav_item&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#portfolio&quot;</span> <span class="attr">class</span>=<span class="string">&quot;nav_link&quot;</span>&gt;</span>Portfolio<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav_item&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#contact&quot;</span> <span class="attr">class</span>=<span class="string">&quot;nav_link&quot;</span>&gt;</span>Contact<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line">       <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br><span class="line">     <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;nav__toggle&quot;</span> <span class="attr">id</span>=<span class="string">&quot;nav-toggle&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&#x27;bx bx-menu&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h4 id="header的建構"><a href="#header的建構" class="headerlink" title="header的建構"></a>header的建構</h4><p><img src="https://i.imgur.com/NPyM8sR.png" alt=""></p>
-<h3 id="css-變數"><a href="#css-變數" class="headerlink" title="css 變數"></a>css 變數</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*建立全域變數*/</span></span><br><span class="line"><span class="selector-pseudo">:root</span> &#123;</span><br><span class="line">	<span class="attr">--csscoke-red</span>: <span class="number">#f00</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*套用變數*/</span></span><br><span class="line"><span class="selector-class">.section-item</span> &#123;</span><br><span class="line">	<span class="attribute">color</span>: <span class="built_in">var</span>( --csscoke-red );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>csscoke<br> <code>:root</code>中使用關鍵符號 –建立了一個 CSS 變數，並且給予該變數名稱叫做 csscoke-red ，然後給予這個變數名稱一個值 <code>#f00</code>，這表示後面要套用這個變數名稱的項目，會直接取得這個 <code>#f00</code>。</p>
-</blockquote>
-<p>參考資料：<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10228111">:root 根目錄選取器 - 叫你阿爸出來講</a></p>
-<h3 id="grid-template-columns"><a href="#grid-template-columns" class="headerlink" title="grid-template-columns"></a>grid-template-columns</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.bd-grid</span>&#123;</span><br><span class="line">    <span class="attribute">max-width</span>: <span class="number">1024px</span>;</span><br><span class="line">    <span class="attribute">display</span>: grid;</span><br><span class="line">    <span class="attribute">grid-template-columns</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">grid-column</span>-<span class="attribute">gap</span>: <span class="number">2rem</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="built_in">calc</span>(<span class="number">100%</span> - <span class="number">2rem</span>);</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="built_in">var</span>(--mb-<span class="number">2</span>);</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="built_in">var</span>(--mb-<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>卡伯斯<br>grid-template-columns 定義水平方向的空間，grid-template-rows 定義垂直方向的空間<br><code>.wrap &#123;
-  grid-template-columns: repeat(2, 1fr 2fr) 100px;     
-  /* grid-template-columns: repeat(&#123;次數&#125;, &#123;格線...&#125; | &#123;格線...&#125;) | &#123;格線...&#125;; */
-&#125;</code><br>fr 這個單位，這個單位能夠將可用的 剩餘空間 做比例分割，以上面的 1fr 2fr 為例，空間將被分割成 1/3、2/3 兩個大小。<br>另一個是 repeat，可以重複隔線。</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://wcc723.github.io/css/2017/03/22/css-grid-layout/">CSS Grid 屬性介紹</a><br><a target="_blank" rel="noopener" href="https://www.mdeditor.tw/pl/pn1h/zh-tw">一行 CSS 程式碼搞定響應式佈局</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10130065">CSS沒有極限 - CSS的神奇Calc運算</a></p>
-<h1 id="home"><a href="#home" class="headerlink" title="home"></a>home</h1><p><img src="https://i.imgur.com/ngnNmzl.png" alt=""></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.home__scroll</span>&#123;</span><br><span class="line">    <span class="attribute">align-self</span>: flex-end;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="built_in">var</span>(--mb-<span class="number">4</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 直行旋轉 */</span></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.home__scroll-link</span>&#123;</span><br><span class="line">    <span class="attribute">writing-mode</span>: vertical-lr;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">rotate</span>(-<span class="number">180deg</span>);</span><br><span class="line">    <span class="attribute">color</span>: <span class="built_in">var</span>(--white-color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/we7sEnu.png" alt=""></p>
-<h1 id="skills"><a href="#skills" class="headerlink" title="skills"></a>skills</h1><p><img src="https://i.imgur.com/0Nsj8gH.png" alt=""></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--===== SKILLS =====--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">&quot;skills section&quot;</span> <span class="attr">id</span>=<span class="string">&quot;skills&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">&quot;section-title&quot;</span>&gt;</span>Skills<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;skills__container bd-grid&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;skills__box&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">h3</span> <span class="attr">class</span>=<span class="string">&quot;skills__subtitle&quot;</span>&gt;</span>Development<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;skills__name&quot;</span>&gt;</span>Html<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;skills__name&quot;</span>&gt;</span>Css<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;skills__name&quot;</span>&gt;</span>Javascript<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;skills__name&quot;</span>&gt;</span>Scss<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;skills__name&quot;</span>&gt;</span>React<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;skills__name&quot;</span>&gt;</span>Vue<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"></span><br><span class="line">          <span class="tag">&lt;<span class="name">h3</span> <span class="attr">class</span>=<span class="string">&quot;skills__subtitle&quot;</span>&gt;</span>Design<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;skills__name&quot;</span>&gt;</span>Figma<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;skills__name&quot;</span>&gt;</span>Adobe XD<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;skills__name&quot;</span>&gt;</span>Photoshop<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;skills__img&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./img/skill.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>.skills__container&#123;
-    row-gap: 2rem;
-&#125; 使欄位2rem的空格</code></p>
-<blockquote>
-<p>rem 也是相對的文字尺寸，和 em 使用方法接近，不同的是他僅相對於 root 層級的文字大小(網頁中的 html)。<br><a target="_blank" rel="noopener" href="https://iter01.com/23690.html">如何更愉快地使用rem —— 別說你懂CSS相對單位</a><br><a target="_blank" rel="noopener" href="https://www.hexschool.com/2016/01/02/2016-08-08-em-vs-rem/">實際展示 EM 與 REM 的差異</a></p>
-</blockquote>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.skills__name</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="built_in">var</span>(--small-font-size);</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="built_in">var</span>(--mb-<span class="number">2</span>);</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="built_in">var</span>(--mb-<span class="number">3</span>);</span><br><span class="line">    <span class="attribute">padding</span>: .<span class="number">25rem</span> .<span class="number">5rem</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="built_in">var</span>(--white-color);</span><br><span class="line">    <span class="attribute">border-radius</span>: .<span class="number">25rem</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>中間的技能名稱設定</li>
-</ul>
-<p><img src="https://i.imgur.com/YcJoUD6.png" alt=""></p>
-<h1 id="contact"><a href="#contact" class="headerlink" title="contact"></a>contact</h1><p><img src="https://i.imgur.com/FMyeUse.png" alt=""></p>
-<ul>
-<li>輸入框</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* name,email */</span></span><br><span class="line"><span class="selector-class">.contact__inputs</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: grid;</span><br><span class="line">    <span class="attribute">grid-template-columns</span>: <span class="built_in">repeat</span>(<span class="number">2</span>, <span class="number">1</span>fr);</span><br><span class="line">     <span class="attribute">column-gap</span>: <span class="number">1rem</span>; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 文字輸入框 */</span></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.contact__input</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">padding</span>: .<span class="number">8rem</span>;</span><br><span class="line">    <span class="attribute">outline</span>: none;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1.5px</span> solid <span class="built_in">var</span>(--dark-color);</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="built_in">var</span>(--normal-font-size);</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="built_in">var</span>(--mb-<span class="number">4</span>);</span><br><span class="line">    <span class="attribute">border-radius</span>: .<span class="number">5rem</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>按鈕</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-class">.contact__button</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="built_in">var</span>(--first-color);</span><br><span class="line">    <span class="attribute">color</span>: <span class="built_in">var</span>(--white-color);</span><br><span class="line">    <span class="attribute">padding</span>: .<span class="number">75rem</span> <span class="number">2.5rem</span>;</span><br><span class="line">    <span class="comment">/* 若用margin-right:auto&lt;會靠左邊 */</span></span><br><span class="line">     <span class="attribute">margin-left</span>: auto; </span><br><span class="line">    <span class="attribute">border-radius</span>: .<span class="number">5rem</span>;</span><br><span class="line">    <span class="attribute">border</span>: none;</span><br><span class="line">    <span class="attribute">outline</span>: none;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="built_in">var</span>(--normal-font-size);</span><br><span class="line">    <span class="attribute">cursor</span>: pointer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h1 id="footer"><a href="#footer" class="headerlink" title="footer"></a>footer</h1><p><img src="https://i.imgur.com/JH5KLYT.png" alt=""></p>
-<hr>
-<h2 id="參考資料："><a href="#參考資料：" class="headerlink" title="參考資料："></a>參考資料：</h2><h3 id="1-z-index"><a href="#1-z-index" class="headerlink" title="1. z-index"></a>1. z-index</h3><p><a target="_blank" rel="noopener" href="https://its-okay.medium.com/css-position-z-index-%E7%AD%86%E8%A8%98-%E9%BC%A0%E5%B9%B4%E5%85%A8%E9%A6%AC%E9%90%B5%E4%BA%BA%E6%8C%91%E6%88%B0-13-f7c4159ac5d">CSS position 、 z-index 筆記│鼠年全馬鐵人挑戰 #13</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/starof/p/4424926.html">合理使用z-index数值</a></p>
-<h3 id="2-滾動"><a href="#2-滾動" class="headerlink" title="2. 滾動"></a>2. 滾動</h3><p>點擊連結之後，自動滾動到適當的位置</p>
-<p>[CSS scroll-behavior和JS scrollIntoView讓頁面滾動平滑](<a target="_blank" rel="noopener" href="https://www.itread01.com/fyehkp.html">https://www.itread01.com/fyehkp.html</a></p>
-<h3 id="3-icon"><a href="#3-icon" class="headerlink" title="3. icon"></a>3. icon</h3><p><img src="https://i.imgur.com/vEVt8qF.png" alt=""></p>
-<h3 id="4-flex"><a href="#4-flex" class="headerlink" title="4. flex"></a>4. flex</h3><p><a target="_blank" rel="noopener" href="https://cythilya.github.io/2017/04/04/flexbox-basics/">圖解 Flexbox 基本屬性
-</a></p>
-<h2 id="練習來源："><a href="#練習來源：" class="headerlink" title="練習來源："></a>練習來源：</h2><p>youtube：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=6cidbUHNZRQ&list=PL4ruhWbyIwi2vvT2y7j45egFSTwz9FHoJ&index=15&t=168s">Responsive Personal Portfolio Website HTML CSS And JAVASCRIPT | Mobile First</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2095,18 +2061,18 @@ console.log(&#39;bow!bow!～～&#39;) &#125;</code></li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">105</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-count">67</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
