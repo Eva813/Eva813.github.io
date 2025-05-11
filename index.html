@@ -174,6 +174,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/05/01/leetcode-Maximum-Depth-of-Binary-Tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/05/01/leetcode-Maximum-Depth-of-Binary-Tree/" class="post-title-link" itemprop="url">刷題練習 - Maximum Depth of Binary Tree 解題策略</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-01 13:01:11" itemprop="dateCreated datePublished" datetime="2025-05-01T13:01:11+08:00">2025-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-05-11 12:44:33" itemprop="dateModified" datetime="2025-05-11T12:44:33+08:00">2025-05-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index"><span itemprop="name">Leetcode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Leetcode 題目多樣，尤其是「二元樹（Binary Tree）」相關題型，容易讓人看了發愣。</p>
+<p>本篇文章將教你如何釐清解法邏輯，並將二元樹題型拆解為兩大類解題策略，搭配範例與模板，幫助你用 DFS（深度優先搜尋）更系統地解題</p>
+<h3 id="類型一：遍歷型（Traversal-Type）"><a href="#類型一：遍歷型（Traversal-Type）" class="headerlink" title="類型一：遍歷型（Traversal Type）"></a>類型一：遍歷型（Traversal Type）</h3><p>這類題目需要「走過整棵樹的所有節點」，通常是為了計算某種總量，例如：</p>
+<ul>
+<li>節點總數</li>
+<li>最大深度</li>
+<li>所有路徑總和</li>
+<li>葉子節點的數量</li>
+</ul>
+<p>解題思路</p>
+<p>可根據需求使用：</p>
+<ul>
+<li><strong>後序遍歷 + 回傳值 return</strong> → 適合需要組合子樹結果的情況  </li>
+<li><strong>前序遍歷 + 狀態變數追蹤</strong> → 適合需要累加或記錄路徑狀態的情況  </li>
+</ul>
+<h4 id="模板（後序-return）"><a href="#模板（後序-return）" class="headerlink" title="模板（後序 + return）"></a>模板（後序 + return）</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">dfs</span>(<span class="params">node</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (node === <span class="literal">null</span>) <span class="keyword">return</span> baseValue;</span><br><span class="line">  <span class="keyword">const</span> left = <span class="title function_">dfs</span>(node.<span class="property">left</span>);</span><br><span class="line">  <span class="keyword">const</span> right = <span class="title function_">dfs</span>(node.<span class="property">right</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">combine</span>(left, right, node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="模板（前序-狀態變數）"><a href="#模板（前序-狀態變數）" class="headerlink" title="模板（前序 + 狀態變數）"></a>模板（前序 + 狀態變數）</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">let</span> pathDepth = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">traverse</span>(<span class="params">node</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (node === <span class="literal">null</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  pathDepth++; <span class="comment">// 遞迴深入，深度 +1</span></span><br><span class="line">  <span class="keyword">if</span> (node.<span class="property">left</span> === <span class="literal">null</span> &amp;&amp; node.<span class="property">right</span> === <span class="literal">null</span>) &#123;</span><br><span class="line">    result = <span class="title class_">Math</span>.<span class="title function_">max</span>(result, pathDepth); <span class="comment">// 若為葉子，更新最大深度</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">traverse</span>(node.<span class="property">left</span>);</span><br><span class="line">  <span class="title function_">traverse</span>(node.<span class="property">right</span>);</span><br><span class="line"></span><br><span class="line">  pathDepth--; <span class="comment">// 回歸</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/05/01/leetcode-Maximum-Depth-of-Binary-Tree/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/04/16/react-key-reflow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -996,89 +1093,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/01/15/Net-learning-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/15/Net-learning-2/" class="post-title-link" itemprop="url">C# - class 建立與使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-15 20:04:35" itemprop="dateCreated datePublished" datetime="2025-01-15T20:04:35+08:00">2025-01-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-01-18 19:27:18" itemprop="dateModified" datetime="2025-01-18T19:27:18+08:00">2025-01-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/dotnet/" itemprop="url" rel="index"><span itemprop="name">dotnet</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>class 是物件導向程式設計 (OOP) 語言的核心功能。它通過邏輯性地組織方法和屬性，來表示並封裝特定的問題概念。</p>
-<h2 id="建立-class-與-instance"><a href="#建立-class-與-instance" class="headerlink" title="建立 class 與 instance"></a>建立 class 與 instance</h2><p>假設要建立一 person 的 class </p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Person</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>()</span></span><br><span class="line">	&#123;</span><br><span class="line">		Person person = <span class="keyword">new</span> Person();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/01/15/Net-learning-2/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1150,7 +1164,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

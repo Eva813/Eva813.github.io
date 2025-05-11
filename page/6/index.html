@@ -174,6 +174,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/12/10/Nuxt3-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/10/Nuxt3-1/" class="post-title-link" itemprop="url">Nuxt3-取得資料的方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-10 20:08:43" itemprop="dateCreated datePublished" datetime="2021-12-10T20:08:43+08:00">2021-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:34:59" itemprop="dateModified" datetime="2022-11-04T10:34:59+08:00">2022-11-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/FAgr4vk.png" alt=""></p>
+<h2 id="useAsyncData"><a href="#useAsyncData" class="headerlink" title="useAsyncData"></a>useAsyncData</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="attr">data</span>: <span class="title class_">Ref</span>&lt;<span class="title class_">DataT</span>&gt;,</span><br><span class="line">  <span class="attr">pending</span>: <span class="title class_">Ref</span>&lt;boolean&gt;,</span><br><span class="line">  <span class="attr">refresh</span>: <span class="function">(<span class="params">force?: boolean</span>) =&gt;</span> <span class="title class_">Promise</span>&lt;<span class="keyword">void</span>&gt;,</span><br><span class="line">  error?: any</span><br><span class="line">&#125; = <span class="title function_">useAsyncData</span>(</span><br><span class="line">  <span class="attr">key</span>: string,</span><br><span class="line">  <span class="attr">fn</span>: <span class="function">() =&gt;</span> <span class="title class_">Object</span>,</span><br><span class="line">  options?: &#123; <span class="attr">lazy</span>: boolean, <span class="attr">server</span>: boolean &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>頁面、組件中都可以使用useAsyncData 取得資料</li>
+<li>Key ：寫一個唯一的id<br>請求資料的函式</li>
+<li>使用 useAsyncData 會回傳物件<br>data : 返回的資料<br>pedding : 指出資料是否被取得<br>refresh : 是否要刷新資料<h3 id="Option-介紹"><a href="#Option-介紹" class="headerlink" title="Option 介紹"></a>Option 介紹</h3></li>
+<li>Lazy 延遲載入，直到數據獲取時，才顯示於頁面</li>
+<li>默認會是 false</li>
+<li>Server 頁面是在server端要載入，就可以設定為true</li>
+<li>Pick 從回傳的資料中，選擇要使用的key值</li>
+</ul>
+<h3 id="useAsyncData撰寫方式的範例"><a href="#useAsyncData撰寫方式的範例" class="headerlink" title="useAsyncData撰寫方式的範例"></a>useAsyncData撰寫方式的範例</h3><ul>
+<li>本地建立資料夾<ul>
+<li>server/api/count.ts</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = <span class="number">0</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> () =&gt; &#123;</span><br><span class="line">  counter++</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(counter)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>app.vue</code>，使用 useAsyncData</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">const</span> &#123; data &#125; = <span class="keyword">await</span> <span class="title function_">useAsyncData</span>(<span class="string">&#x27;count&#x27;</span>, <span class="function">() =&gt;</span> $fetch(<span class="string">&#x27;/api/count&#x27;</span>))</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  Page visits: &#123;&#123; data &#125;&#125;</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="useFetch"><a href="#useFetch" class="headerlink" title="useFetch"></a>useFetch</h2><ul>
+<li>頁面、組件中可以使用useFetch獲取任意URL資源</li>
+<li>useFetch包裝 了useAsyncData 和 $fetch</li>
+<li>會根據 URL 自動生成 Key，也會去推斷API 的類型a<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="attr">data</span>: <span class="title class_">Ref</span>&lt;<span class="title class_">DataT</span>&gt;,</span><br><span class="line">  <span class="attr">pending</span>: <span class="title class_">Ref</span>&lt;boolean&gt;,</span><br><span class="line">  <span class="attr">refresh</span>: <span class="function">(<span class="params">force?: boolean</span>) =&gt;</span> <span class="title class_">Promise</span>&lt;<span class="keyword">void</span>&gt;,</span><br><span class="line">  error?: any</span><br><span class="line">&#125; = <span class="title function_">useFetch</span>(<span class="attr">url</span>: string, options?)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">const</span> &#123; data &#125; = <span class="keyword">await</span> <span class="title function_">useFetch</span>(<span class="string">&#x27;/api/count&#x27;</span>)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  Page visits: &#123;&#123; data.count &#125;&#125;</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="補充：其他2個類似方式"><a href="#補充：其他2個類似方式" class="headerlink" title="補充：其他2個類似方式"></a>補充：其他2個類似方式</h2><ul>
+<li>useLazyAsyncData : 方法等於useAsyncData，僅設置了lazy選項為true</li>
+<li>useLazyFetch : 方法等於useFetch，僅設置了lazy選項為true</li>
+</ul>
+<h2 id="實作範例："><a href="#實作範例：" class="headerlink" title="實作範例："></a>實作範例：</h2><ul>
+<li><code>/api/mountains/everest</code><ul>
+<li>API 會產生的物件資料</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;title&quot;</span>: <span class="string">&quot;Mount Everest&quot;</span>,</span><br><span class="line">  <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Mount Everest is Earth&#x27;s highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas. The China–Nepal border runs across its summit point&quot;</span>,</span><br><span class="line">  <span class="string">&quot;height&quot;</span>: <span class="string">&quot;8,848 m&quot;</span>,</span><br><span class="line">  <span class="string">&quot;countries&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;China&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Nepal&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;continent&quot;</span>: <span class="string">&quot;Asia&quot;</span>,</span><br><span class="line">  <span class="string">&quot;image&quot;</span>: <span class="string">&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Everest_kalapatthar.jpg/600px-Everest_kalapatthar.jpg&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Nuxt 3 為了提高效率會在取得資料後，緩存在當前頁面的payload<br>官方建議：如果只打算在組件中使用到 title 和 description ，你可以使用關鍵的屬性運用即可<br>選項中加入 pick，裡面的值就是取得資料中的key值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="attr">data</span>: mountain &#125; = <span class="keyword">await</span> <span class="title function_">useFetch</span>(<span class="string">&#x27;/api/mountains/everest&#x27;</span>, &#123; <span class="attr">pick</span>: [<span class="string">&#x27;title&#x27;</span>, <span class="string">&#x27;description&#x27;</span>] &#125;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; mountain.title &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; mountain.description &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://v3.nuxtjs.org/docs/usage/data-fetching">參考資料</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/11/27/TS-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1756,138 +1867,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/09/21/vue-emit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/21/vue-emit/" class="post-title-link" itemprop="url">Vue.js 3 -  資料傳遞 emit</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-21 12:42:48" itemprop="dateCreated datePublished" datetime="2021-09-21T12:42:48+08:00">2021-09-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:33:34" itemprop="dateModified" datetime="2022-11-04T10:33:34+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>圖示：<br><img src="https://i.imgur.com/PxIIobu.png" alt=""></p>
-<h2 id="emit-實作練習"><a href="#emit-實作練習" class="headerlink" title="emit 實作練習"></a>emit 實作練習</h2><p><img src="https://i.imgur.com/7guYdVb.png" alt=""></p>
-<ul>
-<li>透過點擊add按鈕，觸發外層元件數值的改變<ul>
-<li>先定義外層接收資料方式</li>
-<li>定義內層的 $emit 觸發方法</li>
-<li>使用 v-on 的方式觸發外層方法（口訣：前內、後外）</li>
-</ul>
-</li>
-</ul>
-<h3 id="外層元件"><a href="#外層元件" class="headerlink" title="外層元件"></a>外層元件</h3><ul>
-<li>定義接收方法：當內層傳給你的時候，要做什麼事<ul>
-<li><code>addNumber()</code>使num 增加1<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line">            <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">              <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="attr">num</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="attr">text</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">              &#125;;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">methods</span>: &#123;</span><br><span class="line">              <span class="title function_">addNumber</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;addnumber&#x27;</span>);</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">num</span>++;</span><br><span class="line">              &#125;,</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="內層元件"><a href="#內層元件" class="headerlink" title="內層元件"></a>內層元件</h3><ul>
-<li>在方法內建立函式，來觸發資料傳遞</li>
-<li>並將<code>click</code>綁到內部元件的按鈕上。使點擊時候，會觸發$emit<ul>
-<li>emit 名稱<code>emit-num</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;button-counter&#x27;</span>, &#123;</span><br><span class="line">            <span class="attr">methods</span>: &#123;</span><br><span class="line">              <span class="title function_">click</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;inner,click&#x27;</span>);</span><br><span class="line">                <span class="variable language_">this</span>.$emit(<span class="string">&#x27;emit-num&#x27;</span>);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">template</span>: <span class="string">`&lt;button type=&quot;button&quot; @click=&quot;click&quot;&gt;add&lt;/button&gt;`</span></span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/W1s9mhp.png" alt=""></p>
-<h2 id="建立內外層元件的溝通橋樑"><a href="#建立內外層元件的溝通橋樑" class="headerlink" title="建立內外層元件的溝通橋樑"></a>建立內外層元件的溝通橋樑</h2><ul>
-<li>使用 v-on 的方式觸發外層方法（口訣：前內、後外）<ul>
-<li>在 div內放入子元件<code>button-counter</code></li>
-<li><code>:emit-num=&quot;addNumber&quot;</code></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">&quot;app&quot;</span>&gt;</span><br><span class="line">          &#123;&#123; num &#125;&#125;</span><br><span class="line">    &lt;button-counter v-<span class="attr">on</span>:emit-num=<span class="string">&quot;addNumber&quot;</span>&gt;&lt;/button-counter&gt;</span><br><span class="line">     &lt;/div&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="練習二，資料接收"><a href="#練習二，資料接收" class="headerlink" title="練習二，資料接收"></a>練習二，資料接收</h2><h3 id="外層元件-1"><a href="#外層元件-1" class="headerlink" title="外層元件"></a>外層元件</h3><ul>
-<li>接收方法為 <code>getData</code> 接收 text<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line">            <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">              <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="attr">text</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">              &#125;;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">methods</span>: &#123;</span><br><span class="line">           </span><br><span class="line">              <span class="title function_">getData</span>(<span class="params">value</span>) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;getData&#x27;</span>, text);</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">text</span> = value;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="內層元件-1"><a href="#內層元件-1" class="headerlink" title="內層元件"></a>內層元件</h3><ul>
-<li>建立觸發傳遞的方式<ul>
-<li>將內層元件<code>text: &#39;內部資料&#39;</code> 傳遞到外層<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;button-text&#x27;</span>, &#123;</span><br><span class="line">    <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">text</span>: <span class="string">&#x27;內部資料&#x27;</span>,</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;,</span><br><span class="line">    <span class="attr">methods</span>: &#123;</span><br><span class="line">      <span class="title function_">emitText</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">emit</span>(<span class="string">&#x27;emit-text&#x27;</span>, <span class="variable language_">this</span>.<span class="property">text</span>)</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">     <span class="attr">template</span>: <span class="string">`&lt;button type=&quot;button&quot; @click=&quot;emitText&quot;&gt;emit data&lt;/button&gt;`</span></span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="建立內外橋樑"><a href="#建立內外橋樑" class="headerlink" title="建立內外橋樑"></a>建立內外橋樑</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;h3&gt;傳遞資料狀態&lt;/h3&gt;</span><br><span class="line"> 內部傳來的文字：&#123;&#123; text &#125;&#125;&lt;br&gt;</span><br><span class="line"> <span class="language-xml"><span class="tag">&lt;<span class="name">button-text</span> @<span class="attr">emit-text</span>=<span class="string">&quot;getData&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">button-text</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/avhMirS.png" alt=""></li>
-</ul>
-</li>
-</ul>
-<h2 id="emit-命名"><a href="#emit-命名" class="headerlink" title="emit 命名"></a>emit 命名</h2><p>與 props 命名一樣需要注意：</p>
-<ul>
-<li>在內層若以駝峰命名 <code>emitText</code><ul>
-<li>也可以一開始內層就是用<code>-</code> 來命名即可，如<code>emit-text</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">emitText</span>(<span class="params"></span>) &#123;</span><br><span class="line">       <span class="variable language_">this</span>.<span class="title function_">emit</span>(<span class="string">&#x27;emitText&#x27;</span>, <span class="variable language_">this</span>.<span class="property">text</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>到了要綁定的 template 上，<code>emit-text</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button-text @emit-text=<span class="string">&quot;getData&quot;</span>&gt;&lt;/button-text&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1959,7 +1938,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
