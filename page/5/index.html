@@ -174,6 +174,212 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/10/18/React-context/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/18/React-context/" class="post-title-link" itemprop="url">React - 從官方文件學習 Context 的使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-18 13:58:40" itemprop="dateCreated datePublished" datetime="2022-10-18T13:58:40+08:00">2022-10-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:36:55" itemprop="dateModified" datetime="2022-11-04T10:36:55+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Passing-Data-Deeply-with-Context"><a href="#Passing-Data-Deeply-with-Context" class="headerlink" title="Passing Data Deeply with Context"></a>Passing Data Deeply with Context</h2><ul>
+<li>當裡面的子狀態，會想要往父層去找尋時，就可以使用Context</li>
+<li>學習文件：<a target="_blank" rel="noopener" href="https://beta.reactjs.org/learn?fbclid=IwAR3OXxu3hHQCgDowMfBWzvRDIdPrZpS2-OCktxb_V9EnRYzNrPB_rZ7CrSI">React Docs</a></li>
+<li>資料會和其他元件要共用<ul>
+<li>prop drilling<ol>
+<li>最基本使用</li>
+</ol>
+</li>
+<li>範例：Section.js \ Heading.js</li>
+<li>children 帶入元件的內容</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/SAaAzP0.png" alt=""></p>
+<ol start="2">
+<li>將 app.js 改寫</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Heading</span> <span class="keyword">from</span> <span class="string">&#x27;./Heading.js&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Section</span> <span class="keyword">from</span> <span class="string">&#x27;./Section.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Page</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;1&#125;</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;2&#125;</span>&gt;</span>Heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;2&#125;</span>&gt;</span>Heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;2&#125;</span>&gt;</span>Heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;3&#125;</span>&gt;</span>Sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;3&#125;</span>&gt;</span>Sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;3&#125;</span>&gt;</span>Sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;4&#125;</span>&gt;</span>Sub-sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;4&#125;</span>&gt;</span>Sub-sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">Heading</span> <span class="attr">level</span>=<span class="string">&#123;4&#125;</span>&gt;</span>Sub-sub-heading<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">Section</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Section</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://i.imgur.com/UnXwJxu.png" alt=""></p>
+<p>以上方式，看到 在 Heading 元件傳入參數<br>改寫為，在 section 元件就來控制裡面的 Heading 是什麼 level</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Section</span> level=&#123;<span class="number">3</span>&#125;&gt;  </span><br><span class="line"></span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">Heading</span>&gt;</span>About<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span>  </span><br><span class="line">	</span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">Heading</span>&gt;</span>Photos<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span>  </span><br><span class="line">	</span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">Heading</span>&gt;</span>Videos<span class="tag">&lt;/<span class="name">Heading</span>&gt;</span></span>  </span><br><span class="line"></span><br><span class="line">&lt;/<span class="title class_">Section</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>實作<ol>
+<li><strong>Create</strong> a context.</li>
+<li><strong>Use</strong> that context，在子層<code>import &#123; useContext &#125; from &#39;react&#39;;</code></li>
+<li>提供 context 的值</li>
+</ol>
+</li>
+</ol>
+<h4 id="Create-a-context"><a href="#Create-a-context" class="headerlink" title="Create  a context."></a>Create  a context.</h4><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createContext &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">LevelContext</span> = <span class="title function_">createContext</span>(<span class="number">1</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Use-that-context"><a href="#Use-that-context" class="headerlink" title="Use that context"></a><strong>Use</strong> that context</h4><ul>
+<li>是 Heading 要往外層找資料，所以要在這裡使用 useContext</li>
+<li>要往外層的地方</li>
+<li>注意 level </li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useContext &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">LevelContext</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./LevelContext.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Heading</span>(<span class="params">&#123; children &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> level = <span class="title function_">useContext</span>(<span class="title class_">LevelContext</span>);</span><br><span class="line">  <span class="keyword">switch</span> (level) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h5</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h5</span>&gt;</span></span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">h6</span>&gt;</span>&#123;children&#125;<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span>;</span><br><span class="line">    <span class="attr">default</span>:</span><br><span class="line">      <span class="keyword">throw</span> <span class="title class_">Error</span>(<span class="string">&#x27;Unknown level: &#x27;</span> + level);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Provide-the-context"><a href="#Provide-the-context" class="headerlink" title="Provide the context"></a>Provide the context</h4><ul>
+<li>建立 context 的 provider</li>
+<li>提供此資料的提供者、元件</li>
+<li>這個 provider 是放在最外層，所以在此範例應該放在 section 去改寫</li>
+</ul>
+<h5 id="原本的-section-js"><a href="#原本的-section-js" class="headerlink" title="原本的 section.js"></a>原本的 section.js</h5><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Section</span>(<span class="params">&#123; children &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">section</span> <span class="attr">className</span>=<span class="string">&quot;section&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;children&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h5 id="改寫section-js"><a href="#改寫section-js" class="headerlink" title="改寫section.js"></a>改寫section.js</h5><ul>
+<li>level 從這邊拿</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">LevelContext</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./LevelContext.js&#x27;</span>;  </span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Section</span>(<span class="params">&#123; level, children &#125;</span>) &#123;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (  </span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">section</span> <span class="attr">className</span>=<span class="string">&quot;section&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">LevelContext.Provider</span> <span class="attr">value</span>=<span class="string">&#123;level&#125;</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">		&#123;children&#125;  </span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">LevelContext.Provider</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span>  </span><br><span class="line"></span><br><span class="line">);  </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/pI528iX.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/09/24/code-Merge-Two-Sorted-Lists/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/09/24/code-Merge-Two-Sorted-Lists/" class="post-title-link" itemprop="url">刷題練習 - Merge Two Sorted Lists</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-09-24 14:57:04 / Modified: 20:13:07" itemprop="dateCreated datePublished" datetime="2022-09-24T14:57:04+08:00">2022-09-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index"><span itemprop="name">Leetcode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>   首先要先了解 linked lists 和陣列是不一樣的！！<br>   linked lists是一種常見的資料結構，其使用node(節點)來記錄、表示、儲存資料(data)，並利用每個node中的pointer指向下一個node </p>
+<h2 id="題目："><a href="#題目：" class="headerlink" title="題目："></a>題目：</h2><p>You are given the heads of two sorted linked lists list1 and list2.</p>
+<p>Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.</p>
+<p>Return the head of the merged linked list.</p>
+<p><img src="https://i.imgur.com/I645KZq.png" alt=""></p>
+<p>注意類似題目要設立一個 dummy 節點</p>
+<ul>
+<li>如何訪問list 中某個節點的 值，要從第一個節點開始，透過 next 依序訪問下一個節點重複操作直到抵達目標節點並讀取 value</li>
+<li>訪問第一個節點為 list.val  ; 訪問第二個節點 list.next.val ; 訪問第三個節點list.next.next.val </li>
+<li>要將兩個 list 合併的方法，每次比較兩個 而最小的數挑出，放入新的 list</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * function ListNode(val, next) &#123;</span></span><br><span class="line"><span class="comment"> *     this.val = (val===undefined ? 0 : val)</span></span><br><span class="line"><span class="comment"> *     this.next = (next===undefined ? null : next)</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">ListNode</span>&#125; <span class="variable">list1</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">ListNode</span>&#125; <span class="variable">list2</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">ListNode</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> mergeTwoLists = <span class="keyword">function</span> (<span class="params">l1, l2</span>) &#123;</span><br><span class="line">    <span class="comment">//current</span></span><br><span class="line">    <span class="keyword">const</span> dummy = <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="title class_">Infinity</span>)</span><br><span class="line">    <span class="comment">//point dummy node</span></span><br><span class="line">    <span class="keyword">let</span> prev = dummy;</span><br><span class="line">    <span class="keyword">while</span> (l1 &amp;&amp; l2) &#123;</span><br><span class="line">      <span class="keyword">if</span> (l1.<span class="property">val</span> &lt;= l2.<span class="property">val</span>) &#123;</span><br><span class="line">        prev.<span class="property">next</span> = l1;</span><br><span class="line">        <span class="comment">//移動 prev list</span></span><br><span class="line">        prev = l1</span><br><span class="line">        <span class="comment">//鏈錶指針 l1 就往後移動</span></span><br><span class="line">        l1 = l1.<span class="property">next</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        prev.<span class="property">next</span> = l2;</span><br><span class="line">        prev = l2</span><br><span class="line">        l2 = l2.<span class="property">next</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果 l1 是 null ,就是 l2</span></span><br><span class="line">    <span class="keyword">if</span> (!l1) prev.<span class="property">next</span> = l2;</span><br><span class="line">    <span class="keyword">if</span> (!l2) prev.<span class="property">next</span> = l1;</span><br><span class="line">    <span class="keyword">return</span> dummy.<span class="property">next</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">mergeTwoLists</span>([<span class="number">1</span>, <span class="number">100</span>], [<span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>])</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/09/24/code-practice/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1017,289 +1223,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/01/14/TS-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/14/TS-3/" class="post-title-link" itemprop="url">TypeScript - 註記(Annotation) 與斷言(Assertion)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-01-14 11:08:06" itemprop="dateCreated datePublished" datetime="2022-01-14T11:08:06+08:00">2022-01-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:34:26" itemprop="dateModified" datetime="2022-11-04T10:34:26+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>從開始學習前端之後，大多的學習資源都是來自線上課程、youtube 影片為主，鮮少透過閱讀書籍來學習相關知識，但自從進入公司之後，因為公司內有些程式書籍能夠借閱，先是從 JavaScript 大全開始，一開始閱讀起來真的滿痛苦，不知道該如何消化內容，直接順著讀過去又怕忘記，但目前還是順順的讀到了第8章～後來，找到的方式就是在筆記軟體上做些註記，工作上遇到相關的再回過頭看一次，加入筆記。</p>
-<p>而在此次，發現 TypeScript 即便已經看過介紹型別、基本使用基礎的影片後，仍然覺得不太足夠，所以就開始翻閱書籍 「讓 TypeScript 成為你全端開發的 ACE」，文中介紹滿多之前沒有注意到觀念、也有帶到不少 JavaScript 的觀念來呼應。所以本篇，多是來自於書中資訊，透過整理呈現。</p>
-<h2 id="註記-Annotation-V-S-斷言-Assertion"><a href="#註記-Annotation-V-S-斷言-Assertion" class="headerlink" title="註記 Annotation V.S. 斷言 Assertion"></a>註記 Annotation V.S. 斷言 Assertion</h2><ul>
-<li>型別註記：指在告訴 TS 編譯器：「任何被註記到的變數、函式的參數等，都必須遵照被註記過後的變數型別」。</li>
-<li>所以編譯器會隨時隨地的監測該變數有沒有出現型別衝突的可能—關鍵字為遵照。</li>
-<li>而，斷言型別則是無視 TS 編譯器分析整個程式碼的型別推論過程，果斷的告訴 TS 編譯器：「被斷言過後的表達式之運算結果就是某某型別」—關鍵意象是「覆蓋」該表達式的型別推論結果。</li>
-</ul>
-<h2 id="註記與斷言"><a href="#註記與斷言" class="headerlink" title="註記與斷言"></a>註記與斷言</h2><ul>
-<li>帶有冒號的相關語法</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">randomNumber</span>:<span class="built_in">number</span> = <span class="title class_">Math</span>.<span class="title function_">random</span>();</span><br><span class="line"><span class="keyword">const</span> <span class="attr">subscribed</span>:<span class="built_in">boolean</span> = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>如果遇到函式，參數(Argument)部分除了可以有類似註記方式標明輸入的參數型別外，在參數宣告結尾也可以註記該函式輸出之型別。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isPositive</span>(<span class="params">input: number</span>):boolean&#123;</span><br><span class="line">	<span class="keyword">return</span> input &gt; <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>但JS裡，宣告函式的方法有很多種，其中一個是將函式最為值指派到變數。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">isPositive</span>:<span class="function">(<span class="params">input:number</span>) =&gt;</span> boolean = <span class="keyword">function</span>(<span class="params">input</span>)&#123;</span><br><span class="line">	<span class="keyword">return</span> input &gt; <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>以上，也能把變數指派的函式，改成ES6箭頭函式<ul>
-<li>指派運算子(Assignment Operator ，就是指程式裡的等號)左方是函式的型別註記表示法，右方則是普通函式宣告</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">isPositive</span>:<span class="function">(<span class="params">input:<span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">boolean</span> = <span class="function"><span class="params">input</span> =&gt;</span> input &gt;<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>採用邊宣告函式、邊註記型別的方式定義函式</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive = <span class="keyword">function</span> (<span class="params">input:<span class="built_in">number</span></span>):<span class="built_in">boolean</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> input&gt;<span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive =  (<span class="attr">input</span>:<span class="built_in">number</span>):<span class="function"><span class="params">boolean</span> =&gt;</span>  input&gt;<span class="number">0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="型別斷言語法"><a href="#型別斷言語法" class="headerlink" title="型別斷言語法"></a>型別斷言語法</h2><ul>
-<li>斷言(Assertion)的語法很簡單，看到有使用關鍵字 as 或者 <code>&lt;T&gt;(...)</code> 的格式就是斷言的用法。</li>
-<li>通常會使用斷言的情境，程式沒辦法推論某表達式的確切運算結果之型別，我們才會用選擇使出斷言來處理這種情境。</li>
-<li>程式沒辦法推論？<ul>
-<li>使用第三方的資源（Third-party resources），如使用外來JSON API 獲得的內容之型別格式、讀取檔案轉成 JSON 物件的結果、使用套件提供的功能、呼叫會回傳未知結果的函式。</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aNumber = <span class="title function_">returnsUnknow</span>() <span class="keyword">as</span> <span class="built_in">number</span>;</span><br></pre></td></tr></table></figure>
-<p>或是這樣：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aNumber = &lt;<span class="built_in">number</span>&gt;(<span class="title function_">returnsUnkonw</span>());</span><br></pre></td></tr></table></figure>
-<ul>
-<li>請注意：斷言的語法部分，沒有人斷言在變數的名稱宣告部分—也就是是說，如果你這樣寫是錯的：</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aNumber <span class="keyword">as</span> <span class="built_in">number</span> = <span class="title function_">returnsUnknow</span>(); <span class="comment">//這是錯誤的</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>概念有點像，決斷地告訴程式，某表達式的運算結果之型別。</li>
-<li>變數本身不是被運算，而是被指派某個東西，而斷言應該是斷在被指派的值或表達式的運算結果上。</li>
-</ul>
-<h4 id="複雜一點"><a href="#複雜一點" class="headerlink" title="複雜一點"></a>複雜一點</h4><ul>
-<li>函式宣告表達式有可以被斷言(畢竟函式作為表達式也會被當成值)</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive =(<span class="function"><span class="params">input</span> =&gt;</span> input &gt; <span class="number">0</span>) <span class="keyword">as</span> (<span class="attr">input</span>: <span class="built_in">number</span>) =&gt; <span class="built_in">boolean</span></span><br></pre></td></tr></table></figure>
-<p>或者是：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive = &lt;<span class="function">(<span class="params">input: number</span>) =&gt;</span> boolean&gt;(<span class="function"><span class="params">input</span> =&gt;</span> input &gt;<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>上面斷言的寫法效果跟之前示範過基礎註記手法：</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive :<span class="function">(<span class="params">input: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">boolean</span> = <span class="function"><span class="params">input</span> =&gt;</span> input &gt;<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
-<p>或者是</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isPositive ＝(<span class="attr">input</span>: <span class="built_in">number</span>)：<span class="built_in">boolean</span> =&gt; input &gt;<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
-
-<h2 id="說下，敘述式與表達式的定義與差別"><a href="#說下，敘述式與表達式的定義與差別" class="headerlink" title="說下，敘述式與表達式的定義與差別"></a>說下，敘述式與表達式的定義與差別</h2><ol>
-<li>敘述式：程式運行的流程，例如：JS 裡的判斷敘述式(if…else)以及迴圈敘述式(for 或者是 while 迴圈)。</li>
-<li>表達式代表的則是程式碼運算的流程，並且會將運算結果回傳。其中兩者最關鍵差異為：敘述式不會回傳值，表達式則會。</li>
-</ol>
-<ul>
-<li>以下為常見的表達式範例：</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//運算表達式 Arithmetic expression</span></span><br><span class="line"> <span class="number">1</span>+<span class="number">2</span>*<span class="number">3</span> ; <span class="comment">//回傳解果為7</span></span><br><span class="line"><span class="comment">//邏輯表達式 Logical Expression</span></span><br><span class="line"><span class="literal">true</span> &amp;&amp; (something === <span class="literal">null</span> || myAge &lt; <span class="number">18</span>) <span class="comment">//回傳結果為 true 或 false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//函式（或方法的呼叫） Function / Method Invocation Expression</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>,<span class="number">10</span>) <span class="comment">//回傳結果為 1024</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//三元運算子 Ternary Operator</span></span><br><span class="line">myAge &lt; <span class="number">18</span> ? <span class="string">&#x27;Youngster&#x27;</span> : <span class="string">&#x27;Adult&#x27;</span>; <span class="comment">//回傳結果為 &#x27;Youngster&#x27; 因為 myAge &lt; 18 </span></span><br></pre></td></tr></table></figure>
-<p>而敘述式：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="comment">/*expression 1*/</span>)&#123;</span><br><span class="line">	<span class="comment">//若 expression1 為 true 則執行</span></span><br><span class="line">	</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="comment">/*expression 2*/</span>)&#123;</span><br><span class="line">	<span class="comment">//若 expression2 為 true 則執行</span></span><br><span class="line">&#125; <span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="comment">//若 expression1、expression2 都不為 true 則執行此</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//迴圈敘述式 Looping Statement</span></span><br><span class="line"><span class="keyword">while</span> (<span class="comment">/*expression */</span>)&#123;</span><br><span class="line">	<span class="comment">//若 expression 為 true， 則重複執行直到 expression 為 false 時跳脫</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>按照上面敘述式的定義 — 由於敘述式是在敘述運行流程，而不會回傳值，所以你才不會在 JavaScript 裡面看到這樣的寫法：</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS 並有提供這寫法</span></span><br><span class="line"><span class="keyword">const</span> status = <span class="keyword">if</span>(<span class="title class_">Age</span> &lt;<span class="number">18</span> )&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>注意：敘述式不一定是多行式（或區塊式）地呈現的最佳案例：變數宣告的指派敘述式(Variable Declaration Assignment Statement)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//變數宣告的 指派敘述式</span></span><br><span class="line"><span class="keyword">const</span> foo =<span class="number">123</span>;</span><br></pre></td></tr></table></figure></li>
-<li>請問上面指派式會回傳什麼結果 =&gt;數字 123 或 udefined。正解為 udefined<ul>
-<li>指派式的回傳結果為 undefined</li>
-</ul>
-</li>
-<li>所以可以歸納出，javaScript 的變數宣告的指派式屬於敘述式，非表達式。</li>
-</ul>
-<h4 id="表達式什麼時候會以非單行的程式碼，也就是區塊的方式？"><a href="#表達式什麼時候會以非單行的程式碼，也就是區塊的方式？" class="headerlink" title="表達式什麼時候會以非單行的程式碼，也就是區塊的方式？"></a>表達式什麼時候會以非單行的程式碼，也就是區塊的方式？</h4><ul>
-<li>立即呼叫函式表達式(IIFE)</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> status = (<span class="title function_">funcrion</span>(<span class="params">myAge</span>)&#123;</span><br><span class="line">								 <span class="keyword">if</span> (myAge &lt;<span class="number">18</span>)&#123; <span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span>&#125;</span><br><span class="line">									<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">								&#125;)(<span class="number">16</span>) <span class="comment">//假設填入參數為16，呼叫該函式的結果回傳 &#x27;Young&#x27;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>當可以分清楚表達式與敘述式差別後，回歸型別斷言</li>
-<li>斷言的基礎語法<ul>
-<li>斷言的語法只能用在表達式上，因為表達式具備回傳值，敘述式則沒有</li>
-<li>因此，可以「斷言該表達式所運算結果之代表型別」</li>
-</ul>
-</li>
-</ul>
-<p>寫法如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;expression&gt; <span class="keyword">as</span> T assertion</span><br><span class="line"></span><br><span class="line">&lt;T assertion &gt;(&lt;expression&gt;)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//運算表達式</span></span><br><span class="line">(foo+bar*baz) <span class="keyword">as</span> <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 邏輯表達式</span></span><br><span class="line">(<span class="title function_">isPositive</span>(num) &amp;&amp; <span class="title function_">idEven</span>(num)) <span class="keyword">as</span> <span class="built_in">boolean</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//function</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>, <span class="number">10</span>) <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">(myAge &lt;<span class="number">18</span> ? <span class="string">&#x27;Young&#x27;</span> : <span class="string">&#x27;Adult&#x27;</span>) <span class="keyword">as</span> <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//IIFE</span></span><br><span class="line">(<span class="title function_">funcrion</span>(<span class="params">myAge</span>)&#123;</span><br><span class="line">					 <span class="keyword">if</span> (myAge &lt;<span class="number">18</span>)&#123; <span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span>&#125;</span><br><span class="line">						<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">					&#125;)(<span class="number">16</span>) <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//只要是表達式，就算在其他敘述式、表達式內也能使用</span></span><br><span class="line"><span class="title function_">somefunction</span>(foo <span class="keyword">as</span> <span class="built_in">number</span> , bar <span class="keyword">as</span> <span class="built_in">string</span>) <span class="keyword">as</span> <span class="built_in">boolean</span></span><br><span class="line">					</span><br></pre></td></tr></table></figure>
-
-<p>換種寫法：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="built_in">number</span>&gt;(foo+bar*baz);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 邏輯表達式</span></span><br><span class="line">&lt;<span class="built_in">boolean</span>&gt; (<span class="title function_">isPositive</span>(num) &amp;&amp; <span class="title function_">idEven</span>(num)) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//function</span></span><br><span class="line">&lt;<span class="built_in">number</span>&gt; <span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>, <span class="number">10</span>) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">&lt;<span class="built_in">string</span>&gt;(myAge &lt;<span class="number">18</span> ? <span class="string">&#x27;Young&#x27;</span> : <span class="string">&#x27;Adult&#x27;</span>) ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//IIFE</span></span><br><span class="line"> &lt;<span class="built_in">number</span>&gt;(</span><br><span class="line">	 <span class="title function_">funcrion</span>(<span class="params">myAge</span>)&#123;</span><br><span class="line">					 <span class="keyword">if</span> (myAge &lt;<span class="number">18</span>)&#123; <span class="keyword">return</span> <span class="string">&#x27;Young&#x27;</span>&#125;</span><br><span class="line">						<span class="keyword">return</span> <span class="string">&#x27;Adult&#x27;</span></span><br><span class="line">					&#125;)(<span class="number">16</span>)</span><br><span class="line">   );</span><br><span class="line"><span class="comment">//只要是表達式，就算在其他敘述式、表達式內也能使用</span></span><br><span class="line">&lt;<span class="built_in">boolean</span>&gt;<span class="title function_">somefunction</span>(foo <span class="keyword">as</span> <span class="built_in">number</span> , bar <span class="keyword">as</span> <span class="built_in">string</span>) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>以上針對註記 Annotation V.S. 斷言 Assertion 做個簡單整理～</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/01/06/FormData-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/06/FormData-1/" class="post-title-link" itemprop="url">FormData 表單的運用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-01-06 10:44:33" itemprop="dateCreated datePublished" datetime="2022-01-06T10:44:33+08:00">2022-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-11-14 20:32:05" itemprop="dateModified" datetime="2024-11-14T20:32:05+08:00">2024-11-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/xf0DAqA.png" alt=""></p>
-<p>最近遇到將表單資料存到後端的方式，過去一直以為是將資料整理為物件方式存取即可，後來發現使用FormData來建立物件傳送檔案即可!</p>
-<ul>
-<li>FormData 是一個表單格式，利用它將資料轉成表單的格式，並且以表單的形式回傳給後端</li>
-</ul>
-<h2 id="建立-FormData-物件"><a href="#建立-FormData-物件" class="headerlink" title="建立 FormData 物件"></a>建立 FormData 物件</h2><ul>
-<li>最直接方式，先取得form的資料</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根據表單元素取得表單資料</span></span><br><span class="line"><span class="keyword">var</span> form = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;form&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>(form);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以用 append 把欄位灌進去表單中</span></span><br><span class="line"><span class="keyword">var</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>(); <span class="comment">// 一開始表單的資料是空的</span></span><br><span class="line">formData.<span class="title function_">append</span>(<span class="string">&#x27;username&#x27;</span>, <span class="title class_">Chris</span>); <span class="comment">// 增加欄位</span></span><br><span class="line">formData.<span class="title function_">append</span>(<span class="string">&#x27;image&#x27;</span>, file); <span class="comment">// 檔案也可以透過 append 放進來</span></span><br></pre></td></tr></table></figure>
-<h2 id="以下介紹幾個基礎的使用方式："><a href="#以下介紹幾個基礎的使用方式：" class="headerlink" title="以下介紹幾個基礎的使用方式："></a>以下介紹幾個基礎的使用方式：</h2><ul>
-<li><code>formData.append(name, value)</code> : 加入有 name 和 value 的表單資料(name:表單標籤的名稱,value: input 輸入的值)</li>
-<li><code>formData.append(name, blob, fileName)</code> : 加入字段，就像它是 <code>&lt;input type=&quot;file&quot;&gt;</code>，第三個參數 fileName 設置檔案名</li>
-<li><code>formData.delete(name)</code> : 移除帶有 name 的字段，</li>
-<li><code>formData.get(name)</code> : 取得帶有 name 的值，</li>
-<li><code>formData.has(name)</code> : 如果帶有給定 name 的字段，返回 true，否則返回 false。</li>
-</ul>
-<h2 id="使用axios-傳遞資料"><a href="#使用axios-傳遞資料" class="headerlink" title="使用axios 傳遞資料"></a>使用axios 傳遞資料</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span><br><span class="line"><span class="comment">//宣告要取得的值</span></span><br><span class="line"><span class="keyword">var</span> title = form.<span class="property">name</span></span><br><span class="line">formData.<span class="title function_">append</span>(<span class="string">&quot;formTitle&quot;</span>, title);</span><br><span class="line">axios.<span class="title function_">post</span>(<span class="string">&#x27;upload_file&#x27;</span>, formData, &#123;</span><br><span class="line">    <span class="attr">headers</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;multipart/form-data&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="補充-vue-Typescript-宣告型別"><a href="#補充-vue-Typescript-宣告型別" class="headerlink" title="補充 vue+Typescript 宣告型別"></a>補充 vue+Typescript 宣告型別</h2><ul>
-<li>以 stack overflow 內的資料為例：<ul>
-<li>可以使用 ref來取得DOM元素，並宣告該變數為HTMLFormElement<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-form</span><br><span class="line">         <span class="keyword">class</span>=<span class="string">&quot;m-auto&quot;</span></span><br><span class="line">         ref=<span class="string">&quot;formRef&quot;</span></span><br><span class="line">         :model=<span class="string">&quot;form&quot;</span></span><br><span class="line">         :rules=<span class="string">&quot;rules&quot;</span></span><br><span class="line">       &gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> formRef = ref&lt;<span class="title class_">HTMLFormElement</span>&gt;();</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>另是使用 element-UI 的表單，也可以使用<br><code>import &#123;  ElForm &#125; from &quot;element-ui&quot;;</code></li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://www.ucamc.com/articles/332-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8jquery-ajax-submit-%E5%82%B3%E9%80%81form%E8%A1%A8%E5%96%AEserialize-%E6%96%B9%E6%B3%95">如何使用jQuery AJAX submit 傳送form表單方法</a><br><a target="_blank" rel="noopener" href="https://5xruby.tw/courses/javascript">JavaScript / jQuery 前端開發入門實戰
-</a><br><a target="_blank" rel="noopener" href="https://zh.javascript.info/formdata">JavaScript Info-formData</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/67074871/vue-3-typescript-unable-to-access-method-from-ref">stackoverflow</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1371,7 +1294,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1382,7 +1305,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">71</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

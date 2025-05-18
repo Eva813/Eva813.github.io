@@ -174,6 +174,184 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/01/24/Net-learning-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/24/Net-learning-4/" class="post-title-link" itemprop="url">LINQ 進階運算子：拓展你的查詢能力</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-24 14:22:20 / Modified: 15:01:40" itemprop="dateCreated datePublished" datetime="2025-01-24T14:22:20+08:00">2025-01-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/dotnet/" itemprop="url" rel="index"><span itemprop="name">dotnet</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>除了基礎運算子（如 Where、Select 和 OrderBy），LINQ 還提供了許多進階運算子，用於解決更複雜的查詢需求。以下是一些使用頻率較高的進階運算子，以及它們的功能與應用場景。</p>
+<h2 id="Projection-Operators-投影"><a href="#Projection-Operators-投影" class="headerlink" title="Projection Operators 投影"></a>Projection Operators 投影</h2><h3 id="Select"><a href="#Select" class="headerlink" title="Select"></a>Select</h3><p>範例：投影字串清單中每個字串的第一個字母。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">List&lt;<span class="built_in">string</span>&gt; words = [<span class="string">&quot;an&quot;</span>, <span class="string">&quot;apple&quot;</span>, <span class="string">&quot;a&quot;</span>, <span class="string">&quot;day&quot;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> query = words.Select(word =&gt; word.Substring(<span class="number">0</span>, <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="built_in">string</span> s <span class="keyword">in</span> query)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* This code produces the following output:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    a</span></span><br><span class="line"><span class="comment">    a</span></span><br><span class="line"><span class="comment">    a</span></span><br><span class="line"><span class="comment">    d</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="SelectMany"><a href="#SelectMany" class="headerlink" title="SelectMany"></a>SelectMany</h3><p>SelectMany 將一個集合中的子集合展平（Flatten），生成單一層級的結果序列。它非常適合處理嵌套集合。</p>
+<p>適用場景：需要從多個子集合中提取元素，並將它們組合為單一集合。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">List&lt;<span class="built_in">string</span>&gt; phrases = [<span class="string">&quot;an apple a day&quot;</span>, <span class="string">&quot;the quick brown fox&quot;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> query = <span class="keyword">from</span> phrase <span class="keyword">in</span> phrases</span><br><span class="line">            <span class="keyword">from</span> word <span class="keyword">in</span> phrase.Split(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">            <span class="keyword">select</span> word;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="built_in">string</span> s <span class="keyword">in</span> query)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* This code produces the following output:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    an</span></span><br><span class="line"><span class="comment">    apple</span></span><br><span class="line"><span class="comment">    a</span></span><br><span class="line"><span class="comment">    day</span></span><br><span class="line"><span class="comment">    the</span></span><br><span class="line"><span class="comment">    quick</span></span><br><span class="line"><span class="comment">    brown</span></span><br><span class="line"><span class="comment">    fox</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">List&lt;<span class="built_in">string</span>&gt; phrases = [<span class="string">&quot;an apple a day&quot;</span>, <span class="string">&quot;the quick brown fox&quot;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> query = phrases.SelectMany(phrases =&gt; phrases.Split(<span class="string">&#x27; &#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="built_in">string</span> s <span class="keyword">in</span> query)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* This code produces the following output:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    an</span></span><br><span class="line"><span class="comment">    apple</span></span><br><span class="line"><span class="comment">    a</span></span><br><span class="line"><span class="comment">    day</span></span><br><span class="line"><span class="comment">    the</span></span><br><span class="line"><span class="comment">    quick</span></span><br><span class="line"><span class="comment">    brown</span></span><br><span class="line"><span class="comment">    fox</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+<p>在提供一個，處理多對多關係數據（如學生和他們的選修課程）。<br>範例：攤平學生的課程清單</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> students = <span class="keyword">new</span>[]</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">new</span> &#123; Name = <span class="string">&quot;Alice&quot;</span>, Courses = <span class="keyword">new</span>[] &#123; <span class="string">&quot;Math&quot;</span>, <span class="string">&quot;Physics&quot;</span> &#125; &#125;,</span><br><span class="line">    <span class="keyword">new</span> &#123; Name = <span class="string">&quot;Bob&quot;</span>, Courses = <span class="keyword">new</span>[] &#123; <span class="string">&quot;Biology&quot;</span>, <span class="string">&quot;Chemistry&quot;</span> &#125; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 展平成單一課程清單</span></span><br><span class="line"><span class="keyword">var</span> allCourses = students.SelectMany(s =&gt; s.Courses);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">&quot;所有課程：&quot;</span>);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> course <span class="keyword">in</span> allCourses)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(course);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>輸出結果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">所有課程：</span><br><span class="line"><span class="title class_">Math</span></span><br><span class="line"><span class="title class_">Physics</span></span><br><span class="line"><span class="title class_">Biology</span></span><br><span class="line"><span class="title class_">Chemistry</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/01/24/Net-learning-4/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/01/18/Net-learning-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/18/Net-learning-3/" class="post-title-link" itemprop="url">深入淺出 C# LINQ：讓查詢語法變得更簡單</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-18 19:28:54" itemprop="dateCreated datePublished" datetime="2025-01-18T19:28:54+08:00">2025-01-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-24 14:18:38" itemprop="dateModified" datetime="2025-01-24T14:18:38+08:00">2025-01-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/dotnet/" itemprop="url" rel="index"><span itemprop="name">dotnet</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>C# 的 LINQ (Language Integrated Query，語言整合查詢) 是一個非常強大的功能，它讓你可以使用類似 SQL 的語法來查詢各種不同的資料來源。這意味著你可以用統一的方式來處理資料，無論資料是來自陣列、列表、資料庫、XML 或其他任何支援 LINQ 的來源。</p>
+<h2 id="LINQ-的兩種語法："><a href="#LINQ-的兩種語法：" class="headerlink" title="LINQ 的兩種語法："></a>LINQ 的兩種語法：</h2><p>LINQ 有兩種主要的語法形式：</p>
+<ul>
+<li>查詢語法 (Query Syntax)： 看起來很像 SQL 語法，使用 from、where、select 等關鍵字。這種語法比較易讀，尤其是在處理複雜的查詢時。</li>
+<li>方法語法 (Method Syntax)： 使用擴充方法 (Extension Methods) 來表示查詢運算子。這種語法更簡潔，也更靈活。簡單的查詢或需要鏈式操作時，通常使用方法語法更為方便。</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/01/18/Net-learning-3/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/01/15/Net-learning-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -879,185 +1057,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/04/27/vitest-i18n/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/27/vitest-i18n/" class="post-title-link" itemprop="url">vitest-i18n</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2024-04-27 13:12:36 / Modified: 14:42:21" itemprop="dateCreated datePublished" datetime="2024-04-27T13:12:36+08:00">2024-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Test/" itemprop="url" rel="index"><span itemprop="name">Test</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近嘗試在專案內加入測試，詢問朋友後建議先從 utils 中共用的邏輯函式開始，而在共用的邏輯函式中，會有幾個是 i18n 相關的函式。<br>因為頁面中常會用到將數值，轉換為顯示在畫面上的文字，如下：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">getType</span> = (<span class="params"><span class="keyword">type</span>: <span class="built_in">number</span></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> (<span class="keyword">type</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Auto&#x27;</span>)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Manual&#x27;</span>)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Mix&#x27;</span>)</span><br><span class="line">        <span class="attr">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在進行測試時，總想說是否要先選定一語系，如中文\英文，然後確認他轉換的是否為該文字<br>但是經過嘗試後，覺得或許不應該是檢查轉換後的文字，應該要以對應 key 來檢查。<br>參考 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/72260793/how-to-mock-stub-vue-i18n">overflow</a></p>
-<ul>
-<li>因此專案是使用 quasar，所以在 i18n.t 方法，引入的位置是 boot/i18n.ts</li>
-<li>在測試中，可以執行測試函式，帶入對應數值，並檢查是否回傳對應的 key</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 在測試中覆寫模擬 i18n.t 方法</span></span><br><span class="line">vi.<span class="title function_">mock</span>(<span class="string">&#x27;../../../src/boot/i18n&#x27;</span>, <span class="function">() =&gt;</span> (&#123;</span><br><span class="line">    <span class="attr">i18n</span>: &#123;</span><br><span class="line">        <span class="attr">global</span>: &#123;</span><br><span class="line">            <span class="attr">t</span>: <span class="function">(<span class="params">key: <span class="built_in">string</span></span>) =&gt;</span> key, <span class="comment">// 提供模擬的 t 函式</span></span><br><span class="line">            <span class="attr">locale</span>: <span class="string">&#x27;en&#x27;</span> <span class="comment">// 假設默認的 locale 值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;getType&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 0&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">0</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Auto&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 1&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">1</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Manual&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">2</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Mix&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return null for an unknown type&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">999</span>)).<span class="title function_">toBeNull</span>()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="小結上述方式："><a href="#小結上述方式：" class="headerlink" title="小結上述方式："></a>小結上述方式：</h3><p>使用全局模擬，vi.mock 全局模擬 i18n.t 方法，並提供模擬的 t 函式，這樣就可以在測試中，直接檢查是否回傳對應的 key，而不用檢查轉換後的文字。</p>
-<p>另外，在跨頁面也會有共用的下拉選單，將此下拉選單的選項，也提取出來，並進行測試。</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> directionOpt = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> ([</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">t</span>(<span class="string">&#x27;Shared.right&#x27;</span>), <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">t</span>(<span class="string">&#x27;Shared.wrong&#x27;</span>), <span class="attr">value</span>: <span class="number">1</span> &#125;</span><br><span class="line">]))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>原本也想是否直接檢查 key 是否正確即可。但基於困惑，就嘗試丟 chatGpt 詢問</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/04/27/vitest-i18n/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/01/06/css-grid/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/01/06/css-grid/" class="post-title-link" itemprop="url">css-grid</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-01-06 12:15:17" itemprop="dateCreated datePublished" datetime="2024-01-06T12:15:17+08:00">2024-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-11-14 20:31:01" itemprop="dateModified" datetime="2024-11-14T20:31:01+08:00">2024-11-14</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在 Youtube 看到 Kevin Powell 介紹使用 grid 來作為 wrapper，以自適應網頁的縮放。</p>
-<p>首先基本常用 grid 方式</p>
-<ul>
-<li>創建一個包含三欄等寬的網格布局</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr <span class="number">1</span>fr <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>加入使用 using named grid lines，定義出欄的 content 範圍</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr [content-start] <span class="number">1</span>fr [content-end] <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>設計一個 class 給他，如果在 content-grid 以下的元素，會將以下的元素放在 content 之間</p>
-<ul>
-<li>應用到 <code>.content-grid</code> 內部的每一個直接子元素</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr [content-start] <span class="number">1</span>fr [content- end] <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.content-grid</span> &gt; * &#123;</span><br><span class="line">  <span class="attribute">grid-column</span>: content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Layout-grid-可以先設置："><a href="#Layout-grid-可以先設置：" class="headerlink" title="Layout grid 可以先設置："></a>Layout grid 可以先設置：</h3><ul>
-<li>就可以看到 content 範圍<br><img src="https://hackmd.io/_uploads/HyCjULL_p.png" alt="image"><br><img src="https://hackmd.io/_uploads/HkJWv8UO6.png" alt="image"></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/01/06/css-grid/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1129,7 +1128,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1140,7 +1139,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">71</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

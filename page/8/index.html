@@ -174,6 +174,197 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/05/16/Vue-bind/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/16/Vue-bind/" class="post-title-link" itemprop="url">Vue.js 3 - 屬性綁定</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-16 14:56:28" itemprop="dateCreated datePublished" datetime="2021-05-16T14:56:28+08:00">2021-05-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:33:27" itemprop="dateModified" datetime="2022-11-04T10:33:27+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/NBBY8vo.png" alt=""></p>
+<p>  屬性綁定可以輕鬆的將data中的資料，與HTML的標籤屬性綁定，這樣一來可以動態的變更資料。</p>
+<h2 id="原本-HTML-的樣子"><a href="#原本-HTML-的樣子" class="headerlink" title="原本 HTML 的樣子"></a>原本 HTML 的樣子</h2><ul>
+<li>img中原本有個圖片資料</li>
+<li>v-bind是指令，<code>：</code>後接的是HTML的屬性</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>綁定屬性 v-bind<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; breakfastShop.name &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://images.unsplash.com/photo-1600182610361-4b4d664e07b9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=200&amp;q=80&quot;</span> <span class="attr">class</span>=<span class="string">&quot;square-img&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JS</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">breakfastShop</span>: &#123;</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&#x27;奇蹟早餐&#x27;</span>,</span><br><span class="line">        <span class="attr">imgUrl</span>: <span class="string">&#x27;https://images.unsplash.com/photo-1600182610361-4b4d664e07b9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=200&amp;q=80&#x27;</span>,</span><br><span class="line">        <span class="attr">resizeImg</span>: <span class="string">&#x27;https://images.unsplash.com/photo-1600182610361-4b4d664e07b9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;q=80&#x27;</span></span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="修改-gt-綁定JS中-breakfastShop-物件資料內容"><a href="#修改-gt-綁定JS中-breakfastShop-物件資料內容" class="headerlink" title="修改 =&gt; 綁定JS中 breakfastShop 物件資料內容"></a>修改 =&gt; 綁定JS中 breakfastShop 物件資料內容</h3><p><img src="https://i.imgur.com/H3UzhrB.png" alt=""></p>
+<ul>
+<li>將原本<code>src</code> =&gt; <code>v-bind:src=&quot;breakfastShop.imgUrl&quot;</code><ul>
+<li>此外title 屬性，也能照樣綁定喔！  <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>綁定屬性 v-bind<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; breakfastShop.name &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">img</span> <span class="attr">v-bind:src</span>=<span class="string">&quot;breakfastShop.imgUrl&quot;</span> <span class="attr">class</span>=<span class="string">&quot;square-img&quot;</span> <span class="attr">v-bind:title</span>=<span class="string">&quot;breakfastShop.name&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/Xhtez9s.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="縮寫形式"><a href="#縮寫形式" class="headerlink" title="縮寫形式"></a>縮寫形式</h3><ul>
+<li>留下冒號<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>縮寫形式 <span class="tag">&lt;<span class="name">code</span>&gt;</span>:<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">&quot;breakfastShop.imgUrl&quot;</span> <span class="attr">class</span>=<span class="string">&quot;square-img&quot;</span> <span class="attr">:title</span>=<span class="string">&quot;breakfastShop.name&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="其他屬性的綁定"><a href="#其他屬性的綁定" class="headerlink" title="其他屬性的綁定"></a>其他屬性的綁定</h2><ul>
+<li>當他是飽的狀態，就無法按下送出<ul>
+<li>預設是false 所以可以送出表單</li>
+<li>但當點擊狀態切換(isFull: true)，此時就會無法點擊送出按鈕</li>
+</ul>
+</li>
+<li>由範例可得知，可以透過 true\false 的狀態切換，製造出不同互動效果<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>更多屬性綁定<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">         小明還想點餐：</span><br><span class="line">         <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">value</span>=<span class="string">&quot;我要吃蘿蔔糕&quot;</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">:disabled</span>=<span class="string">&quot;isFull&quot;</span>&gt;</span>送出<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">v-on:click</span>=<span class="string">&quot;change(&#x27;isFull&#x27;)&quot;</span>&gt;</span>狀態切換<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/GVQXr8f.png" alt=""></p>
+<ul>
+<li>預設是false，所以可以點擊送出<br><img src="https://i.imgur.com/4HmkD5f.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/w91MEBD.png" alt=""></p>
+<p>資料來源：<br>六角學院 - Vue.js 3 課程</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/05/16/Vue-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/16/Vue-basic/" class="post-title-link" itemprop="url">Vue.js 3 - 起手式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-16 13:56:28" itemprop="dateCreated datePublished" datetime="2021-05-16T13:56:28+08:00">2021-05-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-24 14:41:25" itemprop="dateModified" datetime="2022-09-24T14:41:25+08:00">2022-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天要介紹的是 Vue.js3 的起手式，主要參考<a target="_blank" rel="noopener" href="https://vuejs.org/v2/guide/#Getting-Started">官方文件</a>來學習</p>
+<h3 id="載入方式"><a href="#載入方式" class="headerlink" title="載入方式"></a>載入方式</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;https://unpkg.com/vue@next&quot;</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="引入之後，在index-html檔案"><a href="#引入之後，在index-html檔案" class="headerlink" title="引入之後，在index.html檔案"></a>引入之後，在<code>index.html</code>檔案</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123;message&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JS</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">message</span>: <span class="string">&#x27;I am Eva!&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>畫面就會出現相應的文字<br><img src="https://i.imgur.com/l7MiTCV.png" alt=""></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/03/05/scss-ClothesStore/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1648,367 +1839,6 @@ justify-content: center;</code>使水平、垂直置中<figure class="highlight 
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/01/15/js-DOMArrayMethods/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/15/js-DOMArrayMethods/" class="post-title-link" itemprop="url">JS實作- DOM Array Methods</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-15 22:19:25" itemprop="dateCreated datePublished" datetime="2021-01-15T22:19:25+08:00">2021-01-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://eva813.github.io/Eva_portfolio/ArrayMethods/arrayMethod.html">成品</a><br><img src="https://i.imgur.com/gtaxVol.png" alt=""></p>
-<h1 id="需求觀察"><a href="#需求觀察" class="headerlink" title="需求觀察"></a>需求觀察</h1><ul>
-<li>使用fetch來串接API</li>
-<li>透過左側按鈕，使用陣列的方法來實現不同事件<ul>
-<li>運用<code>forEach()</code>來將陣列資料呈現到畫面</li>
-<li>運用<code>map()</code>計算金額的倍數</li>
-<li><code>filter()</code>篩選出符合條件的資料</li>
-<li><code>sort()</code>用來排序資料</li>
-<li><code>reduce()</code>計算陣列中資料的累加結果</li>
-</ul>
-</li>
-</ul>
-<h1 id="使用fetch來串接資料"><a href="#使用fetch來串接資料" class="headerlink" title="使用fetch來串接資料"></a>使用fetch來串接資料</h1><ul>
-<li>實作專案的資料來源<code>https://randomuser.me/api</code></li>
-</ul>
-<p>1.原本使用<code>fetch</code></p>
-<ul>
-<li>送出 Request，如果得到回應就會回傳帶有 Response 的 Promise 物件，使用 then 將回傳值傳遞下去。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getRandomUser</span>(<span class="params"></span>) &#123;</span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;https://randomuser.me/api&#x27;</span>).<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span>    response.<span class="title function_">json</span>()).<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> data)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<a target="_blank" rel="noopener" href="https://www.oxxostudio.tw/articles/201908/js-fetch.html">JavaScript Fetch API 使用教學</a></li>
-</ul>
-<p>2.Fetch 搭配 async、await</p>
-<ul>
-<li>使用async很容易：在定義function時，開頭加上 async</li>
-<li>用fetch取得資料</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">getRandomUser</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;https://randomuser.me/api&#x27;</span>);  <span class="comment">//執行完後發出promise</span></span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">await</span> res.<span class="title function_">json</span>();</span><br><span class="line">  <span class="comment">//查看取得的資料，並從中選擇要用的部分</span></span><br><span class="line">  <span class="comment">//console.log(data);</span></span><br><span class="line">  <span class="keyword">const</span> user = data.<span class="property">results</span>[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">//創造新的使用者，並建立新的物件</span></span><br><span class="line">  <span class="keyword">const</span> newUser = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">`<span class="subst">$&#123;user.name.first&#125;</span> <span class="subst">$&#123;user.name.last&#125;</span>`</span>,</span><br><span class="line">    <span class="attr">money</span>: <span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="number">1000000</span>)</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(newUser);</span><br><span class="line">  <span class="title function_">addData</span>(newUser);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>3.函式中的撰寫</p>
-<ul>
-<li>查看取得的<code>data</code><br><img src="https://i.imgur.com/TjYFhjC.png" alt=""></li>
-<li>變數宣告要取用資料的哪個部分，並用以建立新物件的內容<ul>
-<li><code>const user = data.results[0];</code></li>
-<li><code>user.name.first</code><br><img src="https://i.imgur.com/NAmWK88.png" alt=""></li>
-</ul>
-</li>
-</ul>
-<h2 id="將物件傳入陣列"><a href="#將物件傳入陣列" class="headerlink" title="將物件傳入陣列"></a>將物件傳入陣列</h2><ul>
-<li><p>data 為前面</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//將新建立的物件(newUser)放入陣列中</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">addData</span>(<span class="params">newObj</span>) &#123;</span><br><span class="line">  <span class="comment">//這裡的data是在最前面所宣告的 初始陣列</span></span><br><span class="line">  data.<span class="title function_">push</span>(newObj);</span><br><span class="line">  </span><br><span class="line">    <span class="comment">//不放入參數，使用預設data</span></span><br><span class="line">  <span class="title function_">updateDOM</span>();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="將傳入新物件的陣列，顯示於畫面"><a href="#將傳入新物件的陣列，顯示於畫面" class="headerlink" title="將傳入新物件的陣列，顯示於畫面"></a>將傳入新物件的陣列，顯示於畫面</h2></li>
-<li><p>使用<code>forEach()</code>來呈現畫面的資料</p>
-<ul>
-<li>傳入參數為item，為新創的物件資料，內有：name,money</li>
-<li>創造新的<code>div</code>並增加class給他</li>
-<li>用<code>innerHTML</code>插入內容</li>
-<li>用 appendChild() 把上面新增的內容放入，新增的內容會依序排列在後面，不會被洗掉</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將新創立的物件輸出呈現到畫面上(dom)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">updateDOM</span>(<span class="params">provideData = data</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(provideData);</span><br><span class="line">  <span class="comment">//清除main區域的div</span></span><br><span class="line">  main.<span class="property">innerHTML</span> = <span class="string">`&lt;h2&gt;&lt;strong&gt;Person&lt;/strong&gt;  Wealth&lt;/h2&gt;`</span>;</span><br><span class="line">  provideData.<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> element = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">    <span class="comment">//在新div增加class</span></span><br><span class="line">    element.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;person&#x27;</span>);</span><br><span class="line">    element.<span class="property">innerHTML</span> = <span class="string">`&lt;strong&gt;<span class="subst">$&#123;item.name&#125;</span>&lt;/strong&gt; <span class="subst">$&#123;item.money&#125;</span>`</span>;</span><br><span class="line">    main.<span class="title function_">appendChild</span>(element);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意：如果本來 HTML 某元素有既有的內容，但是又用 innerHTML 在同樣的元素上加上內容的時候，innerHTML 會把原本寫的東西覆蓋掉。</p>
-<p><img src="https://i.imgur.com/xjxIGr7.png" alt=""></p>
-<ul>
-<li>注意參數的回傳<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">updateDOM</span>(<span class="params">provideData</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(provideData);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/0O0629Q.png" alt=""><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">updateDOM</span>(<span class="params">provideData = data</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(provideData);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><img src="https://i.imgur.com/qW5Vqq9.png" alt=""></p>
-<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10218607">JavaScript 初心者筆記: DOM - 如何用 JS 新增 HTML 內容</a></p>
-<h2 id="數字轉金錢格式"><a href="#數字轉金錢格式" class="headerlink" title="數字轉金錢格式"></a>數字轉金錢格式</h2><p><img src="https://i.imgur.com/JKQrEyd.png" alt=""></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將回傳的隨機數字，轉換為金錢格式 -https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">formatMoney</span>(<span class="params">Money</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;$&#x27;</span> + <span class="title class_">Money</span>.<span class="title function_">toFixed</span>(<span class="number">2</span>).<span class="title function_">replace</span>(<span class="regexp">/\d(?=(\d&#123;3&#125;)+\.)/g</span>, <span class="string">&#x27;$&amp;,&#x27;</span>);;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>formatMoney()</code>要放入剛剛forEach所傳入的金額，從這邊去調整數字的格式<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">element.<span class="property">innerHTML</span> = <span class="string">`&lt;strong&gt;<span class="subst">$&#123;item.name&#125;</span>&lt;/strong&gt;  <span class="subst">$&#123;formatMoney(item.money)&#125;</span>`</span>;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><img src="https://i.imgur.com/8DLGtgC.png" alt=""></p>
-<h2 id="增加人員事件"><a href="#增加人員事件" class="headerlink" title="增加人員事件"></a>增加人員事件</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//設置點擊事件，按下add user，增加人</span></span><br><span class="line">addUserBtn.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, getRandomUser);</span><br></pre></td></tr></table></figure>
-
-<h2 id="運用map-來，建立-double-money事件"><a href="#運用map-來，建立-double-money事件" class="headerlink" title="運用map()來，建立 double money事件"></a>運用<code>map()</code>來，建立 double money事件</h2><ul>
-<li>loop through array 就像forEach，但不同的是他會回傳東西<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//double money </span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">doubleMoney</span>(<span class="params"></span>) &#123;</span><br><span class="line">  data = data.<span class="title function_">map</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; ...item &#125;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/PpZ5v7v.png" alt=""></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//double money </span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">doubleMoney</span>(<span class="params"></span>) &#123;</span><br><span class="line">  data = data.<span class="title function_">map</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; ...item, <span class="attr">money</span>: item.<span class="property">money</span> * <span class="number">2</span> &#125;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/joXfDXT.png" alt=""></p>
-<p>呈現於畫面</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//double money </span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">doubleMoney</span>(<span class="params"></span>) &#123;</span><br><span class="line">  data = data.<span class="title function_">map</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; ...item, <span class="attr">money</span>: item.<span class="property">money</span> * <span class="number">2</span> &#125;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">   <span class="title function_">updateDOM</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/M0R5KV4.png" alt=""></p>
-<p><code>forEach()</code>: 针对每一个元素执行提供的函数(executes a provided function once for each array element)。<br><code>map()</code>: 创建一个新的数组，其中每一个元素由调用数组中的每一个元素执行提供的函数得来(creates a new array with the results of calling a provided function on every element in the calling array)。<br><a target="_blank" rel="noopener" href="https://blog.fundebug.com/2018/02/05/map_vs_foreach/">JavaScript中Map和ForEach的区别</a></p>
-<h2 id="運用sort來建立排名"><a href="#運用sort來建立排名" class="headerlink" title="運用sort來建立排名"></a>運用<code>sort</code>來建立排名</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//sortEvent</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sortEvent</span>(<span class="params"></span>) &#123;</span><br><span class="line">  data = data.<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> b.<span class="property">money</span> - a.<span class="property">money</span>;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//console.log(data);</span></span><br><span class="line">  <span class="title function_">updateDOM</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="sort"><a href="#sort" class="headerlink" title="sort()"></a><code>sort()</code></h4><p><code>sort</code>依據字串的 Unicode 編碼進行排序，會改變原本的陣列。</p>
-<ul>
-<li>排序進行方式：<code>sort()</code>會將所有元素轉成字串後，且以第一個字元為對象，再進行排序。</li>
-<li>比較好的方式：一般會建議，還是以函式傳入參數來當排序條件會比較穩定。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">5</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">6</span>];</span><br><span class="line"><span class="comment">// 以匿名函式回參數做「升序」排序</span></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> a - b; <span class="comment">// a - b &gt; 0</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [1, 2, 3, 5, 6, 9]</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果要反過來做「降序」排序</span></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> b - a;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [9, 6, 5, 3, 2, 1]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>參考資料：<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10225733">JS 將陣列 Array 重新排列的 sort()</a>、<a target="_blank" rel="noopener" href="https://medium.com/@leokao0726/%E6%B7%BA%E8%AB%87-js-sort-%E5%88%B0%E8%83%8C%E5%BE%8C%E6%8E%92%E5%BA%8F%E6%96%B9%E6%B3%95-1035f5b8cde8">淺談 JS sort() 到背後排序方法</a></p>
-<h2 id="filter篩選百萬以上的人員"><a href="#filter篩選百萬以上的人員" class="headerlink" title="filter篩選百萬以上的人員"></a><code>filter</code>篩選百萬以上的人員</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">filterMillionaires</span>(<span class="params"></span>) &#123;</span><br><span class="line">  data = data.<span class="title function_">filter</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> item.<span class="property">money</span> &gt; <span class="number">1000000</span>;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">updateDOM</span>();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>PS:<code>filter()</code>的使用是回傳新陣列，原陣列不改變</p>
-<h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h2><p>拆解內部參數<br>accumulator<br>用來累積回呼函式回傳值的累加器（accumulator）或 initialValue（若有提供的話，詳如下敘）。累加器是上一次呼叫後，所回傳的累加數值。<br>currentValue<br>原陣列目前所迭代處理中的元素。</p>
-<ul>
-<li><code>console.log(accumulator);</code></li>
-</ul>
-<p><img src="https://i.imgur.com/dGpG42b.png" alt=""></p>
-<ul>
-<li><code>console.log(currentValue);</code></li>
-</ul>
-<p><img src="https://i.imgur.com/P0yQK34.png" alt=""></p>
-<ul>
-<li>console.log(currentValue.money);</li>
-</ul>
-<p><img src="https://i.imgur.com/vNfFozL.png" alt=""></p>
-<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">MDN</a><br><a target="_blank" rel="noopener" href="https://w3c.hexschool.com/blog/a2cb755f">JavaScript reduce 在做什麼？</a></p>
-<h3 id="理解完reduce-所回傳的參數資料後…"><a href="#理解完reduce-所回傳的參數資料後…" class="headerlink" title="理解完reduce()所回傳的參數資料後…"></a>理解完<code>reduce()</code>所回傳的參數資料後…</h3><ul>
-<li>讓金額加總計算<code>accumulator += currentValue.money</code></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//calculateMoney</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">calculateMoney</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> reduceArr = data.<span class="title function_">reduce</span>(<span class="function">(<span class="params">accumulator, currentValue</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//console.log(accumulator);</span></span><br><span class="line">   <span class="comment">// console.log(currentValue.money);</span></span><br><span class="line">    <span class="keyword">return</span> accumulator += currentValue.<span class="property">money</span>;</span><br><span class="line">  &#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> totalEl = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">  totalEl.<span class="property">innerHTML</span> = <span class="string">`&lt;h3&gt;Total Wealth: &lt;strong&gt; <span class="subst">$&#123;formatMoney(reduceArr)&#125;</span> &lt;/strong&gt; &lt;/h3&gt; `</span>;</span><br><span class="line">  main.<span class="title function_">appendChild</span>(totalEl);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/01/15/js-SortableList/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/15/js-SortableList/" class="post-title-link" itemprop="url">JS實作- SortableList</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-15 22:10:22" itemprop="dateCreated datePublished" datetime="2021-01-15T22:10:22+08:00">2021-01-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/K6JyjsG.png" alt=""></p>
-<p><a href="https://eva813.github.io/Eva_portfolio/sortableList/sortableList.html">成品</a></p>
-<h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><ul>
-<li><p>Drag &amp; Drop API</p>
-<ul>
-<li>使元素可以拖放，在 HTML5，只要為它加上 draggable=”true” 屬性，它就能「被拖曳」了</li>
-</ul>
-</li>
-<li><p>拖曳該項目時，會使下方的格子顏色變成灰色</p>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/sZVXh9r.png" alt=""></p>
-<ul>
-<li>拖曳項目到目標位置，會使了者交換</li>
-<li>排序最後會有一個檢查順序正確與否的按鈕</li>
-</ul>
-<h2 id="JS部分"><a href="#JS部分" class="headerlink" title="JS部分"></a>JS部分</h2><h3 id="1-排行榜的設置"><a href="#1-排行榜的設置" class="headerlink" title="1.排行榜的設置"></a>1.排行榜的設置</h3><ul>
-<li>設定熱門旅遊縣市排行榜的陣列</li>
-<li>並宣告一個空陣列，以利後面使用</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bestPlace = [</span><br><span class="line">  <span class="string">&#x27;台南&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;台中&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;高雄&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;台東&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;屏東&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;新北&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;宜蘭&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;花蓮&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;澎湖&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;桃園&#x27;</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> listItems = [];</span><br></pre></td></tr></table></figure>
-<h3 id="2-創建排行列表，並將其呈現於頁面上"><a href="#2-創建排行列表，並將其呈現於頁面上" class="headerlink" title="2.創建排行列表，並將其呈現於頁面上"></a>2.創建排行列表，並將其呈現於頁面上</h3><ul>
-<li>宣告新的變數，並利用Fisher-Yates，創造隨機的效果<ul>
-<li>注意新變數，是帶入展開運算元(把陣列中的元素取出)</li>
-</ul>
-</li>
-<li>利用<code>each</code>跑陣列，創造變數填入<code>&lt;li&gt;</code>，並於其中填入html標籤，使畫面呈現列表。</li>
-<li>jquery稱增加屬性<code>listItem.setAttribute(&#39;data-index&#39;, index);</code>,<a target="_blank" rel="noopener" href="https://api.jquery.com/attr/">.attr()</a></li>
-</ul>
-<p><img src="https://i.imgur.com/OqjHMda.png" alt=""></p>
-<ul>
-<li><code>listItems.push(listItem);</code>將列表項目，放入空陣列中</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Fisher-Yates洗牌演算法</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">fisherYatesShuffle</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = arr.<span class="property">length</span> - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">var</span> j = <span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>() * (i + <span class="number">1</span>)); <span class="comment">//random index</span></span><br><span class="line">    [arr[i], arr[j]] = [arr[j], arr[i]]; <span class="comment">// swap</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">/製作實際可以看到的list</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">creatList</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> placeArr = [...bestPlace];</span><br><span class="line">  <span class="title function_">fisherYatesShuffle</span>(placeArr);</span><br><span class="line">  $.<span class="title function_">each</span>(placeArr, <span class="keyword">function</span> (<span class="params">index, place</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> listItem = $(<span class="string">&#x27;&lt;li&gt;&lt;/li&gt;&#x27;</span>).<span class="title function_">appendTo</span>(<span class="string">&#x27;#draggable-list&#x27;</span>);</span><br><span class="line">    <span class="comment">// console.log(listItem);</span></span><br><span class="line">    listItem.<span class="title function_">attr</span>(<span class="string">&quot;data-index&quot;</span>, index);</span><br><span class="line">    <span class="comment">//listItem.addClass(&#x27;wrong&#x27;)</span></span><br><span class="line">    listItem.<span class="title function_">html</span>(<span class="string">`&lt;span class=&quot;number&quot;&gt;<span class="subst">$&#123;index + <span class="number">1</span>&#125;</span>&lt;/span&gt;</span></span><br><span class="line"><span class="string">        &lt;div class=&quot;draggable&quot; draggable=&quot;true&quot;&gt;</span></span><br><span class="line"><span class="string">          &lt;p class=&quot;place-name&quot;&gt;<span class="subst">$&#123;place&#125;</span>&lt;/p&gt;</span></span><br><span class="line"><span class="string">          &lt;i class=&quot;fas fa-grip-lines&quot;&gt;&lt;/i&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;`</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    listItems.<span class="title function_">push</span>(listItem);</span><br><span class="line">    <span class="comment">//insert into dom</span></span><br><span class="line">    $(<span class="string">&#x27;#draggable-list&#x27;</span>).<span class="title function_">append</span>(listItem);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">addEventListeners</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>參考資料：<br>push：<br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10222922">JS 從陣列 Array 尾端新增元素的 push()</a><br><a target="_blank" rel="noopener" href="https://www.oxxostudio.tw/articles/201908/js-array.html">JavaScript Array 陣列操作方法大全 ( 含 ES6 )</a></p>
-<h3 id="3-拖曳的監聽事件"><a href="#3-拖曳的監聽事件" class="headerlink" title="3.拖曳的監聽事件"></a>3.拖曳的監聽事件</h3><ul>
-<li>拖曳開始的監聽，元素是抓取<code>draggables</code>，後續的drop、dragenter、dragover等事件，元素是<code>.draggable-list li</code></li>
-<li>針對要被拖曳的元素（dragSource）監聽事件</li>
-<li>利用forEach方式，允許多個可拖曳的物件</li>
-</ul>
-<ul>
-<li>抓取的元素：<br><img src="https://i.imgur.com/5G60Pmr.png" alt=""><br><img src="https://i.imgur.com/zXR4YWT.png" alt=""></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//監聽事件</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">addEventListeners</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> draggables = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;.draggable&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> dragListItems = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;.draggable-list li&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//Dragable dot 增加監聽事件</span></span><br><span class="line"></span><br><span class="line">  draggables.<span class="title function_">forEach</span>(<span class="function"><span class="params">draggable</span> =&gt;</span> &#123;</span><br><span class="line">    draggable.<span class="title function_">addEventListener</span>(<span class="string">&#x27;dragstart&#x27;</span>, dragStart);</span><br><span class="line">  &#125;);</span><br><span class="line">  dragListItems.<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    item.<span class="title function_">addEventListener</span>(<span class="string">&#x27;dragover&#x27;</span>, dragOver);</span><br><span class="line">    item.<span class="title function_">addEventListener</span>(<span class="string">&#x27;drop&#x27;</span>, dragDrop);</span><br><span class="line">    item.<span class="title function_">addEventListener</span>(<span class="string">&#x27;dragenter&#x27;</span>, dragEnter);</span><br><span class="line">    item.<span class="title function_">addEventListener</span>(<span class="string">&#x27;dragleave&#x27;</span>, dragLeave);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="https://pjchender.blogspot.com/2017/08/html5-drag-and-drop-api.html">[筆記] 製作可拖曳的元素（HTML5 Drag and Drop API）</a></p>
-<h3 id="4-針對監聽事件，設置各執行的函式"><a href="#4-針對監聽事件，設置各執行的函式" class="headerlink" title="4.針對監聽事件，設置各執行的函式"></a>4.針對監聽事件，設置各執行的函式</h3><ul>
-<li>為了能夠追蹤抓取項目，所以一開始先宣告一個索引變數。</li>
-<li><code>dragStart()</code>:宣告<code>dragStartIndex</code>變數為抓取到的<code>li</code>-&gt;<code>data-index</code></li>
-</ul>
-<p><img src="https://i.imgur.com/6tMHuYr.png" alt=""></p>
-<ul>
-<li>有拖曳的開始，就會有結束，也就是放置(<code>dragDrop()</code>)：<code>dragEndIndex</code>同樣也是以索引來作為依據，並在設置一個交換的函式</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要能夠持續追蹤每個項目的index，所以要有個初始變數</span></span><br><span class="line"><span class="keyword">let</span> dragStartIndex;</span><br><span class="line"><span class="comment">//拖拉的各函式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">dragStart</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">//console.log(&#x27;Event: &#x27;, &#x27;dragstart&#x27;);</span></span><br><span class="line">  dragStartIndex = +$(<span class="variable language_">this</span>).<span class="title function_">closest</span>(<span class="string">&#x27;li&#x27;</span>).<span class="title function_">attr</span>(<span class="string">&#x27;data-index&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(dragStartIndex);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">dragOver</span>(<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="comment">// console.log(&#x27;Event: &#x27;, &#x27;dragover&#x27;);</span></span><br><span class="line">  e.<span class="title function_">preventDefault</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//設定開始的index,以及結束的index是為了交換</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">dragDrop</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// console.log(&#x27;Event: &#x27;, &#x27;dragdrop&#x27;);</span></span><br><span class="line">  <span class="keyword">const</span> dragEndIndex = +$(<span class="variable language_">this</span>).<span class="title function_">attr</span>(<span class="string">&#x27;data-index&#x27;</span>);</span><br><span class="line">  <span class="title function_">swapItems</span>(dragStartIndex, dragEndIndex);</span><br><span class="line">  $(<span class="variable language_">this</span>).<span class="title function_">removeClass</span>(<span class="string">&#x27;over&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="5-交換索引，使物件交換位置swapItems"><a href="#5-交換索引，使物件交換位置swapItems" class="headerlink" title="5.交換索引，使物件交換位置swapItems"></a>5.交換索引，使物件交換位置<code>swapItems</code></h3><ul>
-<li>透過抓取到的開始與結束的索引，來填入要交換的變數</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">swapItems</span>(<span class="params">fromIndex, toIndex</span>) &#123;</span><br><span class="line">  <span class="comment">//要設定交換之前，要先到dragover去設定e.preventDefault();（因為dragover會擋到交換的執行）</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> itemOne = listItems[fromIndex].<span class="title function_">find</span>(<span class="string">&#x27;.draggable&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> itemTwo = listItems[toIndex].<span class="title function_">find</span>(<span class="string">&#x27;.draggable&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//console.log(itemOne, itemTwo)</span></span><br><span class="line">  listItems[fromIndex].<span class="title function_">append</span>(itemTwo);</span><br><span class="line">  listItems[toIndex].<span class="title function_">append</span>(itemOne);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="6-延續拖曳監聽事件，所要執行的其他函式"><a href="#6-延續拖曳監聽事件，所要執行的其他函式" class="headerlink" title="6.延續拖曳監聽事件，所要執行的其他函式"></a>6.延續拖曳監聽事件，所要執行的其他函式</h3><ul>
-<li><p><code>dragEnter()</code>拖曳元素進入要放置的目標位置，所觸發的事件。在此是設定要放入目標位置時，增加一個<code>class</code>的效果</p>
-</li>
-<li><p>進入目標位置，其相互搭配的事件就是離開<code>dragLeave()</code>，當拖曳元素離開放置位置時，所發生的事件。在此為設定，去除於原本<code>class</code>的效果。</p>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">dragEnter</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// console.log(&#x27;Event: &#x27;, &#x27;dragenter&#x27;);</span></span><br><span class="line">  $(<span class="variable language_">this</span>).<span class="title function_">addClass</span>(<span class="string">&#x27;over&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">dragLeave</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// console.log(&#x27;Event: &#x27;, &#x27;dragleave&#x27;);</span></span><br><span class="line">  $(<span class="variable language_">this</span>).<span class="title function_">removeClass</span>(<span class="string">&#x27;over&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="7-核對順序"><a href="#7-核對順序" class="headerlink" title="7.核對順序"></a>7.核對順序</h3><ul>
-<li>抓取listItems，來跑forEach，其要參照的參數是，項目、索引。</li>
-<li>宣告<code>placeName</code>為參數<code>listItem</code>，draggable的文字字串。<ul>
-<li>trim()用來去除字串前後的空白</li>
-</ul>
-</li>
-<li>判斷句<code>placeName !== bestPlace[index]</code></li>
-<li><code>console.log(bestPlace[index])</code>會印出，正確的順序。</li>
-</ul>
-<p><img src="https://i.imgur.com/xIR3X98.png" alt=""></p>
-<ul>
-<li>核對結果：就是分別加入<code>wrong</code>、<code>&#39;right&#39;</code>。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//核對排名順序</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">checkOrder</span>(<span class="params"></span>) &#123;</span><br><span class="line">  listItems.<span class="title function_">forEach</span>(<span class="function">(<span class="params">listItem, index</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> placeName = listItem.<span class="title function_">find</span>(<span class="string">&#x27;.draggable&#x27;</span>).<span class="title function_">text</span>().<span class="title function_">trim</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (placeName !== bestPlace[index]) &#123;</span><br><span class="line">      listItem.<span class="title function_">addClass</span>(<span class="string">&#x27;wrong&#x27;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      listItem.<span class="title function_">removeClass</span>(<span class="string">&#x27;wrong&#x27;</span>);</span><br><span class="line">      listItem.<span class="title function_">addClass</span>(<span class="string">&#x27;right&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<hr>
-<h2 id="以下為補充資料："><a href="#以下為補充資料：" class="headerlink" title="以下為補充資料："></a>以下為補充資料：</h2><h3 id="拖曳補充資料："><a href="#拖曳補充資料：" class="headerlink" title="拖曳補充資料："></a>拖曳補充資料：</h3><p><a target="_blank" rel="noopener" href="https://ourcodeworld.com/articles/read/664/top-5-best-sortable-and-draggable-list-javascript-and-jquery-plugins">Top 5: Best Sortable &amp; Draggable List JavaScript and jQuery Plugins</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10120587">實用網頁工具庫 - jQuery UI (上) 元件篇
-</a></p>
-<h3 id="使陣列隨機排序"><a href="#使陣列隨機排序" class="headerlink" title="使陣列隨機排序"></a>使陣列隨機排序</h3><ul>
-<li>使用<code>map</code>將陣列轉換為新陣列，創造vale、以及加上sort排序值(利用<code>Math.random()</code>來產生亂數)</li>
-<li>使用sort隨機排序，剛剛的sort值是隨機產生，再一次使用sort，來使排的順序也隨機。</li>
-<li>最後，因為排序後陣列中的物件是<code>&#123; value: , sort:  &#125;</code>，而我們要讓畫面只顯示<code>value:</code>，所以再使用<code>map</code>將新陣列轉回只有該資料的陣列。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">createList</span>(<span class="params"></span>) &#123;</span><br><span class="line">  [...richestPeople]</span><br><span class="line">    .<span class="title function_">map</span>(<span class="function"><span class="params">a</span> =&gt;</span> (&#123; <span class="attr">value</span>: a, <span class="attr">sort</span>: <span class="title class_">Math</span>.<span class="title function_">random</span>() &#125;))</span><br><span class="line">    .<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a.<span class="property">sort</span> - b.<span class="property">sort</span>)</span><br><span class="line">    .<span class="title function_">map</span>(<span class="function"><span class="params">a</span> =&gt;</span> a.<span class="property">value</span>)</span><br><span class="line">    .<span class="title function_">forEach</span>(<span class="function">(<span class="params">person, index</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> listItem = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;li&#x27;</span>);</span><br><span class="line"></span><br><span class="line">      listItem.<span class="title function_">setAttribute</span>(<span class="string">&#x27;data-index&#x27;</span>, index);</span><br><span class="line"></span><br><span class="line">      listItem.<span class="property">innerHTML</span> = <span class="string">`</span></span><br><span class="line"><span class="string">        &lt;span class=&quot;number&quot;&gt;<span class="subst">$&#123;index + <span class="number">1</span>&#125;</span>&lt;/span&gt;</span></span><br><span class="line"><span class="string">        &lt;div class=&quot;draggable&quot; draggable=&quot;true&quot;&gt;</span></span><br><span class="line"><span class="string">          &lt;p class=&quot;person-name&quot;&gt;<span class="subst">$&#123;person&#125;</span>&lt;/p&gt;</span></span><br><span class="line"><span class="string">          &lt;i class=&quot;fas fa-grip-lines&quot;&gt;&lt;/i&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">      `</span>;</span><br><span class="line"></span><br><span class="line">      listItems.<span class="title function_">push</span>(listItem);</span><br><span class="line"></span><br><span class="line">      draggable_list.<span class="title function_">appendChild</span>(listItem);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">addEventListeners</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<a target="_blank" rel="noopener" href="https://shubo.io/javascript-random-shuffle/">[筆記] 如何正確實作 JavaScript Array Random Shuffle 亂數排序演算法</a><br><a target="_blank" rel="noopener" href="https://www.delftstack.com/zh-tw/howto/javascript/shuffle-array-javascript/">在 JavaScript 中對一個陣列進行隨機化或洗牌
-</a></li>
-</ul>
-<hr>
-<h3 id="jquery-ui"><a href="#jquery-ui" class="headerlink" title="jquery ui"></a>jquery ui</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//https://stackoverflow.com/questions/6426795/what-is-disableselection-used-for-in-jquery-ui</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">dragdrop</span>(<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&quot;#draggable-list&quot;</span>).<span class="title function_">sortable</span>(&#123;</span><br><span class="line">    <span class="comment">//connectWith: &quot;ul&quot;,</span></span><br><span class="line">    <span class="attr">delay</span>: <span class="number">300</span>,</span><br><span class="line">    <span class="attr">distance</span>: <span class="number">15</span>,</span><br><span class="line">    <span class="comment">//number: &quot;span:not(.number)&quot;,</span></span><br><span class="line">    <span class="attr">iframeFix</span>: <span class="literal">true</span>,</span><br><span class="line"></span><br><span class="line">  &#125;).<span class="title function_">disableSelection</span>();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<hr>
-<h3 id="顏色"><a href="#顏色" class="headerlink" title="顏色"></a>顏色</h3><p><a target="_blank" rel="noopener" href="https://www.0to255.com/f2e8cf">0-255</a><br><a target="_blank" rel="noopener" href="https://webgradients.com/">漸層顏色</a><br><a target="_blank" rel="noopener" href="https://coolors.co/palettes/trending">colors</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/34494873/why-is-my-jquery-selector-returning-a-n-fn-init0-and-what-is-it">Why is my JQuery selector returning a n.fn.init[0], and what is it?</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2080,7 +1910,7 @@ justify-content: center;</code>使水平、垂直置中<figure class="highlight 
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2091,7 +1921,7 @@ justify-content: center;</code>使水平、垂直置中<figure class="highlight 
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">71</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

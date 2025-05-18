@@ -174,6 +174,185 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/04/27/vitest-i18n/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/27/vitest-i18n/" class="post-title-link" itemprop="url">vitest-i18n</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-04-27 13:12:36 / Modified: 14:42:21" itemprop="dateCreated datePublished" datetime="2024-04-27T13:12:36+08:00">2024-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Test/" itemprop="url" rel="index"><span itemprop="name">Test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近嘗試在專案內加入測試，詢問朋友後建議先從 utils 中共用的邏輯函式開始，而在共用的邏輯函式中，會有幾個是 i18n 相關的函式。<br>因為頁面中常會用到將數值，轉換為顯示在畫面上的文字，如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">getType</span> = (<span class="params"><span class="keyword">type</span>: <span class="built_in">number</span></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> (<span class="keyword">type</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Auto&#x27;</span>)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Manual&#x27;</span>)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Mix&#x27;</span>)</span><br><span class="line">        <span class="attr">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在進行測試時，總想說是否要先選定一語系，如中文\英文，然後確認他轉換的是否為該文字<br>但是經過嘗試後，覺得或許不應該是檢查轉換後的文字，應該要以對應 key 來檢查。<br>參考 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/72260793/how-to-mock-stub-vue-i18n">overflow</a></p>
+<ul>
+<li>因此專案是使用 quasar，所以在 i18n.t 方法，引入的位置是 boot/i18n.ts</li>
+<li>在測試中，可以執行測試函式，帶入對應數值，並檢查是否回傳對應的 key</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 在測試中覆寫模擬 i18n.t 方法</span></span><br><span class="line">vi.<span class="title function_">mock</span>(<span class="string">&#x27;../../../src/boot/i18n&#x27;</span>, <span class="function">() =&gt;</span> (&#123;</span><br><span class="line">    <span class="attr">i18n</span>: &#123;</span><br><span class="line">        <span class="attr">global</span>: &#123;</span><br><span class="line">            <span class="attr">t</span>: <span class="function">(<span class="params">key: <span class="built_in">string</span></span>) =&gt;</span> key, <span class="comment">// 提供模擬的 t 函式</span></span><br><span class="line">            <span class="attr">locale</span>: <span class="string">&#x27;en&#x27;</span> <span class="comment">// 假設默認的 locale 值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;getType&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 0&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">0</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Auto&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 1&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">1</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Manual&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">2</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Mix&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return null for an unknown type&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">999</span>)).<span class="title function_">toBeNull</span>()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="小結上述方式："><a href="#小結上述方式：" class="headerlink" title="小結上述方式："></a>小結上述方式：</h3><p>使用全局模擬，vi.mock 全局模擬 i18n.t 方法，並提供模擬的 t 函式，這樣就可以在測試中，直接檢查是否回傳對應的 key，而不用檢查轉換後的文字。</p>
+<p>另外，在跨頁面也會有共用的下拉選單，將此下拉選單的選項，也提取出來，並進行測試。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> directionOpt = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> ([</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">t</span>(<span class="string">&#x27;Shared.right&#x27;</span>), <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">t</span>(<span class="string">&#x27;Shared.wrong&#x27;</span>), <span class="attr">value</span>: <span class="number">1</span> &#125;</span><br><span class="line">]))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原本也想是否直接檢查 key 是否正確即可。但基於困惑，就嘗試丟 chatGpt 詢問</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/27/vitest-i18n/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/01/06/css-grid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/01/06/css-grid/" class="post-title-link" itemprop="url">css-grid</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-01-06 12:15:17" itemprop="dateCreated datePublished" datetime="2024-01-06T12:15:17+08:00">2024-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-14 20:31:01" itemprop="dateModified" datetime="2024-11-14T20:31:01+08:00">2024-11-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在 Youtube 看到 Kevin Powell 介紹使用 grid 來作為 wrapper，以自適應網頁的縮放。</p>
+<p>首先基本常用 grid 方式</p>
+<ul>
+<li>創建一個包含三欄等寬的網格布局</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr <span class="number">1</span>fr <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加入使用 using named grid lines，定義出欄的 content 範圍</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr [content-start] <span class="number">1</span>fr [content-end] <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>設計一個 class 給他，如果在 content-grid 以下的元素，會將以下的元素放在 content 之間</p>
+<ul>
+<li>應用到 <code>.content-grid</code> 內部的每一個直接子元素</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content-grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr [content-start] <span class="number">1</span>fr [content- end] <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.content-grid</span> &gt; * &#123;</span><br><span class="line">  <span class="attribute">grid-column</span>: content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Layout-grid-可以先設置："><a href="#Layout-grid-可以先設置：" class="headerlink" title="Layout grid 可以先設置："></a>Layout grid 可以先設置：</h3><ul>
+<li>就可以看到 content 範圍<br><img src="https://hackmd.io/_uploads/HyCjULL_p.png" alt="image"><br><img src="https://hackmd.io/_uploads/HkJWv8UO6.png" alt="image"></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/01/06/css-grid/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/12/23/signaturePad-component/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1010,312 +1189,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/01/25/TS-Generics/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/25/TS-Generics/" class="post-title-link" itemprop="url">TS - Generics 泛型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-25 14:27:13" itemprop="dateCreated datePublished" datetime="2023-01-25T14:27:13+08:00">2023-01-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-01-27 13:15:30" itemprop="dateModified" datetime="2023-01-27T13:15:30+08:00">2023-01-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
-<h2 id="資料整理"><a href="#資料整理" class="headerlink" title="資料整理"></a>資料整理</h2><p>例如有兩個 interface 屬性一樣，差異在於 型別內容</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">DataA</span> &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:<span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">DataB</span> &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:<span class="built_in">boolean</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用 泛型 整理</li>
-<li>將 T 部分，設為傳入的變數，可以依據宣告得變數所符合的型別進行設定<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericsObj</span>&lt;T&gt; = &#123;</span><br><span class="line">  <span class="attr">key</span>:<span class="built_in">string</span></span><br><span class="line">  <span class="attr">key2</span>:T</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">DataA</span> = <span class="title class_">GenericsObj</span>&lt;<span class="built_in">number</span>&gt;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">DataB</span> = <span class="title class_">GenericsObj</span>&lt;<span class="built_in">boolean</span>&gt;;</span><br><span class="line"><span class="comment">//以上的 DataA、DataB 的型別會與剛剛 interface 的設定一樣</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>範例2：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">KeyPair</span>&lt;T, U&gt; &#123;</span><br><span class="line">  <span class="attr">key</span>: T;</span><br><span class="line">  <span class="attr">value</span>: U;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp1</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">number</span>, <span class="built_in">string</span>&gt; = &#123; <span class="attr">key</span>: <span class="number">1</span>, <span class="attr">value</span>: <span class="string">&quot;str&quot;</span>&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp2</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; = &#123; <span class="attr">key</span>: <span class="string">&quot;str&quot;</span>, <span class="attr">value</span>: <span class="number">123</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">arr</span>:<span class="built_in">number</span>[] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">arrTwo</span>:<span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
-
-<h2 id="payload-應用"><a href="#payload-應用" class="headerlink" title="payload 應用"></a>payload 應用</h2><ul>
-<li>這邊以 redux 中整理的 action 為範例</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> userDataPayload = &#123;</span><br><span class="line">  <span class="attr">userId</span>: <span class="built_in">string</span>,</span><br><span class="line">  <span class="attr">data</span>:<span class="built_in">any</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//負責生成 action 的函式</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">setUserDataAction</span> = (<span class="params">payload:userDataPayload </span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_USER_DATA&#x27;</span>,</span><br><span class="line">  payload</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">resetUserDataAction</span> =(<span class="params"></span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;RESET_USER_DATA&#x27;</span>,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">CartDataPayload</span> = &#123;</span><br><span class="line">  <span class="attr">product</span>: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">setCartDataAction</span> =(<span class="params">payload:CartDataPayload</span>)=&gt;(&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_CART_DATA&#x27;</span>,</span><br><span class="line">  payload</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetUserDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_USER_DATA&#x27;</span>,</span><br><span class="line">  <span class="attr">payload</span>:userDataPayload</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ResetUserDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;RESET_USER_DATA&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetCartDataAction</span> = &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_CART_DATA&#x27;</span>,</span><br><span class="line">  <span class="attr">payload</span>:<span class="title class_">CartDataPayload</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>由上可以觀察到 SetUserDataAction、ResetUserDataAction、SetCartDataAction 整理為一個</li>
-<li>將 action 的型別整理，其key為type 與 payload</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Action</span>&lt;T,P&gt; = &#123;</span><br><span class="line">  <span class="attr">type</span>: T,</span><br><span class="line">  <span class="attr">payload</span>:P</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ActionWithoutPayload</span>&lt;T&gt; = &#123;</span><br><span class="line">  <span class="attr">type</span>: T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetUserDataAction</span> = <span class="title class_">Action</span>&lt;<span class="string">&#x27;SET_USER_DATA&#x27;</span>,userDataPayload&gt;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetCartDataAction</span> = <span class="title class_">Action</span>&lt;<span class="string">&#x27;SET_CART_DATA&#x27;</span>,<span class="title class_">CartDataPayload</span>&gt;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ResetUserDataAction</span> = <span class="title class_">ActionWithoutPayload</span>&lt;<span class="string">&#x27;RESET_USER_DATA&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以將action 中的 type 進行聚合</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Actions</span> = <span class="variable constant_">SET_USER_DATA</span> | <span class="variable constant_">SET_CART_DATA</span> | <span class="variable constant_">RESET_USER_DATA</span>;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>以下，進一步再將 Action 和 ActionWithoutPayload 進行整合，他們差異在與 payload </li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Action</span>&lt;T, P = <span class="literal">null</span>&gt; = p <span class="keyword">extends</span> &#123;&#125; ? &#123;<span class="attr">type</span>: T, <span class="attr">payload</span>: P&#125; : &#123;<span class="attr">type</span>: T&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>型別參數動態生成不同型別</p>
-<h2 id="函式的泛型"><a href="#函式的泛型" class="headerlink" title="函式的泛型"></a>函式的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = (<span class="attr">param</span>: <span class="built_in">string</span> | <span class="built_in">number</span>):(<span class="built_in">string</span>|<span class="built_in">number</span>)[]=&gt;[param];</span><br><span class="line"><span class="title function_">fn</span>(<span class="number">1</span>);<span class="comment">//number 陣列 number[];</span></span><br><span class="line"><span class="title function_">fn</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">//string[]</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/QZCK4Em.png" alt=""></p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = &lt;T&gt;(<span class="attr">param</span>: T):(T)[]=&gt;[param];</span><br><span class="line"><span class="title function_">fn</span>(<span class="number">1</span>);<span class="comment">//number 陣列 number[];</span></span><br><span class="line"><span class="title function_">fn</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">//string[]</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/Yeeuum6.png" alt=""></p>
-<ul>
-<li>function 改寫方式</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fn&lt;T&gt;(<span class="attr">param</span>:T):T[]&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="type-的泛型"><a href="#type-的泛型" class="headerlink" title="type 的泛型"></a>type 的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//共用模板</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericList</span>&lt;T&gt; = T[];</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StrList</span> = <span class="title class_">GenericList</span>&lt;<span class="built_in">string</span>&gt;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">BoolList</span> = <span class="title class_">GenericList</span>&lt;<span class="built_in">boolean</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericValObj</span>&lt;T&gt; = &#123;[<span class="attr">key</span>:<span class="built_in">string</span>]:T&#125; </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NumValObj</span> = <span class="title class_">GenericValObj</span>&lt;<span class="built_in">number</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">numValObj</span>:<span class="title class_">NumValObj</span> = &#123;</span><br><span class="line">  <span class="attr">img_res_200</span>:<span class="number">200</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/sJFzEUg.png" alt=""></p>
-<p><img src="https://i.imgur.com/7P1MnFL.png" alt=""></p>
-<ul>
-<li>嘗試聚合資料</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">GenericUnion</span>&lt;T,U&gt; = T | U | T[] | U[];</span><br><span class="line"><span class="keyword">type</span> strNumUnion = <span class="title class_">GenericUnion</span>&lt;<span class="built_in">string</span>,<span class="built_in">number</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">val</span>:strNumUnion = <span class="string">&quot;123&quot;</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">val2</span>:strNumUnion = [<span class="string">&quot;123&quot;</span>]</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/y5Vl8M9.png" alt=""></p>
-<h2 id="將函式改寫為-共用的泛型型別"><a href="#將函式改寫為-共用的泛型型別" class="headerlink" title="將函式改寫為 共用的泛型型別"></a>將函式改寫為 共用的泛型型別</h2><ul>
-<li>將type 拉出來獨立撰寫，可以重複使用</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = &lt;T&gt;(<span class="attr">param</span>: T):(T)[]=&gt;&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//上面的函式也可以用於</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123;</span><br><span class="line">  <span class="attr">onFn</span>: <span class="keyword">typeof</span> fn</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//rewrite</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericFn</span> = &lt;T&gt;<span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn</span>:<span class="title class_">GenericFn</span> = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//共用，如下有個 interface 其中有個屬性的型別與 GenericFn 一樣，則可以共用</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123;</span><br><span class="line">  <span class="attr">onFn</span>:<span class="title class_">GenericFn</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> fn&lt;T&gt;(<span class="attr">param</span>:T):T[]&#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//產生型別泛型</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnType</span> = <span class="keyword">typeof</span> fn ;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/yxsVm1s.png" alt=""></p>
-<p><img src="https://i.imgur.com/zYtwh7H.png" alt=""><br><img src="https://i.imgur.com/tPHEDZ7.png" alt=""></p>
-<h3 id="比較-lt-T-gt-位置差異"><a href="#比較-lt-T-gt-位置差異" class="headerlink" title="比較&lt;T&gt;位置差異"></a>比較<code>&lt;T&gt;</code>位置差異</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">FnTypeA</span> = &lt;T&gt;<span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnTypeB</span>&lt;T&gt; = <span class="function">(<span class="params">param: T</span>) =&gt;</span> T[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn1</span>:<span class="title class_">FnTypeA</span> = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//必須指定好型別的 argument</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn2</span>:<span class="title class_">FnTypeB</span>&lt;<span class="built_in">string</span>&gt; = <span class="function">(<span class="params">param</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> [param]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//兩個函式在使用上會有差異：</span></span><br><span class="line"><span class="title function_">fn1</span>();</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn2</span>(<span class="string">&#x27;Hi&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/J3zJs2Y.png" alt=""></p>
-<p><img src="https://i.imgur.com/0wxPZk9.png" alt=""></p>
-<ul>
-<li>fn1 可以填入任何內容、可以動態填入型別<br><img src="https://i.imgur.com/pwfnIjO.png" alt=""><br><img src="https://i.imgur.com/6B8gtAc.png" alt=""><br><img src="https://i.imgur.com/OgPatHZ.png" alt=""></li>
-<li>fn2 只能填入 string 內容<br><img src="https://i.imgur.com/cwmVA5b.png" alt=""></li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">ClickFn</span> = &lt;<span class="title class_">Event</span>&gt;<span class="function">(<span class="params">e:Event</span>) =&gt;</span> <span class="built_in">any</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用 function 會無法重複使用寫好的型別</span></span><br><span class="line"><span class="comment">// 引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">handleClick</span>:<span class="title class_">ClickFn</span> = <span class="function">(<span class="params">e</span>)=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="interface-的泛型"><a href="#interface-的泛型" class="headerlink" title="interface 的泛型"></a>interface 的泛型</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">GenericI</span>&lt;T&gt;&#123;</span><br><span class="line">  [<span class="attr">key</span>:<span class="built_in">string</span>]: T</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NumValObj</span> =  <span class="title class_">GenericI</span>&lt;<span class="built_in">number</span>&gt;;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">numberValObj</span>:<span class="title class_">NumValObj</span> = &#123;</span><br><span class="line">  <span class="attr">res</span>:<span class="number">123</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//type寫法也可以一樣</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">GenericT</span>&lt;T&gt; = &#123;</span><br><span class="line">  [<span class="attr">key</span>:<span class="built_in">string</span>]: T</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//API 的應用！！！</span></span><br><span class="line"><span class="comment">//注意：in 寫法只用於 type 中</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">GenericKeyValObj</span>&lt;T <span class="keyword">extends</span>  keyof <span class="built_in">any</span>,P&gt; = &#123;</span><br><span class="line">  [key <span class="keyword">in</span> T ]: P</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以應用於 API </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ApiKey</span> = <span class="string">&#x27;user&#x27;</span> | <span class="string">&#x27;id&#x27;</span> | <span class="string">&#x27;password&#x27;</span>; <span class="comment">//將欄位值設定好</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">UserApiData</span> = <span class="title class_">GenericKeyValObj</span>&lt;<span class="title class_">ApiKey</span>, <span class="built_in">string</span>&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/dceV8io.png" alt=""></p>
-<ul>
-<li><p>可以很快的生成 API 的資料型別<br><img src="https://i.imgur.com/Vv3lVDC.png" alt=""></p>
-</li>
-<li><p>其他範例</p>
-</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//類似呼叫API的函式</span></span><br><span class="line"><span class="comment">//Params : 參數</span></span><br><span class="line"><span class="comment">//Res result : 回傳值</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GenericApiFn</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt; = <span class="function">(<span class="params">params:Params</span>)=&gt;</span> <span class="title class_">Res</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//組合其他泛型使用，也可以將原本泛型參數自己使用</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ApiContainerProps</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt; &#123;</span><br><span class="line">  <span class="attr">initData</span>: <span class="title class_">Res</span>;</span><br><span class="line">  <span class="attr">onAsyncCb</span>: <span class="title class_">GenericApiFn</span>&lt;<span class="title class_">Params</span>, <span class="title class_">Res</span>&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>interface 與 type 的泛型寫法</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//interface 寫函式</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">FnI</span> &#123;</span><br><span class="line">  &lt;T&gt;(<span class="attr">param</span>: T): T[]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//同等於</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnT</span> = &lt;T&gt;<span class="function">(<span class="params">param:T</span>)=&gt;</span>T[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn</span>:<span class="title class_">FnT</span> = <span class="function">(<span class="params">param</span>)=&gt;</span>[param]</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>&lt;T&gt;</code>位置的調動</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//&lt;T&gt; 會影響整個 interface</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">GenericFnI</span>&lt;T&gt; &#123;</span><br><span class="line">  (<span class="attr">param</span>: T): T[]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">fn2</span>: <span class="title class_">GenericFnI</span>&lt;<span class="built_in">string</span>&gt;= <span class="function">(<span class="params">param</span>)=&gt;</span>[param]</span><br></pre></td></tr></table></figure>
-
-<p>過去都未曾注意到泛型可以抽成共用還有 <code>&lt;T&gt;</code> 的位置所放的位置，會影響宣告，透過此次的教學，讓我對泛型可以應用於實際情況的案例，同樣未來在訂定 type 或 interface 時可以加以注意，思考是否可以改寫為泛型加以使用。</p>
-<p>參考資料<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=9hZbfX_Atpc&t=44s">成為進階TS開發者的第一哩路 — 泛型簡介與基礎(1)</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=7yA4ALLoSxY">成為進階TS開發者的第一哩路 — 泛型的函式, type和interface寫法一次說清楚！</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/01/25/TS-interface/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/25/TS-interface/" class="post-title-link" itemprop="url">TypeScript - interface 使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-25 13:34:04" itemprop="dateCreated datePublished" datetime="2023-01-25T13:34:04+08:00">2023-01-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-01-26 13:04:49" itemprop="dateModified" datetime="2023-01-26T13:04:49+08:00">2023-01-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
-<p>最近在複習使用 TypeScript 發現還有些部分可以做紀錄並且重新回憶的區塊，藉此再紀錄於部落格。</p>
-<h2 id="TS-interface的基礎宣告"><a href="#TS-interface的基礎宣告" class="headerlink" title="TS interface的基礎宣告"></a>TS interface的基礎宣告</h2><ul>
-<li>將複雜系統簡化的結果叫做介面</li>
-<li>介面一般首字母大寫</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Eva</span>: <span class="title class_">Person</span> = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Eva&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="number">25</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="函式與介面"><a href="#函式與介面" class="headerlink" title="函式與介面"></a>函式與介面</h2><ul>
-<li>以下範例宣告 AddFunction 的介面</li>
-<li>並將此型別應用於 add 這個變數的方法中</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">AddFunction</span> &#123;</span><br><span class="line">  (<span class="attr">a</span>: <span class="built_in">number</span>, <span class="attr">b</span>: <span class="built_in">number</span>): <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">add</span>: <span class="title class_">AddFunction</span> = <span class="keyword">function</span>(<span class="params">a, b</span>) &#123; <span class="keyword">return</span> a + b; &#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="class與介面"><a href="#class與介面" class="headerlink" title="class與介面"></a>class與介面</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">CatInterface</span> &#123;</span><br><span class="line">	<span class="comment">//普通成員變數的規格</span></span><br><span class="line">	<span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="attr">breed</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="attr">noise</span>: <span class="built_in">string</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//普通成員方法的規格，使用函式型別格式</span></span><br><span class="line">	<span class="title function_">makeNoise</span>(): <span class="built_in">void</span>;</span><br><span class="line">	<span class="title function_">feed</span>(<span class="attr">something</span>: <span class="built_in">string</span>): <span class="built_in">void</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>若類別想要實踐此介面，必須用 <code>implements</code> 這個關鍵字</li>
-<li>如果類別實踐介面的規格中，任何一個成員不見或沒有實踐時，會出現提醒訊息。</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> <span class="keyword">implements</span> <span class="title class_">CatInterface</span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="attr">breed</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="attr">noise</span>: <span class="built_in">string</span> = <span class="string">&#x27;Meow meow!&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name:<span class="built_in">string</span>, breed:<span class="built_in">string</span></span>)&#123;</span><br><span class="line">		<span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">		<span class="variable language_">this</span>.<span class="property">breed</span> = breed;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">makeNoise</span>(<span class="params"></span>)&#123;</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">noise</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="title function_">feed</span>(<span class="params">something: <span class="built_in">string</span></span>)&#123;</span><br><span class="line">		 <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span> is eating <span class="subst">$&#123;something&#125;</span>...`</span>)</span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="搭配-interface-常用的方法"><a href="#搭配-interface-常用的方法" class="headerlink" title="搭配 interface 常用的方法"></a>搭配 interface 常用的方法</h2><ol>
-<li>extends</li>
-</ol>
-<ul>
-<li>以 <code>PersonalInfo</code> 為例</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">PersonalInfo</span>&#123;</span><br><span class="line">	<span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">	<span class="attr">interesting</span>: <span class="built_in">string</span>[];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>假設今天想宣告一個新的使用者帳戶的介面為 <code>UserAccount</code><ul>
-<li>除了有一些和客戶相關的規格屬性外，還要包含介面 <code>PersonalInfo</code> 裡的規格</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">UserAccount</span> <span class="keyword">extends</span> <span class="title class_">PersonalInfo</span>&#123;</span><br><span class="line">	<span class="attr">email</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="attr">password</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="attr">subscribed</span>: <span class="built_in">boolean</span>;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>上面的撰寫方式，等同於</li>
-<li>透過使用 extends 延展可以將功用的屬性、型別整理一起</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">UserAccount</span>&#123;</span><br><span class="line">	<span class="attr">email</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="attr">password</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="attr">subscribed</span>: <span class="built_in">boolean</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//從PersonalInfo延展而來</span></span><br><span class="line">	<span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">	<span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">	<span class="attr">interesting</span>: <span class="built_in">string</span>[];</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>另外若需要再合併新的型別，也可以透過逗號方式加以延伸</p>
-<ul>
-<li>此外還能再多新增 <code>SocialLinks</code></li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">SocialLinks</span> &#123;</span><br><span class="line">	facebook?: <span class="built_in">string</span>;</span><br><span class="line">	twitter?: <span class="built_in">string</span>;</span><br><span class="line">	linkedin?: <span class="built_in">string</span>;</span><br><span class="line">	website?: (&#123;<span class="attr">name</span>:<span class="built_in">string</span>; <span class="attr">url</span>:<span class="built_in">string</span>&#125;)[]</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>同時延展:透過逗號再加入新的</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">UserAccount</span> <span class="keyword">extends</span> <span class="title class_">PersonalInfo</span>, <span class="title class_">SocialLinks</span>&#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="pick"><a href="#pick" class="headerlink" title="pick"></a>pick</h2><p>Picking Items with <code>Pick&lt;Type, Keys&gt;</code></p>
-<ul>
-<li>挑選想要的屬性(key)做使用</li>
-<li>注意 pick 只能在 type 宣告使用</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Todo</span> &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">description</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">completed</span>: <span class="built_in">boolean</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">TodoPreview</span> = <span class="title class_">Pick</span>&lt;<span class="title class_">Todo</span>, <span class="string">&quot;title&quot;</span> | <span class="string">&quot;completed&quot;</span>&gt;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> <span class="attr">todo</span>: <span class="title class_">TodoPreview</span> = &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&quot;Clean room&quot;</span>,</span><br><span class="line">  <span class="attr">completed</span>: <span class="literal">false</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(todo.<span class="property">title</span>); <span class="comment">// &quot;Clean room&quot;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(todo.<span class="property">description</span>); <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>注意 pick 只能在 type 宣告使用<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> todo = <span class="title class_">Pick</span>&lt;<span class="title class_">Todo</span>, &quot;title&quot; | &quot;completed&quot;&gt;;</span><br><span class="line">// &#x27;<span class="title class_">Pick</span>&#x27; only refers to a type, but is being used as a value here.</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<h2 id="omit"><a href="#omit" class="headerlink" title="omit"></a>omit</h2><p><code>Omit&lt;Type, Keys&gt;</code></p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Todo</span> &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">description</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">completed</span>: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="attr">createdAt</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> <span class="title class_">TodoPreview</span> = <span class="title class_">Omit</span>&lt;<span class="title class_">Todo</span>, <span class="string">&quot;description&quot;</span>&gt;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> <span class="attr">todo</span>: <span class="title class_">TodoPreview</span> = &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&quot;Clean room&quot;</span>,</span><br><span class="line">  <span class="attr">completed</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">createdAt</span>: <span class="number">1615544252770</span>,</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-
-
-<p>參考資料<br><a target="_blank" rel="noopener" href="https://refine.dev/blog/typescript-pick-utility-type/">A Detailed Guide on TypeScript Pick Type</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1387,7 +1260,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">109</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1398,7 +1271,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">71</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
