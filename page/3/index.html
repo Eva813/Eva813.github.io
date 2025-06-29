@@ -174,6 +174,77 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/07/19/vue-tiptap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/07/19/vue-tiptap/" class="post-title-link" itemprop="url">使用 Vue3 與 Tiptap 打造文字編輯器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-07-19 14:49:26 / Modified: 14:58:16" itemprop="dateCreated datePublished" datetime="2024-07-19T14:49:26+08:00">2024-07-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在現代網頁應用中，強大的文字編輯器是必不可少的。Tiptap 是一款基於 ProseMirror 的高擴展性編輯器。本文將介紹如何在 Vue3 中使用 Tiptap，並結合 Vuetify 實現文字編輯器。</p>
+<h2 id="官網文件"><a href="#官網文件" class="headerlink" title="官網文件"></a>官網文件</h2><p>首先官網：<a target="_blank" rel="noopener" href="https://tiptap.dev/docs/editor/getting-started/install/vue3">https://tiptap.dev/docs/editor/getting-started/install/vue3</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">editor-content</span> <span class="attr">:editor</span>=<span class="string">&quot;editor&quot;</span> /&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">import</span> &#123; useEditor, <span class="title class_">EditorContent</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@tiptap/vue-3&#x27;</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">import</span> <span class="title class_">StarterKit</span> <span class="keyword">from</span> <span class="string">&#x27;@tiptap/starter-kit&#x27;</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">const</span> editor = <span class="title function_">useEditor</span>(&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="attr">content</span>: <span class="string">&#x27;&lt;p&gt;I’m running Tiptap with Vue.js. 🎉&lt;/p&gt;&#x27;</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="attr">extensions</span>: [<span class="title class_">StarterKit</span>],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>根據對應 EXTENSIONS 找出如何加入在編輯器，如：bold, italic</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">     &lt;button @click=<span class="string">&quot;editor.chain().focus().toggleBold().run()&quot;</span> :<span class="keyword">class</span>=<span class="string">&quot;&#123; &#x27;is-active&#x27;: editor.isActive(&#x27;bold&#x27;) &#125;&quot;</span>&gt;</span><br><span class="line">      <span class="title class_">Toggle</span> bold</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;editor.chain().focus().toggleItalic().run()&quot;</span> <span class="attr">:class</span>=<span class="string">&quot;&#123; &#x27;is-active&#x27;: editor.isActive(&#x27;italic&#x27;) &#125;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      Toggle italic</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/19/vue-tiptap/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/04/27/vitest-i18n/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1068,127 +1139,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/01/28/vueTest-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/28/vueTest-1/" class="post-title-link" itemprop="url">Vue 單元測試 - 基礎入門</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-01-28 14:50:37 / Modified: 14:58:53" itemprop="dateCreated datePublished" datetime="2023-01-28T14:50:37+08:00">2023-01-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>為了不斷建立以及加深自己的技能，即便目前工作上未能使用，還是可以提前做些準備，之前看到 Mike 老師推出的 vue 單元測試，就先入手～<br>趁近期有空先來奠定下測試的基礎，未來可以在專案內練習撰寫！</p>
-<p><img src="https://i.imgur.com/xhxaYa1.jpg" alt=""></p>
-<h2 id="專案創建"><a href="#專案創建" class="headerlink" title="專案創建"></a>專案創建</h2><p>若一開始專案沒有選擇 jest 或加入測試 要如何在現有專案加入？</p>
-<ul>
-<li>可以進入該專案進行安裝<br><code>vue add unit-jest</code></li>
-</ul>
-<p>這裡創建的專案是使用 vue-cli 創建，並且在自選項目加入 unit test </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create my-project</span><br></pre></td></tr></table></figure>
-
-<h2 id="執行-test"><a href="#執行-test" class="headerlink" title="執行 test"></a>執行 test</h2><p><code>npm run test:unit</code></p>
-<h2 id="更改預設的測試檔案位置"><a href="#更改預設的測試檔案位置" class="headerlink" title="更改預設的測試檔案位置"></a>更改預設的測試檔案位置</h2><p>component 與 測試的檔案，可以放在同一個資料夾中，以方便找尋</p>
-<ol>
-<li>建立 <code>jest.config.js</code> 來設定 jest </li>
-</ol>
-<ul>
-<li>testMatch: 指定從 src 資料夾開始找尋與 spec 相關的檔案</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line"></span><br><span class="line">  <span class="attr">preset</span>: <span class="string">&quot;@vue/cli-plugin-unit-jest&quot;</span>,</span><br><span class="line"></span><br><span class="line">  <span class="attr">testMatch</span>: [<span class="string">&quot;**/src/**/*.spec.[jt]s?(x)&quot;</span>],</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>**`</p>
-<h2 id="測試的基本架構"><a href="#測試的基本架構" class="headerlink" title="測試的基本架構"></a>測試的基本架構</h2><ul>
-<li>describe : 類似群組概念，可以包一個或多個相關的測試。</li>
-<li>it 與 test 一樣：其內容為測試的單位，裏面撰寫測試內容</li>
-<li>第一個參數，用來表示該測試的敘述（”Test to do list”, “Test to do 1”, “Test to do 2” ）</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Test to do list&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 1&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">test</span>(<span class="string">&quot;Test to do 2&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>it 也可以單獨另外撰寫</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">it</span>(<span class="string">&#x27;這是test case&#x27;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>執行測試呈現的樣子</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">HelloWorld</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/HelloWorld.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;HelloWorld.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;renders props.msg when passed&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> msg = <span class="string">&#x27;new message&#x27;</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">HelloWorld</span>, &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="attr">props</span>: &#123; msg &#125;</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(msg)</span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>wrapper 是指 HelloWorld 這個 component</li>
-<li>wrapper.text() : 會顯示此元件中所包含的文字</li>
-<li><code>expect(wrapper.text()).toMatch(msg)</code>: <ul>
-<li>toMatch 有合乎</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/ejvXWQF.png" alt=""></p>
-<h2 id="expext-與斷言"><a href="#expext-與斷言" class="headerlink" title="expext 與斷言"></a>expext 與斷言</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Test to do list&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 1&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(<span class="number">1</span> + <span class="number">1</span>).<span class="title function_">toBe</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;Test to do 2&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(<span class="number">4</span> - <span class="number">1</span>).<span class="title function_">toBe</span>(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>expect: 預期需要匹配的項目，如放入變數、component、function</li>
-<li>toBe(百分之百準確): 斷言，用什麼方式來匹配，這裡使用 toBe 函式</li>
-</ul>
-<h2 id="其他備註"><a href="#其他備註" class="headerlink" title="其他備註"></a>其他備註</h2><p>而官方網站已建議若要創建新專案可以使用 vite 為基礎的專案。所以新開的專案都是使用 Vitest (之後有機會再使用新專案來開看看)。<br>這邊因先根據教學來進行，故先使用 vue-test-utils + jest </p>
-<p><img src="https://i.imgur.com/yrD2UW0.png" alt=""></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1260,7 +1210,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

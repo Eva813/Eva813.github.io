@@ -174,6 +174,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/05/16/Vue-v-on/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/16/Vue-v-on/" class="post-title-link" itemprop="url">Vue.js 3 - 事件綁定</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-16 16:16:30" itemprop="dateCreated datePublished" datetime="2021-05-16T16:16:30+08:00">2021-05-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:34:03" itemprop="dateModified" datetime="2022-11-04T10:34:03+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/NBBY8vo.png" alt=""></p>
+<ul>
+<li>建立add、minus兩個按鈕<ul>
+<li>點選add增加數字、點選minus減少數字</li>
+</ul>
+</li>
+<li>讓add按鈕綁定<code>addFn</code>函式：<code>v-on:click=&quot;addFn&quot;</code> <code>on</code> <code>click</code>事件，執行<code>addFn</code>函式</li>
+<li>綁定後，在<code>methods</code>撰寫<code>addFn</code>函式內容，要取得 data 中的 num 才能進行運算 =&gt;<code>this.num++</code></li>
+<li>同理，在minus的按鈕，函式內運算<code>this.num++</code>，並將點擊事件放入<code>button</code><ul>
+<li>v-on:Event 事件綁定，有兩種撰寫方式<br><img src="https://i.imgur.com/IUUcznh.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123;num&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">button</span> <span class="attr">v-on:click</span>=<span class="string">&quot;addFn&quot;</span>&gt;</span>Add<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- v-on 改為@ --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;MinusFun&quot;</span>&gt;</span>Minus<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">       <span class="attr">num</span>: <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">    <span class="title function_">addFn</span>(<span class="params"></span>) &#123;</span><br><span class="line">       <span class="comment">//num.value = num.value + 1;</span></span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">num</span> ++;</span><br><span class="line">    &#125;,</span><br><span class="line">     <span class="title class_">MinusFun</span>()&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">num</span>--;</span><br><span class="line">     &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://codepen.io/Eva-go/pen/bGRLXNW">codepen</a></p>
+<h2 id="事件與class的綁定"><a href="#事件與class的綁定" class="headerlink" title="事件與class的綁定"></a>事件與class的綁定</h2><ul>
+<li>於 box 綁定旋轉的效果 <code>:class=&quot;&#123; rotate: isTransform &#125;</code></li>
+<li>在button綁定觸發旋轉的事件<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">  <span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="language-css">   <span class="attribute">margin</span>:<span class="number">0</span> auto;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ccc</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">width</span>: <span class="number">80px</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">height</span>: <span class="number">80px</span>;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"><span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">transition</span>: all .<span class="number">5s</span>;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"><span class="selector-class">.box</span><span class="selector-class">.rotate</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">transform</span>: <span class="built_in">rotate</span>(<span class="number">45deg</span>)</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">h3</span>&gt;</span>觸發事件 與 縮寫*<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">:class</span>=<span class="string">&quot;&#123; rotate: isTransform &#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-outline-primary&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;changeClass&quot;</span> &gt;</span>選轉物件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line"></span><br><span class="line"> <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      </span><br><span class="line">       <span class="attr">isTransform</span>: <span class="literal">true</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">     <span class="title function_">changeClass</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">isTransform</span> =!<span class="variable language_">this</span>.<span class="property">isTransform</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">  </span><br><span class="line">&#125;).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h2 id="帶入參數"><a href="#帶入參數" class="headerlink" title="帶入參數"></a>帶入參數</h2><ul>
+<li>建立 <code>change()</code> 函式以帶入參數方式，來變化 isTransform 的 true\false<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>帶入參數*<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">:class</span>=<span class="string">&quot;&#123; rotate: isTransform &#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-outline-primary&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;change(&#x27;isTransform&#x27;)&quot;</span>&gt;</span>選轉物件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line"></span><br><span class="line"> <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      </span><br><span class="line">       <span class="attr">isTransform</span>: <span class="literal">true</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">     <span class="title function_">changeClass</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">isTransform</span> =!<span class="variable language_">this</span>.<span class="property">isTransform</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">change</span>(<span class="params">key</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>[key] = !<span class="variable language_">this</span>[key];</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">  </span><br><span class="line">&#125;).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="動態物件方法"><a href="#動態物件方法" class="headerlink" title="動態物件方法 {}"></a>動態物件方法 {}</h2></li>
+<li>在一個元素上，加入多個事件</li>
+<li>注意：此方式無法傳入參數<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>動態物件方法 &#123;&#125;<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 此方法無法傳入參數 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> @=<span class="string">&quot;&#123;</span></span></span><br><span class="line"><span class="string"><span class="tag">    mousedown:down,</span></span></span><br><span class="line"><span class="string"><span class="tag">    mouseup:up</span></span></span><br><span class="line"><span class="string"><span class="tag"> &#125;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line"></span><br><span class="line"> <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      </span><br><span class="line">       <span class="attr">isTransform</span>: <span class="literal">true</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">     <span class="title function_">changeClass</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">isTransform</span> =!<span class="variable language_">this</span>.<span class="property">isTransform</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">change</span>(<span class="params">key</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>[key] = !<span class="variable language_">this</span>[key];</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">down</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;按下&quot;</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">up</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;放開&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">  </span><br><span class="line">&#125;).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/qO3AcxL.gif" alt=""></p>
+<p><a target="_blank" rel="noopener" href="https://codepen.io/Eva-go/pen/abwYwPa">codepen</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/05/16/Vue-bind/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1682,163 +1793,6 @@ css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class=
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/01/16/js-scrollBlog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/16/js-scrollBlog/" class="post-title-link" itemprop="url">JS實作- scrollBlog</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-16 09:03:51" itemprop="dateCreated datePublished" datetime="2021-01-16T09:03:51+08:00">2021-01-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://eva813.github.io/Eva_portfolio/scrollBlog/scrollBlog.html">成品</a></p>
-<h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><p>1.隨著頁面的往下捲動，會載入新的資料</p>
-<ul>
-<li>一開始頁面載入，會呈現5筆資料，捲動往下，會再載入5筆</li>
-<li>使用<a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/">{JSON} Placeholder</a>的資料來串接(運用ajax)</li>
-<li>設定捲動位置，並於該位置時，會呈現載入的圖示</li>
-<li>setTimeout來呈現載入的時間與畫面</li>
-</ul>
-<p>2.網頁的各資料是有順序，資料左上會有編碼</p>
-<ul>
-<li>利用資料本身的id作為序號</li>
-<li>於js時，帶入該變數取值</li>
-</ul>
-<h2 id="css部分"><a href="#css部分" class="headerlink" title="css部分"></a>css部分</h2><h3 id="1-製作左上方，數字"><a href="#1-製作左上方，數字" class="headerlink" title="1.製作左上方，數字"></a>1.製作左上方，數字</h3><ul>
-<li>利用<code>position: absolute;</code>定位位置，並利用並利用<code>top</code>、<code>left</code>調整位置</li>
-<li>使用<code>display: flex;</code>調整數字的位置，<code>align-items: center;
-justify-content: center;</code>使水平、垂直置中<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.post</span> <span class="selector-class">.number</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: -<span class="number">15px</span>;</span><br><span class="line">  <span class="attribute">left</span>: -<span class="number">15px</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">15px</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#296ca8</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">7px</span> <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/FkIcque.png" alt=""></li>
-</ul>
-<h3 id="2-載入畫面的原點圖示"><a href="#2-載入畫面的原點圖示" class="headerlink" title="2.載入畫面的原點圖示"></a>2.載入畫面的原點圖示</h3><ul>
-<li>先製作load的基本設定，如flex的排列、位置固定於下方，以及透明度的顯示</li>
-<li>針對原點訂定背景、原點大小。新增動畫效果，<code>animation: bounce 0.5s ease-in infinite;</code></li>
-<li>動畫名稱<code>@keyframes bounce</code>，設定在某時間點，<code>translateY</code>，的位置。</li>
-<li>為了讓圓點的跳動時間不同，針對2、3的原點，設定延遲時間<code>animation-delay: 0.2s;</code><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.loader</span> &#123;</span><br><span class="line">  <span class="comment">/* opacity: 0; */</span></span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">position</span>: fixed; <span class="comment">/*位置固定於最下面*/</span></span><br><span class="line">  <span class="attribute">bottom</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">transition</span>: opacity <span class="number">0.3s</span> ease-in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.loader</span><span class="selector-class">.show</span> &#123;</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*製作圓點*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.circle</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">10px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">10px</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">animation</span>: bounce <span class="number">0.5s</span> ease-in infinite;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.circle</span><span class="selector-pseudo">:nth-of-type</span>(<span class="number">2</span>) &#123;</span><br><span class="line">  <span class="attribute">animation-delay</span>: <span class="number">0.1s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.circle</span><span class="selector-pseudo">:nth-of-type</span>(<span class="number">3</span>) &#123;</span><br><span class="line">  <span class="attribute">animation-delay</span>: <span class="number">0.2s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@keyframes</span> bounce &#123;</span><br><span class="line">  <span class="number">0%</span>,</span><br><span class="line">  <span class="number">100%</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateY</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="number">50%</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-<span class="number">10px</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><img src="https://i.imgur.com/RuhdRt7.gif" alt=""></p>
-<h2 id="js部分"><a href="#js部分" class="headerlink" title="js部分"></a>js部分</h2><h3 id="1-jsonplaceholder"><a href="#1-jsonplaceholder" class="headerlink" title="1.jsonplaceholder:"></a>1.jsonplaceholder:</h3><ul>
-<li>為取得資料的位置</li>
-<li>抓取5筆的方式，後面參數的設定而來<br><a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/posts?_limit5">https://jsonplaceholder.typicode.com/posts?_limit5</a></li>
-</ul>
-<h3 id="2-使用ajax串接API"><a href="#2-使用ajax串接API" class="headerlink" title="2.使用ajax串接API"></a>2.使用ajax串接API</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://hackmd.io/Ciayzu-vQcyrh-WeVNeOPQ?view">Async/Await 非同步流程控制-筆記</a></li>
-<li>參考<a target="_blank" rel="noopener" href="https://petetasker.com/using-async-await-jquerys-ajax">Using async await with jQuery’s $.ajax</a>、<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/27612372/how-to-await-the-ajax-request">How to await the ajax request?</a>，使用jQuery’s<code>$.ajax</code>執行async</li>
-<li>在try裡面，放入一般<code>$.ajax</code>抓取API資料的方式，如url、type、dataType</li>
-<li>首先，在連結的部分，我們希望每次抓取5筆資料，呈現1頁，所以在外面設置<code>let limit = 5;let page = 1</code>於url中加入該變數</li>
-<li>在抓取資料成功時，放入function，並用<code>$.each</code>來執行<ul>
-<li>在<code>$.each</code>先傳入該資料(data)陣列，其<code>function (index, value)</code>放入索引以及值的內容。</li>
-<li>宣告<code>postEl</code>變數，創造名為<code>post</code>的<code>div</code>=&gt; <code>$(&#39;\&lt;div /&gt;&#39;)</code></li>
-<li>加入<code>post</code>class</li>
-<li>加入html</li>
-<li>最後將此變數，放置呈現文章的容器<code>postEl.appendTo(&#39;#posts-container&#39;);</code></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> limit = <span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> page = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">doAjax</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> result;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    result = <span class="keyword">await</span> $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">      <span class="attr">url</span>: <span class="string">`https://jsonplaceholder.typicode.com/posts?_limit=<span class="subst">$&#123;limit&#125;</span>&amp;_page=<span class="subst">$&#123;page&#125;</span>`</span>,</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&#x27;get&#x27;</span>,</span><br><span class="line">      <span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">      <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      </span><br><span class="line">      $.<span class="title function_">each</span>(data, <span class="keyword">function</span> (<span class="params">index, value</span>) &#123;</span><br><span class="line">          <span class="keyword">const</span> postEl = $(<span class="string">&#x27;&lt;div /&gt;&#x27;</span>).<span class="title function_">addClass</span>(<span class="string">&#x27;post&#x27;</span>).<span class="title function_">html</span>(<span class="string">`&lt;div class=&quot;number&quot;&gt;<span class="subst">$&#123;value.id&#125;</span>&lt;/div&gt; &lt;div class=&quot;post-info&quot;&gt;&lt;h2 class=&quot;post-title&quot;&gt;<span class="subst">$&#123;value.title&#125;</span>&lt;/h2&gt;&lt;p class=&quot;post-body&quot;&gt;<span class="subst">$&#123;value.body&#125;</span>&lt;/p&gt;</span></span><br><span class="line"><span class="string">      &lt;/div&gt;`</span>)</span><br><span class="line">          <span class="comment">//console.log(postEl)</span></span><br><span class="line">          postEl.<span class="title function_">appendTo</span>(<span class="string">&#x27;#posts-container&#x27;</span>);</span><br><span class="line">          <span class="comment">//$(&#x27;#posts-container&#x27;).append(postEl)</span></span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">       </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(error);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">doAjax</span>();</span><br></pre></td></tr></table></figure>
-
-<p>查看是否有成功取得資料：<code>console.log(data);</code><br><img src="https://i.imgur.com/wJPpdfh.png" alt=""></p>
-<h3 id="使用jQuery創造div"><a href="#使用jQuery創造div" class="headerlink" title="使用jQuery創造div"></a>使用jQuery創造div</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/10402567/jquery-div-vs-div">https://stackoverflow.com/questions/10402567/jquery-div-vs-div</a></p>
-<h4 id="each"><a href="#each" class="headerlink" title="each()"></a><code>each()</code></h4><p><a target="_blank" rel="noopener" href="https://api.jquery.com/jquery.each/">jQuery.each()</a></p>
-<h3 id="3-Infinite-Scroll無限捲動-瀑布流"><a href="#3-Infinite-Scroll無限捲動-瀑布流" class="headerlink" title="3.Infinite Scroll無限捲動(瀑布流)"></a>3.Infinite Scroll無限捲動(瀑布流)</h3><ul>
-<li><code>scrollTop</code>網頁右邊的卷軸到最上端網頁的距離有多少</li>
-<li><code>scrollHeight</code> 取得整個沒被擋住的高、<code>clientHeight</code> 取得元素的高度（含padding 不含 border）</li>
-<li>完整內容高度 (scrollHeight) = 內容頂端與捲軸頂端的距離 (scrollTop) + 捲軸本身高度 (clientHeight) + 內容底端與捲軸底端的距離。</li>
-</ul>
-<p>例子:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="variable language_">window</span>).<span class="title function_">scroll</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> scrollVal = $(<span class="variable language_">this</span>).<span class="title function_">scrollTop</span>();</span><br><span class="line">    $(<span class="string">&quot;span.qScrollTop&quot;</span>).<span class="title function_">text</span>(scrollVal);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(scrollVal &gt; <span class="number">500</span>)&#123;</span><br><span class="line">  <span class="comment">/* 如果滾動的物件捲動 &gt; 500 則觸發指定的動作。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<h4 id="注意：window本身沒有scrollTop-Left這個屬性，所以window-scrollTop是undefined的"><a href="#注意：window本身沒有scrollTop-Left這個屬性，所以window-scrollTop是undefined的" class="headerlink" title="注意：window本身沒有scrollTop/Left這個屬性，所以window.scrollTop是undefined的"></a>注意：window本身沒有scrollTop/Left這個屬性，所以window.scrollTop是undefined的</h4><p>所以可能要從body、document來取得</p>
-<h4 id="本段落語法："><a href="#本段落語法：" class="headerlink" title="本段落語法："></a>本段落語法：</h4><ul>
-<li>上述說明各視窗高度得解釋，在此if判斷式中<code>scrollTop + clientHeight &gt;= scrollHeight - 5</code>來計算，當捲軸捲到該位置時，要呈現載入畫面</li>
-<li>接著根據載入畫面函式，來放入載入以及呈現接續畫面得設定<ul>
-<li>使用<code>setTimeout()</code>，在1秒後消除載入圖示，接著在300毫秒後，馬上換頁執行載入新資料</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="variable language_">window</span>).<span class="title function_">scroll</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> scrollTop = $(<span class="variable language_">this</span>).<span class="title function_">scrollTop</span>();</span><br><span class="line">  <span class="keyword">var</span> scrollHeight = $(<span class="string">&#x27;body&#x27;</span>).<span class="title function_">prop</span>(<span class="string">&quot;scrollHeight&quot;</span>);</span><br><span class="line">  <span class="comment">//一樣 var scrollHeight2 = document.documentElement.scrollHeight;</span></span><br><span class="line">  <span class="keyword">var</span> clientHeight = <span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">clientHeight</span>;</span><br><span class="line">  <span class="comment">//https://stackoverflow.com/questions/10423759/plain-javascript-to-jquery-clientheight</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// console.log(&#x27;scrollTop:&#x27;, scrollTop);</span></span><br><span class="line">  <span class="comment">// console.log(&#x27;scrollHeight:&#x27;, scrollHeight);</span></span><br><span class="line">  <span class="comment">// console.log(&#x27;clientHeight:&#x27;, clientHeight);</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (scrollTop + clientHeight &gt;= scrollHeight - <span class="number">5</span>) &#123;</span><br><span class="line">    <span class="comment">//console.log(&#x27;show up 123&#x27;)</span></span><br><span class="line">    <span class="title function_">showLoading</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//顯示載入圖示，並取得更多串接資料</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showLoading</span>(<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&#x27;.loader&#x27;</span>).<span class="title function_">addClass</span>(<span class="string">&#x27;show&#x27;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">    $(<span class="string">&#x27;.loader&#x27;</span>).<span class="title function_">removeClass</span>(<span class="string">&#x27;show&#x27;</span>);</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      page++;</span><br><span class="line">      <span class="title function_">doAjax</span>();</span><br><span class="line">    &#125;, <span class="number">300</span>);</span><br><span class="line"></span><br><span class="line">  &#125;, <span class="number">1000</span>);  <span class="comment">//1秒之後消失</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>參考資料：<br><a target="_blank" rel="noopener" href="https://pjchender.blogspot.com/2015/04/jquery.html">[筆記] 計算網頁底部位置，當網頁達到底部時才產生效果─jQuery</a><br><a target="_blank" rel="noopener" href="https://shubo.io/element-size-scrolling/#%E7%84%A1%E9%99%90%E6%8D%B2%E5%8B%95-infinite-scroll">一次搞懂 clientHeight/scrollHeight/scrollTop的區別</a><br><a target="_blank" rel="noopener" href="https://kuro.tw/posts/2019/02/23/%E8%AB%87%E8%AB%87-JavaScript-%E7%9A%84-setTimeout-%E8%88%87-setInterval/">談談 JavaScript 的 setTimeout 與 setInterval</a></p>
-<h3 id="4-篩選輸入框資料"><a href="#4-篩選輸入框資料" class="headerlink" title="4.篩選輸入框資料"></a>4.篩選輸入框資料</h3><ul>
-<li>綁定事件為<code>.keyup</code>指放開鍵盤的那個剎那，觸發該事件</li>
-<li>執行的函式內容為：<ul>
-<li><code>var text</code>取得輸入值並轉為小寫</li>
-<li>利用迴圈，去搜尋關鍵字，判斷，值轉為小寫文字的內容是否符合條件</li>
-<li>-1 ：意指條件不符合</li>
-<li><code>indexOf()</code> 方法用來判斷字串字串變數中是否包含某字串。</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//輸入框搜尋//https://makitweb.com/jquery-search-text-in-the-element-with-contains-selector/  (=&gt;Loop all .content )</span></span><br><span class="line">  $(<span class="string">&#x27;#filter&#x27;</span>).<span class="title function_">keyup</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Search text</span></span><br><span class="line">    <span class="keyword">var</span> text = $(<span class="string">&#x27;#filter&#x27;</span>).<span class="title function_">val</span>().<span class="title function_">toLowerCase</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Hide all content class element</span></span><br><span class="line">    $(<span class="string">&#x27;.post&#x27;</span>).<span class="title function_">hide</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Search </span></span><br><span class="line">    $(<span class="string">&#x27;.post&#x27;</span>).<span class="title function_">each</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> ($(<span class="variable language_">this</span>).<span class="title function_">text</span>().<span class="title function_">toLowerCase</span>().<span class="title function_">indexOf</span>(<span class="string">&quot;&quot;</span> + text + <span class="string">&quot;&quot;</span>) != -<span class="number">1</span>) &#123;</span><br><span class="line">        $(<span class="variable language_">this</span>).<span class="title function_">closest</span>(<span class="string">&#x27;.post&#x27;</span>).<span class="title function_">show</span>();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
-<p>參考資料：<br><a target="_blank" rel="noopener" href="https://medium.com/@yitailin/%E6%AF%94%E8%BC%83-keydown-keypress-keyup-%E7%9A%84%E5%B7%AE%E7%95%B0-4e873ba17e81">比較 keydown, keypress, keyup 的差異</a><br><a target="_blank" rel="noopener" href="https://makitweb.com/jquery-search-text-in-the-element-with-contains-selector/">jQuery – Search text in the Element with :contains() Selector</a><br><a target="_blank" rel="noopener" href="https://www.fooish.com/javascript/string/indexOf.html">JavaScript String indexOf()</a></p>
-<hr>
-<p>補充參考：<br><a target="_blank" rel="noopener" href="https://whien.medium.com/js20min-day-20-ajax-%E9%9D%9E%E5%90%8C%E6%AD%A5%E8%99%95%E7%90%86-asynchronous-javascript-and-xml-e74a059ab639">JS20min Day — 20 AJAX 非同步處理 (Asynchronous JavaScript and XML)</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=NOprCnnjHm0">回呼函式 Callbacks、Promises 物件、Async/Await 非同步流程控制 - 彭彭直播 at 2019/04/07</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1910,7 +1864,7 @@ justify-content: center;</code>使水平、垂直置中<figure class="highlight 
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
