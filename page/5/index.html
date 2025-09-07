@@ -180,6 +180,130 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/11/02/rect-test-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/02/rect-test-2/" class="post-title-link" itemprop="url">React 測試 - 以登入元件練習</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-02 20:49:15" itemprop="dateCreated datePublished" datetime="2022-11-02T20:49:15+08:00">2022-11-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:37:05" itemprop="dateModified" datetime="2022-11-04T10:37:05+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-%E6%B8%AC%E8%A9%A6/" itemprop="url" rel="index"><span itemprop="name">React 測試</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。</p>
+<h3 id="建立-login-檔案"><a href="#建立-login-檔案" class="headerlink" title="建立 login 檔案"></a>建立 login 檔案</h3><ul>
+<li><p>login.js : 製作登入元件</p>
+</li>
+<li><p>login.test.js : 撰寫測試</p>
+<p><img src="https://i.imgur.com/4Pw5JTD.png" alt=""></p>
+</li>
+</ul>
+<h3 id="確認-輸入框-有渲染至文件"><a href="#確認-輸入框-有渲染至文件" class="headerlink" title="確認 輸入框 有渲染至文件"></a>確認 輸入框 有渲染至文件</h3><ul>
+<li>使用 <code>getByPlaceholderText</code> 取得輸入框元素</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">input</span></span></span><br><span class="line"><span class="tag">         <span class="attr">type</span>=<span class="string">&quot;text&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">placeholder</span>=<span class="string">&quot;username&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">value</span>=<span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="tag">       /&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">input</span></span></span><br><span class="line"><span class="tag">         <span class="attr">type</span>=<span class="string">&quot;password&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">placeholder</span>=<span class="string">&quot;password&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">value</span>=<span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="tag">       /&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;username input should be rendered&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(usernameInputEl).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;password input should be rendered&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(passwordInputEl).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="確認畫面上有按鈕"><a href="#確認畫面上有按鈕" class="headerlink" title="確認畫面上有按鈕"></a>確認畫面上有按鈕</h3><ul>
+<li>getByRole 取得按鈕</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;button should be rendered&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> buttonEl = screen.<span class="title function_">getByRole</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(buttonEl).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="輸入框一開始為空"><a href="#輸入框一開始為空" class="headerlink" title="輸入框一開始為空"></a>輸入框一開始為空</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;username input should be empty&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(usernameInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;password input should be empty&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(passwordInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="輸入框為空時，按鈕應為-disabled"><a href="#輸入框為空時，按鈕應為-disabled" class="headerlink" title="輸入框為空時，按鈕應為 disabled"></a>輸入框為空時，按鈕應為 disabled</h3><ul>
+<li>只要取得按鈕元素並使用 <code>toBeDisabled()</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;button should be disabled&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> buttonEl = screen.<span class="title function_">getByRole</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(buttonEl).<span class="title function_">toBeDisabled</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="錯誤訊息的提示"><a href="#錯誤訊息的提示" class="headerlink" title="錯誤訊息的提示"></a>錯誤訊息的提示</h3><p><img src="https://i.imgur.com/hQ33Kxa.png" alt=""></p>
+<ul>
+<li>確保一開始進入畫面，該訊息不應該出現</li>
+<li>可以看見 <code>toBeVisible()</code> ，反之期望無法看見，就需加入not</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;error message should not be visible&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> errorEl = screen.<span class="title function_">getByTestId</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(errorEl).<span class="property">not</span>.<span class="title function_">toBeVisible</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="輸入框的輸入事件"><a href="#輸入框的輸入事件" class="headerlink" title="輸入框的輸入事件"></a>輸入框的輸入事件</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://testing-library.com/docs/dom-testing-library/api-events/">fireEvent</a> 用來針對事件進行測試</li>
+</ul>
+<p><img src="https://i.imgur.com/E9wT8gO.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;username input should change&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="comment">//模擬傳入的值</span></span><br><span class="line">  <span class="keyword">const</span> testValue = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(usernameInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line">  <span class="title function_">expect</span>(usernameInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(testValue);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;password input should change&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line">  <span class="keyword">const</span> testValue = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(passwordInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line">  <span class="title function_">expect</span>(passwordInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(testValue);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="當輸入框有值的時候，按鈕不應該-disabled"><a href="#當輸入框有值的時候，按鈕不應該-disabled" class="headerlink" title="當輸入框有值的時候，按鈕不應該 disabled"></a>當輸入框有值的時候，按鈕不應該 <code>disabled</code></h3><ul>
+<li>期望按鈕可以點擊</li>
+<li>在 jsx 檔案內要設置在輸入框沒有值的時候才是 disabled</li>
+</ul>
+<p><img src="https://i.imgur.com/MdNkcGo.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;button should not be disabled when inputs exist&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> buttonEl = screen.<span class="title function_">getByRole</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> testValue = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(usernameInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line">  fireEvent.<span class="title function_">change</span>(passwordInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">expect</span>(buttonEl).<span class="property">not</span>.<span class="title function_">toBeDisabled</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="css-補充"><a href="#css-補充" class="headerlink" title="css 補充"></a>css 補充</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">style=&#123;&#123; <span class="attribute">visibility</span>: error ? <span class="string">&quot;visible&quot;</span> : <span class="string">&quot;hidden&quot;</span> &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>類似： display:none和visibility:hidden</p>
+<p>而兩者差異：<br>visibility：的隱藏，是物件的位置仍舊保持著不會消失,<br>display: none, 會將 html 該物件拔除</p>
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>此練習範例，很請楚地知道在建立一個功能元件之後，如何再加入每一個區塊的測試，如標題文字、輸入框、按鈕的測試等等，也可以觀察到測試根據使用情境一步步的拆解並加入測試<br>下一篇會有串接資料搭配測試，敬請期待</p>
+<p>參考資料<br><a target="_blank" rel="noopener" href="https://github.com/safak/youtube2022/blob/react-testing/src/components/login/Login.jsx">github-login</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Flo268xRpV0">React Testing Tutorial with React Testing Library and Jest</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/11/02/rect-test-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1148,112 +1272,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/04/02/websocket/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/02/websocket/" class="post-title-link" itemprop="url">websocket 簡介與使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-02 16:49:04" itemprop="dateCreated datePublished" datetime="2022-04-02T16:49:04+08:00">2022-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/piRytMY.png" alt=""></p>
-<p>近期購買了布魯斯的 TypeScript 的課程，除了學到型別之外，還接觸到 ＷebSocket 的使用，所以就來簡單紀錄下 ＷebSocket 是什麼，在專案內可以實現什麼功能。</p>
-<p>WebSocket是一種網路傳輸協定，讓前端與後端溝通除非有一方斷開連接，否則會一直保持聯繫</p>
-<h2 id="情境說明"><a href="#情境說明" class="headerlink" title="情境說明"></a>情境說明</h2><ol>
-<li>使用者上下線狀態：可以延遲幾秒鐘，可以使用 setInterval 做出輪循</li>
-</ol>
-<ul>
-<li>設定每幾秒發出請求，更新狀態</li>
-<li>使用 HTTP 協議的請求：GET\POST 等方式，做出Request\Response</li>
-</ul>
-<ol start="2">
-<li>聊天室：會希望聊天訊息是即時更新，若採用上面的方式，為了使訊息更新及時會從每幾秒改為每幾毫秒，這樣的方式會造成短時間內不斷發出請求，造成消耗後端資源</li>
-</ol>
-<ul>
-<li>指建立一次連結，可以與後端持續保持聯係</li>
-</ul>
-<h2 id="聊天室的實際運用"><a href="#聊天室的實際運用" class="headerlink" title="聊天室的實際運用"></a>聊天室的實際運用</h2><ul>
-<li>將在 node.js 建立 websocket 的服務，讓前端連線到node.js的服務</li>
-<li>socket.io =&gt; 包裝 websocket 協議的 node.js 的工具包<ul>
-<li>當使用 node.js 做開發，就可以透過 socket.io 提供的功能實現</li>
-</ul>
-</li>
-</ul>
-<h2 id="安裝-socket-io"><a href="#安裝-socket-io" class="headerlink" title="安裝 socket.io"></a>安裝 socket.io</h2><ul>
-<li>socket.io-clinet : 在前端的部分要使用 clinet 安裝包<br><code>npm i -D socket.io socket.io-clinet</code></li>
-</ul>
-<h3 id="後端"><a href="#後端" class="headerlink" title="後端"></a>後端</h3><ul>
-<li>將 socket.io 引入 node.js 的 server 端</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> devServer <span class="keyword">from</span> <span class="string">&quot;@/server/dev&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> prodServer <span class="keyword">from</span> <span class="string">&quot;@/server/prod&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">&quot;express&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Server</span> &#125; <span class="keyword">from</span> <span class="string">&quot;socket.io&quot;</span></span><br><span class="line"><span class="keyword">import</span> http <span class="keyword">from</span> <span class="string">&quot;http&quot;</span>  <span class="comment">//也可以引入http模組</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> port = <span class="number">3000</span>;</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"><span class="comment">//透過 http 將 server 建立起來</span></span><br><span class="line"><span class="keyword">const</span> server = http.<span class="title function_">createServer</span>(app)</span><br><span class="line"><span class="keyword">const</span> io = <span class="keyword">new</span> <span class="title class_">Server</span>(server)</span><br><span class="line"><span class="keyword">const</span> userService = <span class="keyword">new</span> <span class="title class_">UserService</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//監聽</span></span><br><span class="line">server.<span class="title function_">listen</span>(port, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`The application is running on port <span class="subst">$&#123;port&#125;</span>.`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//建立起連接時，發出訊息</span></span><br><span class="line"><span class="comment">//當有用戶連接到connection 就會有回呼函式</span></span><br><span class="line">io.<span class="title function_">on</span>(<span class="string">&#x27;connection&#x27;</span>,<span class="function">(<span class="params">socket</span>)=&gt;</span>&#123;</span><br><span class="line">	<span class="comment">//發出訊息</span></span><br><span class="line">	socket.<span class="title function_">emit</span>(<span class="string">&#x27;join&#x27;</span>, <span class="string">&#x27;Welcom&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="如何在前端使用，與後端建立連線？"><a href="#如何在前端使用，與後端建立連線？" class="headerlink" title="如何在前端使用，與後端建立連線？"></a>如何在前端使用，與後端建立連線？</h2><ul>
-<li>到前端的入口檔案</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將 socket.io 的包引入前端程式這邊</span></span><br><span class="line"><span class="keyword">import</span> &#123; io &#125; <span class="keyword">from</span> <span class="string">&quot;socket.io-client&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//1. 建立連接到 node server</span></span><br><span class="line"><span class="keyword">const</span> clientIo = <span class="title function_">io</span>();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">clientIo.<span class="title function_">on</span>(<span class="string">&#x27;join&#x27;</span>,<span class="function">(<span class="params">msg</span>)=&gt;</span>&#123;</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;msg&#x27;</span>,msg)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1321,7 +1343,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1333,7 +1355,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

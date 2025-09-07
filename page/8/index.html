@@ -180,6 +180,168 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/05/16/Vue-bind2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/16/Vue-bind2/" class="post-title-link" itemprop="url">Vue.js 3 - 綁定方式多變化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-16 16:17:30" itemprop="dateCreated datePublished" datetime="2021-05-16T16:17:30+08:00">2021-05-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:33:31" itemprop="dateModified" datetime="2022-11-04T10:33:31+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="動態屬性綁定-注意大小寫"><a href="#動態屬性綁定-注意大小寫" class="headerlink" title="動態屬性綁定(注意大小寫)"></a>動態屬性綁定(注意大小寫)</h2><ul>
+<li>宣告變數dynamic，將 dynamic 綁定於點擊事件上 <code>:click=&quot;dynamic = dynamic === &#39;disabled&#39; ? &#39;readonly&#39;:&#39;disabled&#39;&quot;</code><ul>
+<li>如果變數結果是 disable 的話就會切換成 readonly，反之，就會切換為 disabled</li>
+</ul>
+</li>
+<li>接著可以將值動態地加入 HTML 屬性上 <code>:[dynamic]</code><ul>
+<li>綁定後，就會發現輸入框隨著切換，有不同效果<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>動態屬性綁定(注意大小寫)<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">v-on:click</span>=<span class="string">&quot;dynamic = dynamic === &#x27;disabled&#x27; ? &#x27;readonly&#x27;:&#x27;disabled&#x27;&quot;</span>&gt;</span>切換為 &#123;&#123; dynamic &#125;&#125;<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">:</span>[<span class="attr">dynamic</span>] <span class="attr">:value</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JS</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">dynamic</span>: <span class="string">&#x27;disabled&#x27;</span>,</span><br><span class="line">      <span class="attr">breakfastShop</span>: &#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;奇蹟早餐&#x27;</span>, </span><br><span class="line">        <span class="attr">imgUrl</span>: <span class="string">&#x27;https://images.unsplash.com/photo-1600182610361-4b4d664e07b9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=200&amp;q=80&#x27;</span>,</span><br><span class="line">        <span class="attr">resizeImg</span>: <span class="string">&#x27;https://images.unsplash.com/photo-1600182610361-4b4d664e07b9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;q=80&#x27;</span></span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<p><code>readony</code>:可以選擇輸入框，但無法輸入值<br><code>disabled</code>:無法點選輸入框<br><img src="https://i.imgur.com/GfAhQJk.png" alt=""></p>
+<p><img src="https://i.imgur.com/YUf3XZk.png" alt=""></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">再次補充說明：</span><br><span class="line">    1. dynamic = 【這邊是最前面的變數，用來存放後面回傳回來的值】</span><br><span class="line">    2. dynamic === &#x27;disabled&#x27; ? 【這邊就是中間判斷式的部分，判斷 dynamic 變數是否為 &#x27;disabled&#x27;】</span><br><span class="line">    3. &#x27;readonly&#x27;:&#x27;disabled&#x27; 【這邊就是最後面的值，會依照前方的判斷式來決定回傳 &#x27;readonly&#x27; 還是 &#x27;disabled&#x27;，如果判斷式結果為 True 則回傳 &#x27;readonly&#x27; ，反之回傳 &#x27;disabled&#x27;】</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="HTML-樣式綁定"><a href="#HTML-樣式綁定" class="headerlink" title="HTML 樣式綁定"></a>HTML 樣式綁定</h2><p>樣式綁定是時常使用到的效果，能透過此方式，使顏色改變、增加一點簡易動畫的效果。</p>
+<h2 id="範例解說"><a href="#範例解說" class="headerlink" title="範例解說"></a>範例解說</h2><ul>
+<li>替 box 增加旋轉效果</li>
+<li>綁定class可以用陣列方式、或物件方式來添加，以下範例為物件方式<ul>
+<li>物件key值對應 className，物件的值是對應 true\false(判斷式)</li>
+<li>若className 有 <code>-</code> ， 注意要 “bg-danger”</li>
+</ul>
+</li>
+<li>事件的綁定 <code>change()</code> 透過函式來切換 true\false<code>this[key] = !this[key];</code></li>
+<li>切換是否旋轉、切換背景色 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">background-color</span>: <span class="built_in">var</span>(--bs-light);</span></span><br><span class="line"><span class="language-css">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="built_in">var</span>(--bs-gray);</span></span><br><span class="line"><span class="language-css">  <span class="attribute">width</span>: <span class="number">80px</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">height</span>: <span class="number">80px</span>;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"><span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">transition</span>: all .<span class="number">5s</span>;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"><span class="selector-class">.box</span><span class="selector-class">.rotate</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">transform</span>: <span class="built_in">rotate</span>(<span class="number">45deg</span>)</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">h2</span>&gt;</span>切換 Class<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">h3</span>&gt;</span>物件寫法<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">          <span class="comment">&lt;!-- 物件key值對應 className，物件的值是對應 true\false --&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">:class</span>=<span class="string">&quot;&#123; rotate: isTransform ,&#x27;bg-danger&#x27;:boxColor&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-outline-primary&quot;</span> <span class="attr">v-on:click</span>=<span class="string">&quot;change(&#x27;isTransform&#x27;)&quot;</span>&gt;</span>選轉物件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-outline-primary ms-1&quot;</span> <span class="attr">v-on:click</span>=<span class="string">&quot;change(&#x27;boxColor&#x27;)&quot;</span>&gt;</span>切換色彩<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">App</span> = &#123;</span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">isTransform</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">boxColor</span>: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line">     </span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">    <span class="attr">change</span>: <span class="keyword">function</span> (<span class="params">key</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>[key] = !<span class="variable language_">this</span>[key];</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">addClass</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">arrayClass</span>.<span class="title function_">push</span>(...arr);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(<span class="title class_">App</span>).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/KFqN9hz.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/b9OCub3.gif" alt=""></p>
+<h3 id="整合為一個物件"><a href="#整合為一個物件" class="headerlink" title="整合為一個物件"></a>整合為一個物件</h3><p>將上個範例的兩個class樣式，整合成一個物件</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">hr</span> <span class="attr">class</span>=<span class="string">&quot;mt-4&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h3</span>&gt;</span>物件寫法 2<span class="tag">&lt;/<span class="name">h5</span>&gt;</span>     </span><br><span class="line">   <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">:class</span>=<span class="string">&#x27;classObj&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">App</span> = &#123;</span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">isTransform</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">boxColor</span>: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line">      <span class="attr">classObj</span>:&#123;</span><br><span class="line">        <span class="attr">rotata</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">&quot;bg-danger&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">      &#125;</span><br><span class="line">     </span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">    <span class="attr">change</span>: <span class="keyword">function</span> (<span class="params">key</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>[key] = !<span class="variable language_">this</span>[key];</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">addClass</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">arrayClass</span>.<span class="title function_">push</span>(...arr);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(<span class="title class_">App</span>).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://i.imgur.com/41AKFc8.png" alt=""></p>
+<p><img src="https://i.imgur.com/StALtsi.png" alt=""></p>
+<h2 id="綁定樣式，陣列寫法"><a href="#綁定樣式，陣列寫法" class="headerlink" title="綁定樣式，陣列寫法"></a>綁定樣式，陣列寫法</h2><ul>
+<li>針對單一元素，加入多個class<ul>
+<li>此方式就不用 true\false 的判斷動作，只要綁定在陣列之中的樣式，就會套入效果</li>
+<li>像是範例，就是使按鈕背景色彩為紅色(‘btn-danger’)、無法點擊(‘disabled’)<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>陣列寫法<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;btn&quot;</span> <span class="attr">:class</span>=<span class="string">&quot;[&#x27;disabled&#x27;,&#x27;btn-danger&#x27;]&quot;</span>&gt;</span>請操作本元件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-outline-primary&quot;</span> <span class="attr">v-on:click</span>=<span class="string">&quot;addClass([&#x27;btn-primary&#x27;, &#x27;active&#x27;])&quot;</span>&gt;</span>為陣列加入</span><br><span class="line">             Class<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/RZFOrdK.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>另一種，製作陣列，並將陣列放入<ul>
+<li>將arrayClass，綁定在標籤的class上</li>
+<li>在點擊按鈕，綁定點擊事件，<code>addClass(arr)</code>，在該函式傳入參數，將陣列內容加入arrayClass，並套入綁定的標籤上</li>
+<li>相對應的方法：<br><img src="https://i.imgur.com/VFfDXPY.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>陣列寫法<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;btn&quot;</span> <span class="attr">:class</span>=<span class="string">&quot;arrayClass&quot;</span>  &gt;</span>請操作本元件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">class</span>=<span class="string">&quot;btn btn-outline-primary&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">v-on:click</span>=<span class="string">&quot;addClass([&#x27;btn-primary&#x27;, &#x27;active&#x27;])&quot;</span>&gt;</span>為陣列加入 Class<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">App</span> = &#123;</span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">       <span class="comment">// Array 操作</span></span><br><span class="line">      <span class="attr">arrayClass</span>: [<span class="string">&#x27;&#x27;</span>],</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">   </span><br><span class="line">    <span class="title function_">addClass</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">arrayClass</span>.<span class="title function_">push</span>(...arr);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(<span class="title class_">App</span>).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://i.imgur.com/PZd0sKO.png" alt=""></p>
+<ul>
+<li><code>btn-primary</code>:背景色為綠色<br><img src="https://i.imgur.com/S0zLJKb.png" alt=""></li>
+</ul>
+<h4 id="補充：混合寫法"><a href="#補充：混合寫法" class="headerlink" title="補充：混合寫法"></a>補充：混合寫法</h4><ul>
+<li>將bootstrap的class放入，且加入arrayClass<ul>
+<li><code>:class=&quot;[arrayClass,&#39;text-danger&#39;]</code>，也就是除了放入 arrayClass 這個變數之外，我們還可以放入新的class給予不同樣式<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>陣列寫法<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;btn&quot;</span> <span class="attr">:class</span>=<span class="string">&quot;[arrayClass,&#x27;text-danger&#x27;]&quot;</span>&gt;</span>請操作本元件<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-outline-primary&quot;</span> <span class="attr">v-on:click</span>=<span class="string">&quot;addClass([&#x27;btn-primary&#x27;, &#x27;active&#x27;])&quot;</span>&gt;</span>為陣列加入</span><br><span class="line">              Class<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/d3dqSTj.png" alt=""></p>
+<h2 id="行內樣式style"><a href="#行內樣式style" class="headerlink" title="行內樣式style"></a>行內樣式style</h2><h4 id="要綁定style的時候"><a href="#要綁定style的時候" class="headerlink" title="要綁定style的時候"></a>要綁定style的時候</h4><ul>
+<li>key會帶入style的屬性(注意要以駝峰式)，如background-color，要改為backgroundColor</li>
+<li>值則是帶入style相對應的值</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>行內樣式<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h4</span>&gt;</span>綁定行內樣式<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">:style</span>=<span class="string">&quot;&#123;backgroundColor:&#x27;red&#x27;&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="加入準備好的資料格式"><a href="#加入準備好的資料格式" class="headerlink" title="加入準備好的資料格式"></a>加入準備好的資料格式</h3><ul>
+<li><p>將設定好的物件，裡面有包含數個樣式，直接綁定至style<br><img src="https://i.imgur.com/z93Jmam.png" alt=""></p>
+</li>
+<li><p>背景色彩，紅色，邊框5px<br><img src="https://i.imgur.com/lWYdxIi.png" alt=""></p>
+</li>
+</ul>
+<h3 id="同時多個樣式"><a href="#同時多個樣式" class="headerlink" title="同時多個樣式"></a>同時多個樣式</h3><ul>
+<li>以陣列裡面包多個物件<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">:style</span>=<span class="string">&quot;[styleObject,styleObject2]&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/11h8F7J.png" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/62sDl0J.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/05/16/Vue-v-on/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1667,142 +1829,10 @@ css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class=
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/01/16/js-countDown/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/16/js-countDown/" class="post-title-link" itemprop="url">JS實作- 新年倒數</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-16 09:17:11" itemprop="dateCreated datePublished" datetime="2021-01-16T09:17:11+08:00">2021-01-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://eva813.github.io/Eva_portfolio/countDown/countDown.html">成品</a></p>
-<p><img src="https://i.imgur.com/et0bQ96.png" alt=""></p>
-<h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><ul>
-<li>計算天、小時、分鐘、秒數的倒數</li>
-<li>最下面顯示倒數年份</li>
-<li>page load的圖示(會旋轉1秒鐘)之後顯示倒數</li>
-</ul>
-<h2 id="CSS部分"><a href="#CSS部分" class="headerlink" title="CSS部分"></a>CSS部分</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*增加讓螢幕寬度變化時，字的大小隨之改變</span></span><br><span class="line"><span class="comment">如果螢幕寬度為 500px 以下*/</span></span><br><span class="line"><span class="keyword">@media</span> (<span class="attribute">max-width</span>: <span class="number">500px</span>) &#123;</span><br><span class="line">  <span class="selector-tag">h1</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">45px</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="selector-class">.time</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">5px</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="selector-class">.time</span> <span class="selector-tag">h2</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">12px</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="selector-class">.time</span> small &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">10px</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10196578">Day22：小事之 Media Query
-</a><a target="_blank" rel="noopener" href="https://malagege.github.io/blog/2019/05/05/CSS%E8%A8%AD%E5%AE%9A%E9%9F%BF%E6%87%89%E5%BC%8F-RWD-%E6%9C%89%E5%B9%BE%E7%A8%AE%E6%96%B9%E6%B3%95/">CSS設定響應式(RWD)有幾種方法</a></p>
-<h2 id="JS部分"><a href="#JS部分" class="headerlink" title="JS部分"></a>JS部分</h2><h3 id="1-宣告最終日期-新的一年1-1的日期"><a href="#1-宣告最終日期-新的一年1-1的日期" class="headerlink" title="1. 宣告最終日期(新的一年1/1的日期)"></a>1. 宣告最終日期(新的一年1/1的日期)</h3><ul>
-<li>要先宣告取得目前的年份</li>
-<li>再利用此變數帶入，要倒數的最終日期</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//getFullYear(),用來取得日期物件當中本地時間的年份</span></span><br><span class="line"><span class="keyword">const</span> currentYear = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getFullYear</span>();</span><br><span class="line"><span class="keyword">const</span> newYearTime = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="string">`January 01 <span class="subst">$&#123;currentYear + <span class="number">1</span>&#125;</span> 00:00:00`</span>);</span><br></pre></td></tr></table></figure>
-
-<p>時間日期<br><a target="_blank" rel="noopener" href="https://www.fooish.com/javascript/date">JavaScript Date 時間和日期</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/jsref/jsref_getfullyear.asp">getFullYear() Method</a></p>
-<h3 id="2-倒數計時的日、時、分、秒"><a href="#2-倒數計時的日、時、分、秒" class="headerlink" title="2. 倒數計時的日、時、分、秒"></a>2. 倒數計時的日、時、分、秒</h3><ul>
-<li><p><code>currentTime</code> 取得目前時間<br><img src="https://i.imgur.com/b3sgw3L.png" alt=""></p>
-</li>
-<li><p><code>diff = newYearTime - currentTime;</code>:計算出目前與未來最終日期的時間差異(此相減得出的是毫秒)<br><img src="https://i.imgur.com/ly5elua.png" alt=""></p>
-</li>
-<li><p>計算天數、小時、秒數</p>
-<ul>
-<li><code>const d</code>1天等於24小時，1小時等於60分鐘，1分鐘等於60秒，1秒等於1000毫秒。所以，msec / 1000 / 60 / 60 / 24 保留整數就是天數。</li>
-<li><code>h = Math.floor(diff / 1000 / 60 / 60) % 24</code>:計算小時，並以除以24之後的餘數，來得到剩餘的小時。</li>
-<li>分鐘、以及秒數也是用同樣方式計算取得。</li>
-</ul>
-</li>
-<li><p>將取得的日期帶入畫面</p>
-<ul>
-<li>使用<code>.html()</code>：<code>$(&#39;#days&#39;).html(d);</code></li>
-<li>在小時、分鐘、秒，是以兩位數呈現，需要當數字少於10，要呈現01,02…，所以使用三元運算子<code>$(&#39;#hours&#39;).html(h &lt; 10 ? &#39;0&#39; + h : h);</code>，當數字小於10，要0+h;反之就只要呈現h。</li>
-</ul>
-</li>
-<li><p>最後要設定<code>setInterval(updateCountdown, 1000);</code> ，使其每秒倒數。</p>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">updateCountdown</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> currentTime = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">  <span class="comment">//console.log(currentTime);</span></span><br><span class="line">  <span class="keyword">const</span> diff = newYearTime - currentTime;</span><br><span class="line">  <span class="comment">//diff計算出來是毫秒</span></span><br><span class="line">  <span class="comment">//days</span></span><br><span class="line">  <span class="keyword">const</span> d = <span class="title class_">Math</span>.<span class="title function_">floor</span>(diff / <span class="number">1000</span> / <span class="number">60</span> / <span class="number">60</span> / <span class="number">24</span>);</span><br><span class="line">  <span class="comment">//取得除以24之後的餘數</span></span><br><span class="line">  <span class="keyword">const</span> h = <span class="title class_">Math</span>.<span class="title function_">floor</span>(diff / <span class="number">1000</span> / <span class="number">60</span> / <span class="number">60</span>) % <span class="number">24</span>;</span><br><span class="line">  <span class="keyword">const</span> m = <span class="title class_">Math</span>.<span class="title function_">floor</span>(diff / <span class="number">1000</span> / <span class="number">60</span>) % <span class="number">60</span>;</span><br><span class="line">  <span class="keyword">const</span> s = <span class="title class_">Math</span>.<span class="title function_">floor</span>(diff / <span class="number">1000</span>) % <span class="number">60</span>;</span><br><span class="line">  $(<span class="string">&#x27;#days&#x27;</span>).<span class="title function_">html</span>(d);</span><br><span class="line">  <span class="comment">//當數字少於10，要呈現01,02...</span></span><br><span class="line">  $(<span class="string">&#x27;#hours&#x27;</span>).<span class="title function_">html</span>(h &lt; <span class="number">10</span> ? <span class="string">&#x27;0&#x27;</span> + h : h);</span><br><span class="line">  $(<span class="string">&#x27;#minutes&#x27;</span>).<span class="title function_">html</span>(m &lt; <span class="number">10</span> ? <span class="string">&#x27;0&#x27;</span> + m : m);</span><br><span class="line">  $(<span class="string">&#x27;#seconds&#x27;</span>).<span class="title function_">html</span>(s &lt; <span class="number">10</span> ? <span class="string">&#x27;0&#x27;</span> + s : s);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//設定每一秒都會循環倒數</span></span><br><span class="line"><span class="built_in">setInterval</span>(updateCountdown, <span class="number">1000</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>參考資料：<br><a target="_blank" rel="noopener" href="http://zhi-yuan-chenge.blogspot.com/2015/10/jsjavascript_16.html">【JS】javascript時間Date()介紹與補零應用的技巧!!!</a><br><a target="_blank" rel="noopener" href="https://kknews.cc/zh-tw/code/8g4vo3e.html">js和vue實現時分秒倒計時的方法</a><br>三元運算子：<br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10218274">Day19【ES6 小筆記】三元運算子-以哥哥的擇偶條件為例
-</a></p>
-<h3 id="3-載入圖示"><a href="#3-載入圖示" class="headerlink" title="3.載入圖示"></a>3.載入圖示</h3><ul>
-<li>設定在載入之後，要隔多久執行功能</li>
-<li>在此設定載入1秒之後，要移除loading畫面，呈現出倒數的時間</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&#x27;#loading&#x27;</span>).<span class="title function_">remove</span>();</span><br><span class="line">  <span class="comment">//要在css檔案的countdown，先設置display：none</span></span><br><span class="line">  $(<span class="string">&#x27;#countdown&#x27;</span>).<span class="title function_">css</span>(<span class="string">&#x27;display&#x27;</span>, <span class="string">&#x27;flex&#x27;</span>);</span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-放入要倒數的年份"><a href="#4-放入要倒數的年份" class="headerlink" title="4.放入要倒數的年份"></a>4.放入要倒數的年份</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;#year&#x27;</span>).<span class="title function_">html</span>(currentYear + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-<hr>
-<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10238189">網頁練習 -倒數計時器實作(上)</a><br><a target="_blank" rel="noopener" href="https://www.cssscript.com/best-countdown-timer/">5 Best Countdown Timer JavaScript Libraries (2020 Update)</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10238547">網頁練習 -倒數計時器實作(下)</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1870,7 +1900,7 @@ css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class=
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1882,7 +1912,7 @@ css<figure class="highlight css"><table><tr><td class="gutter"><pre><span class=
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

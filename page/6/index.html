@@ -180,6 +180,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/04/02/websocket/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/02/websocket/" class="post-title-link" itemprop="url">websocket 簡介與使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-02 16:49:04" itemprop="dateCreated datePublished" datetime="2022-04-02T16:49:04+08:00">2022-04-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/piRytMY.png" alt=""></p>
+<p>近期購買了布魯斯的 TypeScript 的課程，除了學到型別之外，還接觸到 ＷebSocket 的使用，所以就來簡單紀錄下 ＷebSocket 是什麼，在專案內可以實現什麼功能。</p>
+<p>WebSocket是一種網路傳輸協定，讓前端與後端溝通除非有一方斷開連接，否則會一直保持聯繫</p>
+<h2 id="情境說明"><a href="#情境說明" class="headerlink" title="情境說明"></a>情境說明</h2><ol>
+<li>使用者上下線狀態：可以延遲幾秒鐘，可以使用 setInterval 做出輪循</li>
+</ol>
+<ul>
+<li>設定每幾秒發出請求，更新狀態</li>
+<li>使用 HTTP 協議的請求：GET\POST 等方式，做出Request\Response</li>
+</ul>
+<ol start="2">
+<li>聊天室：會希望聊天訊息是即時更新，若採用上面的方式，為了使訊息更新及時會從每幾秒改為每幾毫秒，這樣的方式會造成短時間內不斷發出請求，造成消耗後端資源</li>
+</ol>
+<ul>
+<li>指建立一次連結，可以與後端持續保持聯係</li>
+</ul>
+<h2 id="聊天室的實際運用"><a href="#聊天室的實際運用" class="headerlink" title="聊天室的實際運用"></a>聊天室的實際運用</h2><ul>
+<li>將在 node.js 建立 websocket 的服務，讓前端連線到node.js的服務</li>
+<li>socket.io =&gt; 包裝 websocket 協議的 node.js 的工具包<ul>
+<li>當使用 node.js 做開發，就可以透過 socket.io 提供的功能實現</li>
+</ul>
+</li>
+</ul>
+<h2 id="安裝-socket-io"><a href="#安裝-socket-io" class="headerlink" title="安裝 socket.io"></a>安裝 socket.io</h2><ul>
+<li>socket.io-clinet : 在前端的部分要使用 clinet 安裝包<br><code>npm i -D socket.io socket.io-clinet</code></li>
+</ul>
+<h3 id="後端"><a href="#後端" class="headerlink" title="後端"></a>後端</h3><ul>
+<li>將 socket.io 引入 node.js 的 server 端</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> devServer <span class="keyword">from</span> <span class="string">&quot;@/server/dev&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> prodServer <span class="keyword">from</span> <span class="string">&quot;@/server/prod&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">&quot;express&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Server</span> &#125; <span class="keyword">from</span> <span class="string">&quot;socket.io&quot;</span></span><br><span class="line"><span class="keyword">import</span> http <span class="keyword">from</span> <span class="string">&quot;http&quot;</span>  <span class="comment">//也可以引入http模組</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> port = <span class="number">3000</span>;</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"><span class="comment">//透過 http 將 server 建立起來</span></span><br><span class="line"><span class="keyword">const</span> server = http.<span class="title function_">createServer</span>(app)</span><br><span class="line"><span class="keyword">const</span> io = <span class="keyword">new</span> <span class="title class_">Server</span>(server)</span><br><span class="line"><span class="keyword">const</span> userService = <span class="keyword">new</span> <span class="title class_">UserService</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//監聽</span></span><br><span class="line">server.<span class="title function_">listen</span>(port, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`The application is running on port <span class="subst">$&#123;port&#125;</span>.`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//建立起連接時，發出訊息</span></span><br><span class="line"><span class="comment">//當有用戶連接到connection 就會有回呼函式</span></span><br><span class="line">io.<span class="title function_">on</span>(<span class="string">&#x27;connection&#x27;</span>,<span class="function">(<span class="params">socket</span>)=&gt;</span>&#123;</span><br><span class="line">	<span class="comment">//發出訊息</span></span><br><span class="line">	socket.<span class="title function_">emit</span>(<span class="string">&#x27;join&#x27;</span>, <span class="string">&#x27;Welcom&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="如何在前端使用，與後端建立連線？"><a href="#如何在前端使用，與後端建立連線？" class="headerlink" title="如何在前端使用，與後端建立連線？"></a>如何在前端使用，與後端建立連線？</h2><ul>
+<li>到前端的入口檔案</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將 socket.io 的包引入前端程式這邊</span></span><br><span class="line"><span class="keyword">import</span> &#123; io &#125; <span class="keyword">from</span> <span class="string">&quot;socket.io-client&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//1. 建立連接到 node server</span></span><br><span class="line"><span class="keyword">const</span> clientIo = <span class="title function_">io</span>();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">clientIo.<span class="title function_">on</span>(<span class="string">&#x27;join&#x27;</span>,<span class="function">(<span class="params">msg</span>)=&gt;</span>&#123;</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;msg&#x27;</span>,msg)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/02/28/Vue-toRef/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1736,97 +1838,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/10/19/Vue-setComponent/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/19/Vue-setComponent/" class="post-title-link" itemprop="url">Vue.js 3 -  組件的拆分</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-10-19 16:36:10" itemprop="dateCreated datePublished" datetime="2021-10-19T16:36:10+08:00">2021-10-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:33:47" itemprop="dateModified" datetime="2022-11-04T10:33:47+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>試想今天有一個網頁，上方的導覽列有不同的分類，帶領你到該項目的分頁中<br>那我們該如何實現，將各個項目的內容一一呈現<br><img src="https://i.imgur.com/7LUqd5I.png" alt=""></p>
-<h2 id="簡單分別製作-component"><a href="#簡單分別製作-component" class="headerlink" title="簡單分別製作 component"></a>簡單分別製作 component</h2><p>首先：component的命名要用大寫<br><img src="https://i.imgur.com/fAOtmM8.png" alt=""></p>
-<ul>
-<li>在 component 中<br><img src="https://i.imgur.com/dgWnvii.png" alt=""></li>
-</ul>
-<h3 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h3><ul>
-<li>在 App.vue<br>讓vue知道有個component可以被使用，透過ES6的解構放入<br><img src="https://i.imgur.com/4yAMVNw.png" alt=""><br>將引入的component放到template<br><img src="https://i.imgur.com/PO4LhRv.png" alt=""><br><img src="https://i.imgur.com/K0UmvdI.png" alt=""></li>
-</ul>
-<h2 id="將其他組件引入"><a href="#將其他組件引入" class="headerlink" title="將其他組件引入"></a>將其他組件引入</h2><p><img src="https://i.imgur.com/EgWUGfG.png" alt=""></p>
-<p><img src="https://i.imgur.com/qIvkq2l.png" alt=""></p>
-<h2 id="補充說明："><a href="#補充說明：" class="headerlink" title="補充說明："></a>補充說明：</h2><p>修改路徑:<br>用~@來指定圖片路徑：@在vuecli是代表特殊意義，就會直接從src這個資料夾底下開始查找;而波浪符號，代表現在在css之中使用這個功能<br><img src="https://i.imgur.com/NefWOd8.png" alt=""></p>
-<ul>
-<li>也就是在專案中，即便路徑複雜，只要在路徑最前面加上<code>@</code>就會直接進去src<br><img src="https://i.imgur.com/sPhH1rs.png" alt=""></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1894,7 +1909,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1906,7 +1921,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

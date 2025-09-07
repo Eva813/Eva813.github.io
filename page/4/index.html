@@ -180,6 +180,141 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/01/31/vueTest-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/31/vueTest-2/" class="post-title-link" itemprop="url">vueTest - Vue test util (1)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-31 13:45:08" itemprop="dateCreated datePublished" datetime="2023-01-31T13:45:08+08:00">2023-01-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-05 12:31:50" itemprop="dateModified" datetime="2023-08-05T12:31:50+08:00">2023-08-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>測試 App.vue<ul>
+<li>引入 <code>@vue/test-utils</code> 使用 shallowMount 方法</li>
+<li>shallowMount 可以渲染出組件<h2 id="shallowMount-mount"><a href="#shallowMount-mount" class="headerlink" title="shallowMount , mount"></a>shallowMount , mount</h2>shallowMount : 只會渲染該元件當層的資料內容<br>mount : 深度渲染，會將元件內所包含的其他元件一起都渲染出</li>
+</ul>
+</li>
+<li>例如以下範例: 在 App.vue 中有包含數個元件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> //App.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">	&lt;img class=&quot;logo&quot; alt=&quot;Vue logo&quot; src=&quot;./assets/logo.png&quot; /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;h1&gt;Test demo&lt;/h1&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;AddCount /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;HelloWorld /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;div class=&quot;itemFlex&quot;&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;CardBox v-for=&quot;i in 4&quot; :key=&quot;i&quot; /&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;UserList /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;PhotoItem /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>測試元件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount, mount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;@/App.vue&#x27;</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;App.vue test&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;測試組件 1&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="comment">//渲染出 App 元件</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">App</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">text</span>())</span><br><span class="line">		</span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&quot;Test demo&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;測試組件2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">const</span> wrapper = <span class="title function_">mount</span>(<span class="title class_">App</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">text</span>())</span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&quot;若你是寫過 Vue 但沒有寫過單元測試的工程師&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/BcvGwlI.png" alt=""></p>
+<p>get 與 find 差異</p>
+<ul>
+<li>抓取某個元件中 DOM 元素</li>
+<li>兩者差異在於<ul>
+<li>使用 get ，如果找不到元素會報錯，並且直接中斷測試的運行</li>
+<li>使用 find 會依據 <code>exists()</code> 回傳布林值</li>
+</ul>
+</li>
+</ul>
+<p><code>&lt;button id=&quot;add&quot; class=&quot;add-btn&quot; @click=&quot;add&quot;&gt;add 按鈕&lt;/button&gt;</code></p>
+<p><img src="https://i.imgur.com/TWuFWX3.png" alt=""></p>
+<ul>
+<li>測試按鈕存不存在<ul>
+<li>exists : 驗證某元素是否存在</li>
+<li><a target="_blank" rel="noopener" href="https://test-utils.vuejs.org/api/#exists"> exists</a></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;AddCount.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test 1 &#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">AddCount</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn&#x27;</span>))</span><br><span class="line">		</span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn&#x27;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/0sBL0t6.png" alt=""></p>
+<p><img src="https://i.imgur.com/htkF4X5.png" alt=""></p>
+<h3 id="在情境應用"><a href="#在情境應用" class="headerlink" title="在情境應用"></a>在情境應用</h3><ul>
+<li>在 AddCount 加入 <code>isOpen=ref(false)</code> 來判斷 button 是否在一開始要呈現</li>
+<li>而再測試文件中就是要測試該按鈕在一開始並不會出現</li>
+</ul>
+<p><img src="https://i.imgur.com/YkBK6Ry.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">AddCount</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/AddCount.vue&#x27;</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;AddCount.vue&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test 1 &#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">AddCount</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn&#x27;</span>))</span><br><span class="line">	<span class="comment">// 找不到，並且回傳 false</span></span><br><span class="line">		<span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.add-btn-err&#x27;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">false</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="find-與-findAll"><a href="#find-與-findAll" class="headerlink" title="find 與 findAll"></a>find 與 findAll</h2><p>以 v-for list 的範例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">import &#123; ref &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">import data from &quot;./data.json&quot;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">	</span><br><span class="line">	setup() &#123;</span><br><span class="line">	</span><br><span class="line">		const employeeItem = ref(data);</span><br><span class="line">		</span><br><span class="line">		return &#123;</span><br><span class="line">		</span><br><span class="line">			employeeItem,</span><br><span class="line">		</span><br><span class="line">		&#125;;</span><br><span class="line">		</span><br><span class="line">	&#125;,</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">	&lt;ul class=&quot;item&quot;&gt;</span><br><span class="line">	</span><br><span class="line">		&lt;li class=&quot;user_list&quot; v-for=&quot;item in employeeItem&quot; :key=&quot;item.id&quot;&gt;</span><br><span class="line">		</span><br><span class="line">			&lt;div&gt;</span><br><span class="line">			</span><br><span class="line">				&lt;p&gt;員工編號: &#123;&#123; item.userId &#125;&#125;&lt;/p&gt;</span><br><span class="line">				</span><br><span class="line">				&lt;p&gt;姓名: &#123;&#123; item.username &#125;&#125;&lt;/p&gt;</span><br><span class="line">			</span><br><span class="line">			&lt;/div&gt;</span><br><span class="line">		</span><br><span class="line">		&lt;/li&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;/ul&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/dqts5eV.png" alt=""></p>
+<p><img src="https://i.imgur.com/PXPy1as.png" alt=""></p>
+<p>如果是要抓元件中 list 有幾筆<br><code>wrapper.findAll(&#39;.user_list&#39;)</code> : 他會是一個陣列資料，其中包含好幾個 DOM wrapper </p>
+<p><img src="https://i.imgur.com/I5lNSRX.png" alt=""></p>
+<p>注意：<br>    <code>TypeError: wrapper.findAll(...).text is not a function</code></p>
+<ul>
+<li>搭配使用 <code>at()</code> 用於找尋其中某一個物件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">UserList</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/UserList.vue&#x27;</span></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;test UserList&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test Dom&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">UserList</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// console.log(wrapper.findAll(&#x27;.user_list&#x27;).at(0).text())</span></span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="title function_">at</span>(<span class="number">0</span>).<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&#x27;員工編號: 399&#x27;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="另也可以測試所拿到的資料長度"><a href="#另也可以測試所拿到的資料長度" class="headerlink" title="另也可以測試所拿到的資料長度"></a>另也可以測試所拿到的資料長度</h3><ul>
+<li>測試 DOM 資料長度</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/test-utils&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">UserList</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/UserList.vue&#x27;</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;test UserList&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test Dom&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">UserList</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// console.log(wrapper.findAll(&#x27;.user_list&#x27;).at(0).text())</span></span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="title function_">at</span>(<span class="number">0</span>).<span class="title function_">text</span>()).<span class="title function_">toMatch</span>(<span class="string">&#x27;員工編號: 399&#x27;</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="title function_">it</span>(<span class="string">&#x27;test List length&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">UserList</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="property">length</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="title function_">expect</span>(wrapper.<span class="title function_">findAll</span>(<span class="string">&#x27;.user_list&#x27;</span>).<span class="property">length</span>).<span class="title function_">toBe</span>(<span class="number">6</span>)</span><br><span class="line">	</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/01/28/vueTest-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1323,134 +1458,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/11/02/rect-test-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/02/rect-test-2/" class="post-title-link" itemprop="url">React 測試 - 以登入元件練習</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-11-02 20:49:15" itemprop="dateCreated datePublished" datetime="2022-11-02T20:49:15+08:00">2022-11-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:37:05" itemprop="dateModified" datetime="2022-11-04T10:37:05+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React-%E6%B8%AC%E8%A9%A6/" itemprop="url" rel="index"><span itemprop="name">React 測試</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>想找專案練習來更認識測試的運用，至 youtube 找尋測試相關的教學。</p>
-<h3 id="建立-login-檔案"><a href="#建立-login-檔案" class="headerlink" title="建立 login 檔案"></a>建立 login 檔案</h3><ul>
-<li><p>login.js : 製作登入元件</p>
-</li>
-<li><p>login.test.js : 撰寫測試</p>
-<p><img src="https://i.imgur.com/4Pw5JTD.png" alt=""></p>
-</li>
-</ul>
-<h3 id="確認-輸入框-有渲染至文件"><a href="#確認-輸入框-有渲染至文件" class="headerlink" title="確認 輸入框 有渲染至文件"></a>確認 輸入框 有渲染至文件</h3><ul>
-<li>使用 <code>getByPlaceholderText</code> 取得輸入框元素</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">input</span></span></span><br><span class="line"><span class="tag">         <span class="attr">type</span>=<span class="string">&quot;text&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">placeholder</span>=<span class="string">&quot;username&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">value</span>=<span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="tag">       /&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">input</span></span></span><br><span class="line"><span class="tag">         <span class="attr">type</span>=<span class="string">&quot;password&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">placeholder</span>=<span class="string">&quot;password&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">value</span>=<span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="tag">       /&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;username input should be rendered&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(usernameInputEl).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;password input should be rendered&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(passwordInputEl).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="確認畫面上有按鈕"><a href="#確認畫面上有按鈕" class="headerlink" title="確認畫面上有按鈕"></a>確認畫面上有按鈕</h3><ul>
-<li>getByRole 取得按鈕</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;button should be rendered&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> buttonEl = screen.<span class="title function_">getByRole</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(buttonEl).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="輸入框一開始為空"><a href="#輸入框一開始為空" class="headerlink" title="輸入框一開始為空"></a>輸入框一開始為空</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;username input should be empty&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(usernameInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;password input should be empty&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(passwordInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="輸入框為空時，按鈕應為-disabled"><a href="#輸入框為空時，按鈕應為-disabled" class="headerlink" title="輸入框為空時，按鈕應為 disabled"></a>輸入框為空時，按鈕應為 disabled</h3><ul>
-<li>只要取得按鈕元素並使用 <code>toBeDisabled()</code></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;button should be disabled&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> buttonEl = screen.<span class="title function_">getByRole</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(buttonEl).<span class="title function_">toBeDisabled</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="錯誤訊息的提示"><a href="#錯誤訊息的提示" class="headerlink" title="錯誤訊息的提示"></a>錯誤訊息的提示</h3><p><img src="https://i.imgur.com/hQ33Kxa.png" alt=""></p>
-<ul>
-<li>確保一開始進入畫面，該訊息不應該出現</li>
-<li>可以看見 <code>toBeVisible()</code> ，反之期望無法看見，就需加入not</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;error message should not be visible&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> errorEl = screen.<span class="title function_">getByTestId</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">  <span class="title function_">expect</span>(errorEl).<span class="property">not</span>.<span class="title function_">toBeVisible</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="輸入框的輸入事件"><a href="#輸入框的輸入事件" class="headerlink" title="輸入框的輸入事件"></a>輸入框的輸入事件</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://testing-library.com/docs/dom-testing-library/api-events/">fireEvent</a> 用來針對事件進行測試</li>
-</ul>
-<p><img src="https://i.imgur.com/E9wT8gO.png" alt=""></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;username input should change&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="comment">//模擬傳入的值</span></span><br><span class="line">  <span class="keyword">const</span> testValue = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(usernameInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line">  <span class="title function_">expect</span>(usernameInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(testValue);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;password input should change&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line">  <span class="keyword">const</span> testValue = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(passwordInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line">  <span class="title function_">expect</span>(passwordInputEl.<span class="property">value</span>).<span class="title function_">toBe</span>(testValue);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="當輸入框有值的時候，按鈕不應該-disabled"><a href="#當輸入框有值的時候，按鈕不應該-disabled" class="headerlink" title="當輸入框有值的時候，按鈕不應該 disabled"></a>當輸入框有值的時候，按鈕不應該 <code>disabled</code></h3><ul>
-<li>期望按鈕可以點擊</li>
-<li>在 jsx 檔案內要設置在輸入框沒有值的時候才是 disabled</li>
-</ul>
-<p><img src="https://i.imgur.com/MdNkcGo.png" alt=""></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;button should not be disabled when inputs exist&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Login</span> /&gt;</span></span>);</span><br><span class="line">  <span class="keyword">const</span> buttonEl = screen.<span class="title function_">getByRole</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">  <span class="keyword">const</span> usernameInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/username/i</span>);</span><br><span class="line">  <span class="keyword">const</span> passwordInputEl = screen.<span class="title function_">getByPlaceholderText</span>(<span class="regexp">/password/i</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> testValue = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"></span><br><span class="line">  fireEvent.<span class="title function_">change</span>(usernameInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line">  fireEvent.<span class="title function_">change</span>(passwordInputEl, &#123; <span class="attr">target</span>: &#123; <span class="attr">value</span>: testValue &#125; &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">expect</span>(buttonEl).<span class="property">not</span>.<span class="title function_">toBeDisabled</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-
-<h4 id="css-補充"><a href="#css-補充" class="headerlink" title="css 補充"></a>css 補充</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">style=&#123;&#123; <span class="attribute">visibility</span>: error ? <span class="string">&quot;visible&quot;</span> : <span class="string">&quot;hidden&quot;</span> &#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>類似： display:none和visibility:hidden</p>
-<p>而兩者差異：<br>visibility：的隱藏，是物件的位置仍舊保持著不會消失,<br>display: none, 會將 html 該物件拔除</p>
-<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>此練習範例，很請楚地知道在建立一個功能元件之後，如何再加入每一個區塊的測試，如標題文字、輸入框、按鈕的測試等等，也可以觀察到測試根據使用情境一步步的拆解並加入測試<br>下一篇會有串接資料搭配測試，敬請期待</p>
-<p>參考資料<br><a target="_blank" rel="noopener" href="https://github.com/safak/youtube2022/blob/react-testing/src/components/login/Login.jsx">github-login</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Flo268xRpV0">React Testing Tutorial with React Testing Library and Jest</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1518,7 +1529,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1530,7 +1541,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -180,6 +180,115 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/09/07/firebase-seqNo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/07/firebase-seqNo/" class="post-title-link" itemprop="url">如何用 SeqNo 管理機制提升列表插入效能，解決排序衝突問題</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-09-07 19:02:27 / Modified: 19:35:33" itemprop="dateCreated datePublished" datetime="2025-09-07T19:02:27+08:00">2025-09-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/side-project/" itemprop="url" rel="index"><span itemprop="name">side-project</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>列表的動態排序和插入為常見的需求。然而，當面對大量資料時，傳統的「刪除重建」策略容易會成為效能瓶頸。本文將分享我在專案中如何透過 SeqNo 管理機制，將列表插入效能提升，同時保持資料一致性和系統穩定性。</p>
+<p>在專案內有一下拉列表的功能，當使用者選擇某個選項後，會將該選項插入到列表中，並且會依據使用者的操作順序來進行排序。最初的實作方式是每次插入新選項時，都會重新計算整個列表的排序，這在資料量較大時，導致效能明顯下降。為了解決這個問題，引入了 SeqNo 管理機制。</p>
+<h2 id="原有問題"><a href="#原有問題" class="headerlink" title="原有問題"></a>原有問題</h2><p>當使用者要在列表中間插入新的資料時，使系統面臨挑戰，並且在沒有加入 seqNo 管理機制前，容易遇到排序衝突的問題。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原有狀態</span></span><br><span class="line">[</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="string">&#x27;A&#x27;</span>, <span class="attr">seqNo</span>: <span class="number">1</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="string">&#x27;B&#x27;</span>, <span class="attr">seqNo</span>: <span class="number">2</span> &#125;,  <span class="comment">// 要在 B 後面插入新項目</span></span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="string">&#x27;C&#x27;</span>, <span class="attr">seqNo</span>: <span class="number">3</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="string">&#x27;D&#x27;</span>, <span class="attr">seqNo</span>: <span class="number">4</span> &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>如果直接將新項目設為 seqNo: 3，會與現有的項目 C 發生衝突。</p>
+<h3 id="傳統解決方案的困境"><a href="#傳統解決方案的困境" class="headerlink" title="傳統解決方案的困境"></a>傳統解決方案的困境</h3><p>直觀的解決方案是重新排序所有項目：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 刪除重建</span></span><br><span class="line">  <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">insertListData</span>(<span class="params">afterId: string, </span></span><br><span class="line"><span class="params">  newListData: ListData</span>) &#123;</span><br><span class="line">    <span class="comment">// 1. 刪除所有後續項目 (N-M 次刪除)</span></span><br><span class="line">    <span class="keyword">await</span> <span class="title function_">deleteListDataAfter</span>(afterId);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 重新建立所有項目 (N-M+1 次建立)</span></span><br><span class="line">    <span class="keyword">await</span> <span class="title function_">recreateListDataWithNewSeqNo</span>(newListData,</span><br><span class="line">  subsequentListData);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>操作複雜度: O(2N+1) - 其中 N 為列表總長度</li>
+<li>資料庫壓力: 大量刪除和建立操作</li>
+<li>交易風險: 操作步驟過多，失敗機率高</li>
+<li>併發問題: 長時間鎖定，容易產生競爭條件</li>
+</ul>
+<h2 id="SeqNo-管理機制"><a href="#SeqNo-管理機制" class="headerlink" title="SeqNo 管理機制"></a>SeqNo 管理機制</h2><p> 只更新真正需要變動的項目，將複雜度進行改善，是插入點之後的項目數量。</p>
+<ol>
+<li>排序基礎函式<br>確保所有項目能依照 seqNo 正確排序。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 排序工具</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">sortListDataBySeqNo</span>(<span class="params">listData: ListData[]</span>): <span class="title class_">ListData</span>[] &#123;</span><br><span class="line">  <span class="keyword">return</span> [...listData].<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> aSeqNo = a.<span class="property">seqNo</span> || <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">const</span> bSeqNo = b.<span class="property">seqNo</span> || <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> aSeqNo - bSeqNo;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<ol start="2">
+<li>插入策略計算</li>
+</ol>
+<p>只計算「插入點之後」需要調整的項目，並產生更新操作清單。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">calculateInsertStrategy</span>(<span class="params"></span></span><br><span class="line"><span class="params">  existingListData: ListData[],</span></span><br><span class="line"><span class="params">  afterListDataId: string</span></span><br><span class="line"><span class="params"></span>): &#123;</span><br><span class="line">  <span class="attr">insertSeqNo</span>: number;</span><br><span class="line">  <span class="attr">affectedListData</span>: <span class="title class_">ListData</span>[];</span><br><span class="line">  <span class="attr">updateOperations</span>: <span class="title class_">Array</span>&lt;&#123; <span class="attr">listDataId</span>: string; <span class="attr">newSeqNo</span>: number &#125;&gt;;</span><br><span class="line">&#125; &#123;</span><br><span class="line">  <span class="keyword">const</span> sortedListData = <span class="title function_">sortListDataBySeqNo</span>(existingListData);</span><br><span class="line">  <span class="keyword">const</span> afterIndex = sortedListData.<span class="title function_">findIndex</span>(<span class="function"><span class="params">data</span> =&gt;</span> data.<span class="property">id</span> === afterListDataId);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (afterIndex === -<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;afterListDataId not found&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 關鍵：插入點的 seqNo + 1</span></span><br><span class="line">  <span class="keyword">const</span> insertSeqNo = sortedListData[afterIndex].<span class="property">seqNo</span>! + <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// 只影響插入點之後的項目</span></span><br><span class="line">  <span class="keyword">const</span> affectedListData = sortedListData.<span class="title function_">slice</span>(afterIndex + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 產生更新操作清單</span></span><br><span class="line">  <span class="keyword">const</span> updateOperations = affectedListData.<span class="title function_">map</span>(<span class="function"><span class="params">data</span> =&gt;</span> (&#123;</span><br><span class="line">    <span class="attr">listDataId</span>: data.<span class="property">id</span>,</span><br><span class="line">    <span class="attr">newSeqNo</span>: data.<span class="property">seqNo</span>! + <span class="number">1</span></span><br><span class="line">  &#125;));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123; insertSeqNo, affectedListData, updateOperations &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>交易執行<br>確保所有更新操作能在同一個 Transaction 中完成。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">executeSeqNoUpdates</span>(<span class="params"></span></span><br><span class="line"><span class="params">  transaction: Transaction,</span></span><br><span class="line"><span class="params">  operations: <span class="built_in">Array</span>&lt;&#123; listDataId: string; newSeqNo: number &#125;&gt;</span></span><br><span class="line"><span class="params"></span>): <span class="title class_">Promise</span>&lt;<span class="keyword">void</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> operation <span class="keyword">of</span> operations) &#123;</span><br><span class="line">    <span class="comment">// 更新每個受影響的項目</span></span><br><span class="line">    <span class="keyword">const</span> listDataRef = adminDb.<span class="title function_">collection</span>(<span class="string">&#x27;listData&#x27;</span>).<span class="title function_">doc</span>(operation.<span class="property">listDataId</span>);</span><br><span class="line">    transaction.<span class="title function_">update</span>(listDataRef, &#123;</span><br><span class="line">      <span class="attr">seqNo</span>: operation.<span class="property">newSeqNo</span>,</span><br><span class="line">      <span class="attr">updatedAt</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>API 實現範例</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">// POST /api/v1/listData</span></span><br><span class="line"> <span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">POST</span>(<span class="params">req: Request</span>) &#123;</span><br><span class="line">  <span class="comment">// ... 驗證邏輯</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (afterListDataId) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">// 步驟1: 計算最小更新策略</span></span><br><span class="line">      <span class="keyword">const</span> &#123; updateOperations, insertSeqNo &#125; =</span><br><span class="line">        <span class="title function_">calculateInsertStrategy</span>(existingListData, afterListDataId);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 步驟2: Transaction 執行</span></span><br><span class="line">      <span class="keyword">const</span> result = <span class="keyword">await</span> adminDb.<span class="title function_">runTransaction</span>(<span class="keyword">async</span> (transaction) =&gt; &#123;</span><br><span class="line">        <span class="keyword">await</span> <span class="title function_">executeSeqNoUpdates</span>(transaction, updateOperations);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 插入新項目</span></span><br><span class="line">        <span class="keyword">const</span> listDataRef = adminDb.<span class="title function_">collection</span>(<span class="string">&#x27;listData&#x27;</span>).<span class="title function_">doc</span>();</span><br><span class="line">        transaction.<span class="title function_">set</span>(listDataRef, &#123;</span><br><span class="line">          ...newListData,</span><br><span class="line">          <span class="attr">seqNo</span>: insertSeqNo</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> &#123; <span class="attr">id</span>: listDataRef.<span class="property">id</span>, <span class="attr">seqNo</span>: insertSeqNo &#125;;</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">NextResponse</span>.<span class="title function_">json</span>(result, &#123; <span class="attr">status</span>: <span class="number">201</span> &#125;);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">      <span class="keyword">if</span> (error.<span class="property">message</span> === <span class="string">&#x27;afterListDataId not found&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">NextResponse</span>.<span class="title function_">json</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;afterListDataId not found&#x27;</span> &#125;, &#123; <span class="attr">status</span>: <span class="number">404</span> &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">throw</span> error;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="此專案的應用回顧與心得"><a href="#此專案的應用回顧與心得" class="headerlink" title="此專案的應用回顧與心得"></a>此專案的應用回顧與心得</h2><p>這個問題最初是在「插入列表中間」時被發現的。<br>當時經常出現排序錯亂，追查後才發現是因為缺乏 SeqNo 管理機制，導致插入時 seqNo 發生衝突。</p>
+<p>一開始的解法是 刪除重建，但這帶來兩個明顯的問題：<br>1.當資料量大時，對後端資料庫造成極大負擔。<br>2.使用者操作無法預測，若頻繁在列表中間插入或刪除，效能會快速下降。</p>
+<p>引入 SeqNo 管理機制 後：</p>
+<ul>
+<li>插入效能明顯提升</li>
+<li>保持了資料一致性</li>
+<li>系統穩定性也大幅改善<br>這樣的設計不僅解決了排序衝突，也大幅減少了資料庫的操作次數，讓整體效能更加穩定可</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/06/29/frontend-auto-save/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -991,94 +1100,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/03/20/twilwindCss-twMerge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/03/20/twilwindCss-twMerge/" class="post-title-link" itemprop="url">twilwindCss-twMerge</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-03-20 19:43:16 / Modified: 20:06:20" itemprop="dateCreated datePublished" datetime="2025-03-20T19:43:16+08:00">2025-03-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/frontend/" itemprop="url" rel="index"><span itemprop="name">frontend</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在開發 React 或 Vue 應用時，動態組合 Tailwind CSS class 是常見的需求。但當 class 來源多樣（例如 props 傳入、條件渲染等），你可能會遇到 class 重複、衝突或難以維護的問題，這時候，twMerge 就能幫助你解決這些困難。</p>
-<h2 id="什麼是-twMerge"><a href="#什麼是-twMerge" class="headerlink" title="什麼是 twMerge"></a>什麼是 twMerge</h2><p><code>twMerge</code> 是一個專為 <strong>Tailwind CSS</strong> 設計的 class 合併工</p>
-<ul>
-<li><strong>衝突解決</strong>：當你從不同來源（例如預設樣式和 props 傳入的 class）合併 class 時，可能會出現相同屬性的重複定義，twMerge 會自動解決這些衝突，保證最終只保留正確的 class。</li>
-<li><strong>動態組合</strong>：在實際應用中，很多時候 class 字符串是根據條件組合出來的，直接拼接可能會導致意料之外的覆蓋。twMerge 能夠讓你的 class 合併更有條理，避免混淆。</li>
-</ul>
-<p>安裝方式：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">npm install tailwind-merge</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">yarn add tailwind-merge</span><br></pre></td></tr></table></figure>
-<p>基本使用範例：</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; twMerge &#125; <span class="keyword">from</span> <span class="string">&#x27;tailwind-merge&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> classes = <span class="title function_">twMerge</span>(<span class="string">&quot;p-4&quot;</span>, <span class="string">&quot;p-2&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(classes); <span class="comment">// 輸出: &quot;p-2&quot;（自動移除衝突的 p-4）</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/03/20/twilwindCss-twMerge/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1146,7 +1171,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1158,7 +1183,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
