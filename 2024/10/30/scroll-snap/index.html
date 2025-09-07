@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="CSS Scroll Snap 是一種用於控制滾動行為的 CSS 模組，允許開發者在使用者停止滾動時，自動將視圖對齊到特定的元素。這種功能常用於創造更流暢的用戶體驗，例如分頁文章、圖片輪播等。 主要由兩個屬性來控制：scroll-snap-type：設置在滾動容器（父元素）上，用於定義滾動軸向和滾動對齊的行為。 格式為：scroll-snap-type: [軸向] [行為]軸向可以是 x（水平滾動">
+<meta property="og:type" content="article">
+<meta property="og:title" content="scroll snap">
+<meta property="og:url" content="https://eva813.github.io/2024/10/30/scroll-snap/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="CSS Scroll Snap 是一種用於控制滾動行為的 CSS 模組，允許開發者在使用者停止滾動時，自動將視圖對齊到特定的元素。這種功能常用於創造更流暢的用戶體驗，例如分頁文章、圖片輪播等。 主要由兩個屬性來控制：scroll-snap-type：設置在滾動容器（父元素）上，用於定義滾動軸向和滾動對齊的行為。 格式為：scroll-snap-type: [軸向] [行為]軸向可以是 x（水平滾動">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-10-29T23:38:54.000Z">
+<meta property="article:modified_time" content="2024-10-29T23:51:52.656Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="css">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2024/10/30/scroll-snap/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>scroll snap | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/10/30/scroll-snap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          scroll snap
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-10-30 07:38:54 / Modified: 07:51:52" itemprop="dateCreated datePublished" datetime="2024-10-30T07:38:54+08:00">2024-10-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>CSS Scroll Snap 是一種用於控制滾動行為的 CSS 模組，允許開發者在使用者停止滾動時，自動將視圖對齊到特定的元素。這種功能常用於創造更流暢的用戶體驗，例如分頁文章、圖片輪播等。</p>
+<h2 id="主要由兩個屬性來控制："><a href="#主要由兩個屬性來控制：" class="headerlink" title="主要由兩個屬性來控制："></a>主要由兩個屬性來控制：</h2><p>scroll-snap-type：設置在滾動容器（父元素）上，用於定義滾動軸向和滾動對齊的行為。</p>
+<p>格式為：scroll-snap-type: [軸向] [行為]<br>軸向可以是 x（水平滾動）、y（垂直滾動）或 both（同時支持水平與垂直）。<br>行為可以是 mandatory 或 proximity：<br>mandatory：滾動必須對齊到指定位置，確保每次停下來都會對齊。<br>proximity：當滾動接近某個指定的位置時，會進行對齊。<br>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.scroll-container &#123;</span><br><span class="line">  scroll-snap-type: y mandatory; /* 在垂直方向強制對齊 */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>scroll-snap-align：設置在滾動內容項目（子元素）上，定義這些元素在滾動容器中的對齊方式。</p>
+<p>可選的值有 start、center、end，決定項目在滾動結束時如何與容器對齊。<br>例如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.scroll-item</span> &#123;</span><br><span class="line">  <span class="attribute">scroll-snap-align</span>: start; <span class="comment">/* 將項目對齊到滾動容器的頂端 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>屬性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>scroll-snap-type</code></td>
+<td>定義滾動容器的捕捉行為，包括方向（x, y, both）和強制程度（mandatory, proximity）。</td>
+</tr>
+<tr>
+<td><code>scroll-padding</code></td>
+<td>設置容器內邊距，影響捕捉點的位置。</td>
+</tr>
+<tr>
+<td><code>scroll-snap-align</code></td>
+<td>定義子元素在容器中的對齊方式（start, center, end）。</td>
+</tr>
+<tr>
+<td><code>scroll-snap-stop</code></td>
+<td>控制是否在特定元素上停留，默認情況下僅在停止滾動時觸發。</td>
+</tr>
+</tbody></table>
+<h2 id="使用時注意事項"><a href="#使用時注意事項" class="headerlink" title="使用時注意事項"></a>使用時注意事項</h2><ol>
+<li>跨瀏覽器不一致性<br>雖然大多數現代瀏覽器都支持 Scroll Snap，但在行為上可能會有一些細微的差異。請務必在各種瀏覽器上測試你的實現，確保用戶能夠獲得一致的體驗。像是使用 <a target="_blank" rel="noopener" href="https://caniuse.com/">cna I us</a> 確認支援。<br>對於某些舊版本仍然需要前綴。使用 WebKit 前綴來支持較舊的 Safari 和 Chrome。</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.scroll-container</span> &#123;</span><br><span class="line">  -webkit-<span class="attribute">scroll-snap-type</span>: y mandatory; <span class="comment">/* 用於舊版 Safari 和 Chrome */</span></span><br><span class="line">  <span class="attribute">scroll-snap-type</span>: y mandatory; <span class="comment">/* 標準屬性 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 @supports 進行功能檢測：你可以使用 @supports 檢測瀏覽器是否支持 Scroll Snap，並提供相應的回退方案。例如，如果某些瀏覽器不支持，則可以使用 JavaScript 實現類似的行為。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">@supports</span> (<span class="attribute">scroll-snap-type</span>: y mandatory) &#123;</span><br><span class="line">  <span class="selector-class">.scroll-container</span> &#123;</span><br><span class="line">    <span class="attribute">scroll-snap-type</span>: y mandatory;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@supports</span> <span class="keyword">not</span> (<span class="attribute">scroll-snap-type</span>: y mandatory) &#123;</span><br><span class="line">  <span class="selector-class">.scroll-container</span> &#123;</span><br><span class="line">    <span class="comment">/* 恢復樣式，或提供 JavaScript 實現滾動行為 */</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>預期外的滾動行為<br>如果發現未對齊正確，或者容器的尺寸設置不當，可能會出現預期外的滾動行為。<br>解決方案：<br>設置固定尺寸：確保滾動容器和子元素的尺寸設置正確。對於橫向滾動，應確保每個項目的寬度是明確的，對於縱向滾動，應設置每個項目的高度。例如：</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">複製程式碼</span><br><span class="line"><span class="selector-class">.scroll-container</span> &#123;</span><br><span class="line">  <span class="attribute">overflow-x</span>: scroll; <span class="comment">/* 必須設置 overflow 屬性 */</span></span><br><span class="line">  <span class="attribute">scroll-snap-type</span>: x mandatory; <span class="comment">/* 水平捕捉點 */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.scroll-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>; <span class="comment">/* 保證每個項目都佔據滾動區域 */</span></span><br><span class="line">  <span class="attribute">scroll-snap-align</span>: start; <span class="comment">/* scroll-snap-align 決定了子元素在滾動容器中如何對齊 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li>性能影響</li>
+</ol>
+<p>當頁面內容繁多，或包含大量動畫和捕捉點時，可能會導致性能問題。這會導致滾動卡頓，特別是在移動設備上。</p>
+<p>解決方案：<br>避免過度使用捕捉點：不要對每一個小元素都設置 scroll-snap-align，僅在核心內容（如頁面段落、關鍵節點）設置捕捉點。例如，圖片輪播或長段落之間可以有捕捉點，但不需要對每個小項目設置。</p>
+<p>除此之外，可以嘗試 lazy load：對於圖片或大型內容，使用懶加載技術（如 Intersection Observer API）可以避免一次性渲染過多內容，從而減輕滾動過程中的性能負擔。</p>
+<ul>
+<li>使用 Intersection Observer 實現懶加載: 用來觀察（observe）當指定元素接觸到父層以上或者是視窗的方法。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> images = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;.lazy-load&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> observer = <span class="keyword">new</span> <span class="title class_">IntersectionObserver</span>(<span class="function"><span class="params">entries</span> =&gt;</span> &#123;</span><br><span class="line">  entries.<span class="title function_">forEach</span>(<span class="function"><span class="params">entry</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (entry.<span class="property">isIntersecting</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> img = entry.<span class="property">target</span>;</span><br><span class="line">      img.<span class="property">src</span> = img.<span class="property">dataset</span>.<span class="property">src</span>; <span class="comment">// 替換為真正的圖片</span></span><br><span class="line">      observer.<span class="title function_">unobserve</span>(img); <span class="comment">// 停止觀察</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">images.<span class="title function_">forEach</span>(<span class="function"><span class="params">image</span> =&gt;</span> &#123;</span><br><span class="line">  observer.<span class="title function_">observe</span>(image); <span class="comment">// 觀察每個懶加載圖片</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>減少不必要的動畫：過多的動畫和滾動事件監聽器會降低滾動性能，特別是如果動畫效果頻繁更新。例如，可以使用 requestAnimationFrame 來控制滾動動畫的頻率，避免過多的重排和重繪。或是嘗試，節流滾動事件：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> isScrolling;</span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;scroll&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="built_in">clearTimeout</span>(isScrolling);</span><br><span class="line">  isScrolling = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 在滾動結束後觸發的操作</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;滾動結束&#x27;</span>);</span><br><span class="line">  &#125;, <span class="number">66</span>); <span class="comment">// 節流時間間隔</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>參考文章：<br><a target="_blank" rel="noopener" href="https://jim1105.coderbridge.io/2022/07/30/intersection-observer/">超好用的 Web API - Intersection Observer</a><br><a target="_blank" rel="noopener" href="https://medium.com/@bogdanfromkyiv/no-js-required-you-can-do-this-with-css-e4635e40502c">No JS required — you can do this with CSS!</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/css/" rel="tag"># css</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/08/24/quasar-monthlyPicker/" rel="prev" title="自訂 Quasar 日期選擇器：實現 Year/Month 選擇功能">
+      <i class="fa fa-chevron-left"></i> 自訂 Quasar 日期選擇器：實現 Year/Month 選擇功能
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/11/15/python-install/" rel="next" title="Python 安裝與環境">
+      Python 安裝與環境 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E7%94%B1%E5%85%A9%E5%80%8B%E5%B1%AC%E6%80%A7%E4%BE%86%E6%8E%A7%E5%88%B6%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">主要由兩個屬性來控制：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%99%82%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">2.</span> <span class="nav-text">使用時注意事項</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

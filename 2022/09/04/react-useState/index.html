@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="之前曾快速的學習了React 資料的建立與傳遞方式，並寫了篇文章，最近因為六角讀書會活動也再次更深入一些的學習 React ，並將一些 React Hook 反覆使用練習。因為目前工作主要還是以 Vue 進行開發，所以有時候會提一下兩者框架使用的相同或不同之處。  component 元件化在 Vue 的撰寫中，也是會嘗試將頁面中的不同區塊做拆分。與 Vue 一樣，元件的的命名會以 大寫 為開頭">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React- 元件 &#x2F; props">
+<meta property="og:url" content="https://eva813.github.io/2022/09/04/react-useState/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="之前曾快速的學習了React 資料的建立與傳遞方式，並寫了篇文章，最近因為六角讀書會活動也再次更深入一些的學習 React ，並將一些 React Hook 反覆使用練習。因為目前工作主要還是以 Vue 進行開發，所以有時候會提一下兩者框架使用的相同或不同之處。  component 元件化在 Vue 的撰寫中，也是會嘗試將頁面中的不同區塊做拆分。與 Vue 一樣，元件的的命名會以 大寫 為開頭">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/InPScmW.png">
+<meta property="og:image" content="https://i.imgur.com/T26krQk.png">
+<meta property="og:image" content="https://i.imgur.com/Qb3dUeX.png">
+<meta property="og:image" content="https://i.imgur.com/WbKvlT2.png">
+<meta property="article:published_time" content="2022-09-04T07:42:36.000Z">
+<meta property="article:modified_time" content="2022-11-04T02:36:58.907Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/InPScmW.png">
+
+<link rel="canonical" href="https://eva813.github.io/2022/09/04/react-useState/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>React- 元件 / props | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/09/04/react-useState/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React- 元件 / props
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-09-04 15:42:36" itemprop="dateCreated datePublished" datetime="2022-09-04T15:42:36+08:00">2022-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:36:58" itemprop="dateModified" datetime="2022-11-04T10:36:58+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://i.imgur.com/InPScmW.png" alt=""></p>
+<p>之前曾快速的學習了React 資料的建立與傳遞方式，並寫了篇文章，最近因為六角讀書會活動也再次更深入一些的學習 React ，並將一些 React Hook 反覆使用練習。<br>因為目前工作主要還是以 Vue 進行開發，所以有時候會提一下兩者框架使用的相同或不同之處。 </p>
+<h2 id="component-元件化"><a href="#component-元件化" class="headerlink" title="component 元件化"></a>component 元件化</h2><p>在 Vue 的撰寫中，也是會嘗試將頁面中的不同區塊做拆分。與 Vue 一樣，元件的的命名會以 大寫 為開頭。<br>透過減少重複為用意來建立元件化。</p>
+<p><img src="https://i.imgur.com/T26krQk.png" alt=""><br><a target="_blank" rel="noopener" href="https://codepen.io/Eva-go/pen/zYjxvev">codepen-Component</a></p>
+<h3 id="多個資料，傳遞給單一元件"><a href="#多個資料，傳遞給單一元件" class="headerlink" title="多個資料，傳遞給單一元件"></a>多個資料，傳遞給單一元件</h3><ul>
+<li>建立兩個元件 component1 , component2</li>
+<li>建立共通元件 Board ，此元件可以各別放入兩個元件要傳入的資料(props)</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://codepen.io/Eva-go/pen/poVjVaB">codepen-共用元件</a></p>
+<h3 id="共同資料，傳遞給不同元件"><a href="#共同資料，傳遞給不同元件" class="headerlink" title="共同資料，傳遞給不同元件"></a>共同資料，傳遞給不同元件</h3><p><a target="_blank" rel="noopener" href="https://codepen.io/Eva-go/pen/ExLVRXX?editors=1010">codepen-共用資料</a></p>
+<h3 id="條件-render"><a href="#條件-render" class="headerlink" title="條件 render"></a>條件 render</h3><ul>
+<li>這部分在官方文件就有清楚介紹，可以依據使用條件來顯示元件資料</li>
+<li>使用條件判斷時，若不複雜，可以使用三元運算方式<ul>
+<li><code>isLoggedIn ? &lt;UserGreeting /&gt; : &lt;GuestGreeting /&gt;</code></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://zh-hant.reactjs.org/docs/conditional-rendering.html">conditional-rendering</a></li>
+</ul>
+<h2 id="元件資料傳遞"><a href="#元件資料傳遞" class="headerlink" title="元件資料傳遞"></a>元件資料傳遞</h2><h3 id="子傳父"><a href="#子傳父" class="headerlink" title="子傳父"></a>子傳父</h3><ul>
+<li>範例將以 input 為範例</li>
+<li>此方式的資料傳遞，有點類似於 Vue 中的 <code>v-model</code> 資料雙向綁定</li>
+<li><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10268187">使用 v-model 實現父子元件傳遞資料</a></li>
+<li>在 React 可以將 useState 中設訂的值綁在元件上作為傳遞</li>
+<li>在下方的圖示</li>
+<li>在父層有 value , setValue</li>
+</ul>
+<p>-&gt; 其中 setValue 方法提供給子元件，同時就會讓子元件也產生改變 value 的能力（也就是可以使用父元件的方法）</p>
+<ul>
+<li>要實現子傳父，就在父層掛一個 hook<br><img src="https://i.imgur.com/Qb3dUeX.png" alt=""><br><img src="https://i.imgur.com/WbKvlT2.png" alt=""></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/React/" rel="tag"># React</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/19/learn-webpack/" rel="prev" title="快速認識 webpack">
+      <i class="fa fa-chevron-left"></i> 快速認識 webpack
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/09/17/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#component-%E5%85%83%E4%BB%B6%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">component 元件化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%80%8B%E8%B3%87%E6%96%99%EF%BC%8C%E5%82%B3%E9%81%9E%E7%B5%A6%E5%96%AE%E4%B8%80%E5%85%83%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">多個資料，傳遞給單一元件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B1%E5%90%8C%E8%B3%87%E6%96%99%EF%BC%8C%E5%82%B3%E9%81%9E%E7%B5%A6%E4%B8%8D%E5%90%8C%E5%85%83%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">共同資料，傳遞給不同元件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%9D%E4%BB%B6-render"><span class="nav-number">1.3.</span> <span class="nav-text">條件 render</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E4%BB%B6%E8%B3%87%E6%96%99%E5%82%B3%E9%81%9E"><span class="nav-number">2.</span> <span class="nav-text">元件資料傳遞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E5%82%B3%E7%88%B6"><span class="nav-number">2.1.</span> <span class="nav-text">子傳父</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

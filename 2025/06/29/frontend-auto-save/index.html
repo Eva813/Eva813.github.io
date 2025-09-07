@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Implementing auto-save functionality with Zustand in Next.js 14 to enhance user experience and data security.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="實現前端自動儲存系統：Next.js + Zustand">
+<meta property="og:url" content="https://eva813.github.io/2025/06/29/frontend-auto-save/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="Implementing auto-save functionality with Zustand in Next.js 14 to enhance user experience and data security.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-06-29T04:44:01.000Z">
+<meta property="article:modified_time" content="2025-09-07T01:00:12.995Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="Next.js">
+<meta property="article:tag" content="side-project">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2025/06/29/frontend-auto-save/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>實現前端自動儲存系統：Next.js + Zustand | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/06/29/frontend-auto-save/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          實現前端自動儲存系統：Next.js + Zustand
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-06-29 12:44:01" itemprop="dateCreated datePublished" datetime="2025-06-29T12:44:01+08:00">2025-06-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-09-07 09:00:12" itemprop="dateModified" datetime="2025-09-07T09:00:12+08:00">2025-09-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/side-project/" itemprop="url" rel="index"><span itemprop="name">side-project</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">Implementing auto-save functionality with Zustand in Next.js 14 to enhance user experience and data security.</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在現代 Web 應用開發中，自動儲存功能已成為用戶體驗的重要組成部分。想像一下，用戶正在編輯重要文件時還需要手動點擊儲存按鈕，如果沒有自動儲存機制、或是遺忘點擊儲存，所有辛苦編輯的內容都會瞬間消失。這種糟糕的體驗促使我思考：如何設計一個既智能又穩定的自動儲存系統？</p>
+<p>本文將提供我在專案內內實作如何使用 Next.js 14 + Zustand 架構實現一個完整的自動儲存系統。</p>
+<h2 id="項目背景與需求分析"><a href="#項目背景與需求分析" class="headerlink" title="項目背景與需求分析"></a>項目背景與需求分析</h2><h3 id="應用場景概述"><a href="#應用場景概述" class="headerlink" title="應用場景概述"></a>應用場景概述</h3><p>我們面對的是一個 prompt 管理平台，類似於代碼編輯器或筆記應用。用戶可以：</p>
+<ul>
+<li>創建和編輯 prompt</li>
+<li>設置快捷鍵進行快速訪問</li>
+<li>組織提示詞到不同文件夾</li>
+<li>進行富文本編輯</li>
+</ul>
+<h3 id="核心技術挑戰"><a href="#核心技術挑戰" class="headerlink" title="核心技術挑戰"></a>核心技術挑戰</h3><p>在這樣的編輯環境中，面臨以下挑戰：</p>
+<ol>
+<li><strong>頻繁的內容變更</strong>：用戶持續輸入和修改內容</li>
+<li><strong>多字段同步</strong>：標題、內容、快捷鍵需要同時追蹤</li>
+<li><strong>性能考量</strong>：避免過度頻繁的 API 調用</li>
+<li><strong>用戶反饋</strong>：清晰的保存狀態指示</li>
+</ol>
+<h3 id="技術選型理由"><a href="#技術選型理由" class="headerlink" title="技術選型理由"></a>技術選型理由</h3><p>我們選擇以下技術棧：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">技術棧架構</span><br><span class="line">├── Next.js 14 (App Router) - 前端框架</span><br><span class="line">├── Zustand - 狀態管理</span><br><span class="line">├── TypeScript - 類型安全</span><br><span class="line">├── TipTap - 富文本編輯器</span><br><span class="line">└── Firebase - 後端數據存儲</span><br></pre></td></tr></table></figure>
+
+<p><strong>為什麼選擇這個組合？</strong></p>
+<ul>
+<li><strong>Next.js 14</strong>：提供現代化的 React 開發體驗和卓越的性能</li>
+<li><strong>Zustand</strong>：相比 Redux 更輕量，但功能完整的狀態管理方案</li>
+<li><strong>TypeScript</strong>：在複雜的狀態管理中提供類型安全保障</li>
+<li><strong>Firebase</strong>：簡化後端開發，讓我們專注於前端邏輯</li>
+</ul>
+<h2 id="系統架構設計"><a href="#系統架構設計" class="headerlink" title="系統架構設計"></a>系統架構設計</h2><h3 id="整體架構思路"><a href="#整體架構思路" class="headerlink" title="整體架構思路"></a>整體架構思路</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">自動保存系統架構</span><br><span class="line"></span><br><span class="line">     ┌────────────────────────────────────────────────┐</span><br><span class="line">     │                    UI 組件層                    │</span><br><span class="line">     │                                                │</span><br><span class="line">     │   ┌─────────────────┐   ┌────────────────────┐ │</span><br><span class="line">     │   │  編輯器組件       │   │ SaveStatusIndicator│ │</span><br><span class="line">     │   │  (表單輸入)       │   │ (保存狀態顯示)       │ │</span><br><span class="line">     │   └─────────────────┘   └────────────────────┘ │</span><br><span class="line">     │                                                │</span><br><span class="line">     └────────────────────────────────────────────────┘</span><br><span class="line">                           │</span><br><span class="line">                           ▼</span><br><span class="line">     ┌────────────────────────────────────────────────┐</span><br><span class="line">     │                   業務邏輯層                     │</span><br><span class="line">     │                                                │</span><br><span class="line">     │      ┌────────────────────────────────────┐    │</span><br><span class="line">     │      │         usePromptPageLogic         │    │</span><br><span class="line">     │      │  • 表單狀態管理                      │    │</span><br><span class="line">     │      │  • Debounce 自動保存                │    │</span><br><span class="line">     │      │  • 數據驗證                         │    │</span><br><span class="line">     │      │  • 錯誤處理                         │    │</span><br><span class="line">     │      └────────────────────────────────────┘    │</span><br><span class="line">     │                                                │</span><br><span class="line">     └────────────────────────────────────────────────┘</span><br><span class="line">                           │</span><br><span class="line">                           ▼</span><br><span class="line">     ┌────────────────────────────────────────────────┐</span><br><span class="line">     │                   狀態管理層                     │</span><br><span class="line">     │                                                │</span><br><span class="line">     │   ┌─────────────────┐   ┌────────────────────┐ │</span><br><span class="line">     │   │  useSaveStore   │   │  usePromptStore    │ │</span><br><span class="line">     │   │  (保存狀態)      │   │  (業務數據)          │ │</span><br><span class="line">     │   └─────────────────┘   └────────────────────┘ │</span><br><span class="line">     │                                                │</span><br><span class="line">     └────────────────────────────────────────────────┘</span><br><span class="line">                           │</span><br><span class="line">                           ▼</span><br><span class="line">     ┌────────────────────────────────────────────────┐</span><br><span class="line">     │                     API 層                     │</span><br><span class="line">     │                                                │</span><br><span class="line">     │               Firebase/REST API                │</span><br><span class="line">     │                                                │</span><br><span class="line">     └────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="核心設計原則"><a href="#核心設計原則" class="headerlink" title="核心設計原則"></a>核心設計原則</h3><ol>
+<li><strong>關注點分離</strong>：UI、業務邏輯、狀態管理各司其職</li>
+<li><strong>單一職責</strong>：每個 Hook 和組件都有明確的責任範圍  </li>
+<li><strong>可組合性</strong>：小而專精的函數可以靈活組合</li>
+<li><strong>類型安全</strong>：全程 TypeScript 保護，減少運行時錯誤</li>
+</ol>
+<h2 id="核心工具"><a href="#核心工具" class="headerlink" title="核心工具"></a>核心工具</h2><h3 id="1-Debounce-防抖機制"><a href="#1-Debounce-防抖機制" class="headerlink" title="1. Debounce 防抖機制"></a>1. Debounce 防抖機制</h3><p>Debounce 是自動保存的核心技術，它能延遲函數執行直到停止觸發一段時間後。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">DebouncedFunction</span>&lt;T <span class="keyword">extends</span> (...<span class="attr">args</span>: <span class="built_in">unknown</span>[]) =&gt; <span class="built_in">unknown</span>&gt; = T &amp; &#123;</span><br><span class="line">  <span class="attr">cancel</span>: <span class="function">() =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> debounce&lt;T <span class="keyword">extends</span> (...<span class="attr">args</span>: <span class="built_in">unknown</span>[]) =&gt; <span class="built_in">void</span>&gt;(</span><br><span class="line">  <span class="attr">func</span>: T, </span><br><span class="line">  <span class="attr">delay</span>: <span class="built_in">number</span></span><br><span class="line">): <span class="title class_">DebouncedFunction</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">timer</span>: <span class="title class_">ReturnType</span>&lt;<span class="keyword">typeof</span> <span class="built_in">setTimeout</span>&gt;;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">const</span> debouncedFunc = <span class="keyword">function</span> (<span class="params">...args: Parameters&lt;T&gt;</span>) &#123;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(timer);</span><br><span class="line">    timer = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">func</span>(...args);</span><br><span class="line">    &#125;, delay);</span><br><span class="line">  &#125; <span class="keyword">as</span> T;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 提供取消機制</span></span><br><span class="line">  (debouncedFunc <span class="keyword">as</span> <span class="title class_">DebouncedFunction</span>&lt;T&gt;).<span class="property">cancel</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(timer);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> debouncedFunc <span class="keyword">as</span> <span class="title class_">DebouncedFunction</span>&lt;T&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>泛型設計</strong>：支持任意函數類型，保持類型安全</li>
+<li><strong>取消機制</strong>：提供 <code>cancel</code> 方法，確保在組件卸載時清理資源</li>
+</ul>
+<p><strong>在專案內應用：</strong><br>用戶每次按鍵都會觸發，但只有停止輸入 1 秒後才真正執行保存，這樣既保證了數據不丟失，又避免了過度頻繁的 API 調用。</p>
+<h3 id="2-深度比較工具"><a href="#2-深度比較工具" class="headerlink" title="2. 深度比較工具"></a>2. 深度比較工具</h3><p>為了避免不必要的保存觸發，會需要精確判斷數據是否真的有變更。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> deepEqual = (<span class="attr">obj1</span>: <span class="built_in">unknown</span>, <span class="attr">obj2</span>: <span class="built_in">unknown</span>): <span class="function"><span class="params">boolean</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 快速路徑：相同引用或相同原始值</span></span><br><span class="line">  <span class="keyword">if</span> (obj1 === obj2) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// null 或 undefined 處理</span></span><br><span class="line">  <span class="keyword">if</span> (obj1 == <span class="literal">null</span> || obj2 == <span class="literal">null</span>) <span class="keyword">return</span> obj1 === obj2;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 類型不同直接返回 false</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> obj1 !== <span class="keyword">typeof</span> obj2) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 原始類型直接比較</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> obj1 !== <span class="string">&#x27;object&#x27;</span>) <span class="keyword">return</span> obj1 === obj2;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 對象深度比較邏輯...</span></span><br><span class="line">  <span class="comment">// (省略具體實現細節)</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>為什麼會需要此一比較工具？</strong><br>在 JavaScript 中，對物件進行淺層比較時，如果它們的引用不同，即使內容完全相同，結果也會是 false。深度比較則能確保只有在內容真正變化時才觸發保存。</p>
+<h3 id="3-狀態管理架構"><a href="#3-狀態管理架構" class="headerlink" title="3. 狀態管理架構"></a>3. 狀態管理架構</h3><h4 id="保存狀態-Store"><a href="#保存狀態-Store" class="headerlink" title="保存狀態 Store"></a>保存狀態 Store</h4><p>這個 Store 專門管理保存相關的狀態，支持多個文件同時編輯的場景。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">SaveState</span> &#123;</span><br><span class="line">  <span class="attr">isSaving</span>: <span class="built_in">boolean</span>;  </span><br><span class="line">  <span class="attr">promptSaveStates</span>: <span class="title class_">Record</span>&lt;<span class="built_in">string</span>, &#123; </span><br><span class="line">    <span class="attr">lastSavedAt</span>: <span class="title class_">Date</span> | <span class="literal">null</span>;     <span class="comment">// 最後保存時間</span></span><br><span class="line">    <span class="attr">hasSaveError</span>: <span class="built_in">boolean</span>;        <span class="comment">// 是否有保存錯誤</span></span><br><span class="line">    <span class="attr">isActive</span>: <span class="built_in">boolean</span>;            <span class="comment">// 是否有未保存的變更</span></span><br><span class="line">  &#125;&gt;;</span><br><span class="line">  <span class="attr">setSaving</span>: <span class="function">(<span class="params">isSaving: <span class="built_in">boolean</span>, promptId?: <span class="built_in">string</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">  <span class="attr">setSaved</span>: <span class="function">(<span class="params">promptId: <span class="built_in">string</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">  <span class="attr">setSaveError</span>: <span class="function">(<span class="params">hasError: <span class="built_in">boolean</span>, promptId?: <span class="built_in">string</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">  <span class="comment">// ... </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>多實例支持的設計考量：</strong><br>這種設計允許同時追蹤多個檔案的保存狀態，每個檔案都有獨立的狀態管理，互不干擾。<br>在本專案中，透過保存狀態 Store（Save State Store）的設計實現多實例支持：</p>
+<ul>
+<li>Zustand 作為集中狀態管理器</li>
+<li>Zustand 提供一個全域的 Store，用來集中管理所有檔案的保存狀態。<br><code>Record&lt;string, ...&gt;</code> 結構管理多檔案狀態<br>promptSaveStates 並非只儲存單一檔案狀態，而是採用類似字典（Map）的結構：<ul>
+<li>鍵（Key）：每個檔案的唯一標識（如 promptId）</li>
+<li>值（Value）：包含該檔案獨立保存狀態（如 lastSavedAt、hasSaveError 等）的物件</li>
+</ul>
+</li>
+</ul>
+<p>運作方式說明：</p>
+<ul>
+<li><p>當你需要更新或查詢某個檔案的狀態時，會以該檔案的 promptId 作為 key，從 promptSaveStates 這個大區塊中找到對應的狀態物件進行操作。</p>
+</li>
+<li><p>例如，若要標記 ID 為 “file-A” 的檔案有未保存變更，就更新 promptSaveStates[‘file-A’] 的狀態；而操作 ID 為 “file-B” 的檔案時，則讀寫 promptSaveStates[‘file-B’] 的狀態。</p>
+</li>
+<li><p>由於每個檔案都透過唯一 ID 進行索引，因此它們的狀態完全隔離，實現多實例支持且互不干擾。</p>
+</li>
+</ul>
+<p>這種設計不僅能集中管理，也能保證每個檔案的狀態獨立，適合需要同時處理多檔案狀態的應用場景。</p>
+<h3 id="4-業務邏輯整合"><a href="#4-業務邏輯整合" class="headerlink" title="4. 業務邏輯整合"></a>4. 業務邏輯整合</h3><p>核心的 <code>usePromptPageLogic</code> Hook 負責整合表單管理、變更檢測和自動保存觸發：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">usePromptPageLogic</span> = (<span class="params">&#123; promptId &#125;: UsePromptPageLogicProps</span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 表單狀態管理</span></span><br><span class="line">  <span class="keyword">const</span> [formData, setFormData] = <span class="title function_">useState</span>(&#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">shortcut</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">content</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 存儲初始值用於變更比較</span></span><br><span class="line">  <span class="keyword">const</span> [initialValues, setInitialValues] = <span class="title function_">useState</span>(&#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">shortcut</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="attr">content</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 核心保存函數</span></span><br><span class="line">  <span class="keyword">const</span> savePrompt = <span class="title function_">useCallback</span>(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="comment">// 保存邏輯實現</span></span><br><span class="line">  &#125;, [<span class="comment">/* 依賴項 */</span>]);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 創建 debounced 的保存函數</span></span><br><span class="line">  <span class="keyword">const</span> debouncedSave = <span class="title function_">useMemo</span>(</span><br><span class="line">    <span class="function">() =&gt;</span> <span class="title function_">debounce</span>(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">      <span class="keyword">await</span> <span class="title function_">savePrompt</span>();</span><br><span class="line">    &#125;, <span class="number">1000</span>), <span class="comment">// 1 秒延遲</span></span><br><span class="line">    [savePrompt]</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 核心邏輯：檢查變更並觸發自動保存</span></span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> hasChanges = !<span class="title function_">deepEqual</span>(formData, initialValues);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (hasChanges &amp;&amp; currentPrompt) &#123;</span><br><span class="line">      <span class="title function_">setActive</span>(<span class="literal">true</span>, promptId);   <span class="comment">// 標記為活躍狀態</span></span><br><span class="line">      <span class="title function_">debouncedSave</span>();             <span class="comment">// 觸發延遲保存</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!hasChanges) &#123;</span><br><span class="line">      <span class="title function_">setActive</span>(<span class="literal">false</span>, promptId);  <span class="comment">// 標記為非活躍狀態</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 清理函數：取消待執行的保存</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      debouncedSave.<span class="title function_">cancel</span>();</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;, [formData, initialValues, currentPrompt, debouncedSave, setActive, promptId]);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 返回表單處理器和狀態</span></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="comment">// 表單數據和處理函數</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>這個 Hook ：</strong></p>
+<ol>
+<li><strong>自動觸發機制</strong>：通過 <code>useEffect</code> 監聽表單數據變更</li>
+<li><strong>智能去重</strong>：使用 <code>deepEqual</code> 避免錯誤觸發</li>
+<li><strong>狀態同步</strong>：與 Zustand store 整合</li>
+<li><strong>資源清理</strong>：確保組件卸載時取消待執行的保存</li>
+</ol>
+<h2 id="用戶體驗優化"><a href="#用戶體驗優化" class="headerlink" title="用戶體驗優化"></a>用戶體驗優化</h2><h3 id="1-UI-的實時狀態反饋"><a href="#1-UI-的實時狀態反饋" class="headerlink" title="1. UI 的實時狀態反饋"></a>1. UI 的實時狀態反饋</h3><p><code>SaveStatusIndicator</code> 組件提供即時的保存狀態反饋：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">SaveStatusIndicator</span> = (<span class="params">&#123; className = <span class="string">&#x27;&#x27;</span> &#125;</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> [displayState, setDisplayState] = useState&lt;<span class="string">&#x27;idle&#x27;</span> | <span class="string">&#x27;saving&#x27;</span> | <span class="string">&#x27;saved&#x27;</span> | <span class="string">&#x27;error&#x27;</span>&gt;(<span class="string">&#x27;idle&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">renderContent</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> (displayState) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;saving&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">          <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;flex items-center space-x-2 text-primary&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">Spinner</span> <span class="attr">className</span>=<span class="string">&quot;h-3 w-3 animate-spin&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">span</span>&gt;</span>保存中...<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        );</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;saved&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">          <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;flex items-center space-x-2 text-green-600&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">CheckIcon</span> <span class="attr">className</span>=<span class="string">&quot;h-3 w-3&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">span</span>&gt;</span>已保存所有更改<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        );</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;error&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">          <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;flex items-center space-x-2 text-red-600&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">ErrorIcon</span> <span class="attr">className</span>=<span class="string">&quot;h-3 w-3&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">span</span>&gt;</span>保存失敗<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        );</span><br><span class="line">      <span class="attr">default</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;</span>`<span class="attr">transition-all</span> <span class="attr">duration-200</span> $&#123;<span class="attr">className</span>&#125;`&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;renderContent()&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="錯誤處理與容錯設計"><a href="#錯誤處理與容錯設計" class="headerlink" title="錯誤處理與容錯設計"></a>錯誤處理與容錯設計</h2><h3 id="1-網路異常處理"><a href="#1-網路異常處理" class="headerlink" title="1. 網路異常處理"></a>1. 網路異常處理</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> savePrompt = <span class="title function_">useCallback</span>(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="title function_">setSaving</span>(<span class="literal">true</span>, promptId);</span><br><span class="line">    <span class="keyword">await</span> <span class="title function_">updatePrompt</span>(promptId, updatedPrompt);</span><br><span class="line">    <span class="title function_">setSaved</span>(promptId);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="comment">// 區分不同類型的錯誤</span></span><br><span class="line">    <span class="keyword">if</span> (error.<span class="property">status</span> === <span class="number">401</span>) &#123;</span><br><span class="line">      <span class="comment">// 認證失效，重定向登錄頁</span></span><br><span class="line">      router.<span class="title function_">push</span>(<span class="string">&#x27;/login&#x27;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (error.<span class="property">status</span> === <span class="number">403</span>) &#123;</span><br><span class="line">      <span class="comment">// 權限不足</span></span><br><span class="line">      <span class="title function_">setSaveError</span>(<span class="literal">true</span>, promptId);</span><br><span class="line">      <span class="title function_">showNotification</span>(<span class="string">&#x27;您沒有編輯此內容的權限&#x27;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (error.<span class="property">status</span> &gt;= <span class="number">500</span>) &#123;</span><br><span class="line">      <span class="comment">// 服務器錯誤</span></span><br><span class="line">      <span class="title function_">setSaveError</span>(<span class="literal">true</span>, promptId);</span><br><span class="line">      <span class="title function_">showNotification</span>(<span class="string">&#x27;服務器暫時無法響應，請稍後再試&#x27;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 其他錯誤</span></span><br><span class="line">      <span class="title function_">setSaveError</span>(<span class="literal">true</span>, promptId);</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;保存時發生錯誤:&quot;</span>, error);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, [<span class="comment">/* 依賴項 */</span>]);</span><br></pre></td></tr></table></figure>
+
+<h2 id="專案實作內性能優化策略"><a href="#專案實作內性能優化策略" class="headerlink" title="專案實作內性能優化策略"></a>專案實作內性能優化策略</h2><h3 id="1-內存優化"><a href="#1-內存優化" class="headerlink" title="1. 內存優化"></a>1. 內存優化</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 useCallback 避免不必要的重新渲染</span></span><br><span class="line"><span class="keyword">const</span> handleNameChange = <span class="title function_">useCallback</span>(<span class="function">(<span class="params">e: React.ChangeEvent&lt;HTMLInputElement&gt;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">updateFormField</span>(<span class="string">&#x27;name&#x27;</span>, e.<span class="property">target</span>.<span class="property">value</span>);</span><br><span class="line">&#125;, [updateFormField]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 useMemo 緩存計算結果</span></span><br><span class="line"><span class="keyword">const</span> debouncedSave = <span class="title function_">useMemo</span>(</span><br><span class="line">  <span class="function">() =&gt;</span> <span class="title function_">debounce</span>(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> <span class="title function_">savePrompt</span>();</span><br><span class="line">  &#125;, <span class="number">1000</span>),</span><br><span class="line">  [savePrompt]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-狀態更新優化"><a href="#3-狀態更新優化" class="headerlink" title="3. 狀態更新優化"></a>3. 狀態更新優化</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 Zustand 的淺層比較避免不必要的訂閱觸發</span></span><br><span class="line"><span class="keyword">const</span> &#123; isSaving, getSaveStateForPrompt &#125; = <span class="title function_">useSaveStore</span>(</span><br><span class="line">  <span class="title function_">useShallow</span>(<span class="function">(<span class="params">state</span>) =&gt;</span> (&#123;</span><br><span class="line">    <span class="attr">isSaving</span>: state.<span class="property">isSaving</span>,</span><br><span class="line">    <span class="attr">getSaveStateForPrompt</span>: state.<span class="property">getSaveStateForPrompt</span></span><br><span class="line">  &#125;))</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="用戶體驗改善"><a href="#用戶體驗改善" class="headerlink" title="用戶體驗改善"></a>用戶體驗改善</h3><ol>
+<li>用戶無需手動保存，專注於內容創作</li>
+<li>清晰的保存狀態指示，用戶始終了解目前編輯狀態</li>
+</ol>
+<h2 id="適用場景與擴展"><a href="#適用場景與擴展" class="headerlink" title="適用場景與擴展"></a>適用場景與擴展</h2><h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>通過這個真實項目的實踐，我學到了：</p>
+<ul>
+<li><strong>如何設計可擴展的前端架構</strong>：模塊化設計讓系統易於維護和擴展</li>
+<li><strong>狀態管理的最佳實踐</strong>：Zustand 作為輕量級但功能完善的狀態管理工具，帶來高效的解決方案</li>
+<li><strong>性能優化的具體技巧</strong>：從 debounce 到內存管理，細緻調校提升整體效</li>
+<li><strong>用戶體驗設計的重要性</strong>：技術實現需要為用戶體驗服務</li>
+</ul>
+<p>這個項目體現了現代前端開發的高度複雜性，也證明了只要有合理的架構設計和邏輯實現，就能打造出穩定且高效的用戶體驗。自動保存功能雖然看似簡單，但要達到穩定性與流暢體驗，背後需要面對諸多細節與邊界情境的挑戰。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Next-js/" rel="tag"># Next.js</a>
+              <a href="/tags/side-project/" rel="tag"># side-project</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/05/17/side-project-EdgeRuntime/" rel="prev" title="Next.js Middleware 中的身份驗證：Edge Runtime 限制與解決方案">
+      <i class="fa fa-chevron-left"></i> Next.js Middleware 中的身份驗證：Edge Runtime 限制與解決方案
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A0%85%E7%9B%AE%E8%83%8C%E6%99%AF%E8%88%87%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">項目背景與需求分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%87%89%E7%94%A8%E5%A0%B4%E6%99%AF%E6%A6%82%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">應用場景概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%8A%80%E8%A1%93%E6%8C%91%E6%88%B0"><span class="nav-number">2.2.</span> <span class="nav-text">核心技術挑戰</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%80%E8%A1%93%E9%81%B8%E5%9E%8B%E7%90%86%E7%94%B1"><span class="nav-number">2.3.</span> <span class="nav-text">技術選型理由</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E8%A8%AD%E8%A8%88"><span class="nav-number">3.</span> <span class="nav-text">系統架構設計</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E9%AB%94%E6%9E%B6%E6%A7%8B%E6%80%9D%E8%B7%AF"><span class="nav-number">3.1.</span> <span class="nav-text">整體架構思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E8%A8%AD%E8%A8%88%E5%8E%9F%E5%89%87"><span class="nav-number">3.2.</span> <span class="nav-text">核心設計原則</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%A5%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">核心工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Debounce-%E9%98%B2%E6%8A%96%E6%A9%9F%E5%88%B6"><span class="nav-number">4.1.</span> <span class="nav-text">1. Debounce 防抖機制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B7%B1%E5%BA%A6%E6%AF%94%E8%BC%83%E5%B7%A5%E5%85%B7"><span class="nav-number">4.2.</span> <span class="nav-text">2. 深度比較工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%8B%80%E6%85%8B%E7%AE%A1%E7%90%86%E6%9E%B6%E6%A7%8B"><span class="nav-number">4.3.</span> <span class="nav-text">3. 狀態管理架構</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E7%8B%80%E6%85%8B-Store"><span class="nav-number">4.3.1.</span> <span class="nav-text">保存狀態 Store</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%A5%AD%E5%8B%99%E9%82%8F%E8%BC%AF%E6%95%B4%E5%90%88"><span class="nav-number">4.4.</span> <span class="nav-text">4. 業務邏輯整合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B6%E9%AB%94%E9%A9%97%E5%84%AA%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">用戶體驗優化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-UI-%E7%9A%84%E5%AF%A6%E6%99%82%E7%8B%80%E6%85%8B%E5%8F%8D%E9%A5%8B"><span class="nav-number">5.1.</span> <span class="nav-text">1. UI 的實時狀態反饋</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%8C%AF%E8%AA%A4%E8%99%95%E7%90%86%E8%88%87%E5%AE%B9%E9%8C%AF%E8%A8%AD%E8%A8%88"><span class="nav-number">6.</span> <span class="nav-text">錯誤處理與容錯設計</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%B6%B2%E8%B7%AF%E7%95%B0%E5%B8%B8%E8%99%95%E7%90%86"><span class="nav-number">6.1.</span> <span class="nav-text">1. 網路異常處理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%88%E6%A1%88%E5%AF%A6%E4%BD%9C%E5%85%A7%E6%80%A7%E8%83%BD%E5%84%AA%E5%8C%96%E7%AD%96%E7%95%A5"><span class="nav-number">7.</span> <span class="nav-text">專案實作內性能優化策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%85%A7%E5%AD%98%E5%84%AA%E5%8C%96"><span class="nav-number">7.1.</span> <span class="nav-text">1. 內存優化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%8B%80%E6%85%8B%E6%9B%B4%E6%96%B0%E5%84%AA%E5%8C%96"><span class="nav-number">7.2.</span> <span class="nav-text">3. 狀態更新優化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B6%E9%AB%94%E9%A9%97%E6%94%B9%E5%96%84"><span class="nav-number">7.3.</span> <span class="nav-text">用戶體驗改善</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%A9%E7%94%A8%E5%A0%B4%E6%99%AF%E8%88%87%E6%93%B4%E5%B1%95"><span class="nav-number">8.</span> <span class="nav-text">適用場景與擴展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%B5%90"><span class="nav-number">8.1.</span> <span class="nav-text">小結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

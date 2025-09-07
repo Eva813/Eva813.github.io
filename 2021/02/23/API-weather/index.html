@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="成品  觀察功能需求 從公開的氣象資料平台取得氣象資料 建立下拉式選單，選擇地區，並按下按鈕取得氣象資料 呈現當日天氣狀況(包含氣溫、圖示、描述) 呈現未來一週的天氣預報(包含日期、星期;氣溫、圖示、描述)  了解要串接的資料open data至中央氣象局-氣象開放資料平台的網站，註冊會員註冊並登入之後，要取得授權碼到中央氣象局開放資料平臺之資料擷取API，查看要取用的資料我的授權碼：CWB-F0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="串接API- 天氣預報">
+<meta property="og:url" content="https://eva813.github.io/2021/02/23/API-weather/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="成品  觀察功能需求 從公開的氣象資料平台取得氣象資料 建立下拉式選單，選擇地區，並按下按鈕取得氣象資料 呈現當日天氣狀況(包含氣溫、圖示、描述) 呈現未來一週的天氣預報(包含日期、星期;氣溫、圖示、描述)  了解要串接的資料open data至中央氣象局-氣象開放資料平台的網站，註冊會員註冊並登入之後，要取得授權碼到中央氣象局開放資料平臺之資料擷取API，查看要取用的資料我的授權碼：CWB-F0">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/odl0KcP.png">
+<meta property="og:image" content="https://i.imgur.com/KoRQyNL.png">
+<meta property="og:image" content="https://i.imgur.com/Kdm159o.png">
+<meta property="og:image" content="https://i.imgur.com/I2QTip1.png">
+<meta property="og:image" content="https://i.imgur.com/QaNMU8d.png">
+<meta property="og:image" content="https://i.imgur.com/xc7bwaP.png">
+<meta property="og:image" content="https://i.imgur.com/SZZSUnh.png">
+<meta property="og:image" content="https://i.imgur.com/pVwq3xe.png">
+<meta property="og:image" content="https://i.imgur.com/qeUH1iw.png">
+<meta property="og:image" content="https://i.imgur.com/xSanS8F.png">
+<meta property="og:image" content="https://i.imgur.com/ZqSmPOy.png">
+<meta property="article:published_time" content="2021-02-23T06:42:02.000Z">
+<meta property="article:modified_time" content="2022-09-17T00:10:00.713Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="Ajax">
+<meta property="article:tag" content="API">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/odl0KcP.png">
+
+<link rel="canonical" href="https://eva813.github.io/2021/02/23/API-weather/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>串接API- 天氣預報 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/02/23/API-weather/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          串接API- 天氣預報
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-23 14:42:02" itemprop="dateCreated datePublished" datetime="2021-02-23T14:42:02+08:00">2021-02-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ajax-%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">Ajax 實作練習</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://eva813.github.io/Eva_portfolio/weatherAPI/weatherAPI.html">成品</a></p>
+<p><img src="https://i.imgur.com/odl0KcP.png" alt=""></p>
+<h1 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h1><ul>
+<li>從公開的氣象資料平台取得氣象資料</li>
+<li>建立下拉式選單，選擇地區，並按下按鈕取得氣象資料</li>
+<li>呈現當日天氣狀況(包含氣溫、圖示、描述)</li>
+<li>呈現未來一週的天氣預報(包含日期、星期;氣溫、圖示、描述)</li>
+</ul>
+<h2 id="了解要串接的資料open-data"><a href="#了解要串接的資料open-data" class="headerlink" title="了解要串接的資料open data"></a>了解要串接的資料open data</h2><p>至中央氣象局-氣象開放資料平台的網站，註冊會員<br>註冊並登入之後，要取得授權碼<br><img src="https://i.imgur.com/KoRQyNL.png" alt=""><br>到<a target="_blank" rel="noopener" href="https://opendata.cwb.gov.tw/dist/opendata-swagger.html">中央氣象局開放資料平臺之資料擷取API</a>，查看要取用的資料<br>我的授權碼：CWB-F0145DA5-2539-4333-BAFD-466910C1EECC</p>
+<p>參考資料：<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=QDdn3yrsyCQ">https://www.youtube.com/watch?v=QDdn3yrsyCQ</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10222662">[Day 13 - 即時天氣] 建立一個即時天氣 App - 前置準備</a></p>
+<h2 id="尋找要參考實現畫面呈現的資料"><a href="#尋找要參考實現畫面呈現的資料" class="headerlink" title="尋找要參考實現畫面呈現的資料"></a>尋找要參考實現畫面呈現的資料</h2><p>畫面主要樣式是參考：<br><a target="_blank" rel="noopener" href="https://webdesign.tutsplus.com/tutorials/build-a-simple-weather-app-with-vanilla-javascript--cms-33893">Build a Simple Weather App With Vanilla JavaScript</a></p>
+<h2 id="JS部分"><a href="#JS部分" class="headerlink" title="JS部分"></a>JS部分</h2><h3 id="1-利用Ajax串接資料"><a href="#1-利用Ajax串接資料" class="headerlink" title="1.利用Ajax串接資料"></a>1.利用Ajax串接資料</h3><ul>
+<li>根據平台提供的url作為取得資料的地方</li>
+<li>利用sucess/error，來查看是否有成功取得資料<ul>
+<li>依據console.log()出要串接的資料<br><img src="https://i.imgur.com/Kdm159o.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getCity</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> url = <span class="string">&quot;https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-F0145DA5-2539-4333-BAFD-466910C1EECC&amp;format=JSON&quot;</span>;</span><br><span class="line"></span><br><span class="line">  $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;get&quot;</span>,</span><br><span class="line">    <span class="attr">url</span>: url,</span><br><span class="line"></span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">   </span><br><span class="line">      &#125;)</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">error</span>: <span class="keyword">function</span> (<span class="params">err</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;oh no&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-製作下拉式選單"><a href="#2-製作下拉式選單" class="headerlink" title="2.製作下拉式選單"></a>2.製作下拉式選單</h3><ul>
+<li>當串到想要的資料後，希望能在下拉選單，呈現出各個地區，以供選擇<br><img src="https://i.imgur.com/I2QTip1.png" alt=""></li>
+<li>因為地區有很多，以迴圈方式來填入資料<ul>
+<li><code>i</code>的長度 <code>data.records.locations[0].location.length</code><br><img src="https://i.imgur.com/QaNMU8d.png" alt=""></li>
+<li><code>opt = $(&#39;&lt;option&gt;&lt;/option&gt;&#39;)</code>創立選項標籤</li>
+<li>利用<code>attr</code>,<code>html</code>填入該地區的index，以及地區名稱<br><img src="https://i.imgur.com/xc7bwaP.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getCity</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> url = <span class="string">&quot;https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-F0145DA5-2539-4333-BAFD-466910C1EECC&amp;format=JSON&quot;</span>;</span><br><span class="line"></span><br><span class="line">  $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;get&quot;</span>,</span><br><span class="line">    <span class="attr">url</span>: url,</span><br><span class="line"></span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="comment">//console.log(data);</span></span><br><span class="line">      <span class="keyword">let</span> selectCity = $(<span class="string">&#x27;#selector-list&#x27;</span>);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; data.<span class="property">records</span>.<span class="property">locations</span>[<span class="number">0</span>].<span class="property">location</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> opt = $(<span class="string">&#x27;&lt;option&gt;&lt;/option&gt;&#x27;</span>);</span><br><span class="line">        opt.<span class="title function_">attr</span>(<span class="string">&quot;data-index&quot;</span>, i);</span><br><span class="line">        opt.<span class="title function_">html</span>(data.<span class="property">records</span>.<span class="property">locations</span>[<span class="number">0</span>].<span class="property">location</span>[i].<span class="property">locationName</span>);</span><br><span class="line">        selectCity.<span class="title function_">append</span>(opt);</span><br><span class="line">      &#125;</span><br><span class="line">     </span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">error</span>: <span class="keyword">function</span> (<span class="params">err</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;oh no&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-點選-submit-按鈕時要跳出取得今日天氣以及未來一週的天氣"><a href="#3-點選-submit-按鈕時要跳出取得今日天氣以及未來一週的天氣" class="headerlink" title="3.點選(submit)按鈕時要跳出取得今日天氣以及未來一週的天氣"></a>3.點選(submit)按鈕時要跳出取得今日天氣以及未來一週的天氣</h3><ul>
+<li>在sucess:中放入取得今日天氣、週天氣的函式<ul>
+<li>在此要宣告<code>selectedCityIndex</code>變數，並取得被選取的city index<code>$(&#39;#selector-list&#39;).get(0).selectedIndex</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getCity</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> url = <span class="string">&quot;https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-F0145DA5-2539-4333-BAFD-466910C1EECC&amp;format=JSON&quot;</span>;</span><br><span class="line"></span><br><span class="line">  $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;get&quot;</span>,</span><br><span class="line">    <span class="attr">url</span>: url,</span><br><span class="line"></span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span><br><span class="line">      <span class="keyword">let</span> selectCity = $(<span class="string">&#x27;#selector-list&#x27;</span>);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; data.<span class="property">records</span>.<span class="property">locations</span>[<span class="number">0</span>].<span class="property">location</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> opt = $(<span class="string">&#x27;&lt;option&gt;&lt;/option&gt;&#x27;</span>);</span><br><span class="line">        opt.<span class="title function_">attr</span>(<span class="string">&quot;data-index&quot;</span>, i);</span><br><span class="line">        opt.<span class="title function_">html</span>(data.<span class="property">records</span>.<span class="property">locations</span>[<span class="number">0</span>].<span class="property">location</span>[i].<span class="property">locationName</span>);</span><br><span class="line">        selectCity.<span class="title function_">append</span>(opt);</span><br><span class="line">      &#125;</span><br><span class="line">      $(<span class="string">&#x27;button&#x27;</span>).<span class="title function_">click</span>(<span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">        e.<span class="title function_">preventDefault</span>();</span><br><span class="line">        <span class="title function_">clear</span>();</span><br><span class="line">        <span class="keyword">let</span> selectedCityIndex = $(<span class="string">&#x27;#selector-list&#x27;</span>).<span class="title function_">get</span>(<span class="number">0</span>).<span class="property">selectedIndex</span>;</span><br><span class="line">        <span class="title function_">getWeather</span>(data, selectedCityIndex);</span><br><span class="line">        <span class="title function_">weekWeather</span>(data, selectedCityIndex);</span><br><span class="line">      &#125;)</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">error</span>: <span class="keyword">function</span> (<span class="params">err</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;oh no&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<a target="_blank" rel="noopener" href="https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/287007/">jQuery獲取Select選擇的Text和Value：</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-取得今日天氣-getWeather"><a href="#4-取得今日天氣-getWeather" class="headerlink" title="4.取得今日天氣(getWeather();)"></a>4.取得今日天氣(<code>getWeather();</code>)</h3><ul>
+<li>傳入參數分別為data\locationIndex:data為串接到的天氣資料,locationIndex，為放入要取的資料中的index</li>
+<li>我們想要取得的氣象資料，分別有地區、溫度(最低溫、最高溫)、天氣描述、icon圖示<ul>
+<li><code>name</code>變數就是要取得資料內的地區名稱<br><img src="https://i.imgur.com/SZZSUnh.png" alt=""></li>
+<li><code>weather</code>變數就是取得氣象資料<br><img src="https://i.imgur.com/pVwq3xe.png" alt=""></li>
+<li><code>weatherDescription</code>以及<code>weatherCode</code>分別就是氣象描述以及給予氣象描述的編號<br><img src="https://i.imgur.com/qeUH1iw.png" alt=""></li>
+</ul>
+</li>
+<li><code>let weatherImg = checkImg(weatherCode);</code>依據天氣描述的分類放入對應圖示</li>
+<li>抓取到所需要的變數資料後，就是將要填入呈現畫面的html標籤以及變數放入</li>
+<li><code>after()</code>在該區塊後面在插入想要呈現的其他標籤內容</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getWeather</span>(<span class="params">data, locationIndex</span>) &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//console.log(data, locationIndex)</span></span><br><span class="line">  <span class="keyword">let</span> name = data.<span class="property">records</span>.<span class="property">locations</span>[<span class="number">0</span>].<span class="property">location</span>[locationIndex].<span class="property">locationName</span>;</span><br><span class="line">  <span class="keyword">let</span> weather = data.<span class="property">records</span>.<span class="property">locations</span>[<span class="number">0</span>].<span class="property">location</span>[locationIndex].<span class="property">weatherElement</span>;</span><br><span class="line">  <span class="comment">//console.log(name);</span></span><br><span class="line">  <span class="comment">//console.log(weather);</span></span><br><span class="line">  <span class="comment">// 天氣描述</span></span><br><span class="line">  <span class="keyword">let</span> weatherDescription = weather[<span class="number">6</span>].<span class="property">time</span>[<span class="number">0</span>].<span class="property">elementValue</span>[<span class="number">0</span>].<span class="property">value</span>;</span><br><span class="line">  <span class="keyword">let</span> weatherCode = weather[<span class="number">6</span>].<span class="property">time</span>[<span class="number">0</span>].<span class="property">elementValue</span>[<span class="number">1</span>].<span class="property">value</span>;</span><br><span class="line">  <span class="keyword">let</span> minTemp = weather[<span class="number">8</span>].<span class="property">time</span>[<span class="number">0</span>].<span class="property">elementValue</span>[<span class="number">0</span>].<span class="property">value</span>;</span><br><span class="line">  <span class="keyword">let</span> maxTemp = weather[<span class="number">12</span>].<span class="property">time</span>[<span class="number">0</span>].<span class="property">elementValue</span>[<span class="number">0</span>].<span class="property">value</span>;</span><br><span class="line">  <span class="keyword">let</span> weatherImg = <span class="title function_">checkImg</span>(weatherCode);</span><br><span class="line">  <span class="comment">// 今天日期</span></span><br><span class="line">  <span class="comment">// let date = getDate().toUTCString();</span></span><br><span class="line"></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(weatherCode);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> li = $(<span class="string">&#x27;&lt;li&gt;&lt;/li&gt;&#x27;</span>).<span class="title function_">appendTo</span>(<span class="string">&#x27;.cities&#x27;</span>);</span><br><span class="line">  li.<span class="title function_">addClass</span>(<span class="string">&quot;city&quot;</span>);</span><br><span class="line">  li.<span class="title function_">html</span>(<span class="string">`</span></span><br><span class="line"><span class="string">  &lt;h2 class=&quot;city-name&quot; data-name=&quot;<span class="subst">$&#123;name&#125;</span>,&quot;&gt;</span></span><br><span class="line"><span class="string">    &lt;span&gt;<span class="subst">$&#123;name&#125;</span>&lt;/span&gt;</span></span><br><span class="line"><span class="string">    &lt;sup&gt;Today&lt;/sup&gt;</span></span><br><span class="line"><span class="string">  &lt;/h2&gt;</span></span><br><span class="line"><span class="string">  &lt;div class=&quot;city-temp&quot;&gt;<span class="subst">$&#123;<span class="built_in">Math</span>.round(minTemp)&#125;</span>&lt;sup&gt;°C&lt;/sup&gt; ~ <span class="subst">$&#123;<span class="built_in">Math</span>.round(maxTemp)&#125;</span>&lt;sup&gt;°C&lt;/sup&gt;</span></span><br><span class="line"><span class="string">  &lt;/div&gt;</span></span><br><span class="line"><span class="string">  &lt;figure class=&#x27;weather-icon&#x27;&gt;</span></span><br><span class="line"><span class="string">    <span class="subst">$&#123;weatherImg&#125;</span></span></span><br><span class="line"><span class="string">    &lt;figcaption&gt;<span class="subst">$&#123;weatherDescription&#125;</span>&lt;/figcaption&gt;</span></span><br><span class="line"><span class="string">  &lt;/figure&gt;</span></span><br><span class="line"><span class="string">`</span>);</span><br><span class="line">  $(<span class="string">&#x27;.cities&#x27;</span>).<span class="title function_">after</span>(<span class="string">`&lt;h2 class=&quot;sec-h2&quot;&gt;未來一週預報&lt;/h2&gt;`</span>)</span><br><span class="line">  $(<span class="string">&#x27;.cities&#x27;</span>).<span class="title function_">append</span>(li);</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-根據weather-code分類，分配的圖示-checkImg"><a href="#5-根據weather-code分類，分配的圖示-checkImg" class="headerlink" title="5.根據weather code分類，分配的圖示(checkImg())"></a>5.根據weather code分類，分配的圖示(<code>checkImg()</code>)</h3><ul>
+<li>將分類的代碼區分到各個天氣狀況</li>
+<li>依分類代碼下判斷，並回傳要放入的圖示</li>
+<li><code>weatherTypes.isThunderstorm.includes(weatherData)</code><ul>
+<li>利用<code>includes()</code>取得 weatherTypes中各天氣情形陣列中，是否有符合參數的數值<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">checkImg</span>(<span class="params">code</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> weatherData = +code;</span><br><span class="line">  <span class="keyword">const</span> weatherTypes = &#123;</span><br><span class="line">    <span class="attr">isThunderstorm</span>: [<span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">41</span>],</span><br><span class="line">    <span class="attr">isClear</span>: [<span class="number">1</span>],</span><br><span class="line">    <span class="attr">isCloudyFog</span>: [<span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>],</span><br><span class="line">    <span class="attr">isCloudy</span>: [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>],</span><br><span class="line">    <span class="attr">isFog</span>: [<span class="number">24</span>],</span><br><span class="line">    <span class="attr">isPartiallyClearWithRain</span>: [</span><br><span class="line">      <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>,</span><br><span class="line">      <span class="number">13</span>, <span class="number">14</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">29</span>, <span class="number">30</span>,</span><br><span class="line">      <span class="number">31</span>, <span class="number">32</span>, <span class="number">38</span>, <span class="number">39</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">isSnowing</span>: [<span class="number">23</span>, <span class="number">37</span>, <span class="number">42</span>],</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">// console.log(data)</span></span><br><span class="line">  <span class="comment">// console.log(weatherTypes.isPartiallyClearWithRain)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// let s = weatherTypes.isThunderstorm.includes(weatherData);</span></span><br><span class="line">  <span class="comment">// console.log(s);</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (weatherTypes.<span class="property">isThunderstorm</span>.<span class="title function_">includes</span>(weatherData)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`&lt;img class=&quot;city-icon&quot; src=&quot;./img/thunderstorm.png&quot; alt=&quot;weather-img&quot;&gt;`</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (weatherTypes.<span class="property">isClear</span>.<span class="title function_">includes</span>(weatherData)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`&lt;img class=&quot;city-icon&quot; src=&quot;./img/clear.png&quot; alt=&quot;weather-img&quot;&gt;`</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (weatherTypes.<span class="property">isCloudyFog</span>.<span class="title function_">includes</span>(weatherData)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`&lt;img class=&quot;city-icon&quot; src=&quot;./img/cloudyfog.png&quot; alt=&quot;weather-img&quot;&gt;`</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (weatherTypes.<span class="property">isCloudy</span>.<span class="title function_">includes</span>(weatherData)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`&lt;img class=&quot;city-icon&quot; src=&quot;./img/cloud-and-sun.png&quot; alt=&quot;weather-img&quot;&gt;`</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (weatherTypes.<span class="property">isFog</span>.<span class="title function_">includes</span>(weatherData)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`&lt;img class=&quot;city-icon&quot; src=&quot;./img/fog.png&quot; alt=&quot;weather-img&quot;&gt;`</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (weatherTypes.<span class="property">isPartiallyClearWithRain</span>.<span class="title function_">includes</span>(weatherData)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`&lt;img class=&quot;city-icon&quot; src=&quot;./img/clearwithrainy.png&quot; alt=&quot;weather-img&quot;&gt;`</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; <span class="keyword">return</span> <span class="string">`&lt;img class=&quot;city-icon&quot; src=&quot;./img/snow.png&quot; alt=&quot;weather-img&quot;&gt;`</span>; &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10225927">[Day 21 - 即時天氣] 處理天氣圖示以及 useMemo 的使用</a><br><a target="_blank" rel="noopener" href="https://www.oxxostudio.tw/articles/201908/js-array.html#array_includes">JavaScript Array 陣列操作方法大全 ( 含 ES6 )</a><br>includes(weatherData):<a target="_blank" rel="noopener" href="https://cythilya.github.io/2017/05/08/javascript-find-item-in-an-array/">JavaScript 陣列處理：找東西 - indexOf、$.inArray 與 filter</a><br><a target="_blank" rel="noopener" href="https://opendata.cwb.gov.tw/opendatadoc/MFC/D0047.pdf">預報因子欄位中文說明表</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-取得未來一週的天氣"><a href="#6-取得未來一週的天氣" class="headerlink" title="6.取得未來一週的天氣"></a>6.取得未來一週的天氣</h3><ul>
+<li>此作法與取的當日天氣有些類似，不過因為要取得未來一週6天的資料，所以須以迴圈的方式來取的並填入資料</li>
+<li><code>let i = 1; i &lt; 7; i++</code>從1開始，6天</li>
+<li><code>timeIndex= 2 * i</code>是為了抓取一週時間所設置的index<br><img src="https://i.imgur.com/xSanS8F.png" alt=""></li>
+<li>日期、星期的取得<ul>
+<li>以算出tomorrow為目標，並帶入i，就會執行出往後六天的日期<br><img src="https://i.imgur.com/ZqSmPOy.png" alt=""><ul>
+<li>並從上圖，分別擷取出月份、日期、星期的資料</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">weekWeather</span>(<span class="params">data, locationIndex</span>) &#123;</span><br><span class="line">  <span class="comment">// $(&#x27;.week-ul&#x27;).html(&#x27;&#x27;);</span></span><br><span class="line">  <span class="keyword">var</span> weather = data.<span class="property">records</span>.<span class="property">locations</span>[<span class="number">0</span>].<span class="property">location</span>[locationIndex].<span class="property">weatherElement</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; <span class="number">7</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> timeIndex = <span class="number">2</span> * i;</span><br><span class="line">    <span class="keyword">let</span> weekday = $(<span class="string">&#x27;&lt;li&gt;&lt;/li&gt;&#x27;</span>).<span class="title function_">appendTo</span>(<span class="string">&#x27;.week-ul&#x27;</span>);</span><br><span class="line">    weekday.<span class="title function_">addClass</span>(<span class="string">&#x27;day&#x27;</span>).<span class="title function_">attr</span>(<span class="string">&#x27;id&#x27;</span>, <span class="string">`day-<span class="subst">$&#123;i&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> weatherDescription = weather[<span class="number">6</span>].<span class="property">time</span>[timeIndex].<span class="property">elementValue</span>[<span class="number">0</span>].<span class="property">value</span>;</span><br><span class="line">    <span class="keyword">let</span> weatherCode = weather[<span class="number">6</span>].<span class="property">time</span>[timeIndex].<span class="property">elementValue</span>[<span class="number">1</span>].<span class="property">value</span>;</span><br><span class="line">    <span class="keyword">let</span> minTemp = weather[<span class="number">8</span>].<span class="property">time</span>[timeIndex].<span class="property">elementValue</span>[<span class="number">0</span>].<span class="property">value</span>;</span><br><span class="line">    <span class="keyword">let</span> maxTemp = weather[<span class="number">12</span>].<span class="property">time</span>[timeIndex].<span class="property">elementValue</span>[<span class="number">0</span>].<span class="property">value</span>;</span><br><span class="line">    <span class="keyword">let</span> weatherImg = <span class="title function_">checkImg</span>(weatherCode);</span><br><span class="line">    <span class="comment">//console.log(weatherDescription);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//////日期、星期的擷取//////</span></span><br><span class="line">    <span class="keyword">let</span> today = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">    <span class="keyword">let</span> tomorrow = <span class="keyword">new</span> <span class="title class_">Date</span>(today);</span><br><span class="line">    tomorrow.<span class="title function_">setDate</span>(tomorrow.<span class="title function_">getDate</span>() + i);</span><br><span class="line">    <span class="keyword">let</span> weekDay = tomorrow.<span class="title function_">getDay</span>();</span><br><span class="line">    <span class="keyword">let</span> weekMonth = tomorrow.<span class="title function_">getMonth</span>()</span><br><span class="line">    <span class="keyword">let</span> date = tomorrow.<span class="title function_">getDate</span>();</span><br><span class="line">    <span class="keyword">const</span> dayNamesEn = [<span class="string">&#x27;Sun&#x27;</span>, <span class="string">&#x27;Mon&#x27;</span>, <span class="string">&#x27;Tue&#x27;</span>, <span class="string">&#x27;Wed&#x27;</span>, <span class="string">&#x27;Thu&#x27;</span>, <span class="string">&#x27;Fri&#x27;</span>, <span class="string">&#x27;Sat&#x27;</span>];</span><br><span class="line">    <span class="keyword">const</span> monthNamesEn = [</span><br><span class="line">      <span class="string">&#x27;Jan&#x27;</span>, <span class="string">&#x27;Feb&#x27;</span>, <span class="string">&#x27;Mar&#x27;</span>, <span class="string">&#x27;Apr&#x27;</span>, <span class="string">&#x27;May&#x27;</span>, <span class="string">&#x27;Jun&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;Jul&#x27;</span>, <span class="string">&#x27;Aug&#x27;</span>, <span class="string">&#x27;Sep&#x27;</span>, <span class="string">&#x27;Oct&#x27;</span>, <span class="string">&#x27;Nov&#x27;</span>, <span class="string">&#x27;Dec&#x27;</span></span><br><span class="line">    ]</span><br><span class="line">    <span class="keyword">let</span> inweekDay = dayNamesEn[weekDay]</span><br><span class="line">    <span class="keyword">let</span> inweekMonth = monthNamesEn[weekMonth];</span><br><span class="line">    <span class="keyword">let</span> indate = date;</span><br><span class="line">    <span class="comment">///////////</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    weekday.<span class="title function_">html</span>(<span class="string">`&lt;li class=&quot;day&quot;&gt;</span></span><br><span class="line"><span class="string">          &lt;h2 class=&quot;whichDay&quot; data-name=&quot;&quot;&gt;</span></span><br><span class="line"><span class="string">            &lt;span&gt;<span class="subst">$&#123;indate&#125;</span> <span class="subst">$&#123;inweekMonth&#125;</span>&lt;/span&gt;</span></span><br><span class="line"><span class="string">            &lt;sup&gt;<span class="subst">$&#123;inweekDay&#125;</span>&lt;/sup&gt;</span></span><br><span class="line"><span class="string">          &lt;/h2&gt;</span></span><br><span class="line"><span class="string">          &lt;div class=&quot;week-temp&quot;&gt;<span class="subst">$&#123;minTemp&#125;</span>&lt;sup&gt;°C&lt;/sup&gt; ~ <span class="subst">$&#123;maxTemp&#125;</span>&lt;sup&gt;°C&lt;/sup&gt;</span></span><br><span class="line"><span class="string">          &lt;/div&gt;</span></span><br><span class="line"><span class="string">          &lt;figure class=&#x27;weather-icon&#x27;&gt;</span></span><br><span class="line"><span class="string">            <span class="subst">$&#123;weatherImg&#125;</span></span></span><br><span class="line"><span class="string">            &lt;figcaption&gt;<span class="subst">$&#123;weatherDescription&#125;</span>&lt;/figcaption&gt;</span></span><br><span class="line"><span class="string">          &lt;/figure&gt;</span></span><br><span class="line"><span class="string">        &lt;/li&gt;`</span>)</span><br><span class="line">    $(<span class="string">&#x27;.week-ul&#x27;</span>).<span class="title function_">append</span>(weekday);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://flaviocopes.com/how-to-get-tomorrow-date-javascript/">抓取明天日期:How to get tomorrow’s date using JavaScript</a><br><a target="_blank" rel="noopener" href="https://eyesofkids.gitbooks.io/javascript-start-from-es6/content/part3/datetime.html">日期與時間</a></p>
+<h3 id="7-當文件準備好"><a href="#7-當文件準備好" class="headerlink" title="7.當文件準備好"></a>7.當文件準備好</h3><ul>
+<li>先執行要串接的資料</li>
+<li>於選擇地區時，跳出提醒文字</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="variable language_">document</span>).<span class="title function_">ready</span>(<span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="title function_">getCity</span>();</span><br><span class="line"></span><br><span class="line">  $(<span class="string">&#x27;#selector-list&#x27;</span>).<span class="title function_">change</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    $(<span class="string">&#x27;.msg&#x27;</span>).<span class="title function_">text</span>(<span class="string">&#x27;別忘了按下SUBMIT&#x27;</span>);</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="8-清除資料"><a href="#8-清除資料" class="headerlink" title="8.清除資料"></a>8.清除資料</h3><ul>
+<li>建立在點選submit後，要先執行的步驟，為清除原本頁面的資料<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">clear</span>(<span class="params"></span>) &#123;</span><br><span class="line">$(<span class="string">&#x27;.cities&#x27;</span>).<span class="title function_">html</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">  $(<span class="string">&#x27;.sec-h2&#x27;</span>).<span class="title function_">empty</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">  $(<span class="string">&#x27;.week-ul&#x27;</span>).<span class="title function_">html</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">  $(<span class="string">&#x27;.msg&#x27;</span>).<span class="title function_">text</span>(<span class="string">&#x27;&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/sunpeiyumail/article/details/7665668">JQuery中html、append、appendTo、after、insertAfter</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Ajax/" rel="tag"># Ajax</a>
+              <a href="/tags/API/" rel="tag"># API</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/22/js-typingGame/" rel="prev" title="JS實作- typingGame">
+      <i class="fa fa-chevron-left"></i> JS實作- typingGame
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/23/API-youtube/" rel="next" title="API-youtube">
+      API-youtube <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%80%E5%AF%9F%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">觀察功能需求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3%E8%A6%81%E4%B8%B2%E6%8E%A5%E7%9A%84%E8%B3%87%E6%96%99open-data"><span class="nav-number">1.1.</span> <span class="nav-text">了解要串接的資料open data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8B%E6%89%BE%E8%A6%81%E5%8F%83%E8%80%83%E5%AF%A6%E7%8F%BE%E7%95%AB%E9%9D%A2%E5%91%88%E7%8F%BE%E7%9A%84%E8%B3%87%E6%96%99"><span class="nav-number">1.2.</span> <span class="nav-text">尋找要參考實現畫面呈現的資料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS%E9%83%A8%E5%88%86"><span class="nav-number">1.3.</span> <span class="nav-text">JS部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%A9%E7%94%A8Ajax%E4%B8%B2%E6%8E%A5%E8%B3%87%E6%96%99"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.利用Ajax串接資料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%A3%BD%E4%BD%9C%E4%B8%8B%E6%8B%89%E5%BC%8F%E9%81%B8%E5%96%AE"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.製作下拉式選單</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%BB%9E%E9%81%B8-submit-%E6%8C%89%E9%88%95%E6%99%82%E8%A6%81%E8%B7%B3%E5%87%BA%E5%8F%96%E5%BE%97%E4%BB%8A%E6%97%A5%E5%A4%A9%E6%B0%A3%E4%BB%A5%E5%8F%8A%E6%9C%AA%E4%BE%86%E4%B8%80%E9%80%B1%E7%9A%84%E5%A4%A9%E6%B0%A3"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.點選(submit)按鈕時要跳出取得今日天氣以及未來一週的天氣</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%8F%96%E5%BE%97%E4%BB%8A%E6%97%A5%E5%A4%A9%E6%B0%A3-getWeather"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.取得今日天氣(getWeather();)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%A0%B9%E6%93%9Aweather-code%E5%88%86%E9%A1%9E%EF%BC%8C%E5%88%86%E9%85%8D%E7%9A%84%E5%9C%96%E7%A4%BA-checkImg"><span class="nav-number">1.3.5.</span> <span class="nav-text">5.根據weather code分類，分配的圖示(checkImg())</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%8F%96%E5%BE%97%E6%9C%AA%E4%BE%86%E4%B8%80%E9%80%B1%E7%9A%84%E5%A4%A9%E6%B0%A3"><span class="nav-number">1.3.6.</span> <span class="nav-text">6.取得未來一週的天氣</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E7%95%B6%E6%96%87%E4%BB%B6%E6%BA%96%E5%82%99%E5%A5%BD"><span class="nav-number">1.3.7.</span> <span class="nav-text">7.當文件準備好</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%B8%85%E9%99%A4%E8%B3%87%E6%96%99"><span class="nav-number">1.3.8.</span> <span class="nav-text">8.清除資料</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

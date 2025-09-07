@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在開發 React 或 Vue 應用時，動態組合 Tailwind CSS class 是常見的需求。但當 class 來源多樣（例如 props 傳入、條件渲染等），你可能會遇到 class 重複、衝突或難以維護的問題，這時候，twMerge 就能幫助你解決這些困難。 什麼是 twMergetwMerge 是一個專為 Tailwind CSS 設計的 class 合併工  衝突解決：當你從不同來">
+<meta property="og:type" content="article">
+<meta property="og:title" content="twilwindCss-twMerge">
+<meta property="og:url" content="https://eva813.github.io/2025/03/20/twilwindCss-twMerge/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="在開發 React 或 Vue 應用時，動態組合 Tailwind CSS class 是常見的需求。但當 class 來源多樣（例如 props 傳入、條件渲染等），你可能會遇到 class 重複、衝突或難以維護的問題，這時候，twMerge 就能幫助你解決這些困難。 什麼是 twMergetwMerge 是一個專為 Tailwind CSS 設計的 class 合併工  衝突解決：當你從不同來">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-20T11:43:16.000Z">
+<meta property="article:modified_time" content="2025-03-20T12:06:20.200Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="Tailwind CSS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2025/03/20/twilwindCss-twMerge/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>twilwindCss-twMerge | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/03/20/twilwindCss-twMerge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          twilwindCss-twMerge
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-03-20 19:43:16 / Modified: 20:06:20" itemprop="dateCreated datePublished" datetime="2025-03-20T19:43:16+08:00">2025-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/frontend/" itemprop="url" rel="index"><span itemprop="name">frontend</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在開發 React 或 Vue 應用時，動態組合 Tailwind CSS class 是常見的需求。但當 class 來源多樣（例如 props 傳入、條件渲染等），你可能會遇到 class 重複、衝突或難以維護的問題，這時候，twMerge 就能幫助你解決這些困難。</p>
+<h2 id="什麼是-twMerge"><a href="#什麼是-twMerge" class="headerlink" title="什麼是 twMerge"></a>什麼是 twMerge</h2><p><code>twMerge</code> 是一個專為 <strong>Tailwind CSS</strong> 設計的 class 合併工</p>
+<ul>
+<li><strong>衝突解決</strong>：當你從不同來源（例如預設樣式和 props 傳入的 class）合併 class 時，可能會出現相同屬性的重複定義，twMerge 會自動解決這些衝突，保證最終只保留正確的 class。</li>
+<li><strong>動態組合</strong>：在實際應用中，很多時候 class 字符串是根據條件組合出來的，直接拼接可能會導致意料之外的覆蓋。twMerge 能夠讓你的 class 合併更有條理，避免混淆。</li>
+</ul>
+<p>安裝方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">npm install tailwind-merge</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">yarn add tailwind-merge</span><br></pre></td></tr></table></figure>
+<p>基本使用範例：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; twMerge &#125; <span class="keyword">from</span> <span class="string">&#x27;tailwind-merge&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> classes = <span class="title function_">twMerge</span>(<span class="string">&quot;p-4&quot;</span>, <span class="string">&quot;p-2&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(classes); <span class="comment">// 輸出: &quot;p-2&quot;（自動移除衝突的 p-4）</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h2 id="為什麼不用手動拼接-class？"><a href="#為什麼不用手動拼接-class？" class="headerlink" title="為什麼不用手動拼接 class？"></a>為什麼不用手動拼接 class？</h2><h3 id="無法處理-Tailwind-class-衝突"><a href="#無法處理-Tailwind-class-衝突" class="headerlink" title="無法處理 Tailwind class 衝突"></a><strong>無法處理 Tailwind class 衝突</strong></h3><p>當兩個 class 有衝突時，手動拼接無法確保後來的 class 是否正確覆蓋前者。例如：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> finalClasses = <span class="string">`p-4 p-2`</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(finalClasses); <span class="comment">// &quot;p-4 p-2&quot; （無法移除衝突 class）</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="條件渲染時-class-可能重複或失效"><a href="#條件渲染時-class-可能重複或失效" class="headerlink" title="條件渲染時 class 可能重複或失效"></a><strong>條件渲染時 class 可能重複或失效</strong></h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> isActive = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">const</span> finalClasses = <span class="string">`px-4 py-2 <span class="subst">$&#123;isActive ? <span class="string">&quot;bg-blue-500&quot;</span> : <span class="string">&quot;bg-gray-200&quot;</span>&#125;</span> bg-red-500`</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(finalClasses);</span><br><span class="line"><span class="comment">// &quot;px-4 py-2 bg-blue-500 bg-gray-200 bg-red-500&quot; （背景顏色衝突）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 改使用 twMerge</span></span><br><span class="line"><span class="keyword">const</span> finalClasses = <span class="title function_">twMerge</span>(<span class="string">&quot;px-4 py-2&quot;</span>, isActive ? <span class="string">&quot;bg-blue-500&quot;</span> : <span class="string">&quot;bg-gray-200&quot;</span>, <span class="string">&quot;bg-red-500&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(finalClasses);</span><br><span class="line"><span class="comment">// &quot;px-4 py-2 bg-red-500&quot; （自動解決衝突）</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="也有使用模板字串（template-literal）來動態拼接-class，例如："><a href="#也有使用模板字串（template-literal）來動態拼接-class，例如：" class="headerlink" title="也有使用模板字串（template literal）來動態拼接 class，例如："></a><strong>也有使用模板字串（template literal）來動態拼接 class，例如：</strong></h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> finalClasses = <span class="string">`px-4 py-2 bg-blue-500 text-white <span class="subst">$&#123;isDisabled ? <span class="string">&quot;opacity-50 cursor-not-allowed&quot;</span> : <span class="string">&quot;&quot;</span>&#125;</span>`</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>雖然，這樣可以根據條件動態組合 class，不過要注意兩點：</p>
+<ol>
+<li><p><strong>Tailwind CSS 掃描限制</strong><br> 若 class 是在字串插值中產生的，Tailwind 的掃描器可能無法檢測到某些動態組合的 class，這會導致對應 CSS 未被生成。這時候可能需要在 Tailwind 設定檔中加入 safelist。</p>
+</li>
+<li><p><strong>衝突管理</strong><br> 當有多個來源的 class 存在衝突（例如兩個不同的背景色），你必須手動確保拼接順序正確。如果衝突較多，使用 twMerge 可以更方便地自動解決這些衝突。</p>
+</li>
+</ol>
+<h3 id="twMerge-的好處"><a href="#twMerge-的好處" class="headerlink" title="twMerge 的好處"></a>twMerge 的好處</h3><table>
+<thead>
+<tr>
+<th>問題</th>
+<th>手動拼 class</th>
+<th>使用 twMerge</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>衝突解決</td>
+<td>必須自己追蹤哪個 class 最後生效</td>
+<td>自動保留後出現的 class，刪除重複或衝突項 <a target="_blank" rel="noopener" href="https://www.wsquare.io/blogs/how-to-use-and-get-benefits-from-tailwind-merge">wsquare.io</a></td>
+</tr>
+<tr>
+<td>動態組合</td>
+<td>條件判斷時拼接字串易漏寫或重複</td>
+<td>傳多個參數給 twMerge，即使 class 來源複雜也只回傳一組乾淨結果 <a target="_blank" rel="noopener" href="https://tailkits.com/blog/tailwind-css-class-conflicts-using-tailwind-merge/">tailkits.com</a></td>
+</tr>
+<tr>
+<td>維護成本</td>
+<td>隨著專案變大，class 字串容易失控</td>
+<td>twMerge 會緩存結果，減少重複運算並讓程式碼更易讀</td>
+</tr>
+</tbody></table>
+<h2 id="twMerge-的實踐"><a href="#twMerge-的實踐" class="headerlink" title="twMerge 的實踐"></a>twMerge 的實踐</h2><h3 id="在-React-中條件渲染-Tailwind-class"><a href="#在-React-中條件渲染-Tailwind-class" class="headerlink" title="在 React 中條件渲染 Tailwind class"></a><strong>在 React 中條件渲染 Tailwind class</strong></h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Button</span> = (<span class="params">&#123; isDisabled &#125;</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">className</span>=<span class="string">&#123;twMerge(</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      &quot;<span class="attr">px-4</span> <span class="attr">py-2</span> <span class="attr">rounded</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">isDisabled</span> &amp;&amp; &quot;<span class="attr">opacity-50</span> <span class="attr">cursor-not-allowed</span>&quot;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    )&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">      Click Me</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>當 <code>isDisabled = true</code>，twMerge 會<strong>自動移除 <code>false</code> 的 class</strong>，結果變成：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// isDisabled = true 時</span></span><br><span class="line"><span class="string">&quot;px-4 py-2 rounded opacity-50 cursor-not-allowed&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// isDisabled = false 時</span></span><br><span class="line"><span class="string">&quot;px-4 py-2 rounded&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這樣可以 <strong>避免<code>undefined</code> 或 <code>false</code> 的 class 影響最終輸出</strong>。</p>
+<hr>
+<h3 id="組件化時合併-props-傳入的-class"><a href="#組件化時合併-props-傳入的-class" class="headerlink" title="組件化時合併 props 傳入的 class"></a><strong>組件化時合併 props 傳入的 class</strong></h3><p>當你開發 <strong>可重用 UI 元件</strong> 時，通常會允許使用者傳入 <code>className</code> 來覆蓋預設樣式：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Text</span> = (<span class="params">&#123; children, className &#125;</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;twMerge(</span>&quot;<span class="attr">font-normal</span> <span class="attr">text-lg</span>&quot;, <span class="attr">className</span>)&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;children&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用方式：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Text</span> className=<span class="string">&quot;font-bold text-red-500&quot;</span>&gt;<span class="title class_">Hello</span>&lt;/<span class="title class_">Text</span>&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這樣 <code>twMerge</code> 會確保：</p>
+<ul>
+<li><code>font-bold</code> 正確覆蓋 <code>font-normal</code></li>
+<li><code>text-red-500</code> 正確覆蓋 <code>text-lg</code></li>
+</ul>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>在開發 <strong>需要動態組合類別的元件</strong>，或 <strong>允許使用者自訂樣式覆蓋</strong> 的情境下，<code>twMerge</code> 是一個非常實用的工具。它能夠幫助你：  </p>
+<p><strong>自動解決 class 衝突</strong><br>不必手動追蹤哪些類別可能互相覆蓋，<code>twMerge</code> 會確保最後宣告的樣式生效（例如 <code>p-4 p-2</code> 最終保留 <code>p-2</code>）。  </p>
+<p><strong>支援條件渲染</strong><br>優雅地處理條件式樣式，避免 <code>false</code>、<code>undefined</code> 影響最終 class，讓程式碼更乾淨。  </p>
+<p><strong>提升程式碼可讀性與維護性</strong><br>讓動態組合多個來源的 class 變得簡單清晰，減少維護成本，提高開發效率。</p>
+<p><a target="_blank" rel="noopener" href="https://antematter.io/blogs/mastering-css-customization-with-tailwind-merge">Override Tailwind Classes using Tailwind-Merge</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Tailwind-CSS/" rel="tag"># Tailwind CSS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/24/Net-solid/" rel="prev" title="SOLID 物件導向">
+      <i class="fa fa-chevron-left"></i> SOLID 物件導向
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/03/27/vue-dynamic-event/" rel="next" title="Vue 動態事件名稱">
+      Vue 動態事件名稱 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF-twMerge"><span class="nav-number">1.</span> <span class="nav-text">什麼是 twMerge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E4%B8%8D%E7%94%A8%E6%89%8B%E5%8B%95%E6%8B%BC%E6%8E%A5-class%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">為什麼不用手動拼接 class？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%84%A1%E6%B3%95%E8%99%95%E7%90%86-Tailwind-class-%E8%A1%9D%E7%AA%81"><span class="nav-number">2.1.</span> <span class="nav-text">無法處理 Tailwind class 衝突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%9D%E4%BB%B6%E6%B8%B2%E6%9F%93%E6%99%82-class-%E5%8F%AF%E8%83%BD%E9%87%8D%E8%A4%87%E6%88%96%E5%A4%B1%E6%95%88"><span class="nav-number">2.2.</span> <span class="nav-text">條件渲染時 class 可能重複或失效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%9F%E6%9C%89%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF%E5%AD%97%E4%B8%B2%EF%BC%88template-literal%EF%BC%89%E4%BE%86%E5%8B%95%E6%85%8B%E6%8B%BC%E6%8E%A5-class%EF%BC%8C%E4%BE%8B%E5%A6%82%EF%BC%9A"><span class="nav-number">2.3.</span> <span class="nav-text">也有使用模板字串（template literal）來動態拼接 class，例如：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#twMerge-%E7%9A%84%E5%A5%BD%E8%99%95"><span class="nav-number">2.4.</span> <span class="nav-text">twMerge 的好處</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#twMerge-%E7%9A%84%E5%AF%A6%E8%B8%90"><span class="nav-number">3.</span> <span class="nav-text">twMerge 的實踐</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-React-%E4%B8%AD%E6%A2%9D%E4%BB%B6%E6%B8%B2%E6%9F%93-Tailwind-class"><span class="nav-number">3.1.</span> <span class="nav-text">在 React 中條件渲染 Tailwind class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%84%E4%BB%B6%E5%8C%96%E6%99%82%E5%90%88%E4%BD%B5-props-%E5%82%B3%E5%85%A5%E7%9A%84-class"><span class="nav-number">3.2.</span> <span class="nav-text">組件化時合併 props 傳入的 class</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">4.</span> <span class="nav-text">結論</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

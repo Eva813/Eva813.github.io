@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="最近遇到將表單資料存到後端的方式，過去一直以為是將資料整理為物件方式存取即可，後來發現使用FormData來建立物件傳送檔案即可!  FormData 是一個表單格式，利用它將資料轉成表單的格式，並且以表單的形式回傳給後端  建立 FormData 物件 最直接方式，先取得form的資料  12345678&#x2F;&#x2F; 根據表單元素取得表單資料var form &#x3D; document.querySelec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FormData 表單的運用">
+<meta property="og:url" content="https://eva813.github.io/2022/01/06/FormData-1/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="最近遇到將表單資料存到後端的方式，過去一直以為是將資料整理為物件方式存取即可，後來發現使用FormData來建立物件傳送檔案即可!  FormData 是一個表單格式，利用它將資料轉成表單的格式，並且以表單的形式回傳給後端  建立 FormData 物件 最直接方式，先取得form的資料  12345678&#x2F;&#x2F; 根據表單元素取得表單資料var form &#x3D; document.querySelec">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/xf0DAqA.png">
+<meta property="article:published_time" content="2022-01-06T02:44:33.000Z">
+<meta property="article:modified_time" content="2024-11-14T12:32:05.624Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/xf0DAqA.png">
+
+<link rel="canonical" href="https://eva813.github.io/2022/01/06/FormData-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>FormData 表單的運用 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/01/06/FormData-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FormData 表單的運用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-06 10:44:33" itemprop="dateCreated datePublished" datetime="2022-01-06T10:44:33+08:00">2022-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-14 20:32:05" itemprop="dateModified" datetime="2024-11-14T20:32:05+08:00">2024-11-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://i.imgur.com/xf0DAqA.png" alt=""></p>
+<p>最近遇到將表單資料存到後端的方式，過去一直以為是將資料整理為物件方式存取即可，後來發現使用FormData來建立物件傳送檔案即可!</p>
+<ul>
+<li>FormData 是一個表單格式，利用它將資料轉成表單的格式，並且以表單的形式回傳給後端</li>
+</ul>
+<h2 id="建立-FormData-物件"><a href="#建立-FormData-物件" class="headerlink" title="建立 FormData 物件"></a>建立 FormData 物件</h2><ul>
+<li>最直接方式，先取得form的資料</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根據表單元素取得表單資料</span></span><br><span class="line"><span class="keyword">var</span> form = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;form&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>(form);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以用 append 把欄位灌進去表單中</span></span><br><span class="line"><span class="keyword">var</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>(); <span class="comment">// 一開始表單的資料是空的</span></span><br><span class="line">formData.<span class="title function_">append</span>(<span class="string">&#x27;username&#x27;</span>, <span class="title class_">Chris</span>); <span class="comment">// 增加欄位</span></span><br><span class="line">formData.<span class="title function_">append</span>(<span class="string">&#x27;image&#x27;</span>, file); <span class="comment">// 檔案也可以透過 append 放進來</span></span><br></pre></td></tr></table></figure>
+<h2 id="以下介紹幾個基礎的使用方式："><a href="#以下介紹幾個基礎的使用方式：" class="headerlink" title="以下介紹幾個基礎的使用方式："></a>以下介紹幾個基礎的使用方式：</h2><ul>
+<li><code>formData.append(name, value)</code> : 加入有 name 和 value 的表單資料(name:表單標籤的名稱,value: input 輸入的值)</li>
+<li><code>formData.append(name, blob, fileName)</code> : 加入字段，就像它是 <code>&lt;input type=&quot;file&quot;&gt;</code>，第三個參數 fileName 設置檔案名</li>
+<li><code>formData.delete(name)</code> : 移除帶有 name 的字段，</li>
+<li><code>formData.get(name)</code> : 取得帶有 name 的值，</li>
+<li><code>formData.has(name)</code> : 如果帶有給定 name 的字段，返回 true，否則返回 false。</li>
+</ul>
+<h2 id="使用axios-傳遞資料"><a href="#使用axios-傳遞資料" class="headerlink" title="使用axios 傳遞資料"></a>使用axios 傳遞資料</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span><br><span class="line"><span class="comment">//宣告要取得的值</span></span><br><span class="line"><span class="keyword">var</span> title = form.<span class="property">name</span></span><br><span class="line">formData.<span class="title function_">append</span>(<span class="string">&quot;formTitle&quot;</span>, title);</span><br><span class="line">axios.<span class="title function_">post</span>(<span class="string">&#x27;upload_file&#x27;</span>, formData, &#123;</span><br><span class="line">    <span class="attr">headers</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;multipart/form-data&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="補充-vue-Typescript-宣告型別"><a href="#補充-vue-Typescript-宣告型別" class="headerlink" title="補充 vue+Typescript 宣告型別"></a>補充 vue+Typescript 宣告型別</h2><ul>
+<li>以 stack overflow 內的資料為例：<ul>
+<li>可以使用 ref來取得DOM元素，並宣告該變數為HTMLFormElement<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-form</span><br><span class="line">         <span class="keyword">class</span>=<span class="string">&quot;m-auto&quot;</span></span><br><span class="line">         ref=<span class="string">&quot;formRef&quot;</span></span><br><span class="line">         :model=<span class="string">&quot;form&quot;</span></span><br><span class="line">         :rules=<span class="string">&quot;rules&quot;</span></span><br><span class="line">       &gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> formRef = ref&lt;<span class="title class_">HTMLFormElement</span>&gt;();</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>另是使用 element-UI 的表單，也可以使用<br><code>import &#123;  ElForm &#125; from &quot;element-ui&quot;;</code></li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.ucamc.com/articles/332-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8jquery-ajax-submit-%E5%82%B3%E9%80%81form%E8%A1%A8%E5%96%AEserialize-%E6%96%B9%E6%B3%95">如何使用jQuery AJAX submit 傳送form表單方法</a><br><a target="_blank" rel="noopener" href="https://5xruby.tw/courses/javascript">JavaScript / jQuery 前端開發入門實戰
+</a><br><a target="_blank" rel="noopener" href="https://zh.javascript.info/formdata">JavaScript Info-formData</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/67074871/vue-3-typescript-unable-to-access-method-from-ref">stackoverflow</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+              <a href="/tags/TypeScript/" rel="tag"># TypeScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/10/Nuxt3-1/" rel="prev" title="Nuxt3-取得資料的方式">
+      <i class="fa fa-chevron-left"></i> Nuxt3-取得資料的方式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/14/TS-3/" rel="next" title="TypeScript - 註記(Annotation) 與斷言(Assertion)">
+      TypeScript - 註記(Annotation) 與斷言(Assertion) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B-FormData-%E7%89%A9%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">建立 FormData 物件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8B%E4%BB%8B%E7%B4%B9%E5%B9%BE%E5%80%8B%E5%9F%BA%E7%A4%8E%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">以下介紹幾個基礎的使用方式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8axios-%E5%82%B3%E9%81%9E%E8%B3%87%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">使用axios 傳遞資料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%9C%E5%85%85-vue-Typescript-%E5%AE%A3%E5%91%8A%E5%9E%8B%E5%88%A5"><span class="nav-number">4.</span> <span class="nav-text">補充 vue+Typescript 宣告型別</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="使用var來宣告變數如果var沒有給予任何值，會呈現undefine 給予值之後 程式語言中 等於符號&#x3D; 不是比較的意思，是-&gt;指派值的意思上圖：1是一個值，它指派給x這個變數 要比較值的大小 true,false（布林值） 宣告x為1,y&#x3D;2;利用 &#x3D;&#x3D;&#x3D;來判斷  型別 剛剛把1給x這個變數 當查看型別時，如下圖   在VS code 來撰寫 JS 與剛剛在chrom一樣的方式來輸入x,y">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS基本功- 變數與型別">
+<meta property="og:url" content="https://eva813.github.io/2020/12/26/js-variable/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="使用var來宣告變數如果var沒有給予任何值，會呈現undefine 給予值之後 程式語言中 等於符號&#x3D; 不是比較的意思，是-&gt;指派值的意思上圖：1是一個值，它指派給x這個變數 要比較值的大小 true,false（布林值） 宣告x為1,y&#x3D;2;利用 &#x3D;&#x3D;&#x3D;來判斷  型別 剛剛把1給x這個變數 當查看型別時，如下圖   在VS code 來撰寫 JS 與剛剛在chrom一樣的方式來輸入x,y">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/ZV4O7gJ.png">
+<meta property="og:image" content="https://i.imgur.com/b916Z2B.png">
+<meta property="og:image" content="https://i.imgur.com/0jhw1fi.png">
+<meta property="og:image" content="https://i.imgur.com/y0o91bX.png">
+<meta property="og:image" content="https://i.imgur.com/pFvGU90.png">
+<meta property="og:image" content="https://i.imgur.com/AdcRhnM.png">
+<meta property="og:image" content="https://i.imgur.com/MWfjXxS.png">
+<meta property="og:image" content="https://i.imgur.com/xO6SmsP.png">
+<meta property="og:image" content="https://i.imgur.com/81RfQ39.png">
+<meta property="og:image" content="https://i.imgur.com/0yIN8rY.png">
+<meta property="og:image" content="https://i.imgur.com/NSAe3A0.png">
+<meta property="og:image" content="https://i.imgur.com/bqpGAjI.png">
+<meta property="og:image" content="https://i.imgur.com/fcMnCjC.png">
+<meta property="og:image" content="https://i.imgur.com/uQ00Bgh.png">
+<meta property="og:image" content="https://i.imgur.com/wCX0pBt.png">
+<meta property="og:image" content="https://i.imgur.com/GkIkdYT.png">
+<meta property="article:published_time" content="2020-12-26T10:15:07.000Z">
+<meta property="article:modified_time" content="2022-09-17T00:10:00.718Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="variable">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/ZV4O7gJ.png">
+
+<link rel="canonical" href="https://eva813.github.io/2020/12/26/js-variable/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JS基本功- 變數與型別 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2020/12/26/js-variable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JS基本功- 變數與型別
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-26 18:15:07" itemprop="dateCreated datePublished" datetime="2020-12-26T18:15:07+08:00">2020-12-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="使用var來宣告變數"><a href="#使用var來宣告變數" class="headerlink" title="使用var來宣告變數"></a>使用var來宣告變數</h2><h4 id="如果var沒有給予任何值，會呈現undefine"><a href="#如果var沒有給予任何值，會呈現undefine" class="headerlink" title="如果var沒有給予任何值，會呈現undefine"></a>如果var沒有給予任何值，會呈現undefine</h4><p><img src="https://i.imgur.com/ZV4O7gJ.png" alt=""></p>
+<h4 id="給予值之後"><a href="#給予值之後" class="headerlink" title="給予值之後"></a>給予值之後</h4><p><img src="https://i.imgur.com/b916Z2B.png" alt=""></p>
+<p>程式語言中 等於符號<code>=</code> 不是比較的意思，是-&gt;指派值的意思<br>上圖：1是一個值，它指派給x這個變數</p>
+<h3 id="要比較值的大小"><a href="#要比較值的大小" class="headerlink" title="要比較值的大小"></a>要比較值的大小</h3><ul>
+<li>true,false（布林值）</li>
+<li>宣告x為1,y=2;利用 <code>===</code>來判斷<br><img src="https://i.imgur.com/0jhw1fi.png" alt=""></li>
+</ul>
+<h3 id="型別"><a href="#型別" class="headerlink" title="型別"></a>型別</h3><ul>
+<li>剛剛把1給x這個變數</li>
+<li>當查看型別時，如下圖<br><img src="https://i.imgur.com/y0o91bX.png" alt=""></li>
+</ul>
+<hr>
+<h2 id="在VS-code-來撰寫-JS"><a href="#在VS-code-來撰寫-JS" class="headerlink" title="在VS code 來撰寫 JS"></a>在VS code 來撰寫 JS</h2><ul>
+<li>與剛剛在chrom一樣的方式來輸入x,y</li>
+<li>利用console.log來印出資料</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>使用 VS code 來撰寫 JS，講解變數，值與型別<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>EX 01<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello world&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> x;</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(x);  <span class="comment">// 出現undefined</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> y = <span class="number">10</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(y);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/pFvGU90.png" alt=""></p>
+<h2 id="型別介紹："><a href="#型別介紹：" class="headerlink" title="型別介紹："></a>型別介紹：</h2><h3 id="Number-數值"><a href="#Number-數值" class="headerlink" title="Number 數值"></a>Number 數值</h3><ul>
+<li>通常程式語言會分成，如：python’java’c…<ul>
+<li>整數 integer：只需紀錄完整數字</li>
+<li>浮點數 float：小數點</li>
+</ul>
+</li>
+<li>而javascript 不區分 -&gt; 只有 數值number（具有浮點數能力）</li>
+<li>以下宣告 <code>b=1.1</code>，查看型別發現是<code>typeof</code></li>
+</ul>
+<p><img src="https://i.imgur.com/AdcRhnM.png" alt=""></p>
+<ul>
+<li>另外以python為例：可以發現有區分顯示整數、浮點數</li>
+</ul>
+<blockquote>
+<p>程式柴課程：<br><img src="https://i.imgur.com/MWfjXxS.png" alt=""></p>
+</blockquote>
+<h3 id="浮點數的陷阱"><a href="#浮點數的陷阱" class="headerlink" title="浮點數的陷阱"></a>浮點數的陷阱</h3><ul>
+<li>因為js運算是依循IEEE754的規範，在運算時會轉換成<code>二進制</code>，而浮點數在轉成<code>二進制</code>時會造成無窮迴圈，進而產生運算誤差</li>
+<li>由於js採用64位雙精度浮點數編碼，實際儲存時為了節省空間，採用科學計數法表示</li>
+</ul>
+<p>參考資料：<br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/WillianHsiaoDotNetBLog/2020/01/15/JavascriptFloatCaculateBug">[JavaScript]浮點數運算出現一堆小數位數
+</a> <a target="_blank" rel="noopener" href="https://www.itread01.com/content/1545644704.html">JavaScript 浮點數陷阱及解法</a><br><a target="_blank" rel="noopener" href="https://www.mdeditor.tw/pl/pqGp/zh-tw">js浮點數計算精度問題</a><br><a target="_blank" rel="noopener" href="https://medium.com/@ad57475747/javascript%E6%B5%AE%E9%BB%9E%E6%95%B8%E9%81%8B%E7%AE%97-1691eefe3ea7">JavaScript-Number的各種地雷–浮點數運算</a></p>
+<h2 id="String-字串"><a href="#String-字串" class="headerlink" title="String 字串"></a>String 字串</h2><blockquote>
+<p>程式柴課程：<br><img src="https://i.imgur.com/xO6SmsP.png" alt=""></p>
+</blockquote>
+<ul>
+<li><h3 id="以chrome開發者工具示範"><a href="#以chrome開發者工具示範" class="headerlink" title="以chrome開發者工具示範"></a>以chrome開發者工具示範</h3><img src="https://i.imgur.com/81RfQ39.png" alt=""></li>
+<li><h4 id="單雙混用"><a href="#單雙混用" class="headerlink" title="單雙混用"></a>單雙混用</h4><img src="https://i.imgur.com/0yIN8rY.png" alt=""></li>
+<li><h4 id="ES6使用-此符號也能用來處理斷行問題"><a href="#ES6使用-此符號也能用來處理斷行問題" class="headerlink" title="ES6使用  (此符號也能用來處理斷行問題)"></a>ES6使用  (此符號也能用來處理斷行問題)</h4><img src="https://i.imgur.com/NSAe3A0.png" alt=""></li>
+<li><h4 id="字串連接"><a href="#字串連接" class="headerlink" title="字串連接"></a>字串連接</h4><img src="https://i.imgur.com/bqpGAjI.png" alt=""></li>
+</ul>
+<p><code>clear()</code>  清除頁面</p>
+<h2 id="Boolean-布林值"><a href="#Boolean-布林值" class="headerlink" title="Boolean 布林值"></a>Boolean 布林值</h2><p><img src="https://i.imgur.com/fcMnCjC.png" alt=""><br>二進位：<br>0的時候-&gt;false<br>1的時候-&gt;true</p>
+<ul>
+<li><h3 id="搭配if、else使用，以控制或判斷流程"><a href="#搭配if、else使用，以控制或判斷流程" class="headerlink" title="搭配if、else使用，以控制或判斷流程"></a>搭配if、else使用，以控制或判斷流程</h3><img src="https://i.imgur.com/uQ00Bgh.png" alt=""></li>
+</ul>
+<h2 id="「null-空值」與-「undefined-未定義」"><a href="#「null-空值」與-「undefined-未定義」" class="headerlink" title="「null 空值」與 「undefined 未定義」"></a>「null 空值」與 「undefined 未定義」</h2><ul>
+<li>宣吿了x變數，卻沒有給它值（還沒有指派給它值） -&gt;未定義的變數</li>
+</ul>
+<p><img src="https://i.imgur.com/wCX0pBt.png" alt=""></p>
+<ul>
+<li>期待它是一個空值，是由使用者指派給b變數（指定給它為空值）</li>
+</ul>
+<p><img src="https://i.imgur.com/GkIkdYT.png" alt=""></p>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JS/" rel="tag"># JS</a>
+              <a href="/tags/variable/" rel="tag"># variable</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/13/Hamburger/" rel="prev" title="CSS練習- Hamburger 漢堡表單">
+      <i class="fa fa-chevron-left"></i> CSS練習- Hamburger 漢堡表單
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/26/js-operator/" rel="next" title="JS基本功- 運算元與運算子">
+      JS基本功- 運算元與運算子 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8var%E4%BE%86%E5%AE%A3%E5%91%8A%E8%AE%8A%E6%95%B8"><span class="nav-number">1.</span> <span class="nav-text">使用var來宣告變數</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E6%9E%9Cvar%E6%B2%92%E6%9C%89%E7%B5%A6%E4%BA%88%E4%BB%BB%E4%BD%95%E5%80%BC%EF%BC%8C%E6%9C%83%E5%91%88%E7%8F%BEundefine"><span class="nav-number">1.0.1.</span> <span class="nav-text">如果var沒有給予任何值，會呈現undefine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%A6%E4%BA%88%E5%80%BC%E4%B9%8B%E5%BE%8C"><span class="nav-number">1.0.2.</span> <span class="nav-text">給予值之後</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A6%81%E6%AF%94%E8%BC%83%E5%80%BC%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="nav-number">1.1.</span> <span class="nav-text">要比較值的大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%8B%E5%88%A5"><span class="nav-number">1.2.</span> <span class="nav-text">型別</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8VS-code-%E4%BE%86%E6%92%B0%E5%AF%AB-JS"><span class="nav-number">2.</span> <span class="nav-text">在VS code 來撰寫 JS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%8B%E5%88%A5%E4%BB%8B%E7%B4%B9%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">型別介紹：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Number-%E6%95%B8%E5%80%BC"><span class="nav-number">3.1.</span> <span class="nav-text">Number 數值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%AE%E9%BB%9E%E6%95%B8%E7%9A%84%E9%99%B7%E9%98%B1"><span class="nav-number">3.2.</span> <span class="nav-text">浮點數的陷阱</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-%E5%AD%97%E4%B8%B2"><span class="nav-number">4.</span> <span class="nav-text">String 字串</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5chrome%E9%96%8B%E7%99%BC%E8%80%85%E5%B7%A5%E5%85%B7%E7%A4%BA%E7%AF%84"><span class="nav-number">4.1.</span> <span class="nav-text">以chrome開發者工具示範</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%96%AE%E9%9B%99%E6%B7%B7%E7%94%A8"><span class="nav-number">4.1.1.</span> <span class="nav-text">單雙混用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ES6%E4%BD%BF%E7%94%A8-%E6%AD%A4%E7%AC%A6%E8%99%9F%E4%B9%9F%E8%83%BD%E7%94%A8%E4%BE%86%E8%99%95%E7%90%86%E6%96%B7%E8%A1%8C%E5%95%8F%E9%A1%8C"><span class="nav-number">4.1.2.</span> <span class="nav-text">ES6使用  (此符號也能用來處理斷行問題)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E4%B8%B2%E9%80%A3%E6%8E%A5"><span class="nav-number">4.1.3.</span> <span class="nav-text">字串連接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Boolean-%E5%B8%83%E6%9E%97%E5%80%BC"><span class="nav-number">5.</span> <span class="nav-text">Boolean 布林值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%AD%E9%85%8Dif%E3%80%81else%E4%BD%BF%E7%94%A8%EF%BC%8C%E4%BB%A5%E6%8E%A7%E5%88%B6%E6%88%96%E5%88%A4%E6%96%B7%E6%B5%81%E7%A8%8B"><span class="nav-number">5.1.</span> <span class="nav-text">搭配if、else使用，以控制或判斷流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8Cnull-%E7%A9%BA%E5%80%BC%E3%80%8D%E8%88%87-%E3%80%8Cundefined-%E6%9C%AA%E5%AE%9A%E7%BE%A9%E3%80%8D"><span class="nav-number">6.</span> <span class="nav-text">「null 空值」與 「undefined 未定義」</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

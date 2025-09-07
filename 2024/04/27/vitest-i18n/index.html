@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="最近嘗試在專案內加入測試，詢問朋友後建議先從 utils 中共用的邏輯函式開始，而在共用的邏輯函式中，會有幾個是 i18n 相關的函式。因為頁面中常會用到將數值，轉換為顯示在畫面上的文字，如下： 123456789101112const getType &#x3D; (type: number) &#x3D;&gt; &#123;    switch (type) &#123;        case 0:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vitest-i18n">
+<meta property="og:url" content="https://eva813.github.io/2024/04/27/vitest-i18n/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="最近嘗試在專案內加入測試，詢問朋友後建議先從 utils 中共用的邏輯函式開始，而在共用的邏輯函式中，會有幾個是 i18n 相關的函式。因為頁面中常會用到將數值，轉換為顯示在畫面上的文字，如下： 123456789101112const getType &#x3D; (type: number) &#x3D;&gt; &#123;    switch (type) &#123;        case 0:">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-04-27T05:12:36.000Z">
+<meta property="article:modified_time" content="2024-04-27T06:42:21.651Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="Test">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2024/04/27/vitest-i18n/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>vitest-i18n | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2024/04/27/vitest-i18n/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vitest-i18n
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-04-27 13:12:36 / Modified: 14:42:21" itemprop="dateCreated datePublished" datetime="2024-04-27T13:12:36+08:00">2024-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Test/" itemprop="url" rel="index"><span itemprop="name">Test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近嘗試在專案內加入測試，詢問朋友後建議先從 utils 中共用的邏輯函式開始，而在共用的邏輯函式中，會有幾個是 i18n 相關的函式。<br>因為頁面中常會用到將數值，轉換為顯示在畫面上的文字，如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">getType</span> = (<span class="params"><span class="keyword">type</span>: <span class="built_in">number</span></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> (<span class="keyword">type</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Auto&#x27;</span>)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Manual&#x27;</span>)</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">t</span>(<span class="string">&#x27;Type.Mix&#x27;</span>)</span><br><span class="line">        <span class="attr">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在進行測試時，總想說是否要先選定一語系，如中文\英文，然後確認他轉換的是否為該文字<br>但是經過嘗試後，覺得或許不應該是檢查轉換後的文字，應該要以對應 key 來檢查。<br>參考 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/72260793/how-to-mock-stub-vue-i18n">overflow</a></p>
+<ul>
+<li>因此專案是使用 quasar，所以在 i18n.t 方法，引入的位置是 boot/i18n.ts</li>
+<li>在測試中，可以執行測試函式，帶入對應數值，並檢查是否回傳對應的 key</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 在測試中覆寫模擬 i18n.t 方法</span></span><br><span class="line">vi.<span class="title function_">mock</span>(<span class="string">&#x27;../../../src/boot/i18n&#x27;</span>, <span class="function">() =&gt;</span> (&#123;</span><br><span class="line">    <span class="attr">i18n</span>: &#123;</span><br><span class="line">        <span class="attr">global</span>: &#123;</span><br><span class="line">            <span class="attr">t</span>: <span class="function">(<span class="params">key: <span class="built_in">string</span></span>) =&gt;</span> key, <span class="comment">// 提供模擬的 t 函式</span></span><br><span class="line">            <span class="attr">locale</span>: <span class="string">&#x27;en&#x27;</span> <span class="comment">// 假設默認的 locale 值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;getType&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 0&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">0</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Auto&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 1&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">1</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Manual&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct string for type 2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">2</span>)).<span class="title function_">toBe</span>(<span class="string">&#x27;Type.Mix&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return null for an unknown type&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">expect</span>(<span class="title function_">getTradingType</span>(<span class="number">999</span>)).<span class="title function_">toBeNull</span>()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="小結上述方式："><a href="#小結上述方式：" class="headerlink" title="小結上述方式："></a>小結上述方式：</h3><p>使用全局模擬，vi.mock 全局模擬 i18n.t 方法，並提供模擬的 t 函式，這樣就可以在測試中，直接檢查是否回傳對應的 key，而不用檢查轉換後的文字。</p>
+<p>另外，在跨頁面也會有共用的下拉選單，將此下拉選單的選項，也提取出來，並進行測試。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> directionOpt = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> ([</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">t</span>(<span class="string">&#x27;Shared.right&#x27;</span>), <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">t</span>(<span class="string">&#x27;Shared.wrong&#x27;</span>), <span class="attr">value</span>: <span class="number">1</span> &#125;</span><br><span class="line">]))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原本也想是否直接檢查 key 是否正確即可。但基於困惑，就嘗試丟 chatGpt 詢問</p>
+<span id="more"></span>
+
+<ul>
+<li>給予 mockT 方法，並提供對應的 key，並檢查是否有被呼叫</li>
+<li>定義 directionOpt，並檢查是否回傳對應的 key</li>
+<li>但此方式卻 directionOpt 撰寫於測試檔案中</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mockT = vi.<span class="title function_">fn</span>(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> translations = &#123;</span><br><span class="line">        <span class="string">&#x27;Shared.right&#x27;</span>: <span class="string">&#x27;正確&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Shared.wrong&#x27;</span>: <span class="string">&#x27;錯誤&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> translations[key]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 定義 directionOpt</span></span><br><span class="line"><span class="keyword">const</span> directionOpt = <span class="title function_">computed</span>(<span class="function">() =&gt;</span> ([</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">mockT</span>(<span class="string">&#x27;Shared.right&#x27;</span>), <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">label</span>: <span class="title function_">mockT</span>(<span class="string">&#x27;Shared.wrong&#x27;</span>), <span class="attr">value</span>: <span class="number">1</span> &#125;</span><br><span class="line">]))</span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;directionOpt&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should return the correct options&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> options = directionOpt.<span class="property">value</span></span><br><span class="line"></span><br><span class="line">        <span class="title function_">expect</span>(options).<span class="title function_">toEqual</span>([</span><br><span class="line">            &#123; <span class="attr">label</span>: <span class="string">&#x27;正確&#x27;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">            &#123; <span class="attr">label</span>: <span class="string">&#x27;錯誤&#x27;</span>, <span class="attr">value</span>: <span class="number">1</span> &#125;</span><br><span class="line">        ])</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 确保模拟的 t 函数被正确调用</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;mock&#x27;</span>, mockT)</span><br><span class="line">        <span class="title function_">expect</span>(mockT).<span class="title function_">toHaveBeenCalledWith</span>(<span class="string">&#x27;Shared.right&#x27;</span>)</span><br><span class="line">        <span class="title function_">expect</span>(mockT).<span class="title function_">toHaveBeenCalledWith</span>(<span class="string">&#x27;Shared.wrong&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>後來，我回歸我想測試的目標在於，原函式 computed 是否使用這些 key，因此，就以以下方式進行測試</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;directionOpt&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;should return the correct options&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> options = directionOpt.<span class="property">value</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// t 函式直接反回 key 值，驗證 computed 是否使用这些 key</span></span><br><span class="line">    <span class="title function_">expect</span>(options).<span class="title function_">toEqual</span>([</span><br><span class="line">      &#123; <span class="attr">label</span>: <span class="string">&quot;Shared.right&quot;</span>, <span class="attr">value</span>: <span class="number">0</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">label</span>: <span class="string">&quot;Shared.wrong&quot;</span>, <span class="attr">value</span>: <span class="number">1</span> &#125;,</span><br><span class="line">    ]);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Test/" rel="tag"># Test</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/01/06/css-grid/" rel="prev" title="css-grid">
+      <i class="fa fa-chevron-left"></i> css-grid
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/07/19/vue-tiptap/" rel="next" title="使用 Vue3 與 Tiptap 打造文字編輯器">
+      使用 Vue3 與 Tiptap 打造文字編輯器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%B5%90%E4%B8%8A%E8%BF%B0%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">小結上述方式：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

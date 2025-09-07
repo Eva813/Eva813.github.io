@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="當發起 dispatch 到 UI 更新之間做什麼事情  希望 dispath 有能力可以再去做其他事情（所以會在過程中去做一些邏輯）  希望過程中可以再做些事情（UI 從 dispatch 到真正渲染之間） Middleware  實際上是一個 function  next 是 dispatch 的意思，next 所代表的是傳入 action ，會調用下一個 dispatch 來執行所傳入的這個">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redux Toolkit - RTK Query中間層非同步Fetch API的處理">
+<meta property="og:url" content="https://eva813.github.io/2022/12/01/React-Middleware/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="當發起 dispatch 到 UI 更新之間做什麼事情  希望 dispath 有能力可以再去做其他事情（所以會在過程中去做一些邏輯）  希望過程中可以再做些事情（UI 從 dispatch 到真正渲染之間） Middleware  實際上是一個 function  next 是 dispatch 的意思，next 所代表的是傳入 action ，會調用下一個 dispatch 來執行所傳入的這個">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/FROBvmD.png">
+<meta property="og:image" content="https://i.imgur.com/H7EOAfX.png">
+<meta property="og:image" content="https://i.imgur.com/40MQaiu.png">
+<meta property="og:image" content="https://i.imgur.com/ChMTJOz.png">
+<meta property="article:published_time" content="2022-12-01T04:55:30.000Z">
+<meta property="article:modified_time" content="2022-12-01T13:08:43.844Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/FROBvmD.png">
+
+<link rel="canonical" href="https://eva813.github.io/2022/12/01/React-Middleware/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Redux Toolkit - RTK Query中間層非同步Fetch API的處理 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/12/01/React-Middleware/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redux Toolkit - RTK Query中間層非同步Fetch API的處理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-12-01 12:55:30 / Modified: 21:08:43" itemprop="dateCreated datePublished" datetime="2022-12-01T12:55:30+08:00">2022-12-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>當發起 dispatch 到 UI 更新之間做什麼事情</p>
+<ul>
+<li><p>希望 dispath 有能力可以再去做其他事情（所以會在過程中去做一些邏輯）</p>
+</li>
+<li><p>希望過程中可以再做些事情（UI 從 dispatch 到真正渲染之間）</p>
+<p><img src="https://i.imgur.com/FROBvmD.png" alt=""><br><a target="_blank" rel="noopener" href="https://redux.js.org/understanding/history-and-design/middleware">Middleware</a></p>
+</li>
+<li><p>實際上是一個 function</p>
+</li>
+<li><p>next 是 dispatch 的意思，next 所代表的是傳入 action ，會調用下一個 dispatch 來執行所傳入的這個 action </p>
+</li>
+</ul>
+<p>以官網範例：</p>
+<ul>
+<li>他是 3 個函式包在一起</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">logger</span> = store =&gt; <span class="function"><span class="params">nextDispatch</span> =&gt;</span> <span class="function"><span class="params">action</span> =&gt;</span> &#123;  </span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;dispatching&#x27;</span>, action)  </span><br><span class="line">	<span class="keyword">let</span> result = <span class="title function_">nextDispatch</span>(action)  </span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;next state&#x27;</span>, store.<span class="title function_">getState</span>())  </span><br><span class="line">	<span class="keyword">return</span> result  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在專案建立<br>位置：src / middleware</p>
+<h3 id="簡易說明"><a href="#簡易說明" class="headerlink" title="簡易說明"></a>簡易說明</h3><p>在 return 最後的 function 之前，第二個 function 就是將原有的 dispatch 丟到最後的 function 中，再 return 出去。<br>在取的 dispatch 之前，會再拿到 store 也是使用 api 時候會回傳進來的東西。<br>當 middleware 建立好之後，要到 store 當案進行宣告</p>
+<h3 id="combineReducers"><a href="#combineReducers" class="headerlink" title="combineReducers"></a>combineReducers</h3><ul>
+<li>建立的 slice夾中可能會有多個 reducer，例如 todoReducer, friendReducer, phoneReduce…</li>
+</ul>
+<p>Middleware 與 store 的建立<br><img src="https://i.imgur.com/H7EOAfX.png" alt=""></p>
+<p>在 middleware 去寫功能的時後，主要分為兩個部分</p>
+<ol>
+<li>在 dispach 之前要做什麼事情</li>
+<li>在 dispach 之後要做什麼事情</li>
+</ol>
+<h2 id="RTK-Query"><a href="#RTK-Query" class="headerlink" title="RTK Query"></a>RTK Query</h2><p>使用 middileware 去定義我們的 reducers 會分成多個階段</p>
+<ul>
+<li>pedding</li>
+<li>success</li>
+<li>error<br>針對每一次 API 取資料，加入到  reducers 中，此方式會使得 reducer 變得龐大、複雜。<br>RTK Query 協助將所有關於 call API 或是 獲取資料過程的功能，將他包裝成一個攻能，並且完全獨立於 reducer 或 redux 的邏輯</li>
+<li>可以使用 RTK Query 中的 hook 去獲取當前 data , error 狀態等<br><a target="_blank" rel="noopener" href="https://redux-toolkit.js.org/rtk-query/overview">官方文件</a></li>
+</ul>
+<h2 id="建立-api"><a href="#建立-api" class="headerlink" title="建立 api"></a>建立 api</h2><p>educerPath =&gt; 最後會產生 reducer ，所包含內容會有 pedding, success,error 等狀態<br>baseQuery =&gt; 就是放入 baseUrl<br>endpoint =&gt; 放入 query 資訊<br>    any : 表示會回傳一個 any 結果<br>    string : 需要傳入 string 的 input </p>
+<p>json placeholder</p>
+<p><img src="https://i.imgur.com/40MQaiu.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApi, fetchBaseQuery &#125; <span class="keyword">from</span> <span class="string">&#x27;@reduxjs/toolkit/query/react&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> todoApiService = <span class="title function_">createApi</span>(&#123;</span><br><span class="line"></span><br><span class="line">		<span class="attr">reducerPath</span>: <span class="string">&#x27;todoApi&#x27;</span>,</span><br><span class="line">		</span><br><span class="line">		<span class="attr">baseQuery</span>: <span class="title function_">fetchBaseQuery</span>(&#123; <span class="attr">baseUrl</span>: <span class="string">&#x27;https://jsonplaceholder.typicode.com/&#x27;</span> &#125;),</span><br><span class="line">		</span><br><span class="line">		<span class="attr">endpoints</span>: <span class="function">(<span class="params">builder</span>) =&gt;</span> (&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// getPokemonByName: builder.query&lt;Pokemon, string&gt;(&#123;</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">// query: (name) =&gt; `pokemon/$&#123;name&#125;`,</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">// &#125;),</span></span><br><span class="line">		</span><br><span class="line">		<span class="attr">getTodoApi</span>: builder.<span class="property">query</span>&lt;any, string&gt;(&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="attr">query</span>: <span class="function">(<span class="params">id</span>) =&gt;</span> <span class="string">`todos/<span class="subst">$&#123;id&#125;</span>`</span>,</span><br><span class="line"></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	&#125;),</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// Export hooks for usage in functional components, which are  </span></span><br><span class="line"><span class="comment">// auto-generated based on the defined endpoints </span></span><br><span class="line"><span class="comment">// 以下會自動對應產生</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> &#123; useGetTodoApiQuery &#125; = todoApiService</span><br></pre></td></tr></table></figure>
+
+<h2 id="至-store-新增-todoAPI"><a href="#至-store-新增-todoAPI" class="headerlink" title="至  store 新增 todoAPI"></a>至  store 新增 todoAPI</h2><p><img src="https://i.imgur.com/ChMTJOz.png" alt=""></p>
+<h2 id="引用-API-hook"><a href="#引用-API-hook" class="headerlink" title="引用 API hook"></a>引用 API hook</h2><p><code>import &#123; useGetTodoApiQuery &#125; from &#39;./services/todoApi&#39;;</code></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./App.css&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> styled <span class="keyword">from</span> <span class="string">&#x27;styled-components&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; useAppSelector, useAppDispatch &#125; <span class="keyword">from</span> <span class="string">&#x27;./hooks&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; addTodo, addTimestamp &#125; <span class="keyword">from</span> <span class="string">&#x27;./slice/todo&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; useState &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useGetTodoApiQuery &#125; <span class="keyword">from</span> <span class="string">&#x27;./services/todoApi&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Wrapper</span> = styled.<span class="property">div</span><span class="string">`</span></span><br><span class="line"><span class="string">  padding: 1.5rem;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Title</span> = styled.<span class="property">h2</span><span class="string">`</span></span><br><span class="line"><span class="string">  font-weight: 900;</span></span><br><span class="line"><span class="string">  margin-top: 2rem;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">NoteInput</span> = styled.<span class="property">input</span><span class="string">`</span></span><br><span class="line"><span class="string">  width: 100%;</span></span><br><span class="line"><span class="string">  height: 40px;</span></span><br><span class="line"><span class="string">  border-radius: 10px;</span></span><br><span class="line"><span class="string">  padding-left: .5rem;</span></span><br><span class="line"><span class="string">  box-sizing: border-box;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">SubmitBtn</span> = styled.<span class="property">button</span><span class="string">`</span></span><br><span class="line"><span class="string">  width: 100%;</span></span><br><span class="line"><span class="string">  box-sizing: border-box;</span></span><br><span class="line"><span class="string">  height: 40px;</span></span><br><span class="line"><span class="string">  background: #000;</span></span><br><span class="line"><span class="string">  display: flex;</span></span><br><span class="line"><span class="string">  justify-content: center;</span></span><br><span class="line"><span class="string">  align-items: center;</span></span><br><span class="line"><span class="string">  color: #fff;</span></span><br><span class="line"><span class="string">  border-radius: 10px;</span></span><br><span class="line"><span class="string">  border: 0;</span></span><br><span class="line"><span class="string">  font-weight: 900;</span></span><br><span class="line"><span class="string">  margin-top: 1rem;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  :active &#123;</span></span><br><span class="line"><span class="string">    background: #000000be;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Item</span> = styled.<span class="property">div</span><span class="string">`</span></span><br><span class="line"><span class="string">  margin-top: 1rem;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &gt; b &#123;</span></span><br><span class="line"><span class="string">    margin-right: .5rem;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> todoReducer = <span class="title function_">useAppSelector</span>(<span class="function"><span class="params">state</span> =&gt;</span> state.<span class="property">todoReducer</span>)</span><br><span class="line">  <span class="keyword">const</span> todoList = todoReducer.<span class="property">todoList</span></span><br><span class="line">  <span class="keyword">const</span> dispatch = <span class="title function_">useAppDispatch</span>()</span><br><span class="line">  <span class="keyword">const</span> [text, setText] = <span class="title function_">useState</span>(<span class="string">&quot;&quot;</span>)</span><br><span class="line">  <span class="keyword">const</span> &#123; data, error, isLoading &#125; = <span class="title function_">useGetTodoApiQuery</span>(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">  <span class="comment">//api 獲取資料</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;data:&#x27;</span>, data)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;error:&#x27;</span>, error)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;isLoading:&#x27;</span>, isLoading)</span><br><span class="line"></span><br><span class="line">  <span class="comment">//處裡 data 可能 undefined 的問題</span></span><br><span class="line">  <span class="keyword">const</span> &#123; userId = <span class="string">&#x27;N/A&#x27;</span>, title = <span class="string">&#x27;N/A&#x27;</span> &#125; = data || &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Wrapper</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>TODO LIST<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">NoteInput</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">value</span>=<span class="string">&#123;text&#125;</span> <span class="attr">onChange</span>=<span class="string">&#123;(e:</span> <span class="attr">React.ChangeEvent</span>&lt;<span class="attr">HTMLInputElement</span>&gt;</span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">        setText(e.target.value)</span></span><br><span class="line"><span class="language-xml">      &#125;&#125; /&gt;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">SubmitBtn</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-xml">        if (text === &#x27;&#x27;) &#123;</span></span><br><span class="line"><span class="language-xml">          alert(&#x27;請輸入TODO內容&#x27;)</span></span><br><span class="line"><span class="language-xml">          return</span></span><br><span class="line"><span class="language-xml">        &#125;</span></span><br><span class="line"><span class="language-xml">        dispatch(addTodo(text))</span></span><br><span class="line"><span class="language-xml">        setText(&#x27;&#x27;)</span></span><br><span class="line"><span class="language-xml">      &#125;&#125;&gt;</span></span><br><span class="line"><span class="language-xml">        Submit</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">SubmitBtn</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-xml">        dispatch(addTimestamp())</span></span><br><span class="line"><span class="language-xml">      &#125;&#125;&gt;</span></span><br><span class="line"><span class="language-xml">        Record Timestamp</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>List<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;</span></span><br><span class="line"><span class="language-xml">        todoList.map((todo, index) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">          return <span class="tag">&lt;<span class="name">Item</span> <span class="attr">key</span>=<span class="string">&#123;todo&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">b</span>&gt;</span>&#123;index + 1&#125;<span class="tag">&lt;/<span class="name">b</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            &#123;todo&#125;</span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        &#125;)</span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>List2<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;</span></span><br><span class="line"><span class="language-xml">        isLoading &amp;&amp; <span class="tag">&lt;<span class="name">p</span>&gt;</span> 正在載入資料...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">      &#123;</span></span><br><span class="line"><span class="language-xml">        !isLoading &amp;&amp;</span></span><br><span class="line"><span class="language-xml">        (</span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            &#123;/* <span class="tag">&lt;<span class="name">p</span>&gt;</span>User ID:&#123;data?.userId&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>Usr Title:&#123;data?.title&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span> */&#125;</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>User ID:&#123;userId&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>Usr Title:&#123;title&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        )</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Wrapper</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  );</span></span><br><span class="line"><span class="language-xml">&#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">export default App;</span></span><br><span class="line"><span class="language-xml"></span></span><br></pre></td></tr></table></figure>
+
+
+<p>若是使用 react thunk </p>
+<ul>
+<li>這裡的 middleware 的 reducer 中的 status 要自己去定義</li>
+<li>優點：可以完全掌控自己 reducer 的內容</li>
+<li>但相對也會較為繁瑣</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/React/" rel="tag"># React</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/01/ReduxToolkit/" rel="prev" title="Redux Toolkit">
+      <i class="fa fa-chevron-left"></i> Redux Toolkit
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/21/rotate-image/" rel="next" title="LeetCode rotate-image">
+      LeetCode rotate-image <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B0%A1%E6%98%93%E8%AA%AA%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">簡易說明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#combineReducers"><span class="nav-number">2.</span> <span class="nav-text">combineReducers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RTK-Query"><span class="nav-number"></span> <span class="nav-text">RTK Query</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B-api"><span class="nav-number"></span> <span class="nav-text">建立 api</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%B3-store-%E6%96%B0%E5%A2%9E-todoAPI"><span class="nav-number"></span> <span class="nav-text">至  store 新增 todoAPI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8-API-hook"><span class="nav-number"></span> <span class="nav-text">引用 API hook</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

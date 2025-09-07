@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="成品 觀察功能需求1.隨著頁面的往下捲動，會載入新的資料  一開始頁面載入，會呈現5筆資料，捲動往下，會再載入5筆 使用{JSON} Placeholder的資料來串接(運用ajax) 設定捲動位置，並於該位置時，會呈現載入的圖示 setTimeout來呈現載入的時間與畫面  2.網頁的各資料是有順序，資料左上會有編碼  利用資料本身的id作為序號 於js時，帶入該變數取值  css部分1.製作左">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS實作- scrollBlog">
+<meta property="og:url" content="https://eva813.github.io/2021/01/16/js-scrollBlog/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="成品 觀察功能需求1.隨著頁面的往下捲動，會載入新的資料  一開始頁面載入，會呈現5筆資料，捲動往下，會再載入5筆 使用{JSON} Placeholder的資料來串接(運用ajax) 設定捲動位置，並於該位置時，會呈現載入的圖示 setTimeout來呈現載入的時間與畫面  2.網頁的各資料是有順序，資料左上會有編碼  利用資料本身的id作為序號 於js時，帶入該變數取值  css部分1.製作左">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/FkIcque.png">
+<meta property="og:image" content="https://i.imgur.com/RuhdRt7.gif">
+<meta property="og:image" content="https://i.imgur.com/wJPpdfh.png">
+<meta property="article:published_time" content="2021-01-16T01:03:51.000Z">
+<meta property="article:modified_time" content="2022-09-17T00:10:00.717Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="ajax ">
+<meta property="article:tag" content="setTimeout">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/FkIcque.png">
+
+<link rel="canonical" href="https://eva813.github.io/2021/01/16/js-scrollBlog/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JS實作- scrollBlog | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/01/16/js-scrollBlog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JS實作- scrollBlog
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-16 09:03:51" itemprop="dateCreated datePublished" datetime="2021-01-16T09:03:51+08:00">2021-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://eva813.github.io/Eva_portfolio/scrollBlog/scrollBlog.html">成品</a></p>
+<h2 id="觀察功能需求"><a href="#觀察功能需求" class="headerlink" title="觀察功能需求"></a>觀察功能需求</h2><p>1.隨著頁面的往下捲動，會載入新的資料</p>
+<ul>
+<li>一開始頁面載入，會呈現5筆資料，捲動往下，會再載入5筆</li>
+<li>使用<a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/">{JSON} Placeholder</a>的資料來串接(運用ajax)</li>
+<li>設定捲動位置，並於該位置時，會呈現載入的圖示</li>
+<li>setTimeout來呈現載入的時間與畫面</li>
+</ul>
+<p>2.網頁的各資料是有順序，資料左上會有編碼</p>
+<ul>
+<li>利用資料本身的id作為序號</li>
+<li>於js時，帶入該變數取值</li>
+</ul>
+<h2 id="css部分"><a href="#css部分" class="headerlink" title="css部分"></a>css部分</h2><h3 id="1-製作左上方，數字"><a href="#1-製作左上方，數字" class="headerlink" title="1.製作左上方，數字"></a>1.製作左上方，數字</h3><ul>
+<li>利用<code>position: absolute;</code>定位位置，並利用並利用<code>top</code>、<code>left</code>調整位置</li>
+<li>使用<code>display: flex;</code>調整數字的位置，<code>align-items: center;
+justify-content: center;</code>使水平、垂直置中<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.post</span> <span class="selector-class">.number</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: -<span class="number">15px</span>;</span><br><span class="line">  <span class="attribute">left</span>: -<span class="number">15px</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">15px</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#296ca8</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">7px</span> <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/FkIcque.png" alt=""></li>
+</ul>
+<h3 id="2-載入畫面的原點圖示"><a href="#2-載入畫面的原點圖示" class="headerlink" title="2.載入畫面的原點圖示"></a>2.載入畫面的原點圖示</h3><ul>
+<li>先製作load的基本設定，如flex的排列、位置固定於下方，以及透明度的顯示</li>
+<li>針對原點訂定背景、原點大小。新增動畫效果，<code>animation: bounce 0.5s ease-in infinite;</code></li>
+<li>動畫名稱<code>@keyframes bounce</code>，設定在某時間點，<code>translateY</code>，的位置。</li>
+<li>為了讓圓點的跳動時間不同，針對2、3的原點，設定延遲時間<code>animation-delay: 0.2s;</code><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.loader</span> &#123;</span><br><span class="line">  <span class="comment">/* opacity: 0; */</span></span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">position</span>: fixed; <span class="comment">/*位置固定於最下面*/</span></span><br><span class="line">  <span class="attribute">bottom</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">transition</span>: opacity <span class="number">0.3s</span> ease-in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.loader</span><span class="selector-class">.show</span> &#123;</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*製作圓點*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.circle</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">10px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">10px</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">animation</span>: bounce <span class="number">0.5s</span> ease-in infinite;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.circle</span><span class="selector-pseudo">:nth-of-type</span>(<span class="number">2</span>) &#123;</span><br><span class="line">  <span class="attribute">animation-delay</span>: <span class="number">0.1s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.circle</span><span class="selector-pseudo">:nth-of-type</span>(<span class="number">3</span>) &#123;</span><br><span class="line">  <span class="attribute">animation-delay</span>: <span class="number">0.2s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@keyframes</span> bounce &#123;</span><br><span class="line">  <span class="number">0%</span>,</span><br><span class="line">  <span class="number">100%</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateY</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="number">50%</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-<span class="number">10px</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/RuhdRt7.gif" alt=""></p>
+<h2 id="js部分"><a href="#js部分" class="headerlink" title="js部分"></a>js部分</h2><h3 id="1-jsonplaceholder"><a href="#1-jsonplaceholder" class="headerlink" title="1.jsonplaceholder:"></a>1.jsonplaceholder:</h3><ul>
+<li>為取得資料的位置</li>
+<li>抓取5筆的方式，後面參數的設定而來<br><a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/posts?_limit5">https://jsonplaceholder.typicode.com/posts?_limit5</a></li>
+</ul>
+<h3 id="2-使用ajax串接API"><a href="#2-使用ajax串接API" class="headerlink" title="2.使用ajax串接API"></a>2.使用ajax串接API</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://hackmd.io/Ciayzu-vQcyrh-WeVNeOPQ?view">Async/Await 非同步流程控制-筆記</a></li>
+<li>參考<a target="_blank" rel="noopener" href="https://petetasker.com/using-async-await-jquerys-ajax">Using async await with jQuery’s $.ajax</a>、<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/27612372/how-to-await-the-ajax-request">How to await the ajax request?</a>，使用jQuery’s<code>$.ajax</code>執行async</li>
+<li>在try裡面，放入一般<code>$.ajax</code>抓取API資料的方式，如url、type、dataType</li>
+<li>首先，在連結的部分，我們希望每次抓取5筆資料，呈現1頁，所以在外面設置<code>let limit = 5;let page = 1</code>於url中加入該變數</li>
+<li>在抓取資料成功時，放入function，並用<code>$.each</code>來執行<ul>
+<li>在<code>$.each</code>先傳入該資料(data)陣列，其<code>function (index, value)</code>放入索引以及值的內容。</li>
+<li>宣告<code>postEl</code>變數，創造名為<code>post</code>的<code>div</code>=&gt; <code>$(&#39;\&lt;div /&gt;&#39;)</code></li>
+<li>加入<code>post</code>class</li>
+<li>加入html</li>
+<li>最後將此變數，放置呈現文章的容器<code>postEl.appendTo(&#39;#posts-container&#39;);</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> limit = <span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> page = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">doAjax</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> result;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    result = <span class="keyword">await</span> $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">      <span class="attr">url</span>: <span class="string">`https://jsonplaceholder.typicode.com/posts?_limit=<span class="subst">$&#123;limit&#125;</span>&amp;_page=<span class="subst">$&#123;page&#125;</span>`</span>,</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&#x27;get&#x27;</span>,</span><br><span class="line">      <span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">      <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">      </span><br><span class="line">      $.<span class="title function_">each</span>(data, <span class="keyword">function</span> (<span class="params">index, value</span>) &#123;</span><br><span class="line">          <span class="keyword">const</span> postEl = $(<span class="string">&#x27;&lt;div /&gt;&#x27;</span>).<span class="title function_">addClass</span>(<span class="string">&#x27;post&#x27;</span>).<span class="title function_">html</span>(<span class="string">`&lt;div class=&quot;number&quot;&gt;<span class="subst">$&#123;value.id&#125;</span>&lt;/div&gt; &lt;div class=&quot;post-info&quot;&gt;&lt;h2 class=&quot;post-title&quot;&gt;<span class="subst">$&#123;value.title&#125;</span>&lt;/h2&gt;&lt;p class=&quot;post-body&quot;&gt;<span class="subst">$&#123;value.body&#125;</span>&lt;/p&gt;</span></span><br><span class="line"><span class="string">      &lt;/div&gt;`</span>)</span><br><span class="line">          <span class="comment">//console.log(postEl)</span></span><br><span class="line">          postEl.<span class="title function_">appendTo</span>(<span class="string">&#x27;#posts-container&#x27;</span>);</span><br><span class="line">          <span class="comment">//$(&#x27;#posts-container&#x27;).append(postEl)</span></span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">       </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(error);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">doAjax</span>();</span><br></pre></td></tr></table></figure>
+
+<p>查看是否有成功取得資料：<code>console.log(data);</code><br><img src="https://i.imgur.com/wJPpdfh.png" alt=""></p>
+<h3 id="使用jQuery創造div"><a href="#使用jQuery創造div" class="headerlink" title="使用jQuery創造div"></a>使用jQuery創造div</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/10402567/jquery-div-vs-div">https://stackoverflow.com/questions/10402567/jquery-div-vs-div</a></p>
+<h4 id="each"><a href="#each" class="headerlink" title="each()"></a><code>each()</code></h4><p><a target="_blank" rel="noopener" href="https://api.jquery.com/jquery.each/">jQuery.each()</a></p>
+<h3 id="3-Infinite-Scroll無限捲動-瀑布流"><a href="#3-Infinite-Scroll無限捲動-瀑布流" class="headerlink" title="3.Infinite Scroll無限捲動(瀑布流)"></a>3.Infinite Scroll無限捲動(瀑布流)</h3><ul>
+<li><code>scrollTop</code>網頁右邊的卷軸到最上端網頁的距離有多少</li>
+<li><code>scrollHeight</code> 取得整個沒被擋住的高、<code>clientHeight</code> 取得元素的高度（含padding 不含 border）</li>
+<li>完整內容高度 (scrollHeight) = 內容頂端與捲軸頂端的距離 (scrollTop) + 捲軸本身高度 (clientHeight) + 內容底端與捲軸底端的距離。</li>
+</ul>
+<p>例子:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="variable language_">window</span>).<span class="title function_">scroll</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> scrollVal = $(<span class="variable language_">this</span>).<span class="title function_">scrollTop</span>();</span><br><span class="line">    $(<span class="string">&quot;span.qScrollTop&quot;</span>).<span class="title function_">text</span>(scrollVal);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(scrollVal &gt; <span class="number">500</span>)&#123;</span><br><span class="line">  <span class="comment">/* 如果滾動的物件捲動 &gt; 500 則觸發指定的動作。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="注意：window本身沒有scrollTop-Left這個屬性，所以window-scrollTop是undefined的"><a href="#注意：window本身沒有scrollTop-Left這個屬性，所以window-scrollTop是undefined的" class="headerlink" title="注意：window本身沒有scrollTop/Left這個屬性，所以window.scrollTop是undefined的"></a>注意：window本身沒有scrollTop/Left這個屬性，所以window.scrollTop是undefined的</h4><p>所以可能要從body、document來取得</p>
+<h4 id="本段落語法："><a href="#本段落語法：" class="headerlink" title="本段落語法："></a>本段落語法：</h4><ul>
+<li>上述說明各視窗高度得解釋，在此if判斷式中<code>scrollTop + clientHeight &gt;= scrollHeight - 5</code>來計算，當捲軸捲到該位置時，要呈現載入畫面</li>
+<li>接著根據載入畫面函式，來放入載入以及呈現接續畫面得設定<ul>
+<li>使用<code>setTimeout()</code>，在1秒後消除載入圖示，接著在300毫秒後，馬上換頁執行載入新資料</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="variable language_">window</span>).<span class="title function_">scroll</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> scrollTop = $(<span class="variable language_">this</span>).<span class="title function_">scrollTop</span>();</span><br><span class="line">  <span class="keyword">var</span> scrollHeight = $(<span class="string">&#x27;body&#x27;</span>).<span class="title function_">prop</span>(<span class="string">&quot;scrollHeight&quot;</span>);</span><br><span class="line">  <span class="comment">//一樣 var scrollHeight2 = document.documentElement.scrollHeight;</span></span><br><span class="line">  <span class="keyword">var</span> clientHeight = <span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">clientHeight</span>;</span><br><span class="line">  <span class="comment">//https://stackoverflow.com/questions/10423759/plain-javascript-to-jquery-clientheight</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// console.log(&#x27;scrollTop:&#x27;, scrollTop);</span></span><br><span class="line">  <span class="comment">// console.log(&#x27;scrollHeight:&#x27;, scrollHeight);</span></span><br><span class="line">  <span class="comment">// console.log(&#x27;clientHeight:&#x27;, clientHeight);</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (scrollTop + clientHeight &gt;= scrollHeight - <span class="number">5</span>) &#123;</span><br><span class="line">    <span class="comment">//console.log(&#x27;show up 123&#x27;)</span></span><br><span class="line">    <span class="title function_">showLoading</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//顯示載入圖示，並取得更多串接資料</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showLoading</span>(<span class="params"></span>) &#123;</span><br><span class="line">  $(<span class="string">&#x27;.loader&#x27;</span>).<span class="title function_">addClass</span>(<span class="string">&#x27;show&#x27;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">    $(<span class="string">&#x27;.loader&#x27;</span>).<span class="title function_">removeClass</span>(<span class="string">&#x27;show&#x27;</span>);</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      page++;</span><br><span class="line">      <span class="title function_">doAjax</span>();</span><br><span class="line">    &#125;, <span class="number">300</span>);</span><br><span class="line"></span><br><span class="line">  &#125;, <span class="number">1000</span>);  <span class="comment">//1秒之後消失</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>參考資料：<br><a target="_blank" rel="noopener" href="https://pjchender.blogspot.com/2015/04/jquery.html">[筆記] 計算網頁底部位置，當網頁達到底部時才產生效果─jQuery</a><br><a target="_blank" rel="noopener" href="https://shubo.io/element-size-scrolling/#%E7%84%A1%E9%99%90%E6%8D%B2%E5%8B%95-infinite-scroll">一次搞懂 clientHeight/scrollHeight/scrollTop的區別</a><br><a target="_blank" rel="noopener" href="https://kuro.tw/posts/2019/02/23/%E8%AB%87%E8%AB%87-JavaScript-%E7%9A%84-setTimeout-%E8%88%87-setInterval/">談談 JavaScript 的 setTimeout 與 setInterval</a></p>
+<h3 id="4-篩選輸入框資料"><a href="#4-篩選輸入框資料" class="headerlink" title="4.篩選輸入框資料"></a>4.篩選輸入框資料</h3><ul>
+<li>綁定事件為<code>.keyup</code>指放開鍵盤的那個剎那，觸發該事件</li>
+<li>執行的函式內容為：<ul>
+<li><code>var text</code>取得輸入值並轉為小寫</li>
+<li>利用迴圈，去搜尋關鍵字，判斷，值轉為小寫文字的內容是否符合條件</li>
+<li>-1 ：意指條件不符合</li>
+<li><code>indexOf()</code> 方法用來判斷字串字串變數中是否包含某字串。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//輸入框搜尋//https://makitweb.com/jquery-search-text-in-the-element-with-contains-selector/  (=&gt;Loop all .content )</span></span><br><span class="line">  $(<span class="string">&#x27;#filter&#x27;</span>).<span class="title function_">keyup</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Search text</span></span><br><span class="line">    <span class="keyword">var</span> text = $(<span class="string">&#x27;#filter&#x27;</span>).<span class="title function_">val</span>().<span class="title function_">toLowerCase</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Hide all content class element</span></span><br><span class="line">    $(<span class="string">&#x27;.post&#x27;</span>).<span class="title function_">hide</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Search </span></span><br><span class="line">    $(<span class="string">&#x27;.post&#x27;</span>).<span class="title function_">each</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> ($(<span class="variable language_">this</span>).<span class="title function_">text</span>().<span class="title function_">toLowerCase</span>().<span class="title function_">indexOf</span>(<span class="string">&quot;&quot;</span> + text + <span class="string">&quot;&quot;</span>) != -<span class="number">1</span>) &#123;</span><br><span class="line">        $(<span class="variable language_">this</span>).<span class="title function_">closest</span>(<span class="string">&#x27;.post&#x27;</span>).<span class="title function_">show</span>();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>參考資料：<br><a target="_blank" rel="noopener" href="https://medium.com/@yitailin/%E6%AF%94%E8%BC%83-keydown-keypress-keyup-%E7%9A%84%E5%B7%AE%E7%95%B0-4e873ba17e81">比較 keydown, keypress, keyup 的差異</a><br><a target="_blank" rel="noopener" href="https://makitweb.com/jquery-search-text-in-the-element-with-contains-selector/">jQuery – Search text in the Element with :contains() Selector</a><br><a target="_blank" rel="noopener" href="https://www.fooish.com/javascript/string/indexOf.html">JavaScript String indexOf()</a></p>
+<hr>
+<p>補充參考：<br><a target="_blank" rel="noopener" href="https://whien.medium.com/js20min-day-20-ajax-%E9%9D%9E%E5%90%8C%E6%AD%A5%E8%99%95%E7%90%86-asynchronous-javascript-and-xml-e74a059ab639">JS20min Day — 20 AJAX 非同步處理 (Asynchronous JavaScript and XML)</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=NOprCnnjHm0">回呼函式 Callbacks、Promises 物件、Async/Await 非同步流程控制 - 彭彭直播 at 2019/04/07</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JS/" rel="tag"># JS</a>
+              <a href="/tags/ajax/" rel="tag"># ajax </a>
+              <a href="/tags/setTimeout/" rel="tag"># setTimeout</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/15/js-DOMArrayMethods/" rel="prev" title="JS實作- DOM Array Methods">
+      <i class="fa fa-chevron-left"></i> JS實作- DOM Array Methods
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/16/js-countDown/" rel="next" title="JS實作- 新年倒數">
+      JS實作- 新年倒數 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%80%E5%AF%9F%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">觀察功能需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css%E9%83%A8%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">css部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%A3%BD%E4%BD%9C%E5%B7%A6%E4%B8%8A%E6%96%B9%EF%BC%8C%E6%95%B8%E5%AD%97"><span class="nav-number">2.1.</span> <span class="nav-text">1.製作左上方，數字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%BC%89%E5%85%A5%E7%95%AB%E9%9D%A2%E7%9A%84%E5%8E%9F%E9%BB%9E%E5%9C%96%E7%A4%BA"><span class="nav-number">2.2.</span> <span class="nav-text">2.載入畫面的原點圖示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#js%E9%83%A8%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">js部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-jsonplaceholder"><span class="nav-number">3.1.</span> <span class="nav-text">1.jsonplaceholder:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8ajax%E4%B8%B2%E6%8E%A5API"><span class="nav-number">3.2.</span> <span class="nav-text">2.使用ajax串接API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8jQuery%E5%89%B5%E9%80%A0div"><span class="nav-number">3.3.</span> <span class="nav-text">使用jQuery創造div</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#each"><span class="nav-number">3.3.1.</span> <span class="nav-text">each()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Infinite-Scroll%E7%84%A1%E9%99%90%E6%8D%B2%E5%8B%95-%E7%80%91%E5%B8%83%E6%B5%81"><span class="nav-number">3.4.</span> <span class="nav-text">3.Infinite Scroll無限捲動(瀑布流)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9Awindow%E6%9C%AC%E8%BA%AB%E6%B2%92%E6%9C%89scrollTop-Left%E9%80%99%E5%80%8B%E5%B1%AC%E6%80%A7%EF%BC%8C%E6%89%80%E4%BB%A5window-scrollTop%E6%98%AFundefined%E7%9A%84"><span class="nav-number">3.4.1.</span> <span class="nav-text">注意：window本身沒有scrollTop&#x2F;Left這個屬性，所以window.scrollTop是undefined的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E6%AE%B5%E8%90%BD%E8%AA%9E%E6%B3%95%EF%BC%9A"><span class="nav-number">3.4.2.</span> <span class="nav-text">本段落語法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%AF%A9%E9%81%B8%E8%BC%B8%E5%85%A5%E6%A1%86%E8%B3%87%E6%96%99"><span class="nav-number">3.5.</span> <span class="nav-text">4.篩選輸入框資料</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前段時間練習了一些 React 的基礎，對於 JSX 以及一些 hook 的用法比較有概念，所以就以 Bruce 的 React 課程實作再來練習，樣式部分以 Tailwind 為主此外也搭配 TS 來撰寫。 1. Header 製作 IGHeader 元件，因為到不同頁面都會有 header 存在，所以可以將它放在外面的共用元件。  123456789101112131415161718192">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React - 建立元件">
+<meta property="og:url" content="https://eva813.github.io/2022/11/22/react-component/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="前段時間練習了一些 React 的基礎，對於 JSX 以及一些 hook 的用法比較有概念，所以就以 Bruce 的 React 課程實作再來練習，樣式部分以 Tailwind 為主此外也搭配 TS 來撰寫。 1. Header 製作 IGHeader 元件，因為到不同頁面都會有 header 存在，所以可以將它放在外面的共用元件。  123456789101112131415161718192">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/VykOAkm.png">
+<meta property="og:image" content="https://i.imgur.com/jzE9sAZ.png">
+<meta property="og:image" content="https://i.imgur.com/x16ZQBu.png">
+<meta property="og:image" content="https://i.imgur.com/HMvp7dy.jpg">
+<meta property="og:image" content="https://i.imgur.com/0nIA31V.png">
+<meta property="article:published_time" content="2022-11-22T02:36:50.000Z">
+<meta property="article:modified_time" content="2022-11-26T10:15:38.217Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/VykOAkm.png">
+
+<link rel="canonical" href="https://eva813.github.io/2022/11/22/react-component/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>React - 建立元件 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/11/22/react-component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React - 建立元件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-22 10:36:50" itemprop="dateCreated datePublished" datetime="2022-11-22T10:36:50+08:00">2022-11-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-26 18:15:38" itemprop="dateModified" datetime="2022-11-26T18:15:38+08:00">2022-11-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://i.imgur.com/VykOAkm.png" alt=""></p>
+<p>前段時間練習了一些 React 的基礎，對於 JSX 以及一些 hook 的用法比較有概念，所以就以 Bruce 的 React 課程實作再來練習，樣式部分以 Tailwind 為主此外也搭配 TS 來撰寫。</p>
+<h2 id="1-Header"><a href="#1-Header" class="headerlink" title="1. Header"></a>1. Header</h2><ul>
+<li>製作 IGHeader 元件，因為到不同頁面都會有 header 存在，所以可以將它放在外面的共用元件。</li>
+</ul>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">IGHeader</span>: <span class="title class_">React</span>.<span class="property">FC</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> go = <span class="title function_">useNavigate</span>()</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">header</span> <span class="attr">className</span>=<span class="string">&quot;sticky top-0 border-b-[1px] bg-white border-gray-300 &quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;flex justify-between items-center h-[60px] px-2 lg:max-w-[1024px] lg:mx-auto lg:px-0&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">img</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">className</span>=<span class="string">&quot;w-[100px] cursor-pointer&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">src</span>=<span class="string">&quot;/images/logo.svg&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        /&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;flex&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">svg</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2000/svg&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">className</span>=<span class="string">&quot;h-6 w-6 mr-4 cursor-pointer&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">fill</span>=<span class="string">&quot;none&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">viewBox</span>=<span class="string">&quot;0 0 24 24&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">stroke</span>=<span class="string">&quot;currentColor&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> go(&#x27;/&#x27;)&#125;</span></span><br><span class="line"><span class="language-xml">          &gt;</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">path</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeLinecap</span>=<span class="string">&quot;round&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeLinejoin</span>=<span class="string">&quot;round&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeWidth</span>=<span class="string">&#123;2&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">d</span>=<span class="string">&quot;M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            /&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">svg</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2000/svg&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">className</span>=<span class="string">&quot;h-6 w-6 mr-4 cursor-pointer&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">fill</span>=<span class="string">&quot;none&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">viewBox</span>=<span class="string">&quot;0 0 24 24&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">stroke</span>=<span class="string">&quot;currentColor&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> go(&#x27;/following&#x27;)&#125;</span></span><br><span class="line"><span class="language-xml">          &gt;</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">path</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeLinecap</span>=<span class="string">&quot;round&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeLinejoin</span>=<span class="string">&quot;round&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeWidth</span>=<span class="string">&#123;2&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">d</span>=<span class="string">&quot;M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            /&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot; h-6 w-6 text-white  bg-gray-900  font-bold flex  rounded-full justify-center items-center&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            E</span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-IGContainer"><a href="#2-IGContainer" class="headerlink" title="2. IGContainer"></a>2. IGContainer</h2><p>頁面佈局設定，除了 限時動態頁面會呈現外，在追蹤者頁面也會使用到</p>
+<ul>
+<li>使用 Tailwind 設定左右版面以及當螢幕不同尺寸的設定</li>
+<li>將樣式寫在(style.div 裏面)，作為一個組件 export 出去</li>
+</ul>
+<h2 id="3-限時動態列表（IGStory）"><a href="#3-限時動態列表（IGStory）" class="headerlink" title="3. 限時動態列表（IGStory）"></a>3. 限時動態列表（IGStory）</h2><p> <img src="https://i.imgur.com/jzE9sAZ.png" alt=""></p>
+<ul>
+<li>因隸屬於 home 裡面的位置，所以可以將檔案，放在 home 資料夾中，屬於 home 中的組件<br>//通常在一份專案中不用引入兩個 css 框架<br>實作：<ol start="2">
+<li>List Container 的容器<br><a target="_blank" rel="noopener" href="https://tailwindcss.com/docs/overflow#scrolling-horizontally-if-needed">文件</a></li>
+</ol>
+<ul>
+<li>在組建內部要使用 JS 相關的邏輯的寫法，要在要面用大括號刮起來</li>
+<li>每一個小圖都是一個 item ，所以可以先製作組件</li>
+</ul>
+</li>
+</ul>
+<h3 id="限時動態-item-組件"><a href="#限時動態-item-組件" class="headerlink" title="限時動態 item 組件"></a>限時動態 item 組件</h3><ul>
+<li>此組件建立其中的小項目</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"></span><br><span class="line">type <span class="title class_">ItemProps</span> = &#123;</span><br><span class="line">  <span class="attr">name</span>: string;</span><br><span class="line">  <span class="attr">avatar</span>: string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Item</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;<span class="title class_">ItemProps</span>&gt; = <span class="function">(<span class="params">&#123; name, avatar &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot; text-center &quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot; rounded-full w-[56px] h-[56px] ring-2 border-2 border-white ring-red-500 mx-[11px] p-[3px] &quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">style</span>=<span class="string">&#123;&#123;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundImage:</span> `<span class="attr">url</span>($&#123;<span class="attr">avatar</span>&#125;)`,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundPosition:</span> &quot;<span class="attr">center</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundSize:</span> &quot;<span class="attr">cover</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        &#125;&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-xs mt-1&quot;</span>&gt;</span>&#123;name&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">Item</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="外層"><a href="#外層" class="headerlink" title="外層"></a>外層</h3><ul>
+<li>在外層的主要檔案，就是將模板建立好，讓 item 可以 map 進去</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">IGStory</span>: <span class="title class_">React</span>.<span class="property">FC</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> storyData = [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;bruce_fe&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a1.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;max&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a2.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;fm&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a3.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">4</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;joanne&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a4.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">5</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;focus&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a5.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">6</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;louis&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a6.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">7</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;alvin&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a7.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">8</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;grace&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a8.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">9</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;rance&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a9.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">10</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;bruce_fe&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a10.png&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#x27;w-full flex items-center h-[110px] box-border overflow-x-auto overflow-y-hidden no-scrollbar  shadow-md lg:my-8&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;/* <span class="tag">&lt;<span class="name">Item</span> <span class="attr">name</span>=<span class="string">&quot;Mike&quot;</span> <span class="attr">avatar</span>=<span class="string">&#x27;/images/avatars/a1.png&#x27;</span> /&gt;</span> */&#125;</span></span><br><span class="line"><span class="language-xml">      &#123;</span></span><br><span class="line"><span class="language-xml">        storyData?.map((item) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">          const &#123; id, name, avatar &#125; = item</span></span><br><span class="line"><span class="language-xml">          return <span class="tag">&lt;<span class="name">Item</span> <span class="attr">key</span>=<span class="string">&#123;id&#125;</span> <span class="attr">name</span>=<span class="string">&#123;name&#125;</span> <span class="attr">avatar</span>=<span class="string">&#123;avatar&#125;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">        &#125;)</span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">IGStory</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-User-組件"><a href="#3-User-組件" class="headerlink" title="3. User 組件"></a>3. User 組件</h2><ul>
+<li>使用者資訊表，在不同區塊都有重複出現，所以可以抽成共用組件</li>
+<li>現定義好 props 的型別</li>
+<li>依照藥的版型來切出樣貌，將變數帶入</li>
+</ul>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">IGUserProps</span> = &#123;</span><br><span class="line">  size?: <span class="string">&quot;medium&quot;</span> | <span class="string">&quot;small&quot;</span>;</span><br><span class="line">  showFollow?: <span class="built_in">boolean</span>;</span><br><span class="line">  isFollowing?: <span class="built_in">boolean</span>;</span><br><span class="line">  account?: <span class="built_in">string</span>;</span><br><span class="line">  location?: <span class="built_in">string</span>;</span><br><span class="line">  avatar?: <span class="built_in">string</span>;</span><br><span class="line">  id?: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">IGUser</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;<span class="title class_">IGUserProps</span>&gt; = <span class="function">(<span class="params">&#123;</span></span></span><br><span class="line"><span class="params"><span class="function">  size = <span class="string">&quot;small&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  showFollow = <span class="literal">false</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  isFollowing = <span class="literal">false</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  account,</span></span></span><br><span class="line"><span class="params"><span class="function">  location,</span></span></span><br><span class="line"><span class="params"><span class="function">  avatar,</span></span></span><br><span class="line"><span class="params"><span class="function">  id,</span></span></span><br><span class="line"><span class="params"><span class="function">&#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line"></span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;flex h-[70px] items-center box-border px-4 &quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;</span>`$&#123;<span class="attr">size</span> === <span class="string">&quot;small&quot;</span> ? &quot;<span class="attr">w-</span>[<span class="attr">40px</span>] <span class="attr">h-</span>[<span class="attr">40px</span>]&quot; <span class="attr">:</span> &quot;<span class="attr">w-</span>[<span class="attr">60px</span>] <span class="attr">h-</span>[<span class="attr">60px</span>]&quot;&#125; <span class="attr">overflow-hidden</span> <span class="attr">rounded-full</span> `&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">style</span>=<span class="string">&#123;&#123;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundImage:</span> `<span class="attr">url</span>($&#123;<span class="attr">avatar</span>&#125;)`,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundPosition:</span> &quot;<span class="attr">center</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundSize:</span> &quot;<span class="attr">cover</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      &gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;ml-4&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-sm font-bold&quot;</span>&gt;</span>&#123;account&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-gray-400&quot;</span>&gt;</span>&#123;location&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;showFollow &amp;&amp; (</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">className</span>=<span class="string">&#123;</span>`$&#123;<span class="attr">isFollowing</span> ? &quot;<span class="attr">text-gray-700</span>&quot; <span class="attr">:</span> &quot;<span class="attr">text-blue-400</span>&quot;&#125; <span class="attr">text-xs</span> <span class="attr">ml-auto</span> <span class="attr">cursor-pointer</span> <span class="attr">font-bold</span>`&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        &gt;</span> &#123;isFollowing ? &quot;FOLLOWING&quot; : &quot;FOLLOW&quot;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      )</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>memo 對於重複渲染，效能優化使用</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10252827">border-box</a></p>
+<p><img src="https://i.imgur.com/x16ZQBu.png" alt=""></p>
+<h2 id="post-組件"><a href="#post-組件" class="headerlink" title="post 組件"></a>post 組件</h2><p> <img src="https://i.imgur.com/HMvp7dy.jpg" alt=""></p>
+<ul>
+<li>分為三個部分</li>
+</ul>
+<ol>
+<li>user</li>
+</ol>
+<ul>
+<li>可以使用前面所製作的 user 組件</li>
+</ul>
+<ol start="2">
+<li>img</li>
+</ol>
+<ul>
+<li>直接放入該項圖片</li>
+</ul>
+<ol start="3">
+<li>評論區</li>
+</ol>
+<ul>
+<li>也可以製作成小組件，最後再放入 post 組件</li>
+<li>注意傳入 props 要先設定好傳入的型別</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"></span><br><span class="line">type <span class="title class_">CommentsProps</span> = &#123;</span><br><span class="line">  <span class="attr">likes</span>: number;</span><br><span class="line">  <span class="attr">description</span>: string;</span><br><span class="line">  <span class="attr">hashTags</span>: string;</span><br><span class="line">  <span class="attr">createTime</span>: string;</span><br><span class="line">  <span class="attr">account</span>: string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Comments</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;<span class="title class_">CommentsProps</span>&gt; = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    likes,</span></span></span><br><span class="line"><span class="params"><span class="function">    description,</span></span></span><br><span class="line"><span class="params"><span class="function">    hashTags,</span></span></span><br><span class="line"><span class="params"><span class="function">    createTime,</span></span></span><br><span class="line"><span class="params"><span class="function">    account,</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#x27;px-4&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#x27;flex items-center justify-between box-border my-4&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#x27;flex py-1&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          // svg</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&#x27;text-sm font-bold&#x27;</span>&gt;</span>&#123;likes&#125; likes<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&#x27;text-sm font-bold&#x27;</span>&gt;</span>&#123;description&#125; <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&#x27;text-blue-400 font-bold&#x27;</span>&gt;</span>&#123;hashTags&#125; <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&#x27;text-gray-400 font-[500] text-xs mt-2&#x27;</span>&gt;</span>View all 999 comments <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-gray-400 text-[10px] mt-1&quot;</span>&gt;</span>&#123;createTime&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  )</span></span><br><span class="line"><span class="language-xml">&#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="profile-區塊"><a href="#profile-區塊" class="headerlink" title="profile 區塊"></a>profile 區塊</h2><ul>
+<li><p>實作快速，直接做出簡易的版面</p>
+</li>
+<li><p>套用前面所做的 IGUser 即可以使用</p>
+<p><img src="https://i.imgur.com/0nIA31V.png" alt=""></p>
+</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">IGUser</span> <span class="keyword">from</span> <span class="string">&quot;components/IGUser&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">IGProfile</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> followingList = [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">location</span>: <span class="string">&quot;Singapore&quot;</span>,</span><br><span class="line">      <span class="attr">account</span>: <span class="string">&quot;max_999&quot;</span>,</span><br><span class="line">      <span class="attr">isFollowing</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">avatar</span>: <span class="string">&quot;/images/avatars/a1.png&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="attr">location</span>: <span class="string">&quot;Singapore&quot;</span>,</span><br><span class="line">      <span class="attr">account</span>: <span class="string">&quot;fm_999&quot;</span>,</span><br><span class="line">      <span class="attr">isFollowing</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">avatar</span>: <span class="string">&quot;/images/avatars/a2.png&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="attr">location</span>: <span class="string">&quot;Singapore&quot;</span>,</span><br><span class="line">      <span class="attr">account</span>: <span class="string">&quot;joanne_999&quot;</span>,</span><br><span class="line">      <span class="attr">isFollowing</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">avatar</span>: <span class="string">&quot;/images/avatars/a3.png&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">4</span>,</span><br><span class="line">      <span class="attr">location</span>: <span class="string">&quot;Singapore&quot;</span>,</span><br><span class="line">      <span class="attr">account</span>: <span class="string">&quot;focus_999&quot;</span>,</span><br><span class="line">      <span class="attr">isFollowing</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">avatar</span>: <span class="string">&quot;/images/avatars/a4.png&quot;</span>,</span><br><span class="line">    &#125;,]</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;mt-8 ml-6 border-box shadow-md px-4&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">IGUser</span> <span class="attr">size</span>=<span class="string">&#x27;medium&#x27;</span> <span class="attr">account</span>=<span class="string">&#x27;Tmommy_0814&#x27;</span> <span class="attr">avatar</span>=<span class="string">&quot;/images/avatar.png&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-gray-400 px-4 mt-2&quot;</span>&gt;</span>You are Following<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> &gt;</span></span></span><br><span class="line"><span class="language-xml">        &#123;</span></span><br><span class="line"><span class="language-xml">          followingList?.map((item) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">            const &#123; location, account, isFollowing, avatar, id &#125; = item</span></span><br><span class="line"><span class="language-xml">            return <span class="tag">&lt;<span class="name">IGUser</span> <span class="attr">location</span>=<span class="string">&#123;location&#125;</span> <span class="attr">account</span>=<span class="string">&#123;account&#125;</span> <span class="attr">isFollowing</span>=<span class="string">&#123;isFollowing&#125;</span> <span class="attr">avatar</span>=<span class="string">&#123;avatar&#125;</span> <span class="attr">key</span>=<span class="string">&#123;id&#125;</span> <span class="attr">showFollow</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">          &#125;)</span></span><br><span class="line"><span class="language-xml">        &#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">IGProfile</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>此次練習在使用 Tailwind 有些不習慣，主要是在於要稍微記得他的關鍵字並去文件查找屬性來應用，待使用到第三的區塊切版時就變得快速些～<br>另外，使用在課程中 Bruce 也會去說明每個區塊的切割以及重用性，可以將檔案分別放在哪個檔案，以利未來維護。<br>過去可能拿版面並未想太多，或是沒有多餘時間分析每一頁面的某些區塊是否有重複，我們可以依據建立開關或傳入的資料區紹維變動下版面，就可以達到一起使用 component 的效果。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/React/" rel="tag"># React</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/10/leetcode-Majority-Element/" rel="prev" title="刷題練習 - Majority Element">
+      <i class="fa fa-chevron-left"></i> 刷題練習 - Majority Element
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/01/ReduxToolkit/" rel="next" title="Redux Toolkit">
+      Redux Toolkit <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Header"><span class="nav-number">1.</span> <span class="nav-text">1. Header</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-IGContainer"><span class="nav-number">2.</span> <span class="nav-text">2. IGContainer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%99%90%E6%99%82%E5%8B%95%E6%85%8B%E5%88%97%E8%A1%A8%EF%BC%88IGStory%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">3. 限時動態列表（IGStory）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%90%E6%99%82%E5%8B%95%E6%85%8B-item-%E7%B5%84%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">限時動態 item 組件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E5%B1%A4"><span class="nav-number">3.2.</span> <span class="nav-text">外層</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-User-%E7%B5%84%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">3. User 組件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#post-%E7%B5%84%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">post 組件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#profile-%E5%8D%80%E5%A1%8A"><span class="nav-number">6.</span> <span class="nav-text">profile 區塊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%B5%90"><span class="nav-number">7.</span> <span class="nav-text">小結</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

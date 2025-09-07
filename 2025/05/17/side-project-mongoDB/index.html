@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在開發 SaaS 或工具型應用時，「使用者驗證系統」往往是關鍵基礎設施。這篇文章將分享我如何使用 Next.js（App Router）+ MongoDB + NextAuth，同時支援 Google OAuth 和 自定義帳密登入，並分享專案 mongoDB 資料結構與 API 架構。 MongoDB 資料模型設計為了支援多元登入方式，我設計了以下幾個集合（Collections）：  user">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Next.js API 與 MongoDB 設計實作：整合 NextAuth 多元驗證方式（Credentials + OAuth）">
+<meta property="og:url" content="https://eva813.github.io/2025/05/17/side-project-mongoDB/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="在開發 SaaS 或工具型應用時，「使用者驗證系統」往往是關鍵基礎設施。這篇文章將分享我如何使用 Next.js（App Router）+ MongoDB + NextAuth，同時支援 Google OAuth 和 自定義帳密登入，並分享專案 mongoDB 資料結構與 API 架構。 MongoDB 資料模型設計為了支援多元登入方式，我設計了以下幾個集合（Collections）：  user">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-05-17T10:23:24.000Z">
+<meta property="article:modified_time" content="2025-09-07T01:00:44.318Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="Next.js">
+<meta property="article:tag" content="side-project">
+<meta property="article:tag" content="MongoDB">
+<meta property="article:tag" content="NextAuth">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2025/05/17/side-project-mongoDB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Next.js API 與 MongoDB 設計實作：整合 NextAuth 多元驗證方式（Credentials + OAuth） | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/05/17/side-project-mongoDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Next.js API 與 MongoDB 設計實作：整合 NextAuth 多元驗證方式（Credentials + OAuth）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-17 18:23:24" itemprop="dateCreated datePublished" datetime="2025-05-17T18:23:24+08:00">2025-05-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-09-07 09:00:44" itemprop="dateModified" datetime="2025-09-07T09:00:44+08:00">2025-09-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/side-project/" itemprop="url" rel="index"><span itemprop="name">side-project</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在開發 SaaS 或工具型應用時，「使用者驗證系統」往往是關鍵基礎設施。這篇文章將分享我如何使用 Next.js（App Router）+ MongoDB + NextAuth，同時支援 Google OAuth 和 自定義帳密登入，並分享專案 mongoDB 資料結構與 API 架構。</p>
+<h2 id="MongoDB-資料模型設計"><a href="#MongoDB-資料模型設計" class="headerlink" title="MongoDB 資料模型設計"></a>MongoDB 資料模型設計</h2><p>為了支援多元登入方式，我設計了以下幾個集合（Collections）：</p>
+<ol>
+<li>users - 使用者基本資訊</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  _id<span class="punctuation">:</span> ObjectId<span class="punctuation">,</span></span><br><span class="line">  email<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">  name<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">  createdAt<span class="punctuation">:</span> Date<span class="punctuation">,</span></span><br><span class="line">  updatedAt<span class="punctuation">:</span> Date</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>authProviders - 自定義驗證方式（帳密）</li>
+</ol>
+<span id="more"></span>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  userId<span class="punctuation">:</span> ObjectId<span class="punctuation">,</span> <span class="comment">// 關聯到 users._id</span></span><br><span class="line">  type<span class="punctuation">:</span> <span class="string">&quot;credentials&quot;</span><span class="punctuation">,</span></span><br><span class="line">  passwordHash<span class="punctuation">:</span> String<span class="punctuation">,</span> <span class="comment">// bcrypt 加密</span></span><br><span class="line">  createdAt<span class="punctuation">:</span> Date<span class="punctuation">,</span></span><br><span class="line">  updatedAt<span class="punctuation">:</span> Date</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>folders - 使用者資料夾</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  _id<span class="punctuation">:</span> ObjectId<span class="punctuation">,</span></span><br><span class="line">  userId<span class="punctuation">:</span> ObjectId<span class="punctuation">,</span></span><br><span class="line">  name<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">  description<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">  createdAt<span class="punctuation">:</span> Date<span class="punctuation">,</span></span><br><span class="line">  updatedAt<span class="punctuation">:</span> Date</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>snippets </li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  _id<span class="punctuation">:</span> ObjectId<span class="punctuation">,</span></span><br><span class="line">  userId<span class="punctuation">:</span> ObjectId<span class="punctuation">,</span></span><br><span class="line">  folderId<span class="punctuation">:</span> ObjectId<span class="punctuation">,</span></span><br><span class="line">  name<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">  content<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">  shortcut<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">  createdAt<span class="punctuation">:</span> Date<span class="punctuation">,</span></span><br><span class="line">  updatedAt<span class="punctuation">:</span> Date</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="NextAuth-與驗證流程設計"><a href="#NextAuth-與驗證流程設計" class="headerlink" title="NextAuth 與驗證流程設計"></a>NextAuth 與驗證流程設計</h2><p>在這個專案中，我將登入驗證分為兩條路徑：</p>
+<table>
+<thead>
+<tr>
+<th>驗證方式</th>
+<th>實作方式</th>
+<th>資料表使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Google 登入</td>
+<td>NextAuth OAuth Provider</td>
+<td><code>accounts</code> (NextAuth 自動建立)</td>
+</tr>
+<tr>
+<td>帳號密碼</td>
+<td>自定義 API + bcrypt 驗證</td>
+<td><code>authProviders</code></td>
+</tr>
+</tbody></table>
+<h2 id="NextAuth"><a href="#NextAuth" class="headerlink" title="NextAuth"></a>NextAuth</h2><p>使用 NextAuth 搭配 Google 登入時，NextAuth 會自動在資料庫中建立並管理一個 accounts collection（資料表）</p>
+<p>這是 NextAuth 的內建行為，用來儲存與第三方驗證（如 Google、GitHub 等）相關的資訊。</p>
+<p>下面詳細解說 NextAuth 如何使用 MongoDB 中的 <code>accounts</code> collection：</p>
+<h3 id="NextAuth-自動建立的-Collections"><a href="#NextAuth-自動建立的-Collections" class="headerlink" title="NextAuth 自動建立的 Collections"></a>NextAuth 自動建立的 Collections</h3><p>當使用 NextAuth 與 MongoDB 整合時，NextAuth 會建立 <strong><code>accounts</code></strong>：儲存第三方驗證資訊</p>
+<h3 id="accounts-Collection-的結構"><a href="#accounts-Collection-的結構" class="headerlink" title="accounts Collection 的結構"></a><code>accounts</code> Collection 的結構</h3><p>當使用者透過 Google 登入時，NextAuth 會在 <code>accounts</code> collection 中建立一筆資料，結構如下：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;_id&quot;</span>: <span class="string">&quot;ObjectId&quot;</span>,</span><br><span class="line">  <span class="string">&quot;userId&quot;</span>: <span class="string">&quot;ObjectId&quot;</span>, <span class="comment">// 關聯到 users collection 中的使用者</span></span><br><span class="line">  <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;google&quot;</span>, <span class="comment">// 驗證提供者，例如 google, github</span></span><br><span class="line">  <span class="string">&quot;providerAccountId&quot;</span>: <span class="string">&quot;google-account-id&quot;</span>, <span class="comment">// Google 提供的帳號 ID</span></span><br><span class="line">  <span class="string">&quot;type&quot;</span>: <span class="string">&quot;oauth&quot;</span>, <span class="comment">// 驗證類型</span></span><br><span class="line">  <span class="string">&quot;access_token&quot;</span>: <span class="string">&quot;google-access-token&quot;</span>,</span><br><span class="line">  <span class="string">&quot;id_token&quot;</span>: <span class="string">&quot;google-id-token&quot;</span>,</span><br><span class="line">  <span class="string">&quot;refresh_token&quot;</span>: <span class="string">&quot;google-refresh-token&quot;</span>,</span><br><span class="line">  <span class="string">&quot;expires_at&quot;</span>: <span class="number">1683500000</span>, <span class="comment">// Token 過期時間</span></span><br><span class="line">  <span class="string">&quot;scope&quot;</span>: <span class="string">&quot;email profile&quot;</span>,</span><br><span class="line">  <span class="string">&quot;token_type&quot;</span>: <span class="string">&quot;Bearer&quot;</span>,</span><br><span class="line">  <span class="string">&quot;session_state&quot;</span>: <span class="string">&quot;session-state&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="與自定義-authProviders-的區別"><a href="#與自定義-authProviders-的區別" class="headerlink" title="與自定義 authProviders 的區別"></a>與自定義 <code>authProviders</code> 的區別</h3><p>NextAuth 自動建立的 <code>accounts</code> collection 與自定義的 <code>authProviders</code> collection 有以下區別：</p>
+<ol>
+<li><strong><code>accounts</code></strong>：由 NextAuth 自動管理，專門用於第三方驗證（如 Google、GitHub 等）。</li>
+<li><strong><code>authProviders</code></strong>：由你自定義，專門用於自己實現的驗證方式（如帳號密碼）。</li>
+</ol>
+<p>在你目前的登入 API 執行流程中（如 route.ts 檔案所示），你使用 <code>authProviders</code> collection 來儲存和驗證使用者的密碼：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> authProvider = <span class="keyword">await</span> db</span><br><span class="line">  .<span class="title function_">collection</span>(<span class="string">&quot;authProviders&quot;</span>)</span><br><span class="line">  .<span class="title function_">findOne</span>(&#123; <span class="attr">userId</span>: user.<span class="property">_id</span>, <span class="attr">type</span>: <span class="string">&quot;credentials&quot;</span> &#125;);</span><br><span class="line"><span class="keyword">if</span> (!authProvider || !authProvider.<span class="property">passwordHash</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">NextResponse</span>.<span class="title function_">json</span>(</span><br><span class="line">    &#123; <span class="attr">message</span>: <span class="string">&quot;invalid credentials&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">status</span>: <span class="number">401</span> &#125;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="NextAuth-整合設計"><a href="#NextAuth-整合設計" class="headerlink" title="NextAuth 整合設計"></a>NextAuth 整合設計</h3><p> 使用 MongoDB Adapter</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// src/app/api/auth/[...nextauth]/route.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">MongoDBAdapter</span> &#125; <span class="keyword">from</span> <span class="string">&quot;@auth/mongodb-adapter&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> handler = <span class="title class_">NextAuth</span>(&#123;</span><br><span class="line">  <span class="attr">adapter</span>: <span class="title class_">MongoDBAdapter</span>(clientPromise, &#123;</span><br><span class="line">    <span class="attr">databaseName</span>: process.<span class="property">env</span>.<span class="property">MONGODB_DB</span> || <span class="string">&quot;snippets-auth&quot;</span>,</span><br><span class="line">  &#125;),</span><br><span class="line">  ...</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="支援多種-Provider"><a href="#支援多種-Provider" class="headerlink" title="支援多種 Provider"></a>支援多種 Provider</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">providers</span>: [</span><br><span class="line">  <span class="title class_">CredentialsProvider</span>(&#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;Credentials&quot;</span>,</span><br><span class="line">    <span class="attr">authorize</span>: <span class="keyword">async</span> (credentials) =&gt; &#123;</span><br><span class="line">      <span class="comment">// 自定義帳密驗證邏輯</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;),</span><br><span class="line">  <span class="title class_">GoogleProvider</span>(&#123;</span><br><span class="line">    <span class="attr">clientId</span>: process.<span class="property">env</span>.<span class="property">GOOGLE_CLIENT_ID</span>!,</span><br><span class="line">    <span class="attr">clientSecret</span>: process.<span class="property">env</span>.<span class="property">GOOGLE_CLIENT_SECRET</span>!,</span><br><span class="line">  &#125;),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定義-JWT-與-Session-回傳資料"><a href="#自定義-JWT-與-Session-回傳資料" class="headerlink" title="自定義 JWT 與 Session 回傳資料"></a>自定義 JWT 與 Session 回傳資料</h3><p>為了讓 API 能拿到使用者資訊，我自定義了 jwt() 與 session() callback：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 回傳使用者資訊給 token</span></span><br><span class="line"><span class="keyword">async</span> <span class="title function_">jwt</span>(<span class="params">&#123; token, user, account &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (account?.<span class="property">provider</span> === <span class="string">&#x27;google&#x27;</span> &amp;&amp; user) &#123;</span><br><span class="line">    token.<span class="property">id</span> = user.<span class="property">id</span>;</span><br><span class="line">    token.<span class="property">accessToken</span> = account.<span class="property">access_token</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (account?.<span class="property">provider</span> === <span class="string">&#x27;credentials&#x27;</span> &amp;&amp; user) &#123;</span><br><span class="line">    token.<span class="property">id</span> = user.<span class="property">id</span>;</span><br><span class="line">    token.<span class="property">email</span> = user.<span class="property">email</span>;</span><br><span class="line">    token.<span class="property">token</span> = user.<span class="property">token</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> token;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將 token 資訊掛載到 session.user</span></span><br><span class="line"><span class="keyword">async</span> <span class="title function_">session</span>(<span class="params">&#123; session, token &#125;</span>) &#123;</span><br><span class="line">  session.<span class="property">user</span> = &#123;</span><br><span class="line">    <span class="attr">id</span>: token.<span class="property">id</span>,</span><br><span class="line">    <span class="attr">email</span>: token.<span class="property">email</span>,</span><br><span class="line">    <span class="attr">token</span>: token.<span class="property">token</span>,</span><br><span class="line">    <span class="attr">accessToken</span>: token.<span class="property">accessToken</span>,</span><br><span class="line">    <span class="attr">image</span>: <span class="keyword">typeof</span> token.<span class="property">image</span> === <span class="string">&#x27;string&#x27;</span> ? token.<span class="property">image</span> : <span class="literal">undefined</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> session;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這讓我們在前端取得使用者資訊，或是讓 Middleware 驗證身份更方便。</p>
+<h2 id="API-設計架構"><a href="#API-設計架構" class="headerlink" title="API 設計架構"></a>API 設計架構</h2><p>所有 API 採用 RESTful 命名方式：</p>
+<p>** 認證 API **<br>POST /api/v1/auth/signup – 註冊帳號</p>
+<p>POST /api/v1/auth/login – 登入取得權杖</p>
+<p>** 資料管理 API  **<br>GET/POST /api/v1/folders</p>
+<p>GET/PUT/DELETE /api/v1/folders/[id]</p>
+<p>GET/POST /api/v1/snippets</p>
+<p>GET/PUT/DELETE /api/v1/snippets/[id]</p>
+<p>** 健康檢查 **<br>GET /api/health – MongoDB 狀態回報</p>
+<h2 id="API-Middleware-權限驗證"><a href="#API-Middleware-權限驗證" class="headerlink" title="API Middleware 權限驗證"></a>API Middleware 權限驗證</h2><p>使用 next-auth/jwt 驗證 JWT：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/middleware.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">middleware</span>(<span class="params">request: NextRequest</span>) &#123;</span><br><span class="line">  <span class="comment">// 判斷公開路徑</span></span><br><span class="line">  <span class="keyword">const</span> publicPaths = [<span class="string">&quot;/api/v1/auth/login&quot;</span>, <span class="string">&quot;/api/v1/auth/signup&quot;</span>, <span class="string">&quot;/api/health&quot;</span>];</span><br><span class="line">  <span class="keyword">if</span> (publicPaths.<span class="title function_">includes</span>(path)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">NextResponse</span>.<span class="title function_">next</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 驗證權杖</span></span><br><span class="line">  <span class="keyword">const</span> token = <span class="keyword">await</span> <span class="title function_">getToken</span>(&#123; <span class="attr">req</span>: request, <span class="attr">secret</span>: process.<span class="property">env</span>.<span class="property">NEXTAUTH_SECRET</span> &#125;);</span><br><span class="line">  <span class="keyword">if</span> (!token) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">NextResponse</span>.<span class="title function_">json</span>(&#123; <span class="attr">message</span>: <span class="string">&quot;Unauthorized&quot;</span> &#125;, &#123; <span class="attr">status</span>: <span class="number">401</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將使用者 ID 附加到請求標頭中</span></span><br><span class="line">  <span class="keyword">const</span> res = <span class="title class_">NextResponse</span>.<span class="title function_">next</span>();</span><br><span class="line">  res.<span class="property">headers</span>.<span class="title function_">set</span>(<span class="string">&quot;x-user-id&quot;</span>, token.<span class="property">id</span> <span class="keyword">as</span> <span class="built_in">string</span>);</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 確保所有保護的 API 都檢查 x-user-id，實現使用者權限控管。</p>
+<h2 id="實作涵蓋了完整驗證設計："><a href="#實作涵蓋了完整驗證設計：" class="headerlink" title="實作涵蓋了完整驗證設計："></a>實作涵蓋了完整驗證設計：</h2><ul>
+<li>Google OAuth 登入（透過 NextAuth 自動化）</li>
+<li>自定義帳密登入（使用 bcrypt + MongoDB）</li>
+<li>多種登入方式共用同一個 users 集合</li>
+<li>API 權限驗證 + Middleware 控制</li>
+<li>使用 MongoDB Adapter 整合資料庫與 session 管理</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Next-js/" rel="tag"># Next.js</a>
+              <a href="/tags/side-project/" rel="tag"># side-project</a>
+              <a href="/tags/MongoDB/" rel="tag"># MongoDB</a>
+              <a href="/tags/NextAuth/" rel="tag"># NextAuth</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/05/01/leetcode-Maximum-Depth-of-Binary-Tree/" rel="prev" title="刷題練習 - Maximum Depth of Binary Tree 解題策略">
+      <i class="fa fa-chevron-left"></i> 刷題練習 - Maximum Depth of Binary Tree 解題策略
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/05/17/side-project-EdgeRuntime/" rel="next" title="Next.js Middleware 中的身份驗證：Edge Runtime 限制與解決方案">
+      Next.js Middleware 中的身份驗證：Edge Runtime 限制與解決方案 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MongoDB-%E8%B3%87%E6%96%99%E6%A8%A1%E5%9E%8B%E8%A8%AD%E8%A8%88"><span class="nav-number">1.</span> <span class="nav-text">MongoDB 資料模型設計</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NextAuth-%E8%88%87%E9%A9%97%E8%AD%89%E6%B5%81%E7%A8%8B%E8%A8%AD%E8%A8%88"><span class="nav-number">2.</span> <span class="nav-text">NextAuth 與驗證流程設計</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NextAuth"><span class="nav-number">3.</span> <span class="nav-text">NextAuth</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NextAuth-%E8%87%AA%E5%8B%95%E5%BB%BA%E7%AB%8B%E7%9A%84-Collections"><span class="nav-number">3.1.</span> <span class="nav-text">NextAuth 自動建立的 Collections</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#accounts-Collection-%E7%9A%84%E7%B5%90%E6%A7%8B"><span class="nav-number">3.2.</span> <span class="nav-text">accounts Collection 的結構</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%88%87%E8%87%AA%E5%AE%9A%E7%BE%A9-authProviders-%E7%9A%84%E5%8D%80%E5%88%A5"><span class="nav-number">3.3.</span> <span class="nav-text">與自定義 authProviders 的區別</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NextAuth-%E6%95%B4%E5%90%88%E8%A8%AD%E8%A8%88"><span class="nav-number">3.4.</span> <span class="nav-text">NextAuth 整合設計</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8F%B4%E5%A4%9A%E7%A8%AE-Provider"><span class="nav-number">3.5.</span> <span class="nav-text">支援多種 Provider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E7%BE%A9-JWT-%E8%88%87-Session-%E5%9B%9E%E5%82%B3%E8%B3%87%E6%96%99"><span class="nav-number">3.6.</span> <span class="nav-text">自定義 JWT 與 Session 回傳資料</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-%E8%A8%AD%E8%A8%88%E6%9E%B6%E6%A7%8B"><span class="nav-number">4.</span> <span class="nav-text">API 設計架構</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-Middleware-%E6%AC%8A%E9%99%90%E9%A9%97%E8%AD%89"><span class="nav-number">5.</span> <span class="nav-text">API Middleware 權限驗證</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E6%B6%B5%E8%93%8B%E4%BA%86%E5%AE%8C%E6%95%B4%E9%A9%97%E8%AD%89%E8%A8%AD%E8%A8%88%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">實作涵蓋了完整驗證設計：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

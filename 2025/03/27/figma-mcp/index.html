@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="有新東西就是要來快速嘗試一下～～ 注意 cursor 要是付費版才能使用 至 GitHub clone 專案 Cursor Talk to Figma MCP 然後遵循 README：Get Started 開始 它需要安裝 bun 套件管理工具 1curl -fsSL https:&#x2F;&#x2F;bun.sh&#x2F;install | bash  需要在你的專案根目錄執行: 12cd &#x2F;path&#x2F;to&#x2F;your&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="figma mcp 應用">
+<meta property="og:url" content="https://eva813.github.io/2025/03/27/figma-mcp/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="有新東西就是要來快速嘗試一下～～ 注意 cursor 要是付費版才能使用 至 GitHub clone 專案 Cursor Talk to Figma MCP 然後遵循 README：Get Started 開始 它需要安裝 bun 套件管理工具 1curl -fsSL https:&#x2F;&#x2F;bun.sh&#x2F;install | bash  需要在你的專案根目錄執行: 12cd &#x2F;path&#x2F;to&#x2F;your&#x2F;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/6LuXXYv.png">
+<meta property="og:image" content="https://i.imgur.com/UZwKie7.png">
+<meta property="og:image" content="https://i.imgur.com/ei4uzVB.png">
+<meta property="og:image" content="https://i.imgur.com/xysn5c0.png">
+<meta property="og:image" content="https://i.imgur.com/YhCxwoq.png">
+<meta property="og:image" content="https://i.imgur.com/yr4O7rI.png">
+<meta property="og:image" content="https://i.imgur.com/Lbv0HvC.png">
+<meta property="og:image" content="https://i.imgur.com/ADYZghc.png">
+<meta property="og:image" content="https://i.imgur.com/L1PUGuw.png">
+<meta property="og:image" content="https://i.imgur.com/yMcOvmL.png">
+<meta property="article:published_time" content="2025-03-27T11:30:14.000Z">
+<meta property="article:modified_time" content="2025-03-27T11:52:21.217Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="Frontend Development, JavaScript, Python, Algorithms, Programming Tutorials, Tech Blog, Web Development">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/6LuXXYv.png">
+
+<link rel="canonical" href="https://eva813.github.io/2025/03/27/figma-mcp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>figma mcp 應用 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/03/27/figma-mcp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          figma mcp 應用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-03-27 19:30:14 / Modified: 19:52:21" itemprop="dateCreated datePublished" datetime="2025-03-27T19:30:14+08:00">2025-03-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>有新東西就是要來快速嘗試一下～～ 注意 cursor 要是付費版才能使用</p>
+<p>至 GitHub clone 專案 <a target="_blank" rel="noopener" href="https://github.com/sonnylazuardi/cursor-talk-to-figma-mcp">Cursor Talk to Figma MCP</a></p>
+<p>然後遵循 README：<strong>Get Started 開始</strong></p>
+<p>它需要安裝 bun 套件管理工具</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL <span class="attr">https</span>:<span class="comment">//bun.sh/install | bash</span></span><br></pre></td></tr></table></figure>
+
+<p>需要在你的專案根目錄執行:</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /path/to/your/cursor-talk-to-figma-mcp</span><br><span class="line">bun setup</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 啟動 WebSocket server（必須持續執行）</span></span><br><span class="line">bun socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># 啟動 MCP server（另開一個終端）</span></span><br><span class="line">bunx cursor-talk-to-figma-mcp</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// Add the server to your Cursor MCP configuration <span class="keyword">in</span> ~/.cursor/mcp.json:</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;mcpServers&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;TalkToFigma&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;command&quot;</span>: <span class="string">&quot;bunx&quot;</span>,</span><br><span class="line">      <span class="string">&quot;args&quot;</span>: [<span class="string">&quot;cursor-talk-to-figma-mcp&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下為圖示：</p>
+<p><img src="https://i.imgur.com/6LuXXYv.png" alt="image.png"></p>
+<span id="more"></span>
+
+<p>從 Figma 的官網下載 ：<a target="_blank" rel="noopener" href="https://www.figma.com/downloads/">https://www.figma.com/downloads/</a></p>
+<p>在第一次設定：選擇左上角的 Figma Icon，點選「Plugins」→「Development」→「Import plugin from manifest」</p>
+<ul>
+<li>在 Figma 中，點選選單 → <strong>Plugins</strong> → <strong>Development</strong> → Import plugin from manifest</li>
+<li>指定並選取專案中的 <code>src/cursor_mcp_plugin/manifest.json</code> 檔案</li>
+<li>完成後，該外掛就會出現在你的 Figma Development Plugins 列表中，可以直接使用了。</li>
+</ul>
+<p><img src="https://i.imgur.com/UZwKie7.png" alt="image.png"></p>
+<p>此外，要注意 cursor  連線，當你有成功連接 mcp 會有綠點，且呈現 Enable:</p>
+<p><img src="https://i.imgur.com/ei4uzVB.png" alt="image.png"></p>
+<p><img src="https://i.imgur.com/xysn5c0.png" alt="image.png"></p>
+<p>確定與 figma 連線成功：</p>
+<p>執行：talk fo figma , channel id: {你的 channel id}</p>
+<p><img src="https://i.imgur.com/YhCxwoq.png" alt="image.png"></p>
+<p>接著你就可以告訴他你要做得 figma 內容，像是我的指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">設計一個 管理ai prompt 桌面版，請提出以下方式讓我完成 應用程式 所有需要的設計：</span><br><span class="line"></span><br><span class="line">思考使用者需要 管理ai prompt 桌面版 要提供哪些功能:</span><br><span class="line"></span><br><span class="line">作為產品經理提出功能規劃</span><br><span class="line"></span><br><span class="line">作為設計師提供整體介面設計</span><br><span class="line"></span><br><span class="line">可以使用 FrontAwesome 等圖示展示，讓原型圖更接近真實</span><br></pre></td></tr></table></figure>
+
+<p>但是他只幫我產出簡單的 layout，要做出一設計稿還是很有大難度</p>
+<p><img src="https://i.imgur.com/yr4O7rI.png" alt="image.png"></p>
+<p>參考：<br><a target="_blank" rel="noopener" href="https://muki.tw/figma-mcp-server-cursor/">https://muki.tw/figma-mcp-server-cursor/</a></p>
+<hr>
+<p>使用 <a target="_blank" rel="noopener" href="https://github.com/GLips/Figma-Context-MCP">https://github.com/GLips/Figma-Context-MCP</a> </p>
+<p>閱讀 Readme: <strong>Connecting to Cursor</strong></p>
+<p>1.在自己終端機：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx figma-developer-mcp --figma-api-key=&lt;your-figma-api-key&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>-figma-api-key 要到 figma 登入後，點擊頭像 settings →  security → create new token</li>
+</ul>
+<p>2.到 <strong>Cursor → Cursor settings → mcp</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;mcpServers&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;Framelink Figma MCP&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;url&quot;</span>: <span class="string">&quot;https://localhost:3000/sse&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.可以回到 figma ，要選擇你要的畫面</p>
+<p><img src="https://i.imgur.com/Lbv0HvC.png" alt="image.png"></p>
+<p>注意你在本地，要先建立好一 react 專案</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm create vite@latest my-react-app -- --template react</span><br></pre></td></tr></table></figure>
+
+<p>然後到 cursor → cd my-react-app  →  chat 貼上：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@https://www.figma.com/design/lImjbdZmdV25TQ23glGfvV/Locofy-Sample-Project---FickleFlight-(Community)?node-id=1003-3841&amp;t=CNAo85NCrYNAJpJ6-4 </span><br><span class="line">請幫我用 tailwindcss做此畫面， tailwind css 設定我已經處理好，請專注於做畫面，不要用其他 css框架，就全部使用tailwind，記得圖片也要抓下來</span><br></pre></td></tr></table></figure>
+
+<p>在該 cursor 專案：</p>
+<p><img src="https://i.imgur.com/ADYZghc.png" alt="image.png"></p>
+<p>以下，可以看到他做的切版：</p>
+<p>我參照的 figma template : Locofy Sample Project - FickleFlight (Community)</p>
+<p><img src="https://i.imgur.com/L1PUGuw.png" alt="image.png"></p>
+<p><img src="https://i.imgur.com/yMcOvmL.png" alt="image.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/03/27/vue-dynamic-event/" rel="prev" title="Vue 動態事件名稱">
+      <i class="fa fa-chevron-left"></i> Vue 動態事件名稱
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/03/31/side-project-zustand/" rel="next" title="side-project-zustand">
+      side-project-zustand <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

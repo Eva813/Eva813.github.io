@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="安裝：官網安裝 此範例來自 Bruce 前端課程，使用 todoList 來練習  從官網學習基礎設定   建立 store 同時，撰寫 reducer(會自動產生出對應 reducer 的 action) action 如同 dispatch 所送出的包裹 reducer 會去拆解包裹，以了解用戶想做的事應用於 todo-list   store 中會存有幾條備忘錄，幾條 todo視像要做 建立">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redux Toolkit">
+<meta property="og:url" content="https://eva813.github.io/2022/12/01/ReduxToolkit/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="安裝：官網安裝 此範例來自 Bruce 前端課程，使用 todoList 來練習  從官網學習基礎設定   建立 store 同時，撰寫 reducer(會自動產生出對應 reducer 的 action) action 如同 dispatch 所送出的包裹 reducer 會去拆解包裹，以了解用戶想做的事應用於 todo-list   store 中會存有幾條備忘錄，幾條 todo視像要做 建立">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/41RnyWT.png">
+<meta property="article:published_time" content="2022-12-01T04:03:04.000Z">
+<meta property="article:modified_time" content="2022-12-01T13:07:07.117Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/41RnyWT.png">
+
+<link rel="canonical" href="https://eva813.github.io/2022/12/01/ReduxToolkit/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Redux Toolkit | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/12/01/ReduxToolkit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redux Toolkit
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-12-01 12:03:04 / Modified: 21:07:07" itemprop="dateCreated datePublished" datetime="2022-12-01T12:03:04+08:00">2022-12-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>安裝：<br><a target="_blank" rel="noopener" href="https://redux.js.org/introduction/installation">官網安裝</a></p>
+<p>此範例來自 Bruce 前端課程，使用 todoList 來練習</p>
+<ul>
+<li>從官網學習基礎設定</li>
+</ul>
+<ol>
+<li>建立 store 同時，撰寫 reducer(會自動產生出對應 reducer 的 action)<ol>
+<li>action 如同 dispatch 所送出的包裹</li>
+<li>reducer 會去拆解包裹，以了解用戶想做的事<br>應用於 todo-list</li>
+</ol>
+</li>
+<li>store 中會存有幾條備忘錄，幾條 todo視像要做</li>
+<li>建立資料夾 src / slice ，此 slice 中包含 reducer, action<br><a target="_blank" rel="noopener" href="https://redux.js.org/tutorials/typescript-quick-start">TS-設立tool-kit</a><br>建立 store 的方式，要先建立 reducer</li>
+</ol>
+<h3 id="src-slice-todo-ts"><a href="#src-slice-todo-ts" class="headerlink" title="src / slice / todo.ts"></a>src / slice / todo.ts</h3><ul>
+<li>建立 slice，並注意要傳入三個參數<ul>
+<li>name : slice 的名字</li>
+<li>initialState 初始化的 state，建立初始狀態得值以及型別</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createSlice &#125; <span class="keyword">from</span> <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line"><span class="comment">// Define a type for the slice state  </span></span><br><span class="line">interface todoState &#123;  </span><br><span class="line">  <span class="attr">todoList</span>: <span class="title class_">Array</span>&lt;string&gt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">initialState</span>: todoState = &#123;  </span><br><span class="line">  <span class="attr">todoList</span>: []  </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> todoSlice = <span class="title function_">createSlice</span>(&#123;  </span><br><span class="line">	<span class="attr">name</span>:<span class="string">&#x27;todo&#x27;</span>,</span><br><span class="line">	initialState,</span><br><span class="line">	<span class="attr">reducers</span>:&#123;</span><br><span class="line">		<span class="comment">//state:當下狀態</span></span><br><span class="line">		<span class="comment">//action:對應的動作</span></span><br><span class="line">		<span class="attr">addTodo</span>: <span class="function">(<span class="params">state,action</span>)=&gt;</span>&#123;</span><br><span class="line">			state.<span class="property">todoList</span>.<span class="title function_">push</span>(action.<span class="property">payload</span>)</span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="attr">addTimestamp</span>:<span class="function">(<span class="params">state</span>)=&gt;</span>&#123;</span><br><span class="line">			state.<span class="property">todoList</span>.<span class="title function_">push</span>(<span class="title class_">Date</span>.<span class="title function_">now</span>().<span class="title function_">toString</span>())</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;  </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<p>在此範例中會有兩個 dispatch</p>
+<ol>
+<li>submit</li>
+<li>record timestamp</li>
+</ol>
+<ul>
+<li>dispatch 會發出上面兩個 action </li>
+<li>reducer 要兩個事件接收<br>最後的 export todoSlice</li>
+<li>todoSlice 中會包含 actions , reducer , 以及其他 API</li>
+</ul>
+<h2 id="建立-store"><a href="#建立-store" class="headerlink" title="建立 store"></a>建立 store</h2><ol>
+<li>位置 src / store.ts<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; configureStore &#125; <span class="keyword">from</span> <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><img src="https://i.imgur.com/41RnyWT.png" alt=""></p>
+<p>從上面過程，可以看到我們 store, action , reducer 都撰寫完成</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ul>
+<li>回到 UI 觸發狀態改變的地方 </li>
+<li><ol>
+<li>index.tsx 裝入 store<ul>
+<li>像是 context 的概念作為 context provider 的內容</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Provider</span> &#125; <span class="keyword">from</span> <span class="string">&quot;react-redux&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&#x27;./store&#x27;</span></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(</span><br><span class="line"></span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">React.StrictMode</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;<span class="name">Provider</span> <span class="attr">store</span>=<span class="string">&#123;store&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;<span class="name">App</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;/<span class="name">Provider</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">React.StrictMode</span>&gt;</span></span>,</span><br><span class="line">	</span><br><span class="line">	<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>拿到 store 中的 todoList 來使用渲染於畫面</p>
+<ul>
+<li>要如何拿到 store ? 使用 useSelector</li>
+<li>在這裡要注意因為使用 TS 所以會有類型定義問題！<ul>
+<li>src / hooks.tsx</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>型別首先要來自於 store 檔案</li>
+</ol>
+<ul>
+<li>ReturnType: 幫我們將 store 中的內容，直接導出對應的 type</li>
+</ul>
+<p><code>export type RootState = ReturnType&lt;typeof store.getState&gt;</code></p>
+<ol start="2">
+<li>回到 hooks 建立定義好型別的 API</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">useAppSelector</span>: <span class="title class_">TypedUseSelectorHook</span>&lt;<span class="title class_">RootState</span>&gt; = useSelector</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>可以 到 App 檔案或相關的子組件都可以調用 store 的內容<ul>
+<li>可以拿到預設的 state </li>
+</ul>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useAppSelector &#125; <span class="keyword">from</span> <span class="string">&#x27;./hooks&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> todoReducer = <span class="title function_">useAppSelector</span>(<span class="function"><span class="params">state</span> =&gt;</span> state.<span class="property">todoReducer</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> todoList = todoReducer.<span class="property">todoList</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">Wrapper</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">Title</span>&gt;</span>TODO LIST<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">NoteInput</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		Submit</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		Record Timestamp</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">Title</span>&gt;</span>List<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	&#123;</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	todoList.map((todo, index) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		return <span class="tag">&lt;<span class="name">Item</span> <span class="attr">key</span>=<span class="string">&#123;todo&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;<span class="name">b</span>&gt;</span>&#123;index + 1&#125;<span class="tag">&lt;/<span class="name">b</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">			&#123;todo&#125;</span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;/<span class="name">Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		&#125;)</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	&#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">Wrapper</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">App</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="狀態更新"><a href="#狀態更新" class="headerlink" title="狀態更新"></a>狀態更新</h3><ul>
+<li>使用 dispatch 一些 action</li>
+<li>定義 useDispatch </li>
+</ul>
+<ol>
+<li>hooks<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">TypedUseSelectorHook</span>, useDispatch, useSelector &#125; <span class="keyword">from</span> <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> type &#123; <span class="title class_">RootState</span>, <span class="title class_">AppDispatch</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./store&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//自定義 hook</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Use throughout your app instead of plain `useDispatch` and `useSelector`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">useAppDispatch</span>: <span class="function">() =&gt;</span> <span class="title class_">AppDispatch</span> = useDispatch</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">useAppSelector</span>: <span class="title class_">TypedUseSelectorHook</span>&lt;<span class="title class_">RootState</span>&gt; = useSelector</span><br></pre></td></tr></table></figure></li>
+<li>store.ts</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; configureStore &#125; <span class="keyword">from</span> <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> todoReducer <span class="keyword">from</span> <span class="string">&#x27;./slice/todo&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">configureStore</span>(&#123;</span><br><span class="line"></span><br><span class="line">	<span class="attr">reducer</span>: &#123;</span><br><span class="line">	</span><br><span class="line">		todoReducer</span><br><span class="line">		</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Infer the `RootState` and `AppDispatch` types from the store itself</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//匯出對應的類型</span></span><br><span class="line"><span class="keyword">export</span> type <span class="title class_">RootState</span> = <span class="title class_">ReturnType</span>&lt;<span class="keyword">typeof</span> store.<span class="property">getState</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> type <span class="title class_">AppDispatch</span> = <span class="keyword">typeof</span> store.<span class="property">dispatch</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store</span><br></pre></td></tr></table></figure>
+
+<p>到 App.tsx 使用 dispatch</p>
+<ul>
+<li>宣告 dispatch</li>
+<li>設置 setState 的值</li>
+<li>綁定於 input 並讓 input onchange 時去觸發值得改變</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./App.css&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> styled <span class="keyword">from</span> <span class="string">&#x27;styled-components&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; useAppSelector, useAppDispatch &#125; <span class="keyword">from</span> <span class="string">&#x27;./hooks&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; addTodo, addTimestamp &#125; <span class="keyword">from</span> <span class="string">&#x27;./slice/todo&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; useState &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> todoReducer = <span class="title function_">useAppSelector</span>(<span class="function"><span class="params">state</span> =&gt;</span> state.<span class="property">todoReducer</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> todoList = todoReducer.<span class="property">todoList</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> dispatch = <span class="title function_">useAppDispatch</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> [text, setText] = <span class="title function_">useState</span>(<span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">Wrapper</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">Title</span>&gt;</span>TODO LIST<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">NoteInput</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">value</span>=<span class="string">&#123;text&#125;</span> <span class="attr">onChange</span>=<span class="string">&#123;(e:</span> <span class="attr">React.ChangeEvent</span>&lt;<span class="attr">HTMLInputElement</span>&gt;</span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	setText(e.target.value)</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	&#125;&#125; /&gt;</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">SubmitBtn</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		if (text === &#x27;&#x27;) &#123;</span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		alert(&#x27;請輸入TODO內容&#x27;)</span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		return</span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		&#125;</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		dispatch(addTodo(text))</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		setText(&#x27;&#x27;)</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	&#125;&#125;&gt;</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		Submit</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">SubmitBtn</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		dispatch(addTimestamp())</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	&#125;&#125;&gt;</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		Record Timestamp</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">SubmitBtn</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;<span class="name">Title</span>&gt;</span>List<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	&#123;</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">		todoList.map((todo, index) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		return <span class="tag">&lt;<span class="name">Item</span> <span class="attr">key</span>=<span class="string">&#123;todo&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">			<span class="tag">&lt;<span class="name">b</span>&gt;</span>&#123;index + 1&#125;<span class="tag">&lt;/<span class="name">b</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">			</span></span><br><span class="line"><span class="language-xml">			&#123;todo&#125;</span></span><br><span class="line"><span class="language-xml">		</span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;/<span class="name">Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	&#125;)</span></span><br><span class="line"><span class="language-xml">	</span></span><br><span class="line"><span class="language-xml">	&#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">Wrapper</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">);</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">&#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">  </span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">export default App;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="總結步驟"><a href="#總結步驟" class="headerlink" title="總結步驟"></a>總結步驟</h2><ol>
+<li>定義 slice 中的內容，其中包含 初始的資料定義、 reducers<ol>
+<li>reducers 會透過 toolkit 這工具，將對應得 action 產生出來</li>
+<li>action 可以在 dispatch 做發送時帶出去</li>
+</ol>
+</li>
+<li>定義 provider 作為將 store 資料傳入的橋樑</li>
+<li>store 的產生：來自於將 slice 中的 reducers 建立好之後可以隨之建立的內容</li>
+<li>建立 hooks ：撰寫自定義的 hook ，將原本內建的 hook 進行重新包裝</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/React/" rel="tag"># React</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/22/react-component/" rel="prev" title="React - 建立元件">
+      <i class="fa fa-chevron-left"></i> React - 建立元件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/01/React-Middleware/" rel="next" title="Redux Toolkit - RTK Query中間層非同步Fetch API的處理">
+      Redux Toolkit - RTK Query中間層非同步Fetch API的處理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#src-slice-todo-ts"><span class="nav-number">1.</span> <span class="nav-text">src &#x2F; slice &#x2F; todo.ts</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B-store"><span class="nav-number"></span> <span class="nav-text">建立 store</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number"></span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8B%80%E6%85%8B%E6%9B%B4%E6%96%B0"><span class="nav-number">1.</span> <span class="nav-text">狀態更新</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90%E6%AD%A5%E9%A9%9F"><span class="nav-number"></span> <span class="nav-text">總結步驟</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

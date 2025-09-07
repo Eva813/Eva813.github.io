@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="觀察功能 製作一個會員申請的表單 帳號 email 密碼   輸入框的顏色變化 判斷條件的設置  任務拆解抓出要互動的元素12345const form &#x3D; document.querySelector(&#x27;#form&#x27;);const username &#x3D; document.querySelector(&#x27;#username&#x27;);const email &#x3D; d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS實作- 表單驗證">
+<meta property="og:url" content="https://eva813.github.io/2021/01/13/form-validator/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="觀察功能 製作一個會員申請的表單 帳號 email 密碼   輸入框的顏色變化 判斷條件的設置  任務拆解抓出要互動的元素12345const form &#x3D; document.querySelector(&#x27;#form&#x27;);const username &#x3D; document.querySelector(&#x27;#username&#x27;);const email &#x3D; d">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/Vhxlk8D.png">
+<meta property="og:image" content="https://i.imgur.com/NvhXJk8.png">
+<meta property="og:image" content="https://i.imgur.com/shKtSSS.png">
+<meta property="og:image" content="https://i.imgur.com/vVVWyGG.png">
+<meta property="og:image" content="https://i.imgur.com/gdkHO9O.png">
+<meta property="og:image" content="https://i.imgur.com/sAvU95T.png">
+<meta property="og:image" content="https://i.imgur.com/62UwLS7.png">
+<meta property="article:published_time" content="2021-01-13T01:17:11.000Z">
+<meta property="article:modified_time" content="2022-09-17T00:10:00.716Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/Vhxlk8D.png">
+
+<link rel="canonical" href="https://eva813.github.io/2021/01/13/form-validator/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JS實作- 表單驗證 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/01/13/form-validator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JS實作- 表單驗證
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-13 09:17:11" itemprop="dateCreated datePublished" datetime="2021-01-13T09:17:11+08:00">2021-01-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS%E5%AF%A6%E4%BD%9C%E7%B7%B4%E7%BF%92/" itemprop="url" rel="index"><span itemprop="name">JS實作練習</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://i.imgur.com/Vhxlk8D.png" alt=""></p>
+<h2 id="觀察功能"><a href="#觀察功能" class="headerlink" title="觀察功能"></a>觀察功能</h2><ol>
+<li>製作一個會員申請的表單<ul>
+<li>帳號</li>
+<li>email</li>
+<li>密碼</li>
+</ul>
+</li>
+<li>輸入框的顏色變化</li>
+<li>判斷條件的設置</li>
+</ol>
+<h2 id="任務拆解"><a href="#任務拆解" class="headerlink" title="任務拆解"></a>任務拆解</h2><h3 id="抓出要互動的元素"><a href="#抓出要互動的元素" class="headerlink" title="抓出要互動的元素"></a>抓出要互動的元素</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> form = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#form&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> username = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#username&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> email = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#email&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> password = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#password&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> password2 = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#password2&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>獲取物件層次中的父物件</li>
+<li>針對指定元素取得或設置指定的class</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//show input error message</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showError</span>(<span class="params">input, message</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> formControl = input.<span class="property">parentElement</span>;</span><br><span class="line">  formControl.<span class="property">className</span> = <span class="string">&#x27;form-control error&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">form.<span class="title function_">addEventListener</span>(<span class="string">&#x27;submit&#x27;</span>, <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">  e.<span class="title function_">preventDefault</span>();</span><br><span class="line">  <span class="keyword">if</span> (username.<span class="property">value</span> === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(username, <span class="string">&#x27;Username is required&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">showSuccess</span>(username);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> small = formControl.<span class="title function_">querySelector</span>(<span class="string">&#x27;small&#x27;</span>);</span><br><span class="line">  small.<span class="property">innerText</span> = <span class="string">&#x27;Username is required&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改顯示文字</li>
+</ul>
+<p><img src="https://i.imgur.com/NvhXJk8.png" alt=""></p>
+<h4 id="成功輸入"><a href="#成功輸入" class="headerlink" title="成功輸入"></a>成功輸入</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//show success outline</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showSuccess</span>(<span class="params">input</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> formControl = input.<span class="property">parentElement</span>;</span><br><span class="line">  formControl.<span class="property">className</span> = <span class="string">&#x27;form-control success&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="複製相同條件判斷"><a href="#複製相同條件判斷" class="headerlink" title="複製相同條件判斷"></a>複製相同條件判斷</h3><ul>
+<li>事件為點擊送出之後，會進行條件判斷</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//event listener</span></span><br><span class="line">form.<span class="title function_">addEventListener</span>(<span class="string">&#x27;submit&#x27;</span>, <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span><br><span class="line">  e.<span class="title function_">preventDefault</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (username.<span class="property">value</span> === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(username, <span class="string">&#x27;Username is required&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">showSuccess</span>(username);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (email.<span class="property">value</span> === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(email, <span class="string">&#x27;Email is required&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">showSuccess</span>(email);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (password.<span class="property">value</span> === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(password, <span class="string">&#x27;Password is required&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">showSuccess</span>(password);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (password2.<span class="property">value</span> === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(password2, <span class="string">&#x27;Password 2 is required&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">showSuccess</span>(password2);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/shKtSSS.png" alt=""></p>
+<h3 id="設定符合的驗證"><a href="#設定符合的驗證" class="headerlink" title="設定符合的驗證"></a>設定符合的驗證</h3><ul>
+<li>email的輸入應有規範樣式</li>
+<li>使用正則表達式</li>
+</ul>
+<p><img src="https://i.imgur.com/vVVWyGG.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//check email is valid</span></span><br><span class="line"><span class="comment">//js email regex</span></span><br><span class="line"><span class="comment">//https://ithelp.ithome.com.tw/articles/10094951</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">isValiEmail</span>(<span class="params">email</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> re = <span class="regexp">/^(([^&lt;&gt;()[\]\\.,;:\s@&quot;]+(\.[^&lt;&gt;()[\]\\.,;:\s@&quot;]+)*)|(&quot;.+&quot;))@((\[[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]&#123;2,&#125;))$/</span>;</span><br><span class="line">  <span class="keyword">return</span> re.<span class="title function_">test</span>(<span class="title class_">String</span>(email).<span class="title function_">toLowerCase</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"> <span class="keyword">if</span> (email.<span class="property">value</span> === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(email, <span class="string">&#x27;Email is required&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="title function_">isValiEmail</span>(email.<span class="property">value</span>)) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(email, <span class="string">&#x27;Email is not valid&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">showSuccess</span>(email);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/gdkHO9O.png" alt=""></p>
+<h4 id="整合簡化-gt-forEach"><a href="#整合簡化-gt-forEach" class="headerlink" title="整合簡化 =&gt;forEach"></a>整合簡化 =&gt;forEach</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Check required fields</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">checkRequired</span>(<span class="params">inputArr</span>) &#123;</span><br><span class="line">  inputArr.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">input</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (input.<span class="property">value</span>.<span class="title function_">trim</span>() === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">      <span class="title function_">showError</span>(input, <span class="string">&#x27;is required&#x27;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="title function_">showSuccess</span>(input);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改showError，套入名稱</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (input.<span class="property">value</span>.<span class="title function_">trim</span>() === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">      <span class="comment">//console.log(input.id);//會顯示input的所有id</span></span><br><span class="line">      <span class="title function_">showError</span>(input, <span class="string">`<span class="subst">$&#123;input.id&#125;</span>is required`</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="將getFieldName-function拉出"><a href="#將getFieldName-function拉出" class="headerlink" title="將getFieldName() function拉出"></a>將getFieldName() function拉出</h3><ul>
+<li>製作訊息的第一個字母大寫</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Check required fields</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">checkRequired</span>(<span class="params">inputArr</span>) &#123;</span><br><span class="line">  inputArr.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">input</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (input.<span class="property">value</span>.<span class="title function_">trim</span>() === <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">      <span class="comment">//console.log(input.id);//會顯示input的所有id</span></span><br><span class="line">      <span class="title function_">showError</span>(input, <span class="string">`<span class="subst">$&#123;getFieldName(input)&#125;</span> is required`</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="title function_">showSuccess</span>(input);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//getFieldName</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getFieldName</span>(<span class="params">input</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> input.<span class="property">id</span>.<span class="title function_">charAt</span>(<span class="number">0</span>).<span class="title function_">toUpperCase</span>() + input.<span class="property">id</span>.<span class="title function_">slice</span>(<span class="number">1</span>);</span><br><span class="line">  <span class="comment">//將第一個字charAt(0)，變大寫，並再接續後面的字slice(1)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>charAt()从一个字符串中返回指定的字符,<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/charAt">String.prototype.charAt()</a></li>
+</ul>
+<h2 id="長度檢查"><a href="#長度檢查" class="headerlink" title="長度檢查"></a>長度檢查</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Check input length</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">checkLength</span>(<span class="params">input, min, max</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (input.<span class="property">value</span>.<span class="property">length</span> &lt; min) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(</span><br><span class="line">      input,</span><br><span class="line">      <span class="string">`<span class="subst">$&#123;getFieldName(input)&#125;</span> must be at least <span class="subst">$&#123;min&#125;</span> characters`</span></span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (input.<span class="property">value</span>.<span class="property">length</span> &gt; max) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(</span><br><span class="line">      input,</span><br><span class="line">      <span class="string">`<span class="subst">$&#123;getFieldName(input)&#125;</span> must be less than <span class="subst">$&#123;max&#125;</span> characters`</span></span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">showSuccess</span>(input);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://i.imgur.com/sAvU95T.png" alt=""></p>
+<h3 id="密碼檢查"><a href="#密碼檢查" class="headerlink" title="密碼檢查"></a>密碼檢查</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// check password match</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">checkPasswordMatch</span>(<span class="params">input1, input2</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (input1.<span class="property">value</span> !== input2.<span class="property">value</span>) &#123;</span><br><span class="line">    <span class="title function_">showError</span>(input2, <span class="string">&#x27;Password do not match&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/62UwLS7.png" alt=""></p>
+<p>參考資料：<br><a target="_blank" rel="noopener" href="https://medium.com/change-or-die/javascript%E5%88%9D%E5%AD%B8-dom%E5%B8%B8%E7%94%A8%E5%B1%AC%E6%80%A7%E8%88%87%E6%96%B9%E6%B3%95-ef851afdb65a">JavaScript初學：DOM常用屬性與方法</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JS/" rel="tag"># JS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/10/localstorage/" rel="prev" title="認識什麼是LocalStorage">
+      <i class="fa fa-chevron-left"></i> 認識什麼是LocalStorage
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/15/js-musicPlayer/" rel="next" title="JS實作- musicPlayer">
+      JS實作- musicPlayer <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%80%E5%AF%9F%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">觀察功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8B%99%E6%8B%86%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">任務拆解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%93%E5%87%BA%E8%A6%81%E4%BA%92%E5%8B%95%E7%9A%84%E5%85%83%E7%B4%A0"><span class="nav-number">2.1.</span> <span class="nav-text">抓出要互動的元素</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%88%90%E5%8A%9F%E8%BC%B8%E5%85%A5"><span class="nav-number">2.1.1.</span> <span class="nav-text">成功輸入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A4%87%E8%A3%BD%E7%9B%B8%E5%90%8C%E6%A2%9D%E4%BB%B6%E5%88%A4%E6%96%B7"><span class="nav-number">2.2.</span> <span class="nav-text">複製相同條件判斷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E7%AC%A6%E5%90%88%E7%9A%84%E9%A9%97%E8%AD%89"><span class="nav-number">2.3.</span> <span class="nav-text">設定符合的驗證</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E5%90%88%E7%B0%A1%E5%8C%96-gt-forEach"><span class="nav-number">2.3.1.</span> <span class="nav-text">整合簡化 &#x3D;&gt;forEach</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%87getFieldName-function%E6%8B%89%E5%87%BA"><span class="nav-number">2.4.</span> <span class="nav-text">將getFieldName() function拉出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%B7%E5%BA%A6%E6%AA%A2%E6%9F%A5"><span class="nav-number">3.</span> <span class="nav-text">長度檢查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E7%A2%BC%E6%AA%A2%E6%9F%A5"><span class="nav-number">3.1.</span> <span class="nav-text">密碼檢查</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

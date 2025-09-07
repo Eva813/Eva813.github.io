@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="經常使用 vue 或 Ｒeact 等前端框架來進行專案開發，但沒有機會好好來認識下他背後的打包工具：webpack趁著這次六角釋出的基礎 webpack 教學，順道來記錄一下。 前端壓縮打包工具 從官網的圖，很明顯地就可以看到將左側複雜的檔案進行壓縮，並做項目管理 在 Vue , React 的背後都有使用 webpack使用 webpack   安裝建立 webpack 需要使用到 npm 初始">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快速認識 webpack">
+<meta property="og:url" content="https://eva813.github.io/2022/08/19/learn-webpack/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="經常使用 vue 或 Ｒeact 等前端框架來進行專案開發，但沒有機會好好來認識下他背後的打包工具：webpack趁著這次六角釋出的基礎 webpack 教學，順道來記錄一下。 前端壓縮打包工具 從官網的圖，很明顯地就可以看到將左側複雜的檔案進行壓縮，並做項目管理 在 Vue , React 的背後都有使用 webpack使用 webpack   安裝建立 webpack 需要使用到 npm 初始">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/EXBNQe0.png">
+<meta property="og:image" content="https://i.imgur.com/qPKyya7.png">
+<meta property="og:image" content="https://i.imgur.com/5biytDZ.png">
+<meta property="og:image" content="https://i.imgur.com/ORdpSVR.png">
+<meta property="og:image" content="https://i.imgur.com/5j8tbCO.png">
+<meta property="og:image" content="https://i.imgur.com/4REJGUk.png">
+<meta property="og:image" content="https://i.imgur.com/XlAvPHx.png">
+<meta property="og:image" content="https://i.imgur.com/KaH0uYg.png">
+<meta property="og:image" content="https://i.imgur.com/UTFdYXm.png">
+<meta property="og:image" content="https://i.imgur.com/WvIjXoU.png">
+<meta property="og:image" content="https://i.imgur.com/Bn6Jgyp.png">
+<meta property="article:published_time" content="2022-08-19T14:14:18.000Z">
+<meta property="article:modified_time" content="2022-09-17T00:10:00.718Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="webpack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/EXBNQe0.png">
+
+<link rel="canonical" href="https://eva813.github.io/2022/08/19/learn-webpack/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>快速認識 webpack | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/08/19/learn-webpack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          快速認識 webpack
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-08-19 22:14:18" itemprop="dateCreated datePublished" datetime="2022-08-19T22:14:18+08:00">2022-08-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>經常使用 vue 或 Ｒeact 等前端框架來進行專案開發，但沒有機會好好來認識下他背後的打包工具：webpack<br>趁著這次六角釋出的基礎 webpack 教學，順道來記錄一下。</p>
+<h2 id="前端壓縮打包工具"><a href="#前端壓縮打包工具" class="headerlink" title="前端壓縮打包工具"></a>前端壓縮打包工具</h2><ul>
+<li>從官網的圖，很明顯地就可以看到將左側複雜的檔案進行壓縮，並做項目管理</li>
+<li>在 Vue , React 的背後都有使用 webpack<br><img src="https://i.imgur.com/EXBNQe0.png" alt=""><h2 id="使用-webpack"><a href="#使用-webpack" class="headerlink" title="使用 webpack"></a>使用 webpack</h2></li>
+</ul>
+<ol>
+<li><p>安裝<br>建立 webpack 需要使用到 npm 初始化<br><code>npm init -y</code><br>安裝之後，會產生 <code>package.jason</code> 檔案</p>
+</li>
+<li><p>安裝 webpack 以及 webpack-cli ，並存在 開發環境<br><code>npm install webpack webpack-cli --save-dev</code></p>
+<ul>
+<li>會產生 <code>package-lock.json</code> =&gt; 紀錄版本詳細資訊</li>
+<li><code>node_modules</code>  資料夾</li>
+</ul>
+<p><img src="https://i.imgur.com/qPKyya7.png" alt=""></p>
+</li>
+</ol>
+<h2 id="進入點-entry-、輸出點-output"><a href="#進入點-entry-、輸出點-output" class="headerlink" title="進入點(entry)、輸出點(output)"></a>進入點(entry)、輸出點(output)</h2><ul>
+<li><code>/src/index.js</code></li>
+<li><code>/dist/main.js</code></li>
+<li>指令：<code>&quot;build&quot;: &quot;webpack&quot;</code> =&gt; 設定 webpack 將 src 中的 index.js 檔案輸出，放到 dist 資料夾<ul>
+<li>使用該指令 <code>npm run build</code><br><img src="https://i.imgur.com/5biytDZ.png" alt=""><ul>
+<li>build 之後產生 dist/main.js</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="entry-output-名稱修改"><a href="#entry-output-名稱修改" class="headerlink" title="entry, output 名稱修改"></a>entry, output 名稱修改</h3><pre><code>* 建立 `webpack.config.js` 檔案</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">//預設路徑位置</span></span><br><span class="line">  <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="comment">//輸出位置名稱(filename),檔案位置</span></span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//path.resolve(__dirname, &#x27;dist&#x27;)</span></span><br><span class="line"><span class="comment">// dirname當前資料夾路徑</span></span><br><span class="line"><span class="comment">//path.resolve 將相對路徑改為絕對路徑</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/ORdpSVR.png" alt=""></p>
+<h4 id="讓每次產生的-bundle-名稱不一樣"><a href="#讓每次產生的-bundle-名稱不一樣" class="headerlink" title="讓每次產生的 bundle 名稱不一樣"></a>讓每次產生的 bundle 名稱不一樣</h4><p><img src="https://i.imgur.com/5j8tbCO.png" alt=""></p>
+<ul>
+<li>搭配 plugin 來使用 HtmlWebpackPlugin</li>
+</ul>
+<h2 id="NPM-script-自訂指令"><a href="#NPM-script-自訂指令" class="headerlink" title="NPM script , 自訂指令"></a>NPM script , 自訂指令</h2><ul>
+<li>用 node 執行一段 JS ，位置為同層下的 hello.js</li>
+<li><code>npm run hello</code></li>
+<li>網站上線\部署或開發，可能都需要下不同指令來進行管理<br><img src="https://i.imgur.com/4REJGUk.png" alt=""></li>
+</ul>
+<h2 id="mode-切換"><a href="#mode-切換" class="headerlink" title="mode 切換"></a>mode 切換</h2><p><img src="https://i.imgur.com/XlAvPHx.png" alt=""></p>
+<ul>
+<li>不同模式下，會因程式內容而輸出不同內容</li>
+<li><code>production</code> 上線版模式, 輸出的 bundle 檔案會較為精簡<ul>
+<li>會壓縮優化，將程式碼壓成一行</li>
+<li>不容易除錯與理解<br><img src="https://i.imgur.com/KaH0uYg.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="CSS-loader"><a href="#CSS-loader" class="headerlink" title="CSS loader"></a>CSS loader</h2><ul>
+<li>幫助 webpack 載入 css</li>
+<li><code>npm install --save-dev css-loader</code></li>
+<li><a target="_blank" rel="noopener" href="https://webpack.js.org/loaders/css-loader/#root">CSS loader</a></li>
+<li><code>webpack.config.js</code></li>
+<li>別忘了 在載入點加入 ·<code>import css from &#39;./all.css&#39;</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">//預設路徑位置</span></span><br><span class="line">  <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="comment">//輸出位置名稱(filename),檔案位置</span></span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.css$/i</span>, <span class="comment">//只要副檔名為 .css 就會使用以下</span></span><br><span class="line">        <span class="attr">use</span>: [<span class="string">&quot;style-loader&quot;</span>, <span class="string">&quot;css-loader&quot;</span>],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>裝入 sass-loader<br><img src="https://i.imgur.com/UTFdYXm.png" alt=""><br><a target="_blank" rel="noopener" href="https://github.com/webpack-contrib/sass-loader">sass-loader</a></li>
+</ul>
+<h2 id="載入-webpack-測試伺服器"><a href="#載入-webpack-測試伺服器" class="headerlink" title="載入 webpack 測試伺服器"></a>載入 webpack 測試伺服器</h2><ul>
+<li>建立即時更新的方式</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/webpack/webpack-dev-server">webpack-dev-server</a></li>
+<li><code>npm install webpack-dev-server --save-dev</code></li>
+<li>在 <code>webpack.config.js</code> 檔案設定</li>
+<li><a target="_blank" rel="noopener" href="https://webpack.js.org/configuration/dev-server/#devserver">dev-server</a></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">devServer</span>: &#123;</span><br><span class="line">  <span class="attr">static</span>: &#123;</span><br><span class="line">    <span class="attr">directory</span>: path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">		<span class="comment">//contentBase: path.join(__dirname, &#x27;dist&#x27;),</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">compress</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">port</span>: <span class="number">9000</span>,</span><br><span class="line"><span class="attr">open</span>: <span class="literal">true</span> <span class="comment">//可以即時更新</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>最後，指令調整，如此就可以開始進行編譯<br><img src="https://i.imgur.com/WvIjXoU.png" alt=""></p>
+</li>
+<li><p>webpack 也可以載入 node_module 下的東西</p>
+</li>
+<li><p>用 dist 下的檔案來部署</p>
+<h2 id="webpack-config-js-檔案"><a href="#webpack-config-js-檔案" class="headerlink" title="webpack.config.js 檔案"></a><code>webpack.config.js</code> 檔案</h2></li>
+<li><p>注意</p>
+</li>
+<li><p>mode: 設定development 或是 production</p>
+</li>
+<li><p>entry 進入點在哪</p>
+</li>
+<li><p>output 輸出去哪</p>
+</li>
+<li><p>module -&gt; rule 下 會放 scss-loader , babel-loader 等規則</p>
+</li>
+<li><p>plugins: webpack 主要是讀檔案，但透過 plugins ，如建立新的 html檔案, MiniCssExtractPlugin:將 css 從 js 抽離出來<br><img src="https://i.imgur.com/Bn6Jgyp.png" alt=""></p>
+</li>
+<li><p>devtool: ‘source-map’ =&gt; 協助檔案 debug </p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://askie.today/what-is-webpack/">關於 Webpack，它是什麼？能夠做什麼？為什麼？怎麼做？— freeCodeCamp 的筆記</a><br><a target="_blank" rel="noopener" href="https://tw.alphacamp.co/blog/webpack-introduction">Webpack 是什麼？模組打包工具的用途及基本 Webpack 教學</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JS/" rel="tag"># JS</a>
+              <a href="/tags/webpack/" rel="tag"># webpack</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/08/react-1/" rel="prev" title="React- props / state 練習">
+      <i class="fa fa-chevron-left"></i> React- props / state 練習
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/09/04/react-useState/" rel="next" title="React- 元件 / props">
+      React- 元件 / props <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%A3%93%E7%B8%AE%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">前端壓縮打包工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-webpack"><span class="nav-number">2.</span> <span class="nav-text">使用 webpack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%B2%E5%85%A5%E9%BB%9E-entry-%E3%80%81%E8%BC%B8%E5%87%BA%E9%BB%9E-output"><span class="nav-number">3.</span> <span class="nav-text">進入點(entry)、輸出點(output)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#entry-output-%E5%90%8D%E7%A8%B1%E4%BF%AE%E6%94%B9"><span class="nav-number">3.1.</span> <span class="nav-text">entry, output 名稱修改</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%93%E6%AF%8F%E6%AC%A1%E7%94%A2%E7%94%9F%E7%9A%84-bundle-%E5%90%8D%E7%A8%B1%E4%B8%8D%E4%B8%80%E6%A8%A3"><span class="nav-number">3.1.1.</span> <span class="nav-text">讓每次產生的 bundle 名稱不一樣</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NPM-script-%E8%87%AA%E8%A8%82%E6%8C%87%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">NPM script , 自訂指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mode-%E5%88%87%E6%8F%9B"><span class="nav-number">5.</span> <span class="nav-text">mode 切換</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS-loader"><span class="nav-number">6.</span> <span class="nav-text">CSS loader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BC%89%E5%85%A5-webpack-%E6%B8%AC%E8%A9%A6%E4%BC%BA%E6%9C%8D%E5%99%A8"><span class="nav-number">7.</span> <span class="nav-text">載入 webpack 測試伺服器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack-config-js-%E6%AA%94%E6%A1%88"><span class="nav-number">8.</span> <span class="nav-text">webpack.config.js 檔案</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

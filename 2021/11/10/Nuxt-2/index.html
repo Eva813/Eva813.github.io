@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在使用 Nuxt.js 開啟專案後，會自動生成不少文件檔案，今天就來介紹幾樣基礎設定以及檔案的運用吧！ 了解 Nuxt 路徑引用規則 ~以及@ ：根目錄  (注意：nuxt.conf.js、非 nuxt 結構的 js 檔 除外)   波浪或小老鼠 :從根目錄 搜尋assets 資料夾以下也一樣import test from &quot;@&#x2F;assets&#x2F;js&#x2F;test.js&quot;   .">
+<meta property="og:type" content="article">
+<meta property="og:title" content="講講幾個 Nuxt.js 重要觀念">
+<meta property="og:url" content="https://eva813.github.io/2021/11/10/Nuxt-2/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="在使用 Nuxt.js 開啟專案後，會自動生成不少文件檔案，今天就來介紹幾樣基礎設定以及檔案的運用吧！ 了解 Nuxt 路徑引用規則 ~以及@ ：根目錄  (注意：nuxt.conf.js、非 nuxt 結構的 js 檔 除外)   波浪或小老鼠 :從根目錄 搜尋assets 資料夾以下也一樣import test from &quot;@&#x2F;assets&#x2F;js&#x2F;test.js&quot;   .">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/4LE0BUW.png">
+<meta property="og:image" content="https://i.imgur.com/CNUlrGz.png">
+<meta property="og:image" content="https://i.imgur.com/2qLJ5te.png">
+<meta property="og:image" content="https://i.imgur.com/iSsni0c.png">
+<meta property="og:image" content="https://i.imgur.com/ekDF3vK.png">
+<meta property="og:image" content="https://i.imgur.com/aLpoUcR.png">
+<meta property="og:image" content="https://i.imgur.com/krqrhq8.png">
+<meta property="og:image" content="https://i.imgur.com/46ebZ9F.png">
+<meta property="og:image" content="https://i.imgur.com/l0kYSwT.png">
+<meta property="og:image" content="https://i.imgur.com/gNNLJ2O.png">
+<meta property="og:image" content="https://i.imgur.com/t3G7UGN.png">
+<meta property="article:published_time" content="2021-11-10T01:58:39.000Z">
+<meta property="article:modified_time" content="2022-11-04T02:34:55.541Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="Nuxt">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/4LE0BUW.png">
+
+<link rel="canonical" href="https://eva813.github.io/2021/11/10/Nuxt-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>講講幾個 Nuxt.js 重要觀念 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/11/10/Nuxt-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          講講幾個 Nuxt.js 重要觀念
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-11-10 09:58:39" itemprop="dateCreated datePublished" datetime="2021-11-10T09:58:39+08:00">2021-11-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:34:55" itemprop="dateModified" datetime="2022-11-04T10:34:55+08:00">2022-11-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://i.imgur.com/4LE0BUW.png" alt=""></p>
+<p>在使用 Nuxt.js 開啟專案後，會自動生成不少文件檔案，今天就來介紹幾樣基礎設定以及檔案的運用吧！</p>
+<h2 id="了解-Nuxt-路徑引用規則"><a href="#了解-Nuxt-路徑引用規則" class="headerlink" title="了解 Nuxt 路徑引用規則"></a>了解 Nuxt 路徑引用規則</h2><ul>
+<li><code>~</code>以及<code>@</code> ：根目錄 <ul>
+<li>(注意：nuxt.conf.js、非 nuxt 結構的 js 檔 除外)</li>
+</ul>
+</li>
+<li>波浪或小老鼠 :從根目錄 搜尋assets 資料夾<br><img src="https://i.imgur.com/CNUlrGz.png" alt=""><br>以下也一樣<br><code>import test from &quot;@/assets/js/test.js&quot;</code></li>
+</ul>
+<ol start="2">
+<li><code>./</code>：自己的目錄</li>
+</ol>
+<ul>
+<li>nuxt.conf.js、以及非 nuxt 結構要這樣撰寫<br><img src="https://i.imgur.com/2qLJ5te.png" alt=""></li>
+</ul>
+<ol start="3">
+<li>放在 static 資料夾裡的引用方式(直接斜線)<code>&lt;img src=&quot;/demo.png&quot; alt=&quot;&quot;&gt;</code></li>
+<li>補充：<br><a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/15q4Vsl3I6Bf5F1f2LdNj_OvF5fcrl7aPv5aA1E39Kjw/edit#slide=id.g813fdce503_0_0">2.4 nuxt 圖片處理 - webpack 相關設定</a></li>
+</ol>
+<ul>
+<li><p>在asset 加入 img 資料夾(將圖片放在這裡)<br><code>&lt;img src=&quot;@/assets/img/demo.png&quot; alt=&quot;&quot;&gt;</code><br><img src="https://i.imgur.com/iSsni0c.png" alt=""></p>
+</li>
+<li><p>放在css作背景圖<br>  *<code>background: url(~assets/img/demo.png);  //nuxt css 引入圖片不能加斜線</code></p>
+<ul>
+<li>也不能將波浪改為@<br>:::info<br>原本波浪斜線方式:<br><code>background: url(~/assets/img/demo.png);</code><br>:::<br><img src="https://i.imgur.com/ekDF3vK.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="nuxt-config-js-設定"><a href="#nuxt-config-js-設定" class="headerlink" title="nuxt.config.js 設定"></a>nuxt.config.js 設定</h2><ul>
+<li>vue cli3 設定vue 專案是透過是 main.js/ vue.config.js 這兩隻檔案。<ul>
+<li>main.js 為程式的進入點</li>
+</ul>
+</li>
+<li>nuxt 則統一用 nuxt.conf.js 做為設定。<ul>
+<li>要編輯這份文件達到專案需求</li>
+<li>如 wedpack 是放在 build</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/aLpoUcR.png" alt=""></p>
+<ul>
+<li>此外在此檔案可以做標題、引入 CDN 等基礎設置<ul>
+<li>head,meta 可以做表頭的設定</li>
+<li>script 可以引入 JS 的檔案或 CDN 資源</li>
+</ul>
+</li>
+<li>css 全域設定，也同樣放在這裡<ul>
+<li><a target="_blank" rel="noopener" href="https://nuxtjs.org/docs/configuration-glossary/configuration-css/">The css property</a><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">css</span>: [</span><br><span class="line"> <span class="string">&#x27;~/assets/scss/demo.scss&#x27;</span></span><br><span class="line">],</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="comment">// Global page headers: https://go.nuxtjs.dev/config-head</span></span><br><span class="line">  <span class="attr">head</span>: &#123;</span><br><span class="line">    <span class="attr">title</span>: <span class="string">&#x27;myNuxt&#x27;</span>,</span><br><span class="line">    <span class="attr">htmlAttrs</span>: &#123;</span><br><span class="line">      <span class="attr">lang</span>: <span class="string">&#x27;en&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">meta</span>: [</span><br><span class="line">      &#123; <span class="attr">charset</span>: <span class="string">&#x27;utf-8&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">name</span>: <span class="string">&#x27;viewport&#x27;</span>, <span class="attr">content</span>: <span class="string">&#x27;width=device-width, initial-scale=1&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">hid</span>: <span class="string">&#x27;description&#x27;</span>, <span class="attr">name</span>: <span class="string">&#x27;description&#x27;</span>, <span class="attr">content</span>: <span class="string">&#x27;&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">name</span>: <span class="string">&#x27;format-detection&#x27;</span>, <span class="attr">content</span>: <span class="string">&#x27;網站前後端、網頁設計、程式語言網站&#x27;</span> &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">link</span>: [</span><br><span class="line">      &#123; <span class="attr">rel</span>: <span class="string">&#x27;icon&#x27;</span>, <span class="attr">type</span>: <span class="string">&#x27;image/x-icon&#x27;</span>, <span class="attr">href</span>: <span class="string">&#x27;/favicon.ico&#x27;</span> &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">script</span>:</span><br><span class="line">    [</span><br><span class="line">      &#123; <span class="attr">src</span>: <span class="string">&quot;/jquery.min.js&quot;</span>&#125;,</span><br><span class="line">      &#123; <span class="attr">src</span>: <span class="string">&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js&quot;</span> &#125;</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/krqrhq8.png" alt=""></p>
+<h3 id="引用-static-靜態資源的檔案"><a href="#引用-static-靜態資源的檔案" class="headerlink" title="引用 static 靜態資源的檔案"></a>引用 static 靜態資源的檔案</h3><ul>
+<li>static資料夾:靜態資源資料夾<ul>
+<li>其中要連接該檔案路徑要用斜線</li>
+<li>這裡面的檔案不會被打包和優化<br><img src="https://i.imgur.com/46ebZ9F.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="套件安裝"><a href="#套件安裝" class="headerlink" title="套件安裝!"></a>套件安裝!</h2><ol>
+<li>最簡單方式是使用打包後的 CDN 或 js 檔案 <ul>
+<li>在head 的 script 放入 CDN</li>
+</ul>
+</li>
+<li>使用 <a target="_blank" rel="noopener" href="https://nuxtjs.org/docs/directory-structure/plugins/">nuxt plugins</a> 自包 js 套件 或 vue 套件 → 較麻煩</li>
+<li>使用 <a target="_blank" rel="noopener" href="https://zh.nuxtjs.org/guide/modules/">nuxt modules</a> 來引入套件<ul>
+<li>套件較少</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>nuxt module 主要是將 plugin 在封裝一層出來。(就是 nuxt 專有的套件)，如果對安裝 plugins 沒把握，就找有 nuxt modules 的套件來安裝。</li>
+</ul>
+<h3 id="練習1包裝一般的-vue-套件"><a href="#練習1包裝一般的-vue-套件" class="headerlink" title="練習1包裝一般的 vue 套件"></a>練習1包裝一般的 vue 套件</h3><p> <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/vuejs-datepicker">vuejs-datepicker</a></p>
+<p>1、npm install vuejs-datepicker</p>
+<ul>
+<li>若直接依照官網來安裝，並在檔案引入會發生錯誤</li>
+<li>所以 install 完之後要再執行下面動作<br>2、plugins 新增一個檔案：datepicker.js → 撰寫套件</li>
+<li>在 plugins 資料夾，新增檔案<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Datepicker</span> <span class="keyword">from</span> <span class="string">&#x27;vuejs-datepicker&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&#x27;Datepicker&#x27;</span>, <span class="title class_">Datepicker</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://i.imgur.com/l0kYSwT.png" alt=""></p>
+<p>3、nuxt.config.js 安裝 plugin → 可以設定該套件只在 客戶端 運作</p>
+<ul>
+<li>可以將插件安裝在客戶端或是 server 端<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">src</span>: <span class="string">&#x27;~/plugins/datepicker.js&#x27;</span>, <span class="attr">mode</span>: <span class="string">&#x27;client&#x27;</span> &#125;,</span><br></pre></td></tr></table></figure></li>
+<li>要使用時，再放入頁面<br><img src="https://i.imgur.com/gNNLJ2O.png" alt=""><h3 id="練習2-安裝一般的-js-套件"><a href="#練習2-安裝一般的-js-套件" class="headerlink" title="練習2 安裝一般的 js 套件"></a>練習2 安裝一般的 js 套件</h3><a target="_blank" rel="noopener" href="https://greensock.com/docs/v3/Installation">GSAP</a></li>
+</ul>
+<ol>
+<li>npm install gsap</li>
+<li>plugins 新增一個檔案：gsap.js → 撰寫套件<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> gsap <span class="keyword">from</span> <span class="string">&quot;gsap&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$gsap</span> = gsap</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/t3G7UGN.png" alt=""></li>
+<li>nuxt.config.js 安裝 plugin<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">plugins</span>: [</span><br><span class="line">   &#123; <span class="attr">src</span>: <span class="string">&#x27;~/plugins/gsap.js&#x27;</span>, <span class="attr">mode</span>: <span class="string">&#x27;client&#x27;</span> &#125;,</span><br><span class="line"> ],</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><code>create()</code> 會在前端執行\後端執行</li>
+</ul>
+<h3 id="練習3-nuxt-安裝"><a href="#練習3-nuxt-安裝" class="headerlink" title="練習3 nuxt 安裝"></a>練習3 nuxt 安裝</h3><p><a target="_blank" rel="noopener" href="https://axios.nuxtjs.org/">axios modules</a></p>
+<ol>
+<li>npm install @nuxtjs/axios</li>
+<li>plugins 新增一個檔案：axios.js </li>
+</ol>
+<ul>
+<li>如同前面的練習，到  nuxt.config.js<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">modules</span>: [</span><br><span class="line">  <span class="string">&#x27;@nuxtjs/axios&#x27;</span>,</span><br><span class="line">],</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Nuxt/" rel="tag"># Nuxt</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/10/Nuxt-1/" rel="prev" title="為何要學習 Nuxt.js ？">
+      <i class="fa fa-chevron-left"></i> 為何要學習 Nuxt.js ？
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/27/TS-1/" rel="next" title="TypeScript 基礎介紹 (1)">
+      TypeScript 基礎介紹 (1) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3-Nuxt-%E8%B7%AF%E5%BE%91%E5%BC%95%E7%94%A8%E8%A6%8F%E5%89%87"><span class="nav-number">1.</span> <span class="nav-text">了解 Nuxt 路徑引用規則</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nuxt-config-js-%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">nuxt.config.js 設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8-static-%E9%9D%9C%E6%85%8B%E8%B3%87%E6%BA%90%E7%9A%84%E6%AA%94%E6%A1%88"><span class="nav-number">2.1.</span> <span class="nav-text">引用 static 靜態資源的檔案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%97%E4%BB%B6%E5%AE%89%E8%A3%9D"><span class="nav-number">3.</span> <span class="nav-text">套件安裝!</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B7%B4%E7%BF%921%E5%8C%85%E8%A3%9D%E4%B8%80%E8%88%AC%E7%9A%84-vue-%E5%A5%97%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">練習1包裝一般的 vue 套件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B7%B4%E7%BF%922-%E5%AE%89%E8%A3%9D%E4%B8%80%E8%88%AC%E7%9A%84-js-%E5%A5%97%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">練習2 安裝一般的 js 套件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B7%B4%E7%BF%923-nuxt-%E5%AE%89%E8%A3%9D"><span class="nav-number">3.3.</span> <span class="nav-text">練習3 nuxt 安裝</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

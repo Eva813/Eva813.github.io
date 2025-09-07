@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="延續上次介紹常用的 Vue test util 語法，今天要再多介紹幾個。 .text() 與 .html()1234567891011&lt;template&gt;  &lt;div class&#x3D;&quot;hello&quot;&gt;    &lt;p&gt;      For a guide and recipes on how to configure &#x2F; customize this">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vueTest - Vue test util (2)">
+<meta property="og:url" content="https://eva813.github.io/2023/08/05/vueTest-3/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="延續上次介紹常用的 Vue test util 語法，今天要再多介紹幾個。 .text() 與 .html()1234567891011&lt;template&gt;  &lt;div class&#x3D;&quot;hello&quot;&gt;    &lt;p&gt;      For a guide and recipes on how to configure &#x2F; customize this">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hackmd.io/_uploads/ryWgDUjoh.png">
+<meta property="article:published_time" content="2023-08-05T04:31:08.000Z">
+<meta property="article:modified_time" content="2023-12-23T04:47:18.895Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="test">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hackmd.io/_uploads/ryWgDUjoh.png">
+
+<link rel="canonical" href="https://eva813.github.io/2023/08/05/vueTest-3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>vueTest - Vue test util (2) | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2023/08/05/vueTest-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vueTest - Vue test util (2)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-05 12:31:08" itemprop="dateCreated datePublished" datetime="2023-08-05T12:31:08+08:00">2023-08-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-12-23 12:47:18" itemprop="dateModified" datetime="2023-12-23T12:47:18+08:00">2023-12-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/test/" itemprop="url" rel="index"><span itemprop="name">test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>延續上次介紹常用的 Vue test util 語法，今天要再多介紹幾個。</p>
+<h2 id="text-與-html"><a href="#text-與-html" class="headerlink" title=".text() 與 .html()"></a><code>.text()</code> 與 <code>.html()</code></h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;hello&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      For a guide and recipes on how to configure / customize this project,<span class="tag">&lt;<span class="name">br</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      check out the</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://cli.vuejs.org&quot;</span> <span class="attr">target</span>=<span class="string">&quot;_blank&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;noopener&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        vue-cli documentation</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>html</code> 若直接 console 出會將 template 呈現出來</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">html=&gt; &lt;div class=&quot;hello&quot;&gt;</span><br><span class="line">      &lt;p&gt; For a guide and recipes on how to configure / customize this project,&lt;br&gt; check out the &lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在測試當中，可以直接抓取該斷落的內容進行比對</p>
+<ol>
+<li>取得該段的 html</li>
+<li>取得該 DOM 元素，並進行 html 的比對</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">HelloWorld</span> <span class="keyword">from</span> <span class="string">&quot;./HelloWorld.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;HelloWorld.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;html &amp; text&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">HelloWorld</span>);</span><br><span class="line">    <span class="comment">// console.log(&quot;html=&gt;&quot;, wrapper.html());</span></span><br><span class="line">    <span class="comment">// console.log(&quot;text=&gt;&quot;, wrapper.text());</span></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">html</span>()).<span class="title function_">toMatch</span>(</span><br><span class="line">      <span class="string">`&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;aLink_&gt;&quot;</span>, wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">html</span>())</span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">html</span>()).<span class="title function_">toMatch</span>(</span><br><span class="line">      <span class="string">`&lt;a href=&quot;https://cli.vuejs.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt; vue-cli documentation &lt;/a&gt;`</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="component-的簡易測試"><a href="#component-的簡易測試" class="headerlink" title="component 的簡易測試"></a>component 的簡易測試</h2><p>如課程範例為一個卡片，裡面有一個圖片元件(ImageBox)、內文元件(Content)</p>
+<p><img src="https://hackmd.io/_uploads/ryWgDUjoh.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;CardBox&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">ImageBox</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">Content</span> <span class="attr">v-if</span>=<span class="string">&quot;isOpenContent&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>test goal: 檢查 component 是否有隨狀態而成功渲染與否。</p>
+<h3 id="findComponent"><a href="#findComponent" class="headerlink" title="findComponent"></a>findComponent</h3><p>判斷 component 是否有存在<br>首先要如何抓元件？</p>
+<ol>
+<li>因頁面中是掛載組件，所以這邊使用 mount</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; mount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">CardBox</span> <span class="keyword">from</span> <span class="string">&quot;./index.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ImageBox</span> <span class="keyword">from</span> <span class="string">&quot;./ImageBox.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Content</span> <span class="keyword">from</span> <span class="string">&quot;./Content.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;CardBox.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;findComponent function test&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">mount</span>(<span class="title class_">CardBox</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">findComponent</span>(<span class="title class_">ImageBox</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">findComponent</span>(<span class="title class_">Content</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>findComponent(‘.class’)</li>
+<li>findComponent({name: a}) 組建名稱</li>
+<li>findComponent({ref: ‘ref’}) 組件實體：綁在 DOM 上的 ref</li>
+<li>findComponent(component) 取得組件：抓取導入的組件</li>
+</ul>
+<h3 id="findAllComponents"><a href="#findAllComponents" class="headerlink" title="findAllComponents"></a>findAllComponents</h3><ul>
+<li>此方式是會回傳陣列，要使用 <code>at()</code></li>
+<li>不支援 ref 查找</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">expect</span>(wrapper.<span class="title function_">findAllComponents</span>(<span class="title class_">ImageBox</span>).<span class="title function_">at</span>(<span class="number">0</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Using find to search for a Component is deprecated and will be removed. Use findComponent instead. The find method will continue to work for finding elements using any valid selector（tag selectors (div, foo, bar), attribute selectors ([foo], [foo=&quot;bar&quot;])...）.</span><br></pre></td></tr></table></figure>
+
+<h2 id="測試-class-and-attribute"><a href="#測試-class-and-attribute" class="headerlink" title="測試 class and attribute"></a>測試 class and attribute</h2><p>可以使用在狀態的切換或是驗證資料的對錯，可以用 class 存在與否驗證。</p>
+<h3 id="attribute"><a href="#attribute" class="headerlink" title="attribute"></a>attribute</h3><ul>
+<li>資料在渲染的時候，是否有正確的塞入到 attribute。</li>
+<li>在做資料的渲然，將拿到的內容塞入 attribute 中，如 a link 的 href, img src</li>
+</ul>
+<p>範例題目延續上述使用得內文元件(Content)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/reactivity&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">props</span>: &#123;</span><br><span class="line">    <span class="attr">styleColor</span>: &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">      <span class="attr">default</span>: <span class="string">&quot;red&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">setup</span>(<span class="params">props</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      props,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">h1</span> <span class="attr">:class</span>=<span class="string">&quot;[&#x27;card_title&#x27;, props.styleColor]&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      Vue  vue-test-utils</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:;&quot;</span>&gt;</span>click<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;card_text&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      Vue Test Utils (VTU) is a set of utility functions aimed to simplify testing Vue.js components. It provides some methods to mount and interact with Vue components in an isolated manner!</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>test goal: 測試 <code>&lt;h1&gt;</code> 有沒有存在 styleColor</p>
+<ul>
+<li>使用 <code>class()</code> 帶入參數，就會去檢查該 class 是否存在<br>測試架構：</li>
+</ul>
+<ol>
+<li>先確定該元件有被渲染出來</li>
+<li>找到 h1 tag 並查看是否有 styleColor 傳入</li>
+<li>元件內的 a link 放入 href</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Content</span> <span class="keyword">from</span> <span class="string">&quot;./Content.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;Content.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;find component&quot;</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">Content</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;.card_title&#x27;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">true</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;check h1 tag have red class&quot;</span>, <span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">Content</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;h1&#x27;</span>).<span class="title function_">classes</span>(<span class="string">&#x27;red&#x27;</span>)).<span class="title function_">toBe</span>(<span class="literal">true</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;button is disabled attr&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">Content</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;red&#x27;</span>, wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">attributes</span>(<span class="string">&quot;href&quot;</span>))</span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&#x27;a&#x27;</span>).<span class="title function_">attributes</span>(<span class="string">&quot;href&quot;</span>)).<span class="title function_">toBe</span>(<span class="string">&quot;javascript:;&quot;</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>練習方式，聽完講師分享的操作之後，寫下測試目標的結構，就可以嘗試自己撰寫看看！</p>
+<h2 id="檢查是否可見-isVisible-amp-exists"><a href="#檢查是否可見-isVisible-amp-exists" class="headerlink" title="檢查是否可見 isVisible &amp; exists"></a>檢查是否可見 isVisible &amp; exists</h2><p>前面的範例練習，就可以看檔有使用 exists<br>在 vue template 中，有使用 <code>v-if</code>, <code>v-show</code> 來處理 div 顯示與否。<br><code>v-show</code> 會存在於 DOM 上。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/test-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">PhotoItem</span> <span class="keyword">from</span> <span class="string">&quot;./index.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&quot;PhotoItem.vue&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&quot;DOM is v-if or v-show hide&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> wrapper = <span class="title function_">shallowMount</span>(<span class="title class_">PhotoItem</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// exists 用來查看是否存在</span></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&quot;#box1&quot;</span>).<span class="title function_">exists</span>()).<span class="title function_">toBe</span>(<span class="literal">false</span>);</span><br><span class="line">    <span class="comment">// isVisible 用來判斷DOM是否給 v-show 隱藏起來</span></span><br><span class="line">    <span class="title function_">expect</span>(wrapper.<span class="title function_">find</span>(<span class="string">&quot;#box2&quot;</span>).<span class="title function_">isVisible</span>()).<span class="title function_">toBe</span>(<span class="literal">false</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/test/" rel="tag"># test</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/03/vue-isComponent/" rel="prev" title="vue-isComponent">
+      <i class="fa fa-chevron-left"></i> vue-isComponent
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/12/23/signaturePad-component/" rel="next" title="製作簽名面板元件">
+      製作簽名面板元件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#text-%E8%88%87-html"><span class="nav-number">1.</span> <span class="nav-text">.text() 與 .html()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#component-%E7%9A%84%E7%B0%A1%E6%98%93%E6%B8%AC%E8%A9%A6"><span class="nav-number">2.</span> <span class="nav-text">component 的簡易測試</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#findComponent"><span class="nav-number">2.1.</span> <span class="nav-text">findComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#findAllComponents"><span class="nav-number">2.2.</span> <span class="nav-text">findAllComponents</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6-class-and-attribute"><span class="nav-number">3.</span> <span class="nav-text">測試 class and attribute</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#attribute"><span class="nav-number">3.1.</span> <span class="nav-text">attribute</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AA%A2%E6%9F%A5%E6%98%AF%E5%90%A6%E5%8F%AF%E8%A6%8B-isVisible-amp-exists"><span class="nav-number">4.</span> <span class="nav-text">檢查是否可見 isVisible &amp; exists</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

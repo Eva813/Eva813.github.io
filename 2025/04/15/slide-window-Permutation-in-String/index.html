@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="練習來自 labuladong 的演算法筆記 的滑動視窗演算法核心程式碼模板。 基本設置:用兩個指針來界定一個區間，也就是一個「窗口」：  左指針 left：表示窗口的起始位置。 右指針 right：表示窗口的尾部（通常採用左閉右開區間 [left, right)）。  窗口內的資料會隨著 left 和 right 的移動而動態改變。解題的關鍵在於：  擴大窗口：不斷將新的元素加入窗口，並更新窗口">
+<meta property="og:type" content="article">
+<meta property="og:title" content="刷題練習 - Permutation in String">
+<meta property="og:url" content="https://eva813.github.io/2025/04/15/slide-window-Permutation-in-String/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="練習來自 labuladong 的演算法筆記 的滑動視窗演算法核心程式碼模板。 基本設置:用兩個指針來界定一個區間，也就是一個「窗口」：  左指針 left：表示窗口的起始位置。 右指針 right：表示窗口的尾部（通常採用左閉右開區間 [left, right)）。  窗口內的資料會隨著 left 和 right 的移動而動態改變。解題的關鍵在於：  擴大窗口：不斷將新的元素加入窗口，並更新窗口">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-04-15T12:34:43.000Z">
+<meta property="article:modified_time" content="2025-09-07T01:02:35.745Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="slide-window">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2025/04/15/slide-window-Permutation-in-String/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>刷題練習 - Permutation in String | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/04/15/slide-window-Permutation-in-String/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          刷題練習 - Permutation in String
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-04-15 20:34:43" itemprop="dateCreated datePublished" datetime="2025-04-15T20:34:43+08:00">2025-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-09-07 09:02:35" itemprop="dateModified" datetime="2025-09-07T09:02:35+08:00">2025-09-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>練習來自 <a target="_blank" rel="noopener" href="https://labuladong.online/algo/essential-technique/sliding-window-framework/">labuladong 的演算法筆記</a> 的滑動視窗演算法核心程式碼模板。</p>
+<h2 id="基本設置"><a href="#基本設置" class="headerlink" title="基本設置:"></a>基本設置:</h2><p>用兩個指針來界定一個區間，也就是一個「窗口」：</p>
+<ul>
+<li>左指針 left：表示窗口的起始位置。</li>
+<li>右指針 right：表示窗口的尾部（通常採用左閉右開區間 [left, right)）。</li>
+</ul>
+<p>窗口內的資料會隨著 left 和 right 的移動而動態改變。解題的關鍵在於：</p>
+<ul>
+<li>擴大窗口：不斷將新的元素加入窗口，並更新窗口內的狀態或統計（例如字元出現次數）。</li>
+<li>檢查窗口是否滿足條件：根據題目要求檢查當前窗口是否為合法解。</li>
+<li>收縮窗口：如果當前窗口已滿足條件，嘗試從左側移除元素以找到更優（例如更短）的解，同時更新狀態。</li>
+</ul>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> slidingWindow = <span class="keyword">function</span>(<span class="params">s</span>) &#123;</span><br><span class="line">    <span class="comment">// 使用合適的資料結構記錄視窗中的資料，根據具體題目變通。</span></span><br><span class="line">    <span class="comment">// 例如：記錄字元出現的次數，或累加窗口內元素的和。</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable language_">window</span> = &#123;&#125;;  </span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> left = <span class="number">0</span>, right = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (right &lt; s.<span class="property">length</span>) &#123;</span><br><span class="line">        <span class="comment">// 取出將要加入視窗的字元</span></span><br><span class="line">        <span class="keyword">let</span> c = s[right];</span><br><span class="line">        right++;  <span class="comment">// 擴大窗口</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新窗口內資料</span></span><br><span class="line">        <span class="comment">// 例如：window[c] = (window[c] || 0) + 1;</span></span><br><span class="line">        <span class="comment">// 根據具體題目邏輯進行更新</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// *** Debug 輸出位置 *** </span></span><br><span class="line">        <span class="comment">// console.log(&quot;窗口: [%d, %d)&quot;, left, right);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 當窗口不再滿足題目要求時，收縮窗口</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="comment">/* 判斷窗口需要收縮的條件 */</span>) &#123;</span><br><span class="line">            <span class="comment">// 取得將要移除的字元（為使變數名稱更具描述性可用 removedChar）</span></span><br><span class="line">            <span class="keyword">let</span> removedChar = s[left];</span><br><span class="line">            left++;  <span class="comment">// 縮小窗口</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 更新移除字元對窗口資料的影響</span></span><br><span class="line">            <span class="comment">// 例如：if (window[removedChar] ...) &#123; ... &#125;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a><a target="_blank" rel="noopener" href="https://leetcode.com/problems/permutation-in-string/description/">題目</a></h2><p>Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.</p>
+<p>In other words, return true if one of s1’s permutations is the substring of s2.</p>
+<p>給定兩個字串 s1 和 s2，若 s2 中包含 s1 的某個排列，則返回 true；否則返回 false。</p>
+<p>換句話說，若 s1 的某個排列是 s2 的子字串，則返回 true。</p>
+<p>Example 1:</p>
+<p>Input: s1 = “ab”, s2 = “eidbaooo”<br>Output: true<br>Explanation: s2 contains one permutation of s1 (“ba”).</p>
+<span id="more"></span>
+
+<h3 id="解題思路："><a href="#解題思路：" class="headerlink" title="解題思路："></a>解題思路：</h3><ol>
+<li>建立需求資料結構：</li>
+</ol>
+<ul>
+<li>先建立一個哈希表 need，記錄 s1 中每個字元需出現的次數。這代表著當視窗中相應字元的出現次數達到 need 內的數量，該字元即滿足要求。</li>
+</ul>
+<ol start="2">
+<li>初始化視窗相關變數：</li>
+</ol>
+<ul>
+<li>建立一個哈希表 window 用來記錄當前視窗內各字元出現次數。</li>
+<li>初始化左右指標 left 與 right 為 0。</li>
+<li>使用變數 valid 來計算目前在視窗中滿足 need 要求的字元種類數。</li>
+<li>由於目標是找出是否存在 s1 中排列（即字元組合相同）出現在 s2 中，所以要求的視窗大小固定為 s1 長度。</li>
+</ul>
+<ol start="3">
+<li><p>擴大視窗：<br>利用 right 指標不斷擴大窗口，將 s2 中的字元依序加入窗口中，並更新 window 的計數。如果某個字元剛好滿足 need 的數量要求，則 valid 加 1。</p>
+</li>
+<li><p>收縮視窗並檢查條件：<br>當視窗的大小等於 s1 的長度時，此時視窗中的所有字元構成一個候選解。</p>
+</li>
+</ol>
+<ul>
+<li>檢查 valid 是否等於 need 中的字元種類數。如果相等，說明當前窗口中的字元頻率與 s1 完全一致，符合排列條件，直接返回 true。</li>
+<li>如果不符合，則將左側字元移除（收縮窗口），並更新 window 中該字元的計數以及 valid（若該字元數量從滿足變成不足）。</li>
+<li>窗口收縮後繼續擴大右側以遍歷 s2。</li>
+</ul>
+<ol start="5">
+<li>結束：<br>遍歷完 s2 後，若未能找到符合條件的窗口，則返回 false。</li>
+</ol>
+<h3 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">s1</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">s2</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">boolean</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> checkInclusion = <span class="keyword">function</span>(<span class="params">s1, s2</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable language_">window</span> = &#123;&#125;</span><br><span class="line">    <span class="keyword">let</span> need = &#123;&#125;</span><br><span class="line">    <span class="keyword">let</span> right = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> valid = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> required = <span class="title class_">Object</span>.<span class="title function_">keys</span>(need).<span class="property">length</span>;  <span class="comment">// 需要滿足的字元種類數</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> item <span class="keyword">of</span> s1)&#123;</span><br><span class="line">        need[item] = (need[item] || <span class="number">0</span>) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(right &lt; s2.<span class="property">length</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> char = s2[right]</span><br><span class="line">        right++</span><br><span class="line">        <span class="keyword">if</span>(need[char])&#123;</span><br><span class="line">            <span class="variable language_">window</span>[char] = (<span class="variable language_">window</span>[char] || <span class="number">0</span>) + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(<span class="variable language_">window</span>[char] === need[char])&#123;</span><br><span class="line">                valid++</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 當窗口長度達到 s1 的長度時，開始收縮窗口</span></span><br><span class="line">        <span class="keyword">while</span>(right - left &gt;= s1.<span class="property">length</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(valid === <span class="title class_">Object</span>.<span class="title function_">keys</span>(need).<span class="property">length</span>) <span class="keyword">return</span> <span class="literal">true</span>    </span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> removedChar = s2[left]</span><br><span class="line">            left++</span><br><span class="line">            <span class="comment">// 更新移出字元對窗口資料的影響</span></span><br><span class="line">            <span class="keyword">if</span>(need[removedChar])&#123; </span><br><span class="line">                <span class="keyword">if</span>(<span class="variable language_">window</span>[removedChar] === need[removedChar])&#123;</span><br><span class="line">                    valid--</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="variable language_">window</span>[removedChar]--</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="時間與空間複雜度分析"><a href="#時間與空間複雜度分析" class="headerlink" title="時間與空間複雜度分析"></a>時間與空間複雜度分析</h2><ol>
+<li>時間複雜度： O(n + m)，其中 n 為 s2 的長度，m 為 s1 的長度。</li>
+<li>空間複雜度： 最壞情況下為 O(m)。</li>
+</ol>
+<ul>
+<li>綜合空間複雜度：<br>如果不假設字元集是固定大小（例如僅限小寫英文字母），那麼最壞情況下整體空間複雜度為 O(m)。<br>注意： 在許多實際情況下（例如字元集固定的狀況），可能會將此空間複雜度視為 O(1)；但從最壞情況分析角度，仍然為 O(m)</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+              <a href="/tags/slide-window/" rel="tag"># slide-window</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/03/31/side-project-zustand/" rel="prev" title="side-project-zustand">
+      <i class="fa fa-chevron-left"></i> side-project-zustand
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/04/16/react-key-reflow/" rel="next" title="React 重置技巧：React Key 與 CSS offsetWidth">
+      React 重置技巧：React Key 與 CSS offsetWidth <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%A8%AD%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">基本設置:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF"><span class="nav-number">2.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">題目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A1%8C%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">解題思路：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.2.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%82%E9%96%93%E8%88%87%E7%A9%BA%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">時間與空間複雜度分析</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
