@@ -180,6 +180,351 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/11/22/react-component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/22/react-component/" class="post-title-link" itemprop="url">React - 建立元件</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-22 10:36:50" itemprop="dateCreated datePublished" datetime="2022-11-22T10:36:50+08:00">2022-11-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-26 18:15:38" itemprop="dateModified" datetime="2022-11-26T18:15:38+08:00">2022-11-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/VykOAkm.png" alt=""></p>
+<p>前段時間練習了一些 React 的基礎，對於 JSX 以及一些 hook 的用法比較有概念，所以就以 Bruce 的 React 課程實作再來練習，樣式部分以 Tailwind 為主此外也搭配 TS 來撰寫。</p>
+<h2 id="1-Header"><a href="#1-Header" class="headerlink" title="1. Header"></a>1. Header</h2><ul>
+<li>製作 IGHeader 元件，因為到不同頁面都會有 header 存在，所以可以將它放在外面的共用元件。</li>
+</ul>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">IGHeader</span>: <span class="title class_">React</span>.<span class="property">FC</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> go = <span class="title function_">useNavigate</span>()</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">header</span> <span class="attr">className</span>=<span class="string">&quot;sticky top-0 border-b-[1px] bg-white border-gray-300 &quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;flex justify-between items-center h-[60px] px-2 lg:max-w-[1024px] lg:mx-auto lg:px-0&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">img</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">className</span>=<span class="string">&quot;w-[100px] cursor-pointer&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">src</span>=<span class="string">&quot;/images/logo.svg&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        /&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;flex&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">svg</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2000/svg&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">className</span>=<span class="string">&quot;h-6 w-6 mr-4 cursor-pointer&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">fill</span>=<span class="string">&quot;none&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">viewBox</span>=<span class="string">&quot;0 0 24 24&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">stroke</span>=<span class="string">&quot;currentColor&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> go(&#x27;/&#x27;)&#125;</span></span><br><span class="line"><span class="language-xml">          &gt;</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">path</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeLinecap</span>=<span class="string">&quot;round&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeLinejoin</span>=<span class="string">&quot;round&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeWidth</span>=<span class="string">&#123;2&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">d</span>=<span class="string">&quot;M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            /&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">svg</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2000/svg&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">className</span>=<span class="string">&quot;h-6 w-6 mr-4 cursor-pointer&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">fill</span>=<span class="string">&quot;none&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">viewBox</span>=<span class="string">&quot;0 0 24 24&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">stroke</span>=<span class="string">&quot;currentColor&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> go(&#x27;/following&#x27;)&#125;</span></span><br><span class="line"><span class="language-xml">          &gt;</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">path</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeLinecap</span>=<span class="string">&quot;round&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeLinejoin</span>=<span class="string">&quot;round&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">strokeWidth</span>=<span class="string">&#123;2&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">              <span class="attr">d</span>=<span class="string">&quot;M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            /&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot; h-6 w-6 text-white  bg-gray-900  font-bold flex  rounded-full justify-center items-center&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            E</span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-IGContainer"><a href="#2-IGContainer" class="headerlink" title="2. IGContainer"></a>2. IGContainer</h2><p>頁面佈局設定，除了 限時動態頁面會呈現外，在追蹤者頁面也會使用到</p>
+<ul>
+<li>使用 Tailwind 設定左右版面以及當螢幕不同尺寸的設定</li>
+<li>將樣式寫在(style.div 裏面)，作為一個組件 export 出去</li>
+</ul>
+<h2 id="3-限時動態列表（IGStory）"><a href="#3-限時動態列表（IGStory）" class="headerlink" title="3. 限時動態列表（IGStory）"></a>3. 限時動態列表（IGStory）</h2><p> <img src="https://i.imgur.com/jzE9sAZ.png" alt=""></p>
+<ul>
+<li>因隸屬於 home 裡面的位置，所以可以將檔案，放在 home 資料夾中，屬於 home 中的組件<br>//通常在一份專案中不用引入兩個 css 框架<br>實作：<ol start="2">
+<li>List Container 的容器<br><a target="_blank" rel="noopener" href="https://tailwindcss.com/docs/overflow#scrolling-horizontally-if-needed">文件</a></li>
+</ol>
+<ul>
+<li>在組建內部要使用 JS 相關的邏輯的寫法，要在要面用大括號刮起來</li>
+<li>每一個小圖都是一個 item ，所以可以先製作組件</li>
+</ul>
+</li>
+</ul>
+<h3 id="限時動態-item-組件"><a href="#限時動態-item-組件" class="headerlink" title="限時動態 item 組件"></a>限時動態 item 組件</h3><ul>
+<li>此組件建立其中的小項目</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"></span><br><span class="line">type <span class="title class_">ItemProps</span> = &#123;</span><br><span class="line">  <span class="attr">name</span>: string;</span><br><span class="line">  <span class="attr">avatar</span>: string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Item</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;<span class="title class_">ItemProps</span>&gt; = <span class="function">(<span class="params">&#123; name, avatar &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot; text-center &quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot; rounded-full w-[56px] h-[56px] ring-2 border-2 border-white ring-red-500 mx-[11px] p-[3px] &quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">style</span>=<span class="string">&#123;&#123;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundImage:</span> `<span class="attr">url</span>($&#123;<span class="attr">avatar</span>&#125;)`,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundPosition:</span> &quot;<span class="attr">center</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundSize:</span> &quot;<span class="attr">cover</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        &#125;&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-xs mt-1&quot;</span>&gt;</span>&#123;name&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">Item</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="外層"><a href="#外層" class="headerlink" title="外層"></a>外層</h3><ul>
+<li>在外層的主要檔案，就是將模板建立好，讓 item 可以 map 進去</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">IGStory</span>: <span class="title class_">React</span>.<span class="property">FC</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> storyData = [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;bruce_fe&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a1.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;max&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a2.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;fm&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a3.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">4</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;joanne&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a4.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">5</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;focus&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a5.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">6</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;louis&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a6.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">7</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;alvin&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a7.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">8</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;grace&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a8.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">9</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;rance&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a9.png&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">10</span>,</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;bruce_fe&quot;</span>,</span><br><span class="line">      <span class="string">&quot;avatar&quot;</span>: <span class="string">&quot;/images/avatars/a10.png&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#x27;w-full flex items-center h-[110px] box-border overflow-x-auto overflow-y-hidden no-scrollbar  shadow-md lg:my-8&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;/* <span class="tag">&lt;<span class="name">Item</span> <span class="attr">name</span>=<span class="string">&quot;Mike&quot;</span> <span class="attr">avatar</span>=<span class="string">&#x27;/images/avatars/a1.png&#x27;</span> /&gt;</span> */&#125;</span></span><br><span class="line"><span class="language-xml">      &#123;</span></span><br><span class="line"><span class="language-xml">        storyData?.map((item) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">          const &#123; id, name, avatar &#125; = item</span></span><br><span class="line"><span class="language-xml">          return <span class="tag">&lt;<span class="name">Item</span> <span class="attr">key</span>=<span class="string">&#123;id&#125;</span> <span class="attr">name</span>=<span class="string">&#123;name&#125;</span> <span class="attr">avatar</span>=<span class="string">&#123;avatar&#125;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">        &#125;)</span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">IGStory</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-User-組件"><a href="#3-User-組件" class="headerlink" title="3. User 組件"></a>3. User 組件</h2><ul>
+<li>使用者資訊表，在不同區塊都有重複出現，所以可以抽成共用組件</li>
+<li>現定義好 props 的型別</li>
+<li>依照藥的版型來切出樣貌，將變數帶入</li>
+</ul>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">IGUserProps</span> = &#123;</span><br><span class="line">  size?: <span class="string">&quot;medium&quot;</span> | <span class="string">&quot;small&quot;</span>;</span><br><span class="line">  showFollow?: <span class="built_in">boolean</span>;</span><br><span class="line">  isFollowing?: <span class="built_in">boolean</span>;</span><br><span class="line">  account?: <span class="built_in">string</span>;</span><br><span class="line">  location?: <span class="built_in">string</span>;</span><br><span class="line">  avatar?: <span class="built_in">string</span>;</span><br><span class="line">  id?: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">IGUser</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;<span class="title class_">IGUserProps</span>&gt; = <span class="function">(<span class="params">&#123;</span></span></span><br><span class="line"><span class="params"><span class="function">  size = <span class="string">&quot;small&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  showFollow = <span class="literal">false</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  isFollowing = <span class="literal">false</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  account,</span></span></span><br><span class="line"><span class="params"><span class="function">  location,</span></span></span><br><span class="line"><span class="params"><span class="function">  avatar,</span></span></span><br><span class="line"><span class="params"><span class="function">  id,</span></span></span><br><span class="line"><span class="params"><span class="function">&#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line"></span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;flex h-[70px] items-center box-border px-4 &quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#123;</span>`$&#123;<span class="attr">size</span> === <span class="string">&quot;small&quot;</span> ? &quot;<span class="attr">w-</span>[<span class="attr">40px</span>] <span class="attr">h-</span>[<span class="attr">40px</span>]&quot; <span class="attr">:</span> &quot;<span class="attr">w-</span>[<span class="attr">60px</span>] <span class="attr">h-</span>[<span class="attr">60px</span>]&quot;&#125; <span class="attr">overflow-hidden</span> <span class="attr">rounded-full</span> `&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">style</span>=<span class="string">&#123;&#123;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundImage:</span> `<span class="attr">url</span>($&#123;<span class="attr">avatar</span>&#125;)`,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundPosition:</span> &quot;<span class="attr">center</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">backgroundSize:</span> &quot;<span class="attr">cover</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      &gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;ml-4&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-sm font-bold&quot;</span>&gt;</span>&#123;account&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-gray-400&quot;</span>&gt;</span>&#123;location&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;showFollow &amp;&amp; (</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">className</span>=<span class="string">&#123;</span>`$&#123;<span class="attr">isFollowing</span> ? &quot;<span class="attr">text-gray-700</span>&quot; <span class="attr">:</span> &quot;<span class="attr">text-blue-400</span>&quot;&#125; <span class="attr">text-xs</span> <span class="attr">ml-auto</span> <span class="attr">cursor-pointer</span> <span class="attr">font-bold</span>`&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        &gt;</span> &#123;isFollowing ? &quot;FOLLOWING&quot; : &quot;FOLLOW&quot;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      )</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">      &#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>memo 對於重複渲染，效能優化使用</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10252827">border-box</a></p>
+<p><img src="https://i.imgur.com/x16ZQBu.png" alt=""></p>
+<h2 id="post-組件"><a href="#post-組件" class="headerlink" title="post 組件"></a>post 組件</h2><p> <img src="https://i.imgur.com/HMvp7dy.jpg" alt=""></p>
+<ul>
+<li>分為三個部分</li>
+</ul>
+<ol>
+<li>user</li>
+</ol>
+<ul>
+<li>可以使用前面所製作的 user 組件</li>
+</ul>
+<ol start="2">
+<li>img</li>
+</ol>
+<ul>
+<li>直接放入該項圖片</li>
+</ul>
+<ol start="3">
+<li>評論區</li>
+</ol>
+<ul>
+<li>也可以製作成小組件，最後再放入 post 組件</li>
+<li>注意傳入 props 要先設定好傳入的型別</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"></span><br><span class="line">type <span class="title class_">CommentsProps</span> = &#123;</span><br><span class="line">  <span class="attr">likes</span>: number;</span><br><span class="line">  <span class="attr">description</span>: string;</span><br><span class="line">  <span class="attr">hashTags</span>: string;</span><br><span class="line">  <span class="attr">createTime</span>: string;</span><br><span class="line">  <span class="attr">account</span>: string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Comments</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;<span class="title class_">CommentsProps</span>&gt; = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    likes,</span></span></span><br><span class="line"><span class="params"><span class="function">    description,</span></span></span><br><span class="line"><span class="params"><span class="function">    hashTags,</span></span></span><br><span class="line"><span class="params"><span class="function">    createTime,</span></span></span><br><span class="line"><span class="params"><span class="function">    account,</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#x27;px-4&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#x27;flex items-center justify-between box-border my-4&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&#x27;flex py-1&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          // svg</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&#x27;text-sm font-bold&#x27;</span>&gt;</span>&#123;likes&#125; likes<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&#x27;text-sm font-bold&#x27;</span>&gt;</span>&#123;description&#125; <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&#x27;text-blue-400 font-bold&#x27;</span>&gt;</span>&#123;hashTags&#125; <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&#x27;text-gray-400 font-[500] text-xs mt-2&#x27;</span>&gt;</span>View all 999 comments <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-gray-400 text-[10px] mt-1&quot;</span>&gt;</span>&#123;createTime&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  )</span></span><br><span class="line"><span class="language-xml">&#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="profile-區塊"><a href="#profile-區塊" class="headerlink" title="profile 區塊"></a>profile 區塊</h2><ul>
+<li><p>實作快速，直接做出簡易的版面</p>
+</li>
+<li><p>套用前面所做的 IGUser 即可以使用</p>
+<p><img src="https://i.imgur.com/0nIA31V.png" alt=""></p>
+</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">IGUser</span> <span class="keyword">from</span> <span class="string">&quot;components/IGUser&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">IGProfile</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> followingList = [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">location</span>: <span class="string">&quot;Singapore&quot;</span>,</span><br><span class="line">      <span class="attr">account</span>: <span class="string">&quot;max_999&quot;</span>,</span><br><span class="line">      <span class="attr">isFollowing</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">avatar</span>: <span class="string">&quot;/images/avatars/a1.png&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="attr">location</span>: <span class="string">&quot;Singapore&quot;</span>,</span><br><span class="line">      <span class="attr">account</span>: <span class="string">&quot;fm_999&quot;</span>,</span><br><span class="line">      <span class="attr">isFollowing</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">avatar</span>: <span class="string">&quot;/images/avatars/a2.png&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="attr">location</span>: <span class="string">&quot;Singapore&quot;</span>,</span><br><span class="line">      <span class="attr">account</span>: <span class="string">&quot;joanne_999&quot;</span>,</span><br><span class="line">      <span class="attr">isFollowing</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">avatar</span>: <span class="string">&quot;/images/avatars/a3.png&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">4</span>,</span><br><span class="line">      <span class="attr">location</span>: <span class="string">&quot;Singapore&quot;</span>,</span><br><span class="line">      <span class="attr">account</span>: <span class="string">&quot;focus_999&quot;</span>,</span><br><span class="line">      <span class="attr">isFollowing</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">avatar</span>: <span class="string">&quot;/images/avatars/a4.png&quot;</span>,</span><br><span class="line">    &#125;,]</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;mt-8 ml-6 border-box shadow-md px-4&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">IGUser</span> <span class="attr">size</span>=<span class="string">&#x27;medium&#x27;</span> <span class="attr">account</span>=<span class="string">&#x27;Tmommy_0814&#x27;</span> <span class="attr">avatar</span>=<span class="string">&quot;/images/avatar.png&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">className</span>=<span class="string">&quot;text-gray-400 px-4 mt-2&quot;</span>&gt;</span>You are Following<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> &gt;</span></span></span><br><span class="line"><span class="language-xml">        &#123;</span></span><br><span class="line"><span class="language-xml">          followingList?.map((item) =&gt; &#123;</span></span><br><span class="line"><span class="language-xml">            const &#123; location, account, isFollowing, avatar, id &#125; = item</span></span><br><span class="line"><span class="language-xml">            return <span class="tag">&lt;<span class="name">IGUser</span> <span class="attr">location</span>=<span class="string">&#123;location&#125;</span> <span class="attr">account</span>=<span class="string">&#123;account&#125;</span> <span class="attr">isFollowing</span>=<span class="string">&#123;isFollowing&#125;</span> <span class="attr">avatar</span>=<span class="string">&#123;avatar&#125;</span> <span class="attr">key</span>=<span class="string">&#123;id&#125;</span> <span class="attr">showFollow</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">          &#125;)</span></span><br><span class="line"><span class="language-xml">        &#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">IGProfile</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>此次練習在使用 Tailwind 有些不習慣，主要是在於要稍微記得他的關鍵字並去文件查找屬性來應用，待使用到第三的區塊切版時就變得快速些～<br>另外，使用在課程中 Bruce 也會去說明每個區塊的切割以及重用性，可以將檔案分別放在哪個檔案，以利未來維護。<br>過去可能拿版面並未想太多，或是沒有多餘時間分析每一頁面的某些區塊是否有重複，我們可以依據建立開關或傳入的資料區紹維變動下版面，就可以達到一起使用 component 的效果。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/11/10/leetcode-Majority-Element/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/10/leetcode-Majority-Element/" class="post-title-link" itemprop="url">刷題練習 - Majority Element</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-10 10:36:50" itemprop="dateCreated datePublished" datetime="2022-11-10T10:36:50+08:00">2022-11-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-09-07 09:02:12" itemprop="dateModified" datetime="2025-09-07T09:02:12+08:00">2025-09-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Given an array nums of size n, return the majority element.</p>
+<p>The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.</p>
+<p>Example 1:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [3,2,3]</span><br><span class="line">Output: 3</span><br></pre></td></tr></table></figure>
+<p>Example 2:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [2,2,1,1,1,2,2]</span><br><span class="line">Output: 2</span><br></pre></td></tr></table></figure>
+
+<p>在一開始觀察題目，會直覺想說要找出陣列中出現最多次的元素，此外也注意到題目說明有提及運用 n/2 與陣列長度比較出現次數。<br>在一開始會傾向使用 雜湊表 來進行解題，如同找出陣列為一值的方式找出答案。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> majorityElement = <span class="keyword">function</span> (<span class="params">nums</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> newObj = &#123;&#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> num <span class="keyword">of</span> nums) &#123;</span><br><span class="line">    <span class="comment">// console.log(num)</span></span><br><span class="line">    (!newObj[num]) ? newObj[num] = <span class="number">1</span> : newObj[num]++</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// console.log(newObj)</span></span><br><span class="line">  <span class="keyword">let</span> nNum = nums.<span class="property">length</span> / <span class="number">2</span></span><br><span class="line">  <span class="comment">// console.log(&#x27;nNum&#x27;, nNum)</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> newObj) &#123;</span><br><span class="line">    <span class="keyword">if</span> (newObj[key] &gt; nNum) <span class="keyword">return</span> key</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>另外也發現可以使用，Boyer–Moore majority vote algorithm(摩爾投票算法)來解題。<br>宣告變數 result , 以及計算變數。<br>將陣列loop ，判斷陣列元素有無出現進行 count 的加減<br>以 <code>majorityElement2([4, 5, 5, 4, 4])</code> 為範例：<br>第一個元素 4 ，因為 count === 0 , result === 4。<br>進入第二個元素 5，因為 result === 4 進入判斷式 else =&gt; count– 。 所以 count === 0 。<br>進入第三個元素 5，因為 result === 5 進入判斷式 result === elem  =&gt; count++。 所以 count === 1 。<br>進入第四個元素 4，因為 result === 5 進入判斷式 else =&gt; count– 。 所以 count === 0 。<br>進入第五個元素 4，因為 result === 4 進入判斷式 result === elem  =&gt; count++。 所以 count === 1 。</p>
+<p>在迴圈的最後元素 4 ，為目前 count 為 1</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> majorityElement2 = <span class="keyword">function</span> (<span class="params">nums</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> result;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> elem <span class="keyword">of</span> nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> (count === <span class="number">0</span>) &#123;</span><br><span class="line">      result = elem;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (result === elem) &#123;</span><br><span class="line">      count++;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      count--;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<ol start="229">
+<li>Majority Element II<br>此題也是使用摩爾投票法進行解題</li>
+</ol>
+<p>Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.</p>
+<p>Example 1:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [3,2,3]</span><br><span class="line">Output: [3]</span><br></pre></td></tr></table></figure>
+
+<p>Example 2:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [1]</span><br><span class="line">Output: [1]</span><br></pre></td></tr></table></figure>
+
+<p>Example 3:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [1,2]</span><br><span class="line">Output: [1,2]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> majorityElement = <span class="keyword">function</span> (<span class="params">nums</span>) &#123;</span><br><span class="line">  <span class="comment">// 只要是 &gt; n/3 就進入陣列</span></span><br><span class="line">  <span class="keyword">let</span> candidate1 = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">let</span> candidate2 = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">let</span> count1 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">let</span> count2 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> num <span class="keyword">of</span> nums) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (candidate1 === num) &#123;</span><br><span class="line">      count1++</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (candidate2 === num) &#123;</span><br><span class="line">      count2++</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (count1 === <span class="number">0</span>) &#123;</span><br><span class="line">      candidate1 = num;</span><br><span class="line">      count1++</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (count2 === <span class="number">0</span>) &#123;</span><br><span class="line">      candidate2 = num;</span><br><span class="line">      count2++</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      count1--;</span><br><span class="line">      count2--;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;data:&#x27;</span>, candidate1, candidate2)</span><br><span class="line">  count1 = <span class="number">0</span>;</span><br><span class="line">  count2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">const</span> res = [];</span><br><span class="line"></span><br><span class="line">  limit = <span class="title class_">Math</span>.<span class="title function_">floor</span>(nums.<span class="property">length</span> / <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> num <span class="keyword">of</span> nums) &#123;</span><br><span class="line">    <span class="keyword">if</span> (candidate1 === num) count1++;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (candidate2 === num) &#123;</span><br><span class="line">      count2++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (count1 &gt; limit) res.<span class="title function_">push</span>(candidate1)</span><br><span class="line">  <span class="keyword">if</span> (count2 &gt; limit) res.<span class="title function_">push</span>(candidate2)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(res, count1, count2)</span><br><span class="line">  <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"><span class="title function_">majorityElement</span>([<span class="number">1</span>, <span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://i.imgur.com/T2y5qLa.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/11/07/Rotate-array/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/07/Rotate-array/" class="post-title-link" itemprop="url">刷題練習 - Rotate Array</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-07 17:13:53" itemprop="dateCreated datePublished" datetime="2022-11-07T17:13:53+08:00">2022-11-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-09-07 09:02:20" itemprop="dateModified" datetime="2025-09-07T09:02:20+08:00">2025-09-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Given an array, rotate the array to the right by k steps, where k is non-negative.</p>
+<p>Example 1:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [1,2,3,4,5,6,7], k = 3</span><br><span class="line">Output: [5,6,7,1,2,3,4]</span><br><span class="line">Explanation:</span><br><span class="line">rotate 1 steps to the right: [7,1,2,3,4,5,6]</span><br><span class="line">rotate 2 steps to the right: [6,7,1,2,3,4,5]</span><br><span class="line">rotate 3 steps to the right: [5,6,7,1,2,3,4]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Example 2:</span><br><span class="line"></span><br><span class="line">Input: nums = [-1,-100,3,99], k = 2</span><br><span class="line">Output: [3,99,-1,-100]</span><br><span class="line">Explanation: </span><br><span class="line">rotate 1 steps to the right: [99,-1,-100,3]</span><br><span class="line">rotate 2 steps to the right: [3,99,-1,-100]</span><br></pre></td></tr></table></figure>
+
+<p>1.由上述範例可以觀察到，根據 k 值進行抓取最後的元素至最前面，以此類推下去。<br>當 k 為某值的時後，會由陣列最後方取的該數目元素。<br>以下為直覺解法:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//會有 問題：Time Limit Exceeded</span></span><br><span class="line"><span class="keyword">const</span> rotateArray1 = <span class="keyword">function</span> (<span class="params">nums, k</span>) &#123;</span><br><span class="line">  <span class="comment">//unshift 將給入的元素值放到最前面</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;nums.pop()&#x27;</span>, nums.<span class="title function_">pop</span>())</span><br><span class="line">    nums.<span class="title function_">unshift</span>(nums.<span class="title function_">pop</span>());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;num&#x27;</span>, nums)</span><br><span class="line">  <span class="keyword">return</span> nums;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>2.也可以先將陣列進行反轉 reverse ,再依據 k 值 來進行前後段區分，來進行反轉</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">revNum</span> = (<span class="params">nums, start, end</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">while</span> (start &lt; end) &#123;</span><br><span class="line"></span><br><span class="line">    [nums[start], nums[end]] = [nums[end], nums[start]]</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[nums[start], nums[end]]&#x27;</span>, [nums[start], nums[end]])</span><br><span class="line">    start++;</span><br><span class="line">    end--;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(nums)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// revNum([1, 2, 3, 4], 0, 3)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rotateArray2 = <span class="keyword">function</span> (<span class="params">nums, k</span>) &#123;</span><br><span class="line">  k = k % nums.<span class="property">length</span></span><br><span class="line">  <span class="comment">//先整個陣列 reverse</span></span><br><span class="line">  nums.<span class="title function_">reverse</span>()</span><br><span class="line">  <span class="title function_">revNum</span>(nums, <span class="number">0</span>, k - <span class="number">1</span>)</span><br><span class="line">  <span class="title function_">revNum</span>(nums, k, nums.<span class="property">length</span> - <span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/11/02/rect-test-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -896,382 +1241,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/08/19/learn-webpack/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/08/19/learn-webpack/" class="post-title-link" itemprop="url">快速認識 webpack</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-08-19 22:14:18" itemprop="dateCreated datePublished" datetime="2022-08-19T22:14:18+08:00">2022-08-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 08:10:00" itemprop="dateModified" datetime="2022-09-17T08:10:00+08:00">2022-09-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>經常使用 vue 或 Ｒeact 等前端框架來進行專案開發，但沒有機會好好來認識下他背後的打包工具：webpack<br>趁著這次六角釋出的基礎 webpack 教學，順道來記錄一下。</p>
-<h2 id="前端壓縮打包工具"><a href="#前端壓縮打包工具" class="headerlink" title="前端壓縮打包工具"></a>前端壓縮打包工具</h2><ul>
-<li>從官網的圖，很明顯地就可以看到將左側複雜的檔案進行壓縮，並做項目管理</li>
-<li>在 Vue , React 的背後都有使用 webpack<br><img src="https://i.imgur.com/EXBNQe0.png" alt=""><h2 id="使用-webpack"><a href="#使用-webpack" class="headerlink" title="使用 webpack"></a>使用 webpack</h2></li>
-</ul>
-<ol>
-<li><p>安裝<br>建立 webpack 需要使用到 npm 初始化<br><code>npm init -y</code><br>安裝之後，會產生 <code>package.jason</code> 檔案</p>
-</li>
-<li><p>安裝 webpack 以及 webpack-cli ，並存在 開發環境<br><code>npm install webpack webpack-cli --save-dev</code></p>
-<ul>
-<li>會產生 <code>package-lock.json</code> =&gt; 紀錄版本詳細資訊</li>
-<li><code>node_modules</code>  資料夾</li>
-</ul>
-<p><img src="https://i.imgur.com/qPKyya7.png" alt=""></p>
-</li>
-</ol>
-<h2 id="進入點-entry-、輸出點-output"><a href="#進入點-entry-、輸出點-output" class="headerlink" title="進入點(entry)、輸出點(output)"></a>進入點(entry)、輸出點(output)</h2><ul>
-<li><code>/src/index.js</code></li>
-<li><code>/dist/main.js</code></li>
-<li>指令：<code>&quot;build&quot;: &quot;webpack&quot;</code> =&gt; 設定 webpack 將 src 中的 index.js 檔案輸出，放到 dist 資料夾<ul>
-<li>使用該指令 <code>npm run build</code><br><img src="https://i.imgur.com/5biytDZ.png" alt=""><ul>
-<li>build 之後產生 dist/main.js</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="entry-output-名稱修改"><a href="#entry-output-名稱修改" class="headerlink" title="entry, output 名稱修改"></a>entry, output 名稱修改</h3><pre><code>* 建立 `webpack.config.js` 檔案</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">//預設路徑位置</span></span><br><span class="line">  <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="comment">//輸出位置名稱(filename),檔案位置</span></span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//path.resolve(__dirname, &#x27;dist&#x27;)</span></span><br><span class="line"><span class="comment">// dirname當前資料夾路徑</span></span><br><span class="line"><span class="comment">//path.resolve 將相對路徑改為絕對路徑</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/ORdpSVR.png" alt=""></p>
-<h4 id="讓每次產生的-bundle-名稱不一樣"><a href="#讓每次產生的-bundle-名稱不一樣" class="headerlink" title="讓每次產生的 bundle 名稱不一樣"></a>讓每次產生的 bundle 名稱不一樣</h4><p><img src="https://i.imgur.com/5j8tbCO.png" alt=""></p>
-<ul>
-<li>搭配 plugin 來使用 HtmlWebpackPlugin</li>
-</ul>
-<h2 id="NPM-script-自訂指令"><a href="#NPM-script-自訂指令" class="headerlink" title="NPM script , 自訂指令"></a>NPM script , 自訂指令</h2><ul>
-<li>用 node 執行一段 JS ，位置為同層下的 hello.js</li>
-<li><code>npm run hello</code></li>
-<li>網站上線\部署或開發，可能都需要下不同指令來進行管理<br><img src="https://i.imgur.com/4REJGUk.png" alt=""></li>
-</ul>
-<h2 id="mode-切換"><a href="#mode-切換" class="headerlink" title="mode 切換"></a>mode 切換</h2><p><img src="https://i.imgur.com/XlAvPHx.png" alt=""></p>
-<ul>
-<li>不同模式下，會因程式內容而輸出不同內容</li>
-<li><code>production</code> 上線版模式, 輸出的 bundle 檔案會較為精簡<ul>
-<li>會壓縮優化，將程式碼壓成一行</li>
-<li>不容易除錯與理解<br><img src="https://i.imgur.com/KaH0uYg.png" alt=""></li>
-</ul>
-</li>
-</ul>
-<h2 id="CSS-loader"><a href="#CSS-loader" class="headerlink" title="CSS loader"></a>CSS loader</h2><ul>
-<li>幫助 webpack 載入 css</li>
-<li><code>npm install --save-dev css-loader</code></li>
-<li><a target="_blank" rel="noopener" href="https://webpack.js.org/loaders/css-loader/#root">CSS loader</a></li>
-<li><code>webpack.config.js</code></li>
-<li>別忘了 在載入點加入 ·<code>import css from &#39;./all.css&#39;</code></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">//預設路徑位置</span></span><br><span class="line">  <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="comment">//輸出位置名稱(filename),檔案位置</span></span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.css$/i</span>, <span class="comment">//只要副檔名為 .css 就會使用以下</span></span><br><span class="line">        <span class="attr">use</span>: [<span class="string">&quot;style-loader&quot;</span>, <span class="string">&quot;css-loader&quot;</span>],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>裝入 sass-loader<br><img src="https://i.imgur.com/UTFdYXm.png" alt=""><br><a target="_blank" rel="noopener" href="https://github.com/webpack-contrib/sass-loader">sass-loader</a></li>
-</ul>
-<h2 id="載入-webpack-測試伺服器"><a href="#載入-webpack-測試伺服器" class="headerlink" title="載入 webpack 測試伺服器"></a>載入 webpack 測試伺服器</h2><ul>
-<li>建立即時更新的方式</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/webpack/webpack-dev-server">webpack-dev-server</a></li>
-<li><code>npm install webpack-dev-server --save-dev</code></li>
-<li>在 <code>webpack.config.js</code> 檔案設定</li>
-<li><a target="_blank" rel="noopener" href="https://webpack.js.org/configuration/dev-server/#devserver">dev-server</a></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">devServer</span>: &#123;</span><br><span class="line">  <span class="attr">static</span>: &#123;</span><br><span class="line">    <span class="attr">directory</span>: path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">		<span class="comment">//contentBase: path.join(__dirname, &#x27;dist&#x27;),</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">compress</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">port</span>: <span class="number">9000</span>,</span><br><span class="line"><span class="attr">open</span>: <span class="literal">true</span> <span class="comment">//可以即時更新</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>最後，指令調整，如此就可以開始進行編譯<br><img src="https://i.imgur.com/WvIjXoU.png" alt=""></p>
-</li>
-<li><p>webpack 也可以載入 node_module 下的東西</p>
-</li>
-<li><p>用 dist 下的檔案來部署</p>
-<h2 id="webpack-config-js-檔案"><a href="#webpack-config-js-檔案" class="headerlink" title="webpack.config.js 檔案"></a><code>webpack.config.js</code> 檔案</h2></li>
-<li><p>注意</p>
-</li>
-<li><p>mode: 設定development 或是 production</p>
-</li>
-<li><p>entry 進入點在哪</p>
-</li>
-<li><p>output 輸出去哪</p>
-</li>
-<li><p>module -&gt; rule 下 會放 scss-loader , babel-loader 等規則</p>
-</li>
-<li><p>plugins: webpack 主要是讀檔案，但透過 plugins ，如建立新的 html檔案, MiniCssExtractPlugin:將 css 從 js 抽離出來<br><img src="https://i.imgur.com/Bn6Jgyp.png" alt=""></p>
-</li>
-<li><p>devtool: ‘source-map’ =&gt; 協助檔案 debug </p>
-</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://askie.today/what-is-webpack/">關於 Webpack，它是什麼？能夠做什麼？為什麼？怎麼做？— freeCodeCamp 的筆記</a><br><a target="_blank" rel="noopener" href="https://tw.alphacamp.co/blog/webpack-introduction">Webpack 是什麼？模組打包工具的用途及基本 Webpack 教學</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/05/08/react-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/08/react-1/" class="post-title-link" itemprop="url">React- props / state 練習</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-08 15:42:36" itemprop="dateCreated datePublished" datetime="2022-05-08T15:42:36+08:00">2022-05-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:36:44" itemprop="dateModified" datetime="2022-11-04T10:36:44+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/InPScmW.png" alt=""></p>
-<h2 id="props-state-的應用"><a href="#props-state-的應用" class="headerlink" title="props, state 的應用"></a>props, state 的應用</h2><ul>
-<li>props 傳入參數的部分</li>
-<li>state 讓組建本身有狀態</li>
-</ul>
-<h3 id="製作-計數器"><a href="#製作-計數器" class="headerlink" title="製作 計數器"></a>製作 計數器</h3><ul>
-<li>props</li>
-<li>製作，讓計數器的數字變化，可以同步變化到 button 上的數字<ul>
-<li>在父層 App.vue 做一個內容的傳送</li>
-<li>在 子元件，要自訂一個變數，作為接收父層從來的資料</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;./styles.css&quot;</span>;</span><br><span class="line"></span><br><span class="line">type <span class="title class_">BtnProps</span> = &#123;</span><br><span class="line">  <span class="attr">btnNum</span>: number;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Btn</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;<span class="title class_">BtnProps</span>&gt; = <span class="function">(<span class="params">&#123; btnNum &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      add 1<span class="tag">&lt;<span class="name">span</span>&gt;</span>目前總數：&#123;btnNum&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> num = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;App&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Counter: &#123;num&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Btn</span> <span class="attr">btnNum</span>=<span class="string">&#123;num&#125;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p><img src="https://i.imgur.com/OnOdTAs.png" alt=""><br><img src="https://i.imgur.com/8VkhCGp.png" alt=""></p>
-<h3 id="進階，希望透過點擊-button-同步更改數值"><a href="#進階，希望透過點擊-button-同步更改數值" class="headerlink" title="進階，希望透過點擊 button 同步更改數值"></a>進階，希望透過點擊 button 同步更改數值</h3><ul>
-<li><p>讓 render (react 渲染機制)，可以在變數被變動的時候順便觸發渲染機制</p>
-<ul>
-<li>改變變數 -&gt; 觸發渲染<h3 id="使用-state-達成上述目的"><a href="#使用-state-達成上述目的" class="headerlink" title="使用 state 達成上述目的"></a>使用 state 達成上述目的</h3></li>
-</ul>
-<p><strong>對組建本身引入 state 機制</strong></p>
-</li>
-<li><p>用 state 來做變數宣告，只要 state 變數有做變動都會觸發渲染機制</p>
-<ul>
-<li>當變數有涉及於頁面上的更新，就會需要使用 state</li>
-</ul>
-</li>
-<li><p>Hook 本身多是 use 開頭</p>
-</li>
-<li><p><code>useState()</code> 是一個 function</p>
-</li>
-</ul>
-<p><strong>用陣列解構來取的 return 的值</strong></p>
-<ul>
-<li><ol>
-<li>當前的值</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>再回傳一個 function : 用來設定/變動 第一個數值<br><code>const [num2, setNum2] = useState(999)</code></li>
-</ol>
-</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://codesandbox.io/s/react-props-state-yuc6qv?file=/src/App.tsx">example-1</a></p>
-<h2 id="實現-父層數值變化，子組件隨之變化"><a href="#實現-父層數值變化，子組件隨之變化" class="headerlink" title="實現 父層數值變化，子組件隨之變化"></a>實現 父層數值變化，子組件隨之變化</h2><ul>
-<li>應該將主要的更新動作都放置父組件</li>
-<li>將放在父組件的事件，透過 props 方式傳給子組件，並將該變數放到按鈕的點擊事件上</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://codesandbox.io/s/react-props-state-2-ylm345?file=/src/App.tsx">example-2 </a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2022/05/07/Vue-Slot/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/07/Vue-Slot/" class="post-title-link" itemprop="url">Vue.js 3 - Slot</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-07 19:41:23" itemprop="dateCreated datePublished" datetime="2022-05-07T19:41:23+08:00">2022-05-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:33:50" itemprop="dateModified" datetime="2022-11-04T10:33:50+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/NBBY8vo.png" alt=""></p>
-<p>剛學習 vue 的時候，對 slot 完全一竅不通，不了解要如何挖空多元件，來放入資料，更是不知道他能使用的時機是什麼時候，種種因素，讓我從官方文件找些範例釐清，也找了些文章閱讀加深記憶，順手也紀錄在部落格上～</p>
-<p>使用時機：</p>
-<ul>
-<li>使用同一個 元件 , 但只有內文不同。</li>
-<li>有時候資料是靜態，不常變動，甚至需要大量重複。這情況不必要使用 props。</li>
-</ul>
-<ol>
-<li><p>共用樣式<br>從 <a target="_blank" rel="noopener" href="https://sfc.vuejs.org/#eyJBcHAudnVlIjoiPHNjcmlwdD5cbmltcG9ydCBGYW5jeUJ1dHRvbiBmcm9tICcuL0ZhbmN5QnV0dG9uLnZ1ZSdcbiAgXG5leHBvcnQgZGVmYXVsdCB7XG4gIGNvbXBvbmVudHM6IHsgRmFuY3lCdXR0b24gfVxufVxuPC9zY3JpcHQ+XG5cbjx0ZW1wbGF0ZT5cbiAgPEZhbmN5QnV0dG9uPlxuICAgIENsaWNrIG1lIDwhLS0gc2xvdCBjb250ZW50IC0tPlxuIFx0PC9GYW5jeUJ1dHRvbj5cbjwvdGVtcGxhdGU+IiwiaW1wb3J0LW1hcC5qc29uIjoie1xuICBcImltcG9ydHNcIjoge1xuICAgIFwidnVlXCI6IFwiaHR0cHM6Ly9zZmMudnVlanMub3JnL3Z1ZS5ydW50aW1lLmVzbS1icm93c2VyLmpzXCJcbiAgfVxufSIsIkZhbmN5QnV0dG9uLnZ1ZSI6Ijx0ZW1wbGF0ZT5cbiAgPGJ1dHRvbiBjbGFzcz1cImZhbmN5LWJ0blwiPlxuICBcdDxzbG90Lz4gPCEtLSBzbG90IG91dGxldCAtLT5cblx0PC9idXR0b24+XG48L3RlbXBsYXRlPlxuXG48c3R5bGU+XG4uZmFuY3ktYnRuIHtcbiAgY29sb3I6ICNmZmY7XG4gIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgzMTVkZWcsICM0MmQzOTIgMjUlLCAjNjQ3ZWZmKTtcbiAgYm9yZGVyOiBub25lO1xuICBwYWRkaW5nOiA1cHggMTBweDtcbiAgbWFyZ2luOiA1cHg7XG4gIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuPC9zdHlsZT4ifQ==">官網的範例</a>可以看到，讓按鈕的文字可以彈性的變化。</p>
-</li>
-<li><p>named slot(具名插槽) </p>
-</li>
-</ol>
-<ul>
-<li>建立一個元件，其中含有多個slot區塊<br><a target="_blank" rel="noopener" href="https://replit.com/@as45986/Named-Slots#src/App.vue">範例連結</a></li>
-</ul>
-<ol start="3">
-<li>Scoped slots（作用域插槽）</li>
-</ol>
-<ul>
-<li>把子元件的資料取出來，給父層使用</li>
-<li>不同於前面 slot 的使用，是由父層輸入資料呈現於頁面<br><a target="_blank" rel="noopener" href="https://replit.com/@as45986/Scoped-Slots#src/App.vue">範例</a></li>
-</ul>
-<p>資料來源:<br><a target="_blank" rel="noopener" href="https://vuejs.org/">vuejs</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10273298?sc=iThomeR">不只懂 Vue 語法：什麼是 slot？請示範 slot 的用法？</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10194384">用範例理解 Vue.js #18：Slot</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1343,7 +1312,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">114</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

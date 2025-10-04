@@ -180,6 +180,281 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/10/04/vercel-deploy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/04/vercel-deploy/" class="post-title-link" itemprop="url">部署至 Vercel 遇到「Unexpected token '<'」錯誤：原因與解法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-10-04 21:21:52 / Modified: 20:25:15" itemprop="dateCreated datePublished" datetime="2025-10-04T21:21:52+08:00">2025-10-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/side-project/" itemprop="url" rel="index"><span itemprop="name">side-project</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近在部署專案到 Vercel 時，遇到了一個讓我困擾的錯誤訊息：「Unexpected token ‘&lt;’」。這個錯誤通常表示我們預期收到的是 JSON 格式的資料，但實際上卻收到了 HTML 頁面。本文將分享我遇到這個問題的背景、原因，以及兩種解決方案，幫助大家在使用 Vercel 部署時能夠順利取得 API 資料。</p>
+<h1 id="部署至-Vercel-遇到「Unexpected-token-‘-lt-’」錯誤：原因與解法"><a href="#部署至-Vercel-遇到「Unexpected-token-‘-lt-’」錯誤：原因與解法" class="headerlink" title="部署至 Vercel 遇到「Unexpected token ‘&lt;’」錯誤：原因與解法"></a>部署至 Vercel 遇到「Unexpected token ‘&lt;’」錯誤：原因與解法</h1><p>在將專案部署到 <strong>Vercel</strong> 時，當我透過瀏覽器或 extension background fetch 呼叫 API，卻出現以下錯誤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">取得資料夾失敗: Unexpected token &#x27;&lt;&#x27;, &quot;&lt;!doctype &quot;... is not valid JSON</span><br></pre></td></tr></table></figure>
+
+<p>那代表請求並沒有真正拿到 JSON，而是得到了 HTML 頁面。本文將說明這個問題的原因、背後的背景，以及兩種完整的解法。</p>
+<h2 id="問題說明"><a href="#問題說明" class="headerlink" title="問題說明"></a>問題說明</h2><p>這次在 <strong>Arc 瀏覽器</strong> 的開發過程中，我嘗試從部署於 Vercel 的 API 端點取得資料，但 Console 顯示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index.iife_dev.js:24922 取得資料夾失敗: Unexpected token &#x27;&lt;&#x27;, &quot;&lt;!doctype &quot;... is not valid JSON</span><br></pre></td></tr></table></figure>
+
+<p>進一步到 <strong>Arc 的 Service-Worker DevTools</strong>（<code>arc://inspect/#service-workers</code>）中，打開 background worker 的 Console，可以看到請求的回應實際上是一份 HTML 登入頁面，而非 JSON 資料。</p>
+<hr>
+<h2 id="背景補充：Vercel-的-Deployment-Protection"><a href="#背景補充：Vercel-的-Deployment-Protection" class="headerlink" title="背景補充：Vercel 的 Deployment Protection"></a>背景補充：Vercel 的 Deployment Protection</h2><p>這個錯誤並非來自 <strong>CORS</strong>，而是因為 Vercel 的 <strong>Deployment Protection</strong> 機制。<br>當專案開啟「Vercel Authentication」後，所有 <strong>Preview Deployments</strong> 都需要登入才能訪問。</p>
+<p>因此，extension background 在發出請求時，被導向至登入頁面（HTML），導致解析 JSON 時出現：</p>
+<blockquote>
+<p><code>Unexpected token &#39;&lt;&#39;</code></p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/10/04/vercel-deploy/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/10/04/Merge-Two-Sorted-Lists/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/04/Merge-Two-Sorted-Lists/" class="post-title-link" itemprop="url">刷題練習 - Merge-Two-Sorted-Lists</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-10-04 19:59:06 / Modified: 20:11:11" itemprop="dateCreated datePublished" datetime="2025-10-04T19:59:06+08:00">2025-10-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="題目描述"><a href="#題目描述" class="headerlink" title="題目描述"></a>題目描述</h2><p>You are given the heads of two sorted linked lists list1 and list2.</p>
+<p>Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.</p>
+<p>Return the head of the merged linked list.</p>
+<p>給定兩個已排序鏈結串列的頭節點 list1 和 list2。<br>將兩個串列合併為一個已排序的串列。該串列應透過拼接前兩個串列的節點來建立。<br>回傳合併後鏈結串列的頭節點。</p>
+<p>Example 1:<br>Input: list1 = [1,2,4], list2 = [1,3,4]<br>Output: [1,1,2,3,4,4]</p>
+<p>Example 2:<br>Input: list1 = [], list2 = []<br>Output: []</p>
+<p>Example 3:<br>Input: list1 = [], list2 = [0]<br>Output: [0]</p>
+<h2 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h2><p>我一開始想法，會需要 2 迴圈去比較，然後組出一個新的 list node，最後再將新的 list node 回傳。<br>但是這樣的話，時間複雜度會是 O(n^2)，因為每次都要從頭開始比較。<br>後來想說，因為兩個 list 都是已排序好的，所以可以用雙指標的方式，一次比較兩個 list 的頭節點，將較小的節點加入新的 list node，然後將該指標往後移動一位，這樣時間複雜度就會是 O(n)，因為每個節點只會被比較一次。</p>
+<h2 id="範例程式碼"><a href="#範例程式碼" class="headerlink" title="範例程式碼"></a>範例程式碼</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * function ListNode(val, next) &#123;</span></span><br><span class="line"><span class="comment"> *     this.val = (val===undefined ? 0 : val)</span></span><br><span class="line"><span class="comment"> *     this.next = (next===undefined ? null : next)</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">ListNode</span>&#125; <span class="variable">list1</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">ListNode</span>&#125; <span class="variable">list2</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">ListNode</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> mergeTwoLists = <span class="keyword">function</span>(<span class="params">list1, list2</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> head = <span class="literal">null</span></span><br><span class="line">        <span class="keyword">let</span> nowNode = <span class="literal">null</span> </span><br><span class="line">        <span class="keyword">let</span> list1pointer = list1;</span><br><span class="line">        <span class="keyword">let</span> list2pointer = list2;</span><br><span class="line">		<span class="comment">// 兩兩比較</span></span><br><span class="line">        <span class="keyword">if</span>(list1 === <span class="literal">null</span> &amp;&amp; list2 === <span class="literal">null</span>) <span class="keyword">return</span> head</span><br><span class="line">        <span class="keyword">if</span>(list1 === <span class="literal">null</span> &amp;&amp; list2 !== <span class="literal">null</span>) <span class="keyword">return</span> list2</span><br><span class="line">        <span class="keyword">if</span>(list1 !== <span class="literal">null</span> &amp;&amp; list2 === <span class="literal">null</span>) <span class="keyword">return</span> list1</span><br><span class="line">        </span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 決定 head</span></span><br><span class="line">        <span class="comment">// 因為當你選擇了 list1pointer 作為頭節點後，你應該：</span></span><br><span class="line">            <span class="comment">// 移動 list1pointer 指針：list1pointer = list1pointer.next</span></span><br><span class="line">            <span class="comment">// 設定 nowNode 為當前的尾節點：nowNode = head</span></span><br><span class="line">        <span class="keyword">if</span>(list1pointer.<span class="property">val</span> &lt;= list2pointer.<span class="property">val</span> )&#123;</span><br><span class="line">            head = list1pointer</span><br><span class="line">            list1pointer = list1pointer.<span class="property">next</span></span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">             head = list2pointer</span><br><span class="line">             list2pointer = list2pointer.<span class="property">next</span></span><br><span class="line">        &#125;</span><br><span class="line">        nowNode = head</span><br><span class="line"></span><br><span class="line">        <span class="comment">//進入迴圈檢查</span></span><br><span class="line">        <span class="keyword">while</span>(list1pointer !== <span class="literal">null</span> &amp;&amp; list2pointer !== <span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(list1pointer.<span class="property">val</span> &lt;= list2pointer.<span class="property">val</span>)&#123;</span><br><span class="line">                nowNode.<span class="property">next</span> =  list1pointer</span><br><span class="line">                list1pointer = list1pointer.<span class="property">next</span></span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                nowNode.<span class="property">next</span> =  list2pointer</span><br><span class="line">                <span class="comment">// 移動指針</span></span><br><span class="line">                list2pointer = list2pointer.<span class="property">next</span></span><br><span class="line">            &#125;</span><br><span class="line">            nowNode = nowNode.<span class="property">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 最後要再檢查。其中一不為 null </span></span><br><span class="line">        <span class="keyword">if</span>(list1pointer !== <span class="literal">null</span>)&#123;</span><br><span class="line">            nowNode.<span class="property">next</span> = list1pointer</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            nowNode.<span class="property">next</span> = list2pointer</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/10/04/Merge-Two-Sorted-Lists/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/10/04/Meetings-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/04/Meetings-1/" class="post-title-link" itemprop="url">刷題練習 - Determine If a Person Could Attend All Meetings</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-10-04 19:16:52 / Modified: 20:11:17" itemprop="dateCreated datePublished" datetime="2025-10-04T19:16:52+08:00">2025-10-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Given an array of meeting time <code>intervals</code> where <code>intervals[i] = [startᵢ, endᵢ]</code>, determine if a person could attend all meetings.</p>
+<p>給定一個會議時間 <code>intervals</code> 陣列，其中 <code>intervals[i] = [startᵢ, endᵢ]</code>，判斷一個人是否能夠參加所有會議。</p>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h3><p><strong>Input:</strong></p>
+<p><code>intervals = [[0,30],[5,10],[15,20]]</code></p>
+<p><strong>Output:</strong></p>
+<p><code>false</code></p>
+<h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h3><p><strong>Input:</strong></p>
+<p><code>intervals = [[7,10],[2,4]]</code></p>
+<p><strong>Output:</strong></p>
+<p><code>true</code></p>
+<h3 id="Constraints"><a href="#Constraints" class="headerlink" title="Constraints:"></a>Constraints:</h3><ul>
+<li><code>0 &lt;= intervals.length &lt;= 10⁴</code></li>
+<li><code>intervals[i].length == 2</code></li>
+<li><code>0 &lt;= startᵢ &lt; endᵢ &lt;= 10⁶</code></li>
+</ul>
+<h3 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h3><p>要判斷一個人是否能夠參加所有會議，關鍵在於檢查會議時間是否有重疊。若有任何兩個會議的時間區間重疊，則無法參加所有會議。</p>
+<h4 id="重疊情況分析"><a href="#重疊情況分析" class="headerlink" title="重疊情況分析"></a>重疊情況分析</h4><p>以 <code>[1,5]</code> 和 <code>[2,4]</code> 為範例：</p>
+<ol>
+<li><strong>假設會議時間按開始時間排序</strong>：將所有會議按照開始時間由早到晚排列</li>
+<li><strong>檢查相鄰會議</strong>：排序後，只需檢查相鄰的會議是否重疊</li>
+<li><strong>重疊條件</strong>：前一個會議的結束時間 &gt; 下一個會議的開始時間</li>
+</ol>
+<h4 id="步驟"><a href="#步驟" class="headerlink" title="步驟"></a>步驟</h4><ol>
+<li>將所有會議按開始時間排序</li>
+<li>遍歷排序後的會議陣列</li>
+<li>檢查每個會議的結束時間是否晚於下一個會議的開始時間</li>
+<li>若發現重疊，回傳 <code>false</code>；否則回傳 <code>true</code></li>
+</ol>
+<p>這樣的方法時間複雜度為 O(n log n)（主要是排序的時間），空間複雜度為 O(1)。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/10/04/Meetings-1/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/09/07/firebase-seqNo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -811,295 +1086,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/03/31/side-project-zustand/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/03/31/side-project-zustand/" class="post-title-link" itemprop="url">side-project-zustand</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-03-31 07:23:58" itemprop="dateCreated datePublished" datetime="2025-03-31T07:23:58+08:00">2025-03-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-09-07 09:00:55" itemprop="dateModified" datetime="2025-09-07T09:00:55+08:00">2025-09-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/side-project/" itemprop="url" rel="index"><span itemprop="name">side-project</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>這段時間在製作一個 snippet 管理的 side project，過程中遇到了一些跨頁面共享資料的需求。專案中有一包資料稱為 snippet，內部包含多個 folder 和小項目的 snippets。這些資料不僅會在 /snippet 路徑下的元件使用，還會跨 route 被其他頁面存取。</p>
-<p>一開始，我選擇使用 React 的 Context API，透過建立一個 SnippetsContext 來管理狀態。在應用程式的最上層放置一次 SnippetsProvider，然後在需要的任何元件內直接使用 import { useSnippets } from ‘@/contexts/SnippetsContext’ 來取得 context。然而，隨著專案規模逐步擴展，這種方法逐漸顯露出其局限性。我發現即使已經有了最上層的 Provider，但在多個 dialog 或 component 中，仍然需要重複地導入 useSnippets，不僅造成代碼重複，也使得專案結構變得臃腫複雜。</p>
-<p>為了解決上述問題，我嘗試了另一個狀態管理工具 —— Zustand。Zustand 提供了一種更直覺、更精簡的方式來建立和存取全域狀態，不需要透過 Provider 包裹元件，大幅減少了樣板代碼的使用，也讓資料流更加清晰易懂。</p>
-<p>在這篇文章中，我會分享如何在專案中實際導入並使用 Zustand</p>
-<h2 id="初步實作-Zustand"><a href="#初步實作-Zustand" class="headerlink" title="初步實作 Zustand"></a>初步實作 Zustand</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install zustand</span><br></pre></td></tr></table></figure>
-<p>如果想使用持久化功能，也可以安裝：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install zustand/middleware</span><br></pre></td></tr></table></figure>
-
-<h2 id="store-資料夾"><a href="#store-資料夾" class="headerlink" title="store 資料夾"></a>store 資料夾</h2><p>在專案的 src 資料夾下建立一個 store 資料夾，這之中包含給 folder , snippet 的 slice。之所以採用 slice 是因為原本 snippet 的處理邏輯較為複雜，包含了 folder 的儲存、內部 snippet 的儲存，以及一些專門給 dialog 使用的 UI 狀態。透過將 store 分拆成多個 slice（例如 folderSlice 與 uiSlice），每個模組都只負責處理自己相關的 state 與操作，能更好地維護代碼的結構與可讀性。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">src/</span><br><span class="line"> ├── types/</span><br><span class="line"> │    └── snippet.<span class="property">ts</span>            <span class="comment">// 共用型別，也可以有 auth.ts, settings.ts 等</span></span><br><span class="line"> └── stores/</span><br><span class="line">      ├── snippet/</span><br><span class="line">      │     ├── slices/</span><br><span class="line">      │     │     ├── folderSlice.<span class="property">ts</span></span><br><span class="line">      │     │     ├── snippetSlice.<span class="property">ts</span></span><br><span class="line">      │     │     └── uiSlice.<span class="property">ts</span></span><br><span class="line">      │     └── index.<span class="property">ts</span>        <span class="comment">// snippetStore.ts</span></span><br><span class="line">      ├── auth/</span><br><span class="line">      │     └── index.<span class="property">ts</span>        <span class="comment">// 假如之後， authStore.ts (可以進一步拆分 authSlices)</span></span><br><span class="line">      └── settings/</span><br><span class="line">            └── index.<span class="property">ts</span>        <span class="comment">// 假如之後，settingsStore.ts</span></span><br></pre></td></tr></table></figure>
-
-<p>在專案中的 snippet 資料夾內，會建立一個 index.ts 檔案來整合所有獨立的 slice，並導出一個完整的 Zustand store。這麼做的優點是：之後在任何元件中需要使用狀態時，只需導入整個 store，而不需要逐一引入每個 slice</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/stores/snippet/index.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; create &#125; <span class="keyword">from</span> <span class="string">&#x27;zustand&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; persist &#125; <span class="keyword">from</span> <span class="string">&#x27;zustand/middleware&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">FolderSlice</span>, createFolderSlice &#125; <span class="keyword">from</span> <span class="string">&#x27;./slices/folderSlice&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">SnippetSlice</span>, createSnippetSlice &#125; <span class="keyword">from</span> <span class="string">&#x27;./slices/snippetSlice&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">UISlice</span>, createUISlice &#125; <span class="keyword">from</span> <span class="string">&#x27;./slices/uiSlice&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 組合所有模組的型別</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">AppStore</span> = <span class="title class_">FolderSlice</span> &amp; <span class="title class_">SnippetSlice</span> &amp; <span class="title class_">UISlice</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> useSnippetStore = create&lt;<span class="title class_">AppStore</span>&gt;()(</span><br><span class="line">  <span class="title function_">persist</span>(</span><br><span class="line">    <span class="function">(<span class="params">set, get, api</span>) =&gt;</span> (&#123;</span><br><span class="line">      ...<span class="title function_">createFolderSlice</span>(set, get, api),</span><br><span class="line">      ...<span class="title function_">createSnippetSlice</span>(set, get, api),</span><br><span class="line">      ...<span class="title function_">createUISlice</span>(set, get, api),</span><br><span class="line">    &#125;),</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;my-snippets-storage&#x27;</span>,</span><br><span class="line">      <span class="comment">// partialize 使我們只持久化 folders，UI 狀態不必存入 localStorage</span></span><br><span class="line">      <span class="attr">partialize</span>: <span class="function">(<span class="params">state</span>) =&gt;</span> (&#123; <span class="attr">folders</span>: state.<span class="property">folders</span> &#125;),</span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用 zustand 提供的 persist middleware，能輕鬆將特定狀態持久化到 localStorage。</li>
-<li>透過 partialize 參數，我能夠靈活地指定只有某些狀態 (例如：folders) 需要持久化，而 UI 或其他臨時狀態則保持記憶體內即可。</li>
-</ul>
-<h2 id="folderSlice-ts"><a href="#folderSlice-ts" class="headerlink" title="folderSlice.ts"></a>folderSlice.ts</h2><p>在建立 folderSlice 時，透過 Zustand 的 StateCreator 定義了一個 slice，專門負責管理資料夾（folders）相關的狀態與邏輯。透過這個方式，能清楚地將資料夾的操作行為集中管理。</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/stores/snippet/slices/folderSlice.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">StateCreator</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;zustand&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Folder</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@/types/snippets&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">FolderSlice</span> &#123;</span><br><span class="line">  <span class="attr">folders</span>: <span class="title class_">Folder</span>[];</span><br><span class="line">  <span class="attr">setFolders</span>: <span class="function">(<span class="params">folders: Folder[]</span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">  <span class="attr">updateFolder</span>: <span class="function">(<span class="params">id: <span class="built_in">string</span>, updates: Partial&lt;Folder&gt;</span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">  <span class="attr">addFolder</span>: <span class="function">(<span class="params">folder: Omit&lt;Folder, <span class="string">&quot;id&quot;</span>&gt;, index?: <span class="built_in">number</span></span>) =&gt;</span> <span class="title class_">Folder</span>;</span><br><span class="line">  <span class="attr">deleteFolder</span>: <span class="function">(<span class="params">id: <span class="built_in">string</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">createFolderSlice</span>: <span class="title class_">StateCreator</span>&lt;<span class="title class_">FolderSlice</span>&gt; = <span class="function">(<span class="params">set, get</span>) =&gt;</span> (&#123;</span><br><span class="line">  <span class="attr">folders</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="string">&#x27;HplOMyf2mDqvVMdphJbt&#x27;</span>,</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;My Sample Snippets&#x27;</span>,</span><br><span class="line">      <span class="attr">description</span>: <span class="string">&#x27;This is a sample folder&#x27;</span>,</span><br><span class="line">      <span class="attr">snippets</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">id</span>: <span class="string">&#x27;5mJw031VPo2WxNIQyeXN&#x27;</span>,</span><br><span class="line">          <span class="attr">name</span>: <span class="string">&#x27;Demo - Plain text&#x27;</span>,</span><br><span class="line">          <span class="attr">content</span>: <span class="string">&#x27;be a software engineer&#x27;</span>,</span><br><span class="line">          <span class="attr">shortcut</span>: <span class="string">&#x27;/do&#x27;</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">id</span>: <span class="string">&#x27;6mJw031VPo2WxNIQyeYN&#x27;</span>,</span><br><span class="line">          <span class="attr">name</span>: <span class="string">&#x27;Demo - Styled Text&#x27;</span>,</span><br><span class="line">          <span class="attr">content</span>:</span><br><span class="line">            <span class="string">&#x27;be a translate expert, I will give you a sentence and help me translate to english&#x27;</span>,</span><br><span class="line">          <span class="attr">shortcut</span>: <span class="string">&#x27;/doT&#x27;</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="string">&#x27;folder-1741057188488&#x27;</span>,</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span>,</span><br><span class="line">      <span class="attr">description</span>: <span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">      <span class="attr">snippets</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">id</span>: <span class="string">&#x27;snippet-1741057206823&#x27;</span>,</span><br><span class="line">          <span class="attr">name</span>: <span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">          <span class="attr">content</span>: <span class="string">&#x27;&lt;p&gt;New snippet content Test&lt;/p&gt;&#x27;</span>,</span><br><span class="line">          <span class="attr">shortcut</span>: <span class="string">&#x27;/test&#x27;</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">setFolders</span>: <span class="function">(<span class="params">folders</span>) =&gt;</span> <span class="title function_">set</span>(&#123; folders &#125;),</span><br><span class="line">  <span class="attr">updateFolder</span>: <span class="function">(<span class="params">id, updates</span>) =&gt;</span></span><br><span class="line">    <span class="title function_">set</span>(&#123;</span><br><span class="line">      <span class="attr">folders</span>: <span class="title function_">get</span>().<span class="property">folders</span>.<span class="title function_">map</span>(<span class="function">(<span class="params">folder</span>) =&gt;</span></span><br><span class="line">        folder.<span class="property">id</span> === id ? &#123; ...folder, ...updates &#125; : folder</span><br><span class="line">      ),</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// 新增資料夾，可選擇插入位置</span></span><br><span class="line">    <span class="attr">addFolder</span>: <span class="function">(<span class="params">folder, index</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> <span class="attr">newFolder</span>: <span class="title class_">Folder</span> = &#123; ...folder, <span class="attr">id</span>: <span class="string">`folder-<span class="subst">$&#123;<span class="built_in">Date</span>.now()&#125;</span>`</span> &#125;;</span><br><span class="line">      <span class="title function_">set</span>(<span class="function">(<span class="params">state</span>) =&gt;</span> (&#123;</span><br><span class="line">        <span class="attr">folders</span>:</span><br><span class="line">          <span class="keyword">typeof</span> index === <span class="string">&quot;number&quot;</span></span><br><span class="line">            ? [</span><br><span class="line">                ...state.<span class="property">folders</span>.<span class="title function_">slice</span>(<span class="number">0</span>, index),</span><br><span class="line">                newFolder,</span><br><span class="line">                ...state.<span class="property">folders</span>.<span class="title function_">slice</span>(index),</span><br><span class="line">              ]</span><br><span class="line">            : [...state.<span class="property">folders</span>, newFolder],</span><br><span class="line">      &#125;));</span><br><span class="line">      <span class="keyword">return</span> newFolder;</span><br><span class="line">    &#125;,</span><br><span class="line">  <span class="attr">deleteFolder</span>: <span class="function">(<span class="params">id</span>) =&gt;</span></span><br><span class="line">    <span class="title function_">set</span>(&#123;</span><br><span class="line">      <span class="attr">folders</span>: <span class="title function_">get</span>().<span class="property">folders</span>.<span class="title function_">filter</span>(<span class="function">(<span class="params">folder</span>) =&gt;</span> folder.<span class="property">id</span> !== id),</span><br><span class="line">    &#125;),</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用 set 來更新狀態，get 取得當前狀態。</li>
-<li>addFolder 方法可指定新增資料夾的位置（透過可選的 index 參數）；若未指定，則預設新增到列表尾端。</li>
-</ul>
-<h2 id="snippetSlice-ts"><a href="#snippetSlice-ts" class="headerlink" title="snippetSlice.ts"></a>snippetSlice.ts</h2><p>snippetSlice 負責 snippet 的新增、刪除與更新操作。由於 snippets 存放於 folders 中，因此此 slice 會依賴 FolderSlice 的狀態來進行資料處理。</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/stores/snippet/slices/snippetSlice.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">StateCreator</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;zustand&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Snippet</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@/types/snippets&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">FolderSlice</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./folderSlice&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">SnippetSlice</span> &#123;</span><br><span class="line">  <span class="attr">addSnippetToFolder</span>: <span class="function">(<span class="params">folderId: <span class="built_in">string</span>, snippet: Omit&lt;Snippet, <span class="string">&#x27;id&#x27;</span>&gt;</span>) =&gt;</span> <span class="title class_">Snippet</span>;</span><br><span class="line">  <span class="attr">deleteSnippetFromFolder</span>: <span class="function">(<span class="params">folderId: <span class="built_in">string</span>, snippetId: <span class="built_in">string</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">  <span class="attr">updateSnippet</span>: <span class="function">(<span class="params">snippetId: <span class="built_in">string</span>, updatedSnippet: Partial&lt;Snippet&gt;</span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 這裡依賴 FolderSlice，因為 snippets 都儲存在 folders 內</span></span><br><span class="line"><span class="comment">// 修改後，addSnippetToFolder 回傳新 snippet</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">createSnippetSlice</span>: <span class="title class_">StateCreator</span>&lt;</span><br><span class="line">  <span class="title class_">FolderSlice</span> &amp; <span class="title class_">SnippetSlice</span>,</span><br><span class="line">  [],</span><br><span class="line">  [],</span><br><span class="line">  <span class="title class_">SnippetSlice</span></span><br><span class="line">&gt; = <span class="function">(<span class="params">set, get</span>) =&gt;</span> (&#123;</span><br><span class="line">  <span class="comment">// 新增一個 snippet 到指定的資料夾，並回傳新增的 snippet（包含自動生成的 id）</span></span><br><span class="line">  <span class="attr">addSnippetToFolder</span>: <span class="function">(<span class="params">folderId, snippet</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="attr">newSnippet</span>: <span class="title class_">Snippet</span> = &#123; ...snippet, <span class="attr">id</span>: <span class="string">`snippet-<span class="subst">$&#123;<span class="built_in">Date</span>.now()&#125;</span>`</span> &#125;;</span><br><span class="line">    <span class="title function_">set</span>(&#123;</span><br><span class="line">      <span class="attr">folders</span>: <span class="title function_">get</span>().<span class="property">folders</span>.<span class="title function_">map</span>(<span class="function">(<span class="params">folder</span>) =&gt;</span></span><br><span class="line">        folder.<span class="property">id</span> === folderId</span><br><span class="line">          ? &#123; ...folder, <span class="attr">snippets</span>: [...folder.<span class="property">snippets</span>, newSnippet] &#125;</span><br><span class="line">          : folder</span><br><span class="line">      ),</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> newSnippet; <span class="comment">// 回傳新增後完整的 snippet 物件</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">deleteSnippetFromFolder</span>: <span class="function">(<span class="params">folderId, snippetId</span>) =&gt;</span></span><br><span class="line">    <span class="title function_">set</span>(&#123;</span><br><span class="line">      <span class="attr">folders</span>: <span class="title function_">get</span>().<span class="property">folders</span>.<span class="title function_">map</span>(<span class="function">(<span class="params">folder</span>) =&gt;</span></span><br><span class="line">        folder.<span class="property">id</span> === folderId</span><br><span class="line">          ? &#123;</span><br><span class="line">              ...folder,</span><br><span class="line">              <span class="attr">snippets</span>: folder.<span class="property">snippets</span>.<span class="title function_">filter</span>(</span><br><span class="line">                <span class="function">(<span class="params">snippet</span>) =&gt;</span> snippet.<span class="property">id</span> !== snippetId</span><br><span class="line">              ),</span><br><span class="line">            &#125;</span><br><span class="line">          : folder</span><br><span class="line">      ),</span><br><span class="line">    &#125;),</span><br><span class="line">  <span class="attr">updateSnippet</span>: <span class="function">(<span class="params">snippetId, updatedSnippet</span>) =&gt;</span></span><br><span class="line">    <span class="title function_">set</span>(&#123;</span><br><span class="line">      <span class="attr">folders</span>: <span class="title function_">get</span>().<span class="property">folders</span>.<span class="title function_">map</span>(<span class="function">(<span class="params">folder</span>) =&gt;</span> (&#123;</span><br><span class="line">        ...folder,</span><br><span class="line">        <span class="attr">snippets</span>: folder.<span class="property">snippets</span>.<span class="title function_">map</span>(<span class="function">(<span class="params">snippet</span>) =&gt;</span></span><br><span class="line">          snippet.<span class="property">id</span> === snippetId ? &#123; ...snippet, ...updatedSnippet &#125; : snippet</span><br><span class="line">        ),</span><br><span class="line">      &#125;)),</span><br><span class="line">    &#125;),</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>新增 snippet（addSnippetToFolder）</p>
-<p>提供一個資料夾 id 和 snippet 的內容（不含 id）。<br>自動產生 snippet 的 id（透過 Date.now()）。<br>將新的 snippet 放到指定的資料夾內，並回傳完整的新 snippet，方便後續操作使用。</p>
-</li>
-<li><p>刪除 snippet（deleteSnippetFromFolder）</p>
-<p>根據指定的資料夾 id 和 snippet id 移除 snippet。<br>使用 filter 方法，確保其他 snippet 不受影響。</p>
-</li>
-<li><p>更新 snippet（updateSnippet）</p>
-<p>-提供 snippet id 和欲更新的部分 snippet 屬性。<br>-使用 map 方法，只更新符合指定 id 的 snippet，其他 snippet 維持不變。</p>
-</li>
-</ul>
-<h2 id="uiSlice-ts"><a href="#uiSlice-ts" class="headerlink" title="uiSlice.ts"></a>uiSlice.ts</h2><p>uiSlice 專門用來管理專案內與 UI 顯示相關的狀態，例如 dialog（對話框）的開啟或關閉狀態，以及當前匹配（matched）的 snippet 資訊。</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/stores/snippet/slices/uiSlice.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">StateCreator</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;zustand&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">MatchedSnippet</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@/types/snippets&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">UISlice</span> &#123;</span><br><span class="line">  <span class="attr">isDialogOpen</span>: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="attr">matchedSnippet</span>: <span class="title class_">MatchedSnippet</span>;</span><br><span class="line">  <span class="attr">setIsDialogOpen</span>: <span class="function">(<span class="params">open: <span class="built_in">boolean</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">  <span class="attr">setMatchedSnippet</span>: <span class="function">(<span class="params">snippet: MatchedSnippet</span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">createUISlice</span>: <span class="title class_">StateCreator</span>&lt;<span class="title class_">UISlice</span>&gt; = <span class="function">(<span class="params">set</span>) =&gt;</span> (&#123;</span><br><span class="line">  <span class="attr">isDialogOpen</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">matchedSnippet</span>: &#123;</span><br><span class="line">    <span class="attr">content</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    <span class="attr">targetElement</span>: <span class="literal">null</span>,</span><br><span class="line">    <span class="attr">insert</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">shortcut</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">setIsDialogOpen</span>: <span class="function">(<span class="params">open: <span class="built_in">boolean</span></span>) =&gt;</span> <span class="title function_">set</span>(&#123; <span class="attr">isDialogOpen</span>: open &#125;),</span><br><span class="line">  <span class="attr">setMatchedSnippet</span>: <span class="function">(<span class="params">snippet: MatchedSnippet</span>) =&gt;</span> <span class="title function_">set</span>(&#123; <span class="attr">matchedSnippet</span>: snippet &#125;),</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>isDialogOpen<br>負責追蹤 dialog 是否正在顯示，便於控制 dialog 元件的顯示與隱藏。</li>
-<li>matchedSnippet<br>用於暫時儲存用戶目前匹配到的 snippet 資訊，例如 snippet 的內容、目標元素、快捷鍵資訊等等，讓 UI 能即時反應用戶操作。</li>
-</ul>
-<h2 id="在頁面中使用-Zustand-管理的狀態"><a href="#在頁面中使用-Zustand-管理的狀態" class="headerlink" title="在頁面中使用 Zustand 管理的狀態"></a>在頁面中使用 Zustand 管理的狀態</h2><p>想在頁面或元件內使用剛才建立的 Zustand 狀態時，只需從我們整合好的 useSnippetStore 引入所需的狀態或方法即可</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useSnippetStore &#125; <span class="keyword">from</span> <span class="string">&#x27;@/stores/snippet&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; useEffect &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Snippet</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@/types/snippets&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">MyComponent</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 從整合後的 store 直接取出需要的方法</span></span><br><span class="line">  <span class="keyword">const</span> &#123; addFolder &#125; = <span class="title function_">useSnippetStore</span>();</span><br><span class="line"></span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 舉例：在元件載入時新增一個 folder</span></span><br><span class="line">    <span class="keyword">const</span> newFolder = <span class="title function_">addFolder</span>(&#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;New Folder&#x27;</span>,</span><br><span class="line">      <span class="attr">description</span>: <span class="string">&#x27;Example folder created on load&#x27;</span>,</span><br><span class="line">      <span class="attr">snippets</span>: [],</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;新增了資料夾：&#x27;</span>, newFolder);</span><br><span class="line">  &#125;, [addFolder]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>你的元件內容<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>不再需要額外引入任何 Context Provider。</li>
-<li>在任何需要存取全局狀態的地方，只需簡單導入 useSnippetStore，然後直接調用對應的方法或取得狀態即可。</li>
-</ul>
-<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>藉由導入 Zustand 並將狀態拆分成多個獨立的 Slice（folderSlice、snippetSlice、uiSlice），使我能夠：</p>
-<ul>
-<li>清晰地分離狀態責任：每個 Slice 專注於處理特定領域的邏輯，如資料夾管理、snippet 操作，以及 UI 狀態。</li>
-<li>靈活管理持久化策略：透過 Zustand 提供的 middleware（如 persist 與 partialize），只將必要的資料（例如資料夾）持久化至 localStorage，而 UI 等臨時狀態則保留在記憶體中。</li>
-<li>有效降低耦合度與樣板代碼：每個元件不再需要額外引入 Provider，簡化了開發流程，並且降低未來維護成本。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/03/27/figma-mcp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/03/27/figma-mcp/" class="post-title-link" itemprop="url">figma mcp 應用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-03-27 19:30:14 / Modified: 19:52:21" itemprop="dateCreated datePublished" datetime="2025-03-27T19:30:14+08:00">2025-03-27</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>有新東西就是要來快速嘗試一下～～ 注意 cursor 要是付費版才能使用</p>
-<p>至 GitHub clone 專案 <a target="_blank" rel="noopener" href="https://github.com/sonnylazuardi/cursor-talk-to-figma-mcp">Cursor Talk to Figma MCP</a></p>
-<p>然後遵循 README：<strong>Get Started 開始</strong></p>
-<p>它需要安裝 bun 套件管理工具</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL <span class="attr">https</span>:<span class="comment">//bun.sh/install | bash</span></span><br></pre></td></tr></table></figure>
-
-<p>需要在你的專案根目錄執行:</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /path/to/your/cursor-talk-to-figma-mcp</span><br><span class="line">bun setup</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 啟動 WebSocket server（必須持續執行）</span></span><br><span class="line">bun socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># 啟動 MCP server（另開一個終端）</span></span><br><span class="line">bunx cursor-talk-to-figma-mcp</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// Add the server to your Cursor MCP configuration <span class="keyword">in</span> ~/.cursor/mcp.json:</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;mcpServers&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;TalkToFigma&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;command&quot;</span>: <span class="string">&quot;bunx&quot;</span>,</span><br><span class="line">      <span class="string">&quot;args&quot;</span>: [<span class="string">&quot;cursor-talk-to-figma-mcp&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以下為圖示：</p>
-<p><img src="https://i.imgur.com/6LuXXYv.png" alt="image.png"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/03/27/figma-mcp/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/03/27/vue-dynamic-event/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/03/27/vue-dynamic-event/" class="post-title-link" itemprop="url">Vue 動態事件名稱</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-03-27 07:16:48 / Modified: 19:54:47" itemprop="dateCreated datePublished" datetime="2025-03-27T07:16:48+08:00">2025-03-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在 Vue 中使用動態事件名稱的功能自 Vue 2.6.0 版本開始支持。可以使用 v-on 或 @ 來動態綁定事件名稱</p>
-<p>簡單舉例：<br>根據裝置類型切換事件（桌機 vs 手機）</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> event = <span class="title function_">ref</span>(navigator.<span class="property">maxTouchPoints</span> ? <span class="string">&#x27;touchstart&#x27;</span> : <span class="string">&#x27;click&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> <span class="title function_">handle</span> = (<span class="params"></span>) =&gt; <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Triggered on&#x27;</span>, event.<span class="property">value</span>)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @[<span class="attr">event</span>]=<span class="string">&quot;handle&quot;</span>&gt;</span>按我<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>2.「檔案卡片」元件預覽或跳轉：</p>
-<p>點擊 (click)：選擇／下載檔案<br>滑鼠移入 (mouseover)：預覽檔案摘要</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;file-card&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">v-on</span>=<span class="string">&quot;&#123; click: handleDownload, mouseover: handlePreview &#125;&quot;</span>&gt;</span></span><br><span class="line">      &#123;&#123; fileName &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">v-if</span>=<span class="string">&quot;showPreview&quot;</span> <span class="attr">class</span>=<span class="string">&quot;preview-popup&quot;</span>&gt;</span></span><br><span class="line">      &#123;&#123; previewText &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup lang=<span class="string">&quot;ts&quot;</span>&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; ref, computed, nextTick &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> props = defineProps&lt;&#123; <span class="attr">fileName</span>: string; <span class="attr">fileUrl</span>: string &#125;&gt;()</span><br><span class="line"><span class="keyword">const</span> showPreview = <span class="title function_">ref</span>(<span class="literal">false</span>)</span><br><span class="line"><span class="keyword">const</span> previewText = <span class="title function_">ref</span>(<span class="string">&#x27;Loading preview…&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 點擊 → 觸發下載</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">handleDownload</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">open</span>(props.<span class="property">fileUrl</span>, <span class="string">&#x27;_blank&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 滑鼠移入 → 取得並顯示檔案摘要</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">handlePreview</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  showPreview.<span class="property">value</span> = <span class="literal">true</span></span><br><span class="line">  <span class="comment">// 模擬 API 請求</span></span><br><span class="line">  <span class="keyword">await</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function"><span class="params">res</span> =&gt;</span> <span class="built_in">setTimeout</span>(res, <span class="number">300</span>))</span><br><span class="line">  previewText.<span class="property">value</span> = <span class="string">`Preview of <span class="subst">$&#123;props.fileName&#125;</span>`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 滑鼠移出後隱藏預覽</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">hidePreview</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  showPreview.<span class="property">value</span> = <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 監聽滑鼠離開整個卡片</span></span><br><span class="line"><span class="keyword">const</span> cardRef = ref&lt;<span class="title class_">HTMLElement</span> | <span class="literal">null</span>&gt;(<span class="literal">null</span>)</span><br><span class="line">cardRef.<span class="property">value</span>?.<span class="title function_">addEventListener</span>(<span class="string">&#x27;mouseleave&#x27;</span>, hidePreview)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">style</span> <span class="attr">scoped</span>&gt;</span><span class="language-css"></span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-class">.file-card</span> &#123; <span class="attribute">position</span>: relative; <span class="attribute">display</span>: inline-block; &#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-class">.preview-popup</span> &#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">position</span>: absolute;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">top</span>: <span class="number">100%</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">left</span>: <span class="number">0</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">padding</span>: <span class="number">0.5rem</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ccc</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">background</span>: white;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">6px</span> <span class="built_in">rgba</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.1</span>);</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://stackblitz.com/edit/vue-tip-dynamic-event-names-evguwtw8?file=README.md">Demo</a></p>
-<p>注意：在「同一欄位會因不同情境而切換觸發事件」時，才建議用動態綁定。若只是單純切換事件名稱，建議直接在方法內判斷即可。</p>
-<p>也可參考 Michael Hoffmann 這裡的另一實作方式：<br><a target="_blank" rel="noopener" href="https://stackblitz.com/edit/vue-tip-dynamic-event-names?file=src%2FApp.vue">https://stackblitz.com/edit/vue-tip-dynamic-event-names?file=src%2FApp.vue</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1171,7 +1157,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">114</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
