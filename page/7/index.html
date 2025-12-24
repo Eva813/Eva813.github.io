@@ -180,6 +180,534 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/11/27/TS-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/27/TS-2/" class="post-title-link" itemprop="url">TypeScript 基礎介紹 (2)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-11-27 09:44:33" itemprop="dateCreated datePublished" datetime="2021-11-27T09:44:33+08:00">2021-11-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:34:23" itemprop="dateModified" datetime="2022-11-04T10:34:23+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.imgur.com/xGK5aDO.png" alt=""></p>
+<p>要熟悉 TypeScript 的型別訂定，並不容易，而且撰寫時也會花費較多的時間，但好處是減少程式碼的錯誤，也讓協作者更容易解讀對方撰寫的程式碼。<br>萬事起頭難，不同的地方就是多讀幾次，或是尋找相關的範例來相呼應！</p>
+<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><p>傳統方法中，JavaScript 透過建構函式實現類別的概念，透過原型鏈實現繼承。而在 ES6 中，我們終於迎來了 class。</p>
+<ul>
+<li><p>定義一切事務的抽象特點</p>
+</li>
+<li><p>object  ：class 的實例  new Class 生成</p>
+</li>
+<li><p>物件導向 OOP(Object Oriented Programming) ：三大特性 封裝、繼承、多型</p>
+<ul>
+<li>封裝（Encapsulation）：將對資料的操作細節隱藏起來，只暴露對外的介面。外界呼叫端不需要（也不可能）知道細節，就能透過對外提供的介面來訪問該物件，同時也保證了外界無法任意更改物件內部的資料</li>
+<li>繼承（Inheritance）：子類別繼承父類別，子類別除了擁有父類別的所有特性外，還有一些更具體的特性</li>
+<li>多型（Polymorphism）：由繼承而產生了相關的不同的類別，對同一個方法可以有不同的響應<h3 id="複習下-ES6-撰寫方式"><a href="#複習下-ES6-撰寫方式" class="headerlink" title="複習下 ES6 撰寫方式"></a>複習下 ES6 撰寫方式</h3></li>
+</ul>
+</li>
+<li><p>使用 class 定義類別，使用 constructor 定義建構函式。</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125; </span><br><span class="line">    run () &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span> is running`</span> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> snake = <span class="keyword">new</span> <span class="title class_">Animal</span>(<span class="string">&#x27;lily&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(snake.<span class="title function_">run</span>()); <span class="comment">// lily is running</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 繼承的特性（繼承父類的屬性及方法）， 繼承 run 的方法</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Animal</span> &#123;</span><br><span class="line">  <span class="title function_">bark</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span> is barking`</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> bao = <span class="keyword">new</span> <span class="title class_">Dog</span>(<span class="string">&#x27;bao&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(bao.<span class="title function_">run</span>()) <span class="comment">// bao is running</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(bao.<span class="title function_">bark</span>()) <span class="comment">// bao is  barking</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 extends 關鍵字實現繼承</li>
+<li>这里我们重寫構造函式，注意在子類的構造函式中，必須使用 super 調用父類的方法，否則會報錯。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Animal</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(name)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>) <span class="comment">//maomao</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">run</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">// run 方法重寫</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Meow, &#x27;</span> + <span class="variable language_">super</span>.<span class="title function_">run</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> maomao = <span class="keyword">new</span> <span class="title class_">Cat</span>(<span class="string">&#x27;maomao&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(maomao.<span class="title function_">run</span>()) <span class="comment">//Meow, maomao is runing</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="TypeScript-中的-class"><a href="#TypeScript-中的-class" class="headerlink" title="TypeScript 中的 class"></a>TypeScript 中的 class</h4><p>TypeScript 可以使用三種訪問修飾符（Access Modifiers）</p>
+<ul>
+<li>public 修飾的屬性或方法是公有的，可以在任何地方被調用到，預設所有的屬性和方法都是 public 的</li>
+<li>private 修飾的屬性或方法是私有的，不能在声明它的类的外部調用</li>
+<li>protected 修飾的屬性或方法是受保护的，它和 private 類似，區别是它在子類中也是允许被訪問的<br>例子說明：</li>
+<li>name 被設定為了 public，所以直接訪問實例的 name 屬性是允許的。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="title class_">Animal</span>(<span class="string">&#x27;Jack&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="property">name</span>); <span class="comment">// Jack</span></span><br><span class="line">a.<span class="property">name</span> = <span class="string">&#x27;Tom&#x27;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="property">name</span>); <span class="comment">// Tom</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>希望有的屬性是無法直接存取的，這時候就可以用 private 了：</li>
+<li>name 設為 private</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="title class_">Animal</span>(<span class="string">&#x27;Jack&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="property">name</span>); <span class="comment">// Jack</span></span><br><span class="line">a.<span class="property">name</span> = <span class="string">&#x27;Tom&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.ts(9,13): error TS2341: Property &#x27;name&#x27; is private and only accessible within class &#x27;Animal&#x27;.</span></span><br><span class="line"><span class="comment">// index.ts(10,1): error TS2341: Property &#x27;name&#x27; is private and only accessible within class &#x27;Animal&#x27;.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用 private 修飾的屬性或方法，在子類別中也是不允許訪問的：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Animal</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">super</span>(name);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.ts(11,17): error TS2341: Property &#x27;name&#x27; is private and only accessible within class &#x27;Animal&#x27;.</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>而如果是用 protected 修飾，則允許在子類別中訪問：</li>
+<li>將上述程式碼修改一下</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">protected</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="類別-class-的型別"><a href="#類別-class-的型別" class="headerlink" title="類別 class 的型別"></a>類別 class 的型別</h3><p>給類別加上 TypeScript 的型別很簡單，與介面類似：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">sayHi</span>(): <span class="built_in">string</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`My name is <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">a</span>: <span class="title class_">Animal</span> = <span class="keyword">new</span> <span class="title class_">Animal</span>(<span class="string">&#x27;Jack&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="title function_">sayHi</span>()); <span class="comment">// My name is Jack</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://willh.gitbook.io/typescript-tutorial/advanced/class">類別</a></p>
+<h3 id="class-與-interface"><a href="#class-與-interface" class="headerlink" title="class 與 interface"></a>class 與 interface</h3><ul>
+<li>介面（Interfaces）：不同類別之間公有的屬性或方法，可以抽象成一個介面。介面可以被類別實現（implements）。一個類別只能繼承自另一個類別，但是可以實現多個介面</li>
+<li>在 物件導向 世界中，一個 class 只能繼承自另外一個class</li>
+<li>有時候不同 class 之前，可以有共同的特性，使用子類繼承父類的方法很難來完成</li>
+<li>class 可以使用 implements 來實現 interface （提高 OOP 的靈活性）</li>
+</ul>
+<h4 id="範例一："><a href="#範例一：" class="headerlink" title="範例一："></a>範例一：</h4><ul>
+<li>有 車子和手機，都有打開radio的功能</li>
+<li>可以將兩個共有的抽取為一個 interface</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>  &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params">trigger: <span class="built_in">boolean</span></span>) &#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cellphone</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params">trigger: <span class="built_in">boolean</span></span>) &#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="可以將兩個共有的抽取為一個-interface"><a href="#可以將兩個共有的抽取為一個-interface" class="headerlink" title="可以將兩個共有的抽取為一個 interface"></a>可以將兩個共有的抽取為一個 interface</h4><ul>
+<li>void =&gt; 代表什麼都不返回</li>
+<li>在class 後面放入  implements 讓類去實現它</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Radio</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="attr">trigger</span>: <span class="built_in">boolean</span>): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">implements</span> <span class="title class_">Radio</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params">trigger</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">123</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cellphone</span> <span class="keyword">implements</span> <span class="title class_">Radio</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="範例二"><a href="#範例二" class="headerlink" title="範例二"></a>範例二</h4><ul>
+<li>新特性為 檢查電池的容量</li>
+<li>是手機有，但汽車沒有的</li>
+<li>所以新建立一個 interface （檢查battery）<ul>
+<li>此功能只有手機有，所以放在手機的class</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Battery</span> &#123;</span><br><span class="line">  <span class="title function_">checkBatteryStatus</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 要實現多个介面，我们只需要中間用 都好 隔开即可。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cellphone</span> <span class="keyword">implements</span> <span class="title class_">Radio</span>, <span class="title class_">Battery</span> &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">checkBatteryStatus</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="此外-interface-之間有繼承關係"><a href="#此外-interface-之間有繼承關係" class="headerlink" title="此外 interface 之間有繼承關係"></a>此外 interface 之間有繼承關係</h4><ul>
+<li>建立 radioWithBattery 繼承 Radio ，裡面再放入檢查電量的設定</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> radioWithBattery <span class="keyword">extends</span> <span class="title class_">Radio</span> &#123;</span><br><span class="line">  <span class="title function_">checkBatteryStatus</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cellphone</span> <span class="keyword">implements</span> radioWithBattery &#123;</span><br><span class="line">  <span class="title function_">switchRadio</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">checkBatteryStatus</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://willh.gitbook.io/typescript-tutorial/advanced/class-and-interfaces">類別與介面</a></p>
+<h2 id="enum-列舉"><a href="#enum-列舉" class="headerlink" title="enum 列舉"></a>enum 列舉</h2><ul>
+<li>常數指執行程序中不會被改變的值，在 JS 中我們一般會用 const 來宣告</li>
+<li>但有些取值是在一定範圍內的一系列常數。<ul>
+<li>如：一周內七天、三原色(紅、黃、藍)、方向(上、下、左、右)<h3 id="範例一"><a href="#範例一" class="headerlink" title="範例一"></a>範例一</h3></li>
+</ul>
+</li>
+<li>數字列舉</li>
+<li>列舉成員會被賦值為從0，開始遞增</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 數字列舉，一个數字列舉可以用 enum 这个關鍵詞來定義，我们定義一系列的方向，然后这里面的值，列舉成员会被赋值为從 0 开始遞增的數字,</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Direction</span> &#123;</span><br><span class="line">  <span class="title class_">Up</span>,</span><br><span class="line">  <span class="title class_">Down</span>,</span><br><span class="line">  <span class="title class_">Left</span>,</span><br><span class="line">  <span class="title class_">Right</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Direction</span>.<span class="property">Up</span>) <span class="comment">//0</span></span><br><span class="line"><span class="comment">// 還有一个神奇的點是這個列舉还做了反向映射</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Direction</span>[<span class="number">0</span>]) <span class="comment">//up</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/VMRV8oM.png" alt=""></p>
+<ul>
+<li>可以手動賦予值</li>
+<li>未手動賦值的列舉項會接著上一個列舉項遞增。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  <span class="title class_">Up</span> = <span class="number">10</span>,</span><br><span class="line">  <span class="title class_">Down</span>,</span><br><span class="line">  <span class="title class_">Left</span>,</span><br><span class="line">  <span class="title class_">Right</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Direction</span>.<span class="property">Down</span>) <span class="comment">// 11 ，後面的項目數值會遞增</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Direction</span>[<span class="number">0</span>]) <span class="comment">//up</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="範例二-1"><a href="#範例二-1" class="headerlink" title="範例二"></a>範例二</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 字符串列舉</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Direction</span> &#123;</span><br><span class="line">  <span class="title class_">Up</span> = <span class="string">&#x27;UP&#x27;</span>,</span><br><span class="line">  <span class="title class_">Down</span> = <span class="string">&#x27;DOWN&#x27;</span>,</span><br><span class="line">  <span class="title class_">Left</span> = <span class="string">&#x27;LEFT&#x27;</span>,</span><br><span class="line">  <span class="title class_">Right</span> = <span class="string">&#x27;RIGHT&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> value = <span class="string">&#x27;UP&#x27;</span></span><br><span class="line"><span class="keyword">if</span> (value === <span class="title class_">Direction</span>.<span class="property">Up</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;go up!&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="範例三"><a href="#範例三" class="headerlink" title="範例三"></a>範例三</h3><ul>
+<li>常數列舉<ul>
+<li>編譯後的邏輯變少了</li>
+<li>使用常數列舉會內連列舉的用法並且不會將設定的列舉編譯成 JS 程式碼</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span>  <span class="keyword">enum</span> <span class="title class_">Direction</span> &#123;</span><br><span class="line">  <span class="title class_">Up</span> = <span class="string">&#x27;UP&#x27;</span>,</span><br><span class="line">  <span class="title class_">Down</span> = <span class="string">&#x27;DOWN&#x27;</span>,</span><br><span class="line">  <span class="title class_">Left</span> = <span class="string">&#x27;LEFT&#x27;</span>,</span><br><span class="line">  <span class="title class_">Right</span> = <span class="string">&#x27;RIGHT&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> value = <span class="string">&#x27;UP&#x27;</span></span><br><span class="line"><span class="keyword">if</span> (value === <span class="title class_">Direction</span>.<span class="property">Up</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;go up!&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/Fp2XF0y.png" alt=""></p>
+<hr>
+<h2 id="泛型-Generics"><a href="#泛型-Generics" class="headerlink" title="泛型 Generics"></a>泛型 Generics</h2><ul>
+<li>要解決什麼問題<ul>
+<li>建立函式 echo 參數為 arg ，接著宣告變數傳入參數</li>
+<li>但其中的型別沒有設定</li>
+<li>傳入和返回的型別無法統一</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">echo</span>(<span class="params">arg</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> arg</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">echo</span>(<span class="number">123</span>)</span><br><span class="line"><span class="comment">// 這時候我們發現了一個問題，我们傳入了數字，但是返回了 any</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/lo6XFH8.png" alt=""></p>
+<ul>
+<li>當在建構 function、internet及Class 時，你會希望這些component都能被重複運用的 Generic(泛型)提供了一個彈性的作法。</li>
+<li>語法是: <code>&lt;T&gt;</code></li>
+</ul>
+<h3 id="範例一-1"><a href="#範例一-1" class="headerlink" title="範例一"></a>範例一</h3><ul>
+<li>泛型（Generics）是指在定義function、internet及Class的时候，不预先指定具體的型別，而在使用的时候再指定型別的一種特性。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> echo&lt;T&gt;(<span class="attr">arg</span>: T): T &#123;</span><br><span class="line">  <span class="keyword">return</span> arg</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">echo</span>(<span class="number">123</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/X4quRIj.png" alt=""></p>
+<h3 id="範例二-傳入多個"><a href="#範例二-傳入多個" class="headerlink" title="範例二 傳入多個"></a>範例二 傳入多個</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> swap&lt;T, U&gt;(<span class="attr">tuple</span>: [T, U]): [U, T] &#123;</span><br><span class="line">  <span class="keyword">return</span> [tuple[<span class="number">1</span>], tuple[<span class="number">0</span>]]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">swap</span>([<span class="string">&#x27;string&#x27;</span>, <span class="number">123</span>])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/hJ5IqSY.png" alt=""></p>
+<h3 id="泛型第二部分-约束泛型"><a href="#泛型第二部分-约束泛型" class="headerlink" title="泛型第二部分 - 约束泛型"></a>泛型第二部分 - 约束泛型</h3><ul>
+<li>帶有「限制」的泛型</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> echoWithArr&lt;T&gt;(<span class="attr">arg</span>: T): T &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(arg.<span class="property">length</span>)</span><br><span class="line">  <span class="keyword">return</span> arg</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 上例中，泛型 T 不一定包含属性 length，我们可以给他傳入任意型別，當然有些不包括 length 属性，那样就會報錯</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 我們使用了 extends 約束了泛型 T 必須符合介面 IWithLength 的形狀，也就是必須包含 length 屬性。</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">IWithLength</span> &#123;</span><br><span class="line">  <span class="attr">length</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> echoWithLength&lt;T <span class="keyword">extends</span> <span class="title class_">IWithLength</span>&gt;(<span class="attr">arg</span>: T): T &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(arg.<span class="property">length</span>)</span><br><span class="line">  <span class="keyword">return</span> arg</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">echoWithLength</span>(<span class="string">&#x27;str&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> result3 = <span class="title function_">echoWithLength</span>(&#123;<span class="attr">length</span>: <span class="number">10</span>&#125;)</span><br><span class="line"><span class="keyword">const</span> result4 = <span class="title function_">echoWithLength</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">//此時如果呼叫 loggingIdentity 的時候，傳入的 arg 不包含 length，那麼在編譯階段就會報錯了</span></span><br><span class="line"><span class="title function_">echoWithLength</span>(<span class="number">7</span>);</span><br><span class="line"><span class="comment">// index.ts(10,17): error TS2345: Argument of type &#x27;7&#x27; is not assignable to parameter of type &#x27;Lengthwise&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="泛型第三部分-泛型在-class-和-interface-中的使用"><a href="#泛型第三部分-泛型在-class-和-interface-中的使用" class="headerlink" title="泛型第三部分 - 泛型在 class 和 interface 中的使用"></a>泛型第三部分 - 泛型在 class 和 interface 中的使用</h3><ol>
+<li>泛型在 class 的使用</li>
+</ol>
+<ul>
+<li>在第一個程式中存在一个问题，它允許你向 Queue 中添加任何型別的數據，當然，當數據被彈出隊列时，也可以是任意類型</li>
+<li>在下方的範例中，看起来可以向隊列中添加 string 型別的數據，但是那麼在使用的過程中，就會出現無法捕捉的錯誤</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> data = [];</span><br><span class="line">  <span class="title function_">push</span>(<span class="params">item</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">data</span>.<span class="title function_">push</span>(item)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">pop</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">data</span>.<span class="title function_">shift</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> <span class="title class_">Queue</span>()</span><br><span class="line">queue.<span class="title function_">push</span>(<span class="number">1</span>)</span><br><span class="line">queue.<span class="title function_">push</span>(<span class="string">&#x27;str&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">pop</span>().<span class="title function_">toFixed</span>())</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">pop</span>().<span class="title function_">toFixed</span>())</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> data = [];</span><br><span class="line">  <span class="title function_">push</span>(<span class="params">item: T</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">data</span>.<span class="title function_">push</span>(item)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">pop</span>(): T &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">data</span>.<span class="title function_">shift</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> <span class="title class_">Queue</span>&lt;<span class="built_in">number</span>&gt;()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>泛型在  interface 中的使用</li>
+</ol>
+<ul>
+<li>之前提過可以使用介面的方式來定義一個函式需要符合的形狀</li>
+<li>當然也可以使用含有泛型的介面來定義函式的形狀：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//泛型和 interface</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">KeyPair</span>&lt;T, U&gt; &#123;</span><br><span class="line">  <span class="attr">key</span>: T;</span><br><span class="line">  <span class="attr">value</span>: U;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp1</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">number</span>, <span class="built_in">string</span>&gt; = &#123; <span class="attr">key</span>: <span class="number">1</span>, <span class="attr">value</span>: <span class="string">&quot;str&quot;</span>&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">kp2</span>: <span class="title class_">KeyPair</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; = &#123; <span class="attr">key</span>: <span class="string">&quot;str&quot;</span>, <span class="attr">value</span>: <span class="number">123</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">arr</span>:<span class="built_in">number</span>[] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">arrTwo</span>:<span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/6GXBwCI.png" alt=""></p>
+<p>interface 搭配泛型之后，可以靈活的返回不同的型別</p>
+<ul>
+<li><p>創建一个拥有特定型別的容器，class 和 泛型 仿佛给一个容器貼上標籤一样</p>
+</li>
+<li><p>泛型就好像一个可變的參數，在用的时候傳入，生成这個不同型別的一个容器，</p>
+</li>
+<li><p>上個部分的用它来靈活的约束参数的型別，不需要參數是一个特别死板的型別，不希望他是一个特定 string、number 型別，我要傳入的参數必须有某某屬性、某某方法，否則就會報錯。</p>
+</li>
+<li><p>在函式使用的时候，函式的这个型別推斷，不會進入到函式中，所以使用表達式，没法明確建立型別的绑定，用泛型可以让我们打破這個鴻溝，這個时候就可以返回它傳入的類型。</p>
+<h2 id="Type-Aliases"><a href="#Type-Aliases" class="headerlink" title="Type Aliases"></a>Type Aliases</h2></li>
+<li><p>就是给型別起一個别名，讓它可以更方便的被重用。</p>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">sum</span>: <span class="function">(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span></span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">sum</span>(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">PlusType</span> = <span class="function">(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">sum2</span>: <span class="title class_">PlusType</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 支持聯合</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StrOrNumber</span> = <span class="built_in">string</span> | <span class="built_in">number</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">result2</span>: <span class="title class_">StrOrNumber</span> = <span class="string">&#x27;123&#x27;</span></span><br><span class="line">result2 = <span class="number">123</span> <span class="comment">//沒有錯</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 字符串字面量 ，類似在列舉的常數變量</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Directions</span> = <span class="string">&#x27;Up&#x27;</span> | <span class="string">&#x27;Down&#x27;</span> | <span class="string">&#x27;Left&#x27;</span> | <span class="string">&#x27;Right&#x27;</span></span><br><span class="line"><span class="comment">// 使toWhere 這個變量為 Direction 類型</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">toWhere</span>: <span class="title class_">Directions</span> = <span class="string">&#x27;Up&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>我們使用 type 定了一個字串字面量型別 EventNames，它只能取三種字串中的一種。<br>注意，型別別名與字串字面量型別都是使用 type 進行定義。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">EventNames</span> = <span class="string">&#x27;click&#x27;</span> | <span class="string">&#x27;scroll&#x27;</span> | <span class="string">&#x27;mousemove&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">handleEvent</span>(<span class="params">ele: Element, event: EventNames</span>) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">handleEvent</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;hello&#x27;</span>), <span class="string">&#x27;scroll&#x27;</span>);  <span class="comment">// 沒問題</span></span><br><span class="line"><span class="title function_">handleEvent</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;world&#x27;</span>), <span class="string">&#x27;dbclick&#x27;</span>); <span class="comment">// 報錯，event 不能為 &#x27;dbclick&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// index.ts(7,47): error TS2345: Argument of type &#x27;&quot;dbclick&quot;&#x27; is not assignable to parameter of type &#x27;EventNames&#x27;.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Intersection-Types"><a href="#Intersection-Types" class="headerlink" title="Intersection Types"></a>Intersection Types</h2><ul>
+<li>使用 <code>&amp;</code> 符號</li>
+<li>經過上面的 type 使 IName 就有了 name 和 age兩個屬性在裡面<ul>
+<li>和interface 的 extends 有點類似，都是為了實現物件形狀組合和擴展</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">IName</span>  &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">IPerson</span> = <span class="title class_">IName</span> &amp; &#123; <span class="attr">age</span>: <span class="built_in">number</span> &#125;</span><br><span class="line"><span class="comment">// 經過上面的 type 使 IName 就有了 name 和 age兩個屬性在裡面</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">person</span>: <span class="title class_">IPerson</span> = &#123; <span class="attr">name</span>: <span class="string">&#x27;hello&#x27;</span>, <span class="attr">age</span>: <span class="number">12</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>什麼时候用介面，什麼时候用 Type Aliases：</p>
+<ul>
+<li>interface 是 docker typing 的實現方式，是一種獨特類型，和extends class  implememts 有關的用interface ，</li>
+<li>和交叉，聯合型別的有關的用 Type Aliases；</li>
+</ul>
+<h2 id="內建物件"><a href="#內建物件" class="headerlink" title="內建物件"></a>內建物件</h2><h3 id="DOM-和-BOM-的內建物件"><a href="#DOM-和-BOM-的內建物件" class="headerlink" title="DOM 和 BOM 的內建物件"></a>DOM 和 BOM 的內建物件</h3><p>DOM 和 BOM 提供的內建物件有：<br>Document、HTMLElement、Event、NodeList 等。<br>TypeScript 中會經常用到這些型別：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">body</span>: <span class="title class_">HTMLElement</span> = <span class="variable language_">document</span>.<span class="property">body</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">allDiv</span>: <span class="title class_">NodeList</span> = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span>(<span class="params">e: MouseEvent</span>) &#123;</span><br><span class="line">  <span class="comment">// Do something</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="ECMAScript-的內建物件"><a href="#ECMAScript-的內建物件" class="headerlink" title="ECMAScript 的內建物件"></a>ECMAScript 的內建物件</h3><ul>
+<li>Boolean、Error、Date、RegExp 等。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">b</span>: <span class="title class_">Boolean</span> = <span class="keyword">new</span> <span class="title class_">Boolean</span>(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="attr">e</span>: <span class="title class_">Error</span> = <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Error occurred&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="attr">d</span>: <span class="title class_">Date</span> = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="attr">r</span>: <span class="title class_">RegExp</span> = <span class="regexp">/[a-z]/</span>;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/Microsoft/TypeScript/tree/main/src/lib">TypeScript 內置</a></p>
+<h2 id="Utility-Types"><a href="#Utility-Types" class="headerlink" title="Utility Types"></a>Utility Types</h2><p><a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/utility-types.html">官方</a><br>Typescript 還提供了一些功能性，帮助性的型別，這些型別，大家在 JS 的世界是看不到的，這些型別叫做 utility types，提供一些簡潔明快而且非常方便的功能。</p>
+<ul>
+<li>使用  Partial</li>
+<li>Omit</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// partial，它可以把傳入的型別都變成可選</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">IPerson</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span></span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">viking</span>: <span class="title class_">IPerson</span> = &#123; <span class="attr">name</span>: <span class="string">&#x27;viking&#x27;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">IPartial</span> = <span class="title class_">Partial</span>&lt;<span class="title class_">IPerson</span>&gt;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">viking2</span>: <span class="title class_">IPartial</span> = &#123; &#125; <span class="comment">//可以都不傳，也不會報錯</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Omit，它返回的型別可以忽略傳入型別的某个屬性</span></span><br><span class="line"><span class="comment">// 以下範例 將 name 忽略掉</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">IOmit</span> = <span class="title class_">Omit</span>&lt;<span class="title class_">IPerson</span>, <span class="string">&#x27;name&#x27;</span>&gt;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">viking3</span>: <span class="title class_">IOmit</span> = &#123; <span class="attr">age</span>: <span class="number">20</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>資料來源：</p>
+<ol>
+<li>線上課程：實戰 Vue3.0(正式版) + TS </li>
+<li><a target="_blank" rel="noopener" href="https://willh.gitbook.io/typescript-tutorial/">TypeScript 新手指南</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/11/27/TS-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/27/TS-1/" class="post-title-link" itemprop="url">TypeScript 基礎介紹 (1)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-11-27 08:44:33" itemprop="dateCreated datePublished" datetime="2021-11-27T08:44:33+08:00">2021-11-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-04 10:34:18" itemprop="dateModified" datetime="2022-11-04T10:34:18+08:00">2022-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TypeScript/" itemprop="url" rel="index"><span itemprop="name">TypeScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>因為工作需求，有需多缺乏的技能需要補齊，TypeScript 就是其中一項。<br>上班看不懂的時候邊查詢，空閒時間再來上課不足不懂的知識點，但還是得透過文章的整理來好好消化一下！<br>既然要開始介紹 TypeScript 就先來說說使用它的原因吧。</p>
+<h2 id="為什麼使用-TypeScript"><a href="#為什麼使用-TypeScript" class="headerlink" title="為什麼使用 TypeScript"></a>為什麼使用 TypeScript</h2><ul>
+<li><p>程式語言中，有區分強型別和弱型別兩種類型。</p>
+</li>
+<li><p>而 JavaScript 是弱型別語言。</p>
+</li>
+<li><p>在 JavaScript 中，他會自己判斷應該執行的型別。自行做[型別自動轉換]</p>
+</li>
+<li><p>在快速開發時，很有可能引發一些預期之外的錯誤，相當不利於多人協同開發。</p>
+<ul>
+<li>優點：寫法彈性。</li>
+<li>缺點：無法在開發時期檢查型別。</li>
+</ul>
+</li>
+<li><p>依據上述的問題，所以使用 TypeScript</p>
+</li>
+</ul>
+<ol>
+<li>使程式碼更容易理解 （如函式需傳入的參數可以明確設定型別）</li>
+<li>減少程式碼撰寫的錯誤</li>
+<li>可以完全兼容JavaScript，此外能與 ES6 完美結合，並提供更多支援寫法。</li>
+</ol>
+<h2 id="安裝介紹"><a href="#安裝介紹" class="headerlink" title="安裝介紹"></a>安裝介紹</h2><ul>
+<li>就是直接到官方網站查看，依需求安裝<br><img src="https://i.imgur.com/wfMqk4w.png" alt=""></li>
+</ul>
+<p><code>npm install -g typescript</code></p>
+<ul>
+<li>檢查版本<br><code>tsc -v</code></li>
+</ul>
+<h2 id="型別介紹"><a href="#型別介紹" class="headerlink" title="型別介紹"></a>型別介紹</h2><p>從 JavaScript 型別分類開始</p>
+<h3 id="字串-string"><a href="#字串-string" class="headerlink" title="字串 string"></a>字串 string</h3><ul>
+<li>和ES6一樣，可以使用[字串樣板 Template Literals]<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">firstName</span>:<span class="built_in">string</span> = <span class="string">&#x27;NaNa&#x27;</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">message</span>: <span class="built_in">string</span> = <span class="string">`Hello,<span class="subst">$&#123;firstName&#125;</span>`</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="布林值-boolean"><a href="#布林值-boolean" class="headerlink" title="布林值 boolean"></a>布林值 boolean</h3></li>
+</ul>
+<p>布林值是最基礎的資料型別，在 TypeScript 中，使用 boolean 定義布林值型別： </p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">isDonw</span>:<span class="built_in">boolean</span> = <span class="literal">false</span> </span><br></pre></td></tr></table></figure>
+<p>注意：使用建構函式 Boolean 建立的物件不是布林值：</p>
+<ul>
+<li>事實上 new Boolean() 返回的是一個 Boolean 物件<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">createdByNewBoolean</span>: boolean = <span class="keyword">new</span> <span class="title class_">Boolean</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Type &#x27;Boolean&#x27; is not assignable to type &#x27;boolean&#x27;.</span></span><br><span class="line"><span class="comment">//   &#x27;boolean&#x27; is a primitive, but &#x27;Boolean&#x27; is a wrapper object. Prefer using &#x27;boolean&#x27; when possible.</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在 TypeScript 中，boolean 是 JavaScript 中的基本型別，而 Boolean 是 JavaScript 中的建構函式。</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="數值-number"><a href="#數值-number" class="headerlink" title="數值 number"></a>數值 number</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">age</span>:<span class="built_in">number</span> = <span class="number">10</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">notANumber</span>: <span class="built_in">number</span> = <span class="title class_">NaN</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">infinityNumber</span>: <span class="built_in">number</span> = <span class="title class_">Infinity</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="Null-和-Undefined"><a href="#Null-和-Undefined" class="headerlink" title="Null 和 Undefined"></a>Null 和 Undefined</h3><ul>
+<li>與 void 的區別是，undefined 和 null 是所有型別的子型別<ul>
+<li>unfefined 可以賦值給number類型的變數</li>
+<li>陣列被赋值為 undefined 或 null 不会报错</li>
+<li><code>let num:number = undefined</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">u</span>: <span class="literal">undefined</span> = <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">n</span>: <span class="literal">null</span> = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 這樣也不會報錯</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">u</span>: <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">num</span>: <span class="built_in">number</span> = u;</span><br></pre></td></tr></table></figure>
+
+<h3 id="void"><a href="#void" class="headerlink" title="void"></a>void</h3><ul>
+<li>通常用在當函式沒有回傳值時。<br><img src="https://i.imgur.com/OOnpUUH.png" alt=""></li>
+<li>而 void 型別的變數不能賦值給 number 型別的變數：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">u</span>: <span class="keyword">void</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">num</span>: number = u;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Type &#x27;void&#x27; is not assignable to type &#x27;number&#x27;.</span></span><br></pre></td></tr></table></figure>
+<h3 id="any"><a href="#any" class="headerlink" title="any"></a>any</h3></li>
+<li>在任意值上任何属性都是允許的<ul>
+<li>當有明確型別時，應避免使用 any </li>
+<li>因為 any 可以任意調用方法和屬性，很有可能出現錯誤（就喪失類型檢查的意義）<br>如果是 any 型別，則允許被賦值為任意型別</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">myFavoriteNumber</span>: <span class="built_in">any</span> = <span class="string">&#x27;seven&#x27;</span>;</span><br><span class="line">myFavoriteNumber = <span class="number">7</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="未宣告型別的變數"><a href="#未宣告型別的變數" class="headerlink" title="未宣告型別的變數"></a>未宣告型別的變數</h4><p>變數如果在宣告的時候，未指定其型別，那麼它會被識別為任意值型別：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> something;</span><br><span class="line">something = <span class="string">&#x27;seven&#x27;</span>;</span><br><span class="line">something = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">something.<span class="title function_">setName</span>(<span class="string">&#x27;Tom&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="陣列-Array-與-元組-Tuple"><a href="#陣列-Array-與-元組-Tuple" class="headerlink" title="陣列 Array 與 元組 Tuple"></a>陣列 Array 與 元組 Tuple</h3><h4 id="陣列"><a href="#陣列" class="headerlink" title="陣列"></a>陣列</h4><ol>
+<li>在想宣告的型別後面加上[]，宣告為某個型別的Array<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">idList</span>:<span class="built_in">number</span>[] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure></li>
+<li>使用陣列泛型，Array &lt;元素型別&gt;<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">list</span>:<span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>注意，當已經宣告這是個數字陣列<ul>
+<li>要 push 字串進去，會出現錯誤<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">list</span>:<span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">list.<span class="title function_">push</span>(<span class="string">&quot;4&quot;</span>)</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/bzszCFn.png" alt=""><h3 id="元組-Tuple"><a href="#元組-Tuple" class="headerlink" title="元組 Tuple"></a>元組 Tuple</h3></li>
+<li>剛剛的陣列將同一類型的數據放在一起，但是，想加入不同型別的數據怎麼辦？</li>
+<li>表示方式與陣列相似，將型別寫在<code>[]</code></li>
+<li>有固定長度和元素型別的陣列<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 表示方式和陣列非常相似，只不过它将型別寫在了里面 這時會對每一項產生了限定的作用</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">user</span>: [<span class="built_in">string</span>, <span class="built_in">number</span>] = [<span class="string">&#x27;viking&#x27;</span>, <span class="number">20</span>]</span><br><span class="line"><span class="comment">//但是当我们少寫一項 就會報錯，同樣多寫也會報錯</span></span><br><span class="line">user = [<span class="string">&#x27;molly&#x27;</span>, <span class="number">20</span>, <span class="literal">true</span>]</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/MfhvOd7.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://willh.gitbook.io/typescript-tutorial/advanced/tuple#can-kao">元組</a></p>
+<h3 id="物件的型別——介面-Interface"><a href="#物件的型別——介面-Interface" class="headerlink" title="物件的型別——介面 (Interface)"></a>物件的型別——介面 (Interface)</h3><ul>
+<li>Interface 可以用來定義物件，還有由物件所延伸的型別（例如，陣列、函式）</li>
+<li><code>age?: number;</code> 在該屬性後面加上 <code>?</code> 表示為可選屬性 ，也就是在宣告新的物件時，可以彈性加入或不加入age （也不會報錯）</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们定義了一個介面 Person</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 接着定义了一个變數 NaNa，它的型別是 Person。</span></span><br><span class="line"><span class="comment">//这样，我们就约束了 NaNa 的形狀必須和介面 Person 一致。</span></span><br><span class="line"><span class="keyword">let</span> <span class="title class_">NaNa</span>: <span class="title class_">Person</span> =&#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;NaNa&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">20</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//有时我们希望不要完全匹配一个形狀，那么可以用可選屬性：</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">    age?: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="title class_">NaNa</span>: <span class="title class_">Person</span> = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;NaNa&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="唯讀屬性"><a href="#唯讀屬性" class="headerlink" title="唯讀屬性"></a>唯讀屬性</h3><ul>
+<li>readonly 是用在屬性上面</li>
+<li>希望物件中的一些欄位只能在建立的時候被賦值，那麼可以用 readonly 定義唯讀屬性</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="keyword">readonly</span> <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  age?: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 建立物件</span></span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Vic</span>: <span class="title class_">Person</span> =&#123;</span><br><span class="line">  <span class="attr">id</span>:<span class="number">1</span>,  </span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Vic&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">20</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//不能去修改id    </span></span><br><span class="line"><span class="title class_">Vic</span>.<span class="property">id</span> = <span class="number">9527</span></span><br></pre></td></tr></table></figure>
+<h3 id="函式型別"><a href="#函式型別" class="headerlink" title="函式型別"></a>函式型別</h3><ul>
+<li>函式可以作為參數、可以存入陣列，可以被另外一個函式返回、可以被賦值另外一個變數</li>
+<li>函式是由兩部分構成，一個是輸入(通過不同參數來實現)，二為輸出(就是函數的返回結果)<h4 id="例子一"><a href="#例子一" class="headerlink" title="例子一"></a>例子一</h4></li>
+<li>設定參數型別、返回的型別</li>
+<li>若參數設定了 x、y兩個，也就只能放入兩個<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 来到我们的第一个例子，约定输入，约定输出</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://i.imgur.com/RLOECvw.png" alt=""></li>
+</ul>
+<h4 id="例子二"><a href="#例子二" class="headerlink" title="例子二"></a>例子二</h4><ul>
+<li>也可以設定可選參數</li>
+<li>在 z? 表示 z 可有可無</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可选参数</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span>, z?: <span class="built_in">number</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> z === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x + y + z</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>而在可選參數後面不可以再添加確定參數<br><img src="https://i.imgur.com/qzQRT0r.png" alt=""></li>
+</ul>
+<h4 id="例外說明：引數預設值"><a href="#例外說明：引數預設值" class="headerlink" title="例外說明：引數預設值"></a>例外說明：引數預設值</h4><ul>
+<li>在 ES6 中，我們允許給函式的引數新增預設值，TypeScript 會將添加了預設值的引數識別為可選引數：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">buildName</span>(<span class="params">firstName: <span class="built_in">string</span>, lastName: <span class="built_in">string</span> = <span class="string">&#x27;Cat&#x27;</span></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> firstName + <span class="string">&#x27; &#x27;</span> + lastName;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> tomcat = <span class="title function_">buildName</span>(<span class="string">&#x27;Tom&#x27;</span>, <span class="string">&#x27;Cat&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> tom = <span class="title function_">buildName</span>(<span class="string">&#x27;Tom&#x27;</span>); <span class="comment">// 因為 lastName 添加了預設值，識別為可選引數</span></span><br></pre></td></tr></table></figure>
+<p>此時就不受「可選引數必須接在必需引數後面」的限制了：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">buildName</span>(<span class="params">firstName: <span class="built_in">string</span> = <span class="string">&#x27;Tom&#x27;</span>, lastName: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> firstName + <span class="string">&#x27; &#x27;</span> + lastName;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> tomcat = <span class="title function_">buildName</span>(<span class="string">&#x27;Tom&#x27;</span>, <span class="string">&#x27;Cat&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> cat = <span class="title function_">buildName</span>(<span class="literal">undefined</span>, <span class="string">&#x27;Cat&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="例子三"><a href="#例子三" class="headerlink" title="例子三"></a>例子三</h4><ul>
+<li>函式的表達式</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> add = (<span class="attr">x</span>: <span class="built_in">number</span>, <span class="attr">y</span>: <span class="built_in">number</span>, z?: <span class="built_in">number</span>): <span class="function"><span class="params">number</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> z === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> x + y + z</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函式本身的类型</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">add2</span>: <span class="function">(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span>, z?:<span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span> = add</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>函式不只輸入、輸出有類型，本身也有類型<br><img src="https://i.imgur.com/f2Ym2Zb.png" alt=""></li>
+<li>將 add2 賦予 string 會出錯誤</li>
+<li>所以須聲明一模一樣的 <code>const add2: (x: number, y: number, z?:number) =&gt; number = add</code><br><img src="https://i.imgur.com/FvS1OvL.png" alt=""></li>
+</ul>
+<h4 id="例子四"><a href="#例子四" class="headerlink" title="例子四"></a>例子四</h4><ul>
+<li>使用 interface (單純定義函式的 Interface)</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// interface 描述函数类型</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">sum</span> = (<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ISum</span> &#123;</span><br><span class="line">  (<span class="attr">x</span>: <span class="built_in">number</span>, <span class="attr">y</span>: <span class="built_in">number</span>): <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">sum2</span>: <span class="title class_">ISum</span> = sum</span><br></pre></td></tr></table></figure>
+<ul>
+<li>另一個範例</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">SearchFunc</span> &#123;</span><br><span class="line">    (<span class="attr">source</span>: <span class="built_in">string</span>, <span class="attr">subString</span>: <span class="built_in">string</span>): <span class="built_in">boolean</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">mySearch</span>: <span class="title class_">SearchFunc</span>;</span><br><span class="line">mySearch = <span class="keyword">function</span>(<span class="params">source: <span class="built_in">string</span>, subString: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> source.<span class="title function_">search</span>(subString) !== -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="型別推論（Type-Inference）-聯合型別（Union-Types）-型別斷言（Type-Assertion）"><a href="#型別推論（Type-Inference）-聯合型別（Union-Types）-型別斷言（Type-Assertion）" class="headerlink" title="型別推論（Type Inference）\ 聯合型別（Union Types） \ 型別斷言（Type Assertion）"></a>型別推論（Type Inference）\ 聯合型別（Union Types） \ 型別斷言（Type Assertion）</h2><h3 id="型別推論（Type-Inference）"><a href="#型別推論（Type-Inference）" class="headerlink" title="型別推論（Type Inference）"></a>型別推論（Type Inference）</h3><ul>
+<li>可以推論出我們賦值過程中，這個變數應該是什麼類型的</li>
+<li>TS 會在沒有明確指定型別的時候，推測出型別<br><img src="https://i.imgur.com/280zYEs.png" alt=""></li>
+</ul>
+<h3 id="聯合型別（Union-Types）"><a href="#聯合型別（Union-Types）" class="headerlink" title="聯合型別（Union Types）"></a>聯合型別（Union Types）</h3><ul>
+<li>用分隔符號</li>
+<li>當 TypeScript 不确定一个聯合型別的變數到底是哪個型別的时候，我们只能使用此聯合型別的所有型別裡共有的屬性或方法</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 允許 numberOrString 的型別是 string 或者 number，但是不能是其他型別。</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">numberOrString</span>: <span class="built_in">number</span> | <span class="built_in">string</span> </span><br><span class="line"><span class="comment">// 而在使用此聯合型別的所有型別里共有的屬性性或方法：</span></span><br><span class="line">numberOrString.<span class="property">length</span>  <span class="comment">//會報錯 （只有 string 適用）</span></span><br><span class="line">numberOrString.<span class="title function_">toString</span>() <span class="comment">//string 和 number 的共同屬性是沒問題</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//若放在函式定義型別</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getLength</span>(<span class="params">something: <span class="built_in">string</span> | <span class="built_in">number</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> something.<span class="property">length</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.ts(2,22): error TS2339: Property &#x27;length&#x27; does not exist on type &#x27;string | number&#x27;.</span></span><br><span class="line"><span class="comment">//   Property &#x27;length&#x27; does not exist on type &#x27;number&#x27;.</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>聯合型別的變數在被賦值的時候，會根據型別推論的規則推斷出一個型別：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">numberOrString</span>: <span class="built_in">string</span> | <span class="built_in">number</span>;</span><br><span class="line">numberOrString = <span class="string">&#x27;seven&#x27;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(numberOrString.<span class="property">length</span>); <span class="comment">// 5</span></span><br><span class="line">numberOrString = <span class="number">7</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(numberOrString.<span class="property">length</span>); <span class="comment">// 編譯時報錯</span></span><br><span class="line"><span class="comment">// index.ts(5,30): error TS2339: Property &#x27;length&#x27; does not exist on type &#x27;number&#x27;.</span></span><br></pre></td></tr></table></figure>
+<p>上例中，第二行的 numberOrString 被推斷成了 string，存取它的 length 屬性不會報錯。<br>而第四行的 numberOrString 被推斷成了 number，存取它的 length 屬性時就報錯了。</p>
+<ul>
+<li>type guard </li>
+<li>當遇到聯合類型，可以使用條件語句，自動幫你縮小型別範圍</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// typescript 在不同的条件分支里面，智能的缩小了范围，这样我们代码出错的几率就大大的降低了。</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getLength2</span>(<span class="params">input: string | number</span>): number &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> input === <span class="string">&#x27;string&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> input.<span class="property">length</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> input.<span class="title function_">toString</span>().<span class="property">length</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="型別斷言（Type-Assertion）"><a href="#型別斷言（Type-Assertion）" class="headerlink" title="型別斷言（Type Assertion）"></a>型別斷言（Type Assertion）</h3><ul>
+<li>開發者比 TS 更了解編寫的程式碼。因此，TS 允許開發者覆蓋它的推論，這樣的機制稱為「型別斷言」。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里我们可以用 as 關鍵字，告诉typescript 这里我把它看作是一個 string，你可以给他用 string 的方法。</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getLength</span>(<span class="params">input: <span class="built_in">string</span> | <span class="built_in">number</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> str = input <span class="keyword">as</span> <span class="built_in">string</span></span><br><span class="line">  <span class="keyword">if</span> (str.<span class="property">length</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> str.<span class="property">length</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">number</span> = input <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">number</span>.<span class="title function_">toString</span>().<span class="property">length</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>型別斷言不是型別轉換，斷言成一個聯合型別中不存在的型別是不允許的：</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">toBoolean</span>(<span class="params">something: <span class="built_in">string</span> | <span class="built_in">number</span></span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &lt;<span class="built_in">boolean</span>&gt;something;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.ts(2,10): error TS2352: Type &#x27;string | number&#x27; cannot be converted to type &#x27;boolean&#x27;.</span></span><br><span class="line"><span class="comment">//   Type &#x27;number&#x27; is not comparable to type &#x27;boolean&#x27;.</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>基礎型別先介紹到這裡，下篇將介紹一些進階用法～</p>
+<p>資料來源：</p>
+<ol>
+<li>線上課程：實戰 Vue3.0(正式版) + TS </li>
+<li><a target="_blank" rel="noopener" href="https://willh.gitbook.io/typescript-tutorial/">TypeScript 新手指南</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/11/10/Nuxt-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1366,252 +1894,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/09/21/vue-props/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/21/vue-props/" class="post-title-link" itemprop="url">Vue.js 3 -  資料傳遞 props</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-21 11:42:48" itemprop="dateCreated datePublished" datetime="2021-09-21T11:42:48+08:00">2021-09-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:33:39" itemprop="dateModified" datetime="2022-11-04T10:33:39+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>因為Vue每個元件都是各自獨立，所以我們無法在各自元件去調整資料，而直接修改另一個元件的資料。<br>所以，要使元件之間可以相互溝通，就需要使用資料傳遞方式。<br>在傳遞方式：</p>
-<ul>
-<li>外層傳遞內層 : props</li>
-<li>內層向外傳遞 : emit<br>當外層元件，要將資料往內層元件丟時，此過程就是使用props。</li>
-</ul>
-<p><img src="https://i.imgur.com/FTbHDPk.png" alt=""></p>
-<h2 id="傳遞資料的方式："><a href="#傳遞資料的方式：" class="headerlink" title="傳遞資料的方式："></a>傳遞資料的方式：</h2><h3 id="靜態資料傳入"><a href="#靜態資料傳入" class="headerlink" title="靜態資料傳入"></a>靜態資料傳入</h3><ul>
-<li>預期將外層傳入一個url的變數，傳進給內層使用<ul>
-<li>photo為內部元件，在template 我希望能夠取得外層傳入的圖片(urlimg)</li>
-<li>故在 props 以此命名，並將它綁到 template<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;photo&#x27;</span>, &#123;</span><br><span class="line">       <span class="attr">props</span>: [<span class="string">&#x27;url&#x27;</span>],</span><br><span class="line">       <span class="attr">template</span>: <span class="string">`&lt;img :src=&quot;url&quot; class=&quot;img-thumbnail&quot; alt&gt;`</span></span><br><span class="line">   &#125;);</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>將上方的元件資料，加到外層元件：像是加入html屬性一樣<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;photo</span><br><span class="line">    url=<span class="string">&quot;https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=600&amp;q=80&quot;</span>&gt;</span><br><span class="line">&lt;/photo&gt;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><img src="https://i.imgur.com/f079ziY.png" alt=""></p>
-<h3 id="動態資源"><a href="#動態資源" class="headerlink" title="動態資源"></a>動態資源</h3><ul>
-<li>使用 <code>v-bind</code>，綁定內部元件的props ，使資料可以跟外層元件連動</li>
-<li>記得使用口訣： 前內、後外 =&gt;前面就是props內的名稱，後面就是外層元件的名稱<br><img src="https://i.imgur.com/BMVZtkn.png" alt=""><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;h3&gt;動態資源&lt;/h3&gt;</span><br><span class="line">&lt;p&gt;技巧：前內、後外&lt;/p&gt;</span><br><span class="line">&lt;photo v-bind:urlimg=&quot;imgUrl&quot;&gt;&lt;/photo&gt;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="資料傳遞為-單向數據流"><a href="#資料傳遞為-單向數據流" class="headerlink" title="資料傳遞為 單向數據流"></a>資料傳遞為 單向數據流</h2><ul>
-<li>外部所定義的資料，當往內層傳遞，是單向性</li>
-<li>不能試圖使用v-model或各種方式，來改變props傳入的內容<ul>
-<li>以下範例：在子元件 <code>photo2</code> 放入 <code>input</code>綁定 <code>v-model</code></li>
-<li>當嘗試在輸入框修改網址，會出現錯誤</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//外層元件綁定 url</span></span><br><span class="line">&lt;photo2 :url=<span class="string">&quot;imgUrl&quot;</span>&gt;&lt;/photo2&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line">    <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">imgUrl</span>: <span class="string">&#x27;https://images.unsplash.com/photo-1605784401368-5af1d9d6c4dc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=600&amp;q=80&#x27;</span>,</span><br><span class="line">         &#125;;</span><br><span class="line">     &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"> app.<span class="title function_">component</span>(<span class="string">&#x27;photo2&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">props</span>: [<span class="string">&#x27;url&#x27;</span>],</span><br><span class="line">    <span class="attr">template</span>: <span class="string">`&lt;img :src=&quot;url&quot; class=&quot;img-thumbnail&quot; alt&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">    &lt;input type=&quot;text&quot; v-model=&quot;url&quot;&gt; &#123;&#123; url &#125;&#125;`</span></span><br><span class="line">     &#125;)</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/OmmIxpi.png" alt=""></p>
-<p><img src="https://i.imgur.com/2BqCNTp.png" alt=""></p>
-<h2 id="在內部元件，要為props來命名"><a href="#在內部元件，要為props來命名" class="headerlink" title="在內部元件，要為props來命名"></a>在內部元件，要為props來命名</h2><p>在命名上有些要注意的地方</p>
-<ul>
-<li>首字母大寫: PostData、SetItems</li>
-<li>駝峰命名法: postData、setItems<br>要注意：在 HTML 中使用時必須使用 kebab-case (短橫線分隔)且應該為小寫。</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">&quot;app&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line"> <span class="language-xml"><span class="tag">&lt;<span class="name">photo3</span> <span class="attr">:super-url</span>=<span class="string">&quot;imgUrl&quot;</span> &gt;</span><span class="tag">&lt;/<span class="name">photo3</span>&gt;</span></span></span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title class_">Vue</span>.<span class="title function_">component</span>(<span class="string">&quot;photo3&quot;</span>, &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">props</span>: [<span class="string">&quot;superUrl&quot;</span>],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">template</span>: <span class="string">`&lt;img :src=&quot;superUrl&quot; class=&quot;img-thumbnail alt &gt;&quot;`</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/57P1JDW.png" alt=""></p>
-<h2 id="定義-Props-型別驗證"><a href="#定義-Props-型別驗證" class="headerlink" title="定義 Props 型別驗證"></a>定義 Props 型別驗證</h2><ul>
-<li>使用型別驗證，會改用大括號，裡面放入props名稱，並用物件形式加入設定的內容<ul>
-<li><code>props:&#123;
-  propC: &#123;
-  type: String,
-  required: true,
-  &#125;
-&#125;</code></li>
-</ul>
-</li>
-<li>其中，可以針對該props 來設定：<ul>
-<li><code>type</code>型別 ： 可以是 String、Number、Boolean、Array、Object、Date、Function、Symbol</li>
-<li><code>default</code> ：如果該 prop 沒有接收到傳入的值，就會使用 default 的值作為預設值。</li>
-<li><code>required</code> ： 是否為必填項，如果設為 true 則表示必須要有值傳入，若沒有，就會出現錯誤提示。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">component</span>(<span class="string">&#x27;props-validation&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">props</span>: &#123;</span><br><span class="line">      <span class="comment">// 單一型別檢查，可接受的型別 String, Number, Object, Boolean, Function(在 Vue 中可使用 Function 驗證型別)</span></span><br><span class="line">      <span class="comment">// null, undefined 會直接通過驗證</span></span><br><span class="line">      <span class="attr">propA</span>: <span class="title class_">Function</span>,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 多個型別檢查</span></span><br><span class="line">      <span class="attr">propB</span>: [<span class="title class_">String</span>, <span class="title class_">Number</span>],</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 必要值</span></span><br><span class="line">      <span class="attr">propC</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">        <span class="attr">required</span>: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 預設值</span></span><br><span class="line">      <span class="attr">propD</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">Number</span>,</span><br><span class="line">        <span class="attr">default</span>: <span class="number">300</span></span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 自訂函式</span></span><br><span class="line">      <span class="attr">propE</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">Object</span>,</span><br><span class="line">        <span class="title function_">default</span>(<span class="params"></span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="attr">money</span>: <span class="number">300</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 自訂驗證</span></span><br><span class="line">      <span class="attr">propF</span>: &#123;</span><br><span class="line">        <span class="title function_">validator</span>(<span class="params">value</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> value &gt; <span class="number">1000</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, </span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
-<a target="_blank" rel="noopener" href="https://www.hexschool.com/courses/vue3.html">六角學院</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10254050">[DAY12]跟 Vue.js 認識的30天 - Vue 模組資料傳遞(<code>props</code>)</a></li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2021/09/20/Vue-modify/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/20/Vue-modify/" class="post-title-link" itemprop="url">Vue.js 3 - v-on 修飾符</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-20 15:06:46" itemprop="dateCreated datePublished" datetime="2021-09-20T15:06:46+08:00">2021-09-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-04 10:33:42" itemprop="dateModified" datetime="2022-11-04T10:33:42+08:00">2022-11-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/NBBY8vo.png" alt=""></p>
-<p>修飾符有分為：<br>1.按件修飾符<br>2.滑鼠修飾符<br>3.事件修飾符</p>
-<p><a target="_blank" rel="noopener" href="https://codepen.io/Eva-go/pen/RwgMXGN">codepen</a></p>
-<h2 id="按鍵修飾符"><a href="#按鍵修飾符" class="headerlink" title="按鍵修飾符"></a>按鍵修飾符</h2><h3 id="1-1-別名修飾"><a href="#1-1-別名修飾" class="headerlink" title="1-1. 別名修飾"></a>1-1. 別名修飾</h3><ul>
-<li>在特定按鍵，按下去的時候觸發<ul>
-<li><code>.enter</code>, <code>.tab</code>, <code>.delete</code>, <code>.esc</code>, <code>.space</code>, <code>.up</code>, <code>.down</code>, <code>.left</code>, <code>.righ</code></li>
-</ul>
-</li>
-<li>使用<code>.enter</code>只有再按下 enter 鍵才會觸發</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">h6</span> <span class="attr">class</span>=<span class="string">&quot;mt-3&quot;</span>&gt;</span>別名修飾<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">v-model</span>=<span class="string">&quot;text&quot;</span> @<span class="attr">keyup.enter</span>=<span class="string">&quot;trigger(&#x27;enter&#x27;)&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">createApp</span>(&#123;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">     </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">   <span class="attr">trigger</span>: <span class="keyword">function</span>(<span class="params">name</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(name, <span class="string">&#x27;此事件被觸發了&#x27;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-相應按鍵時才觸發的監聽器"><a href="#1-2-相應按鍵時才觸發的監聽器" class="headerlink" title="1-2. 相應按鍵時才觸發的監聽器"></a>1-2. 相應按鍵時才觸發的監聽器</h3><ul>
-<li>僅在按下相應按鍵時才觸發鼠標或鍵盤事件的監聽器</li>
-<li><code>.ctrl</code>, <code>.alt</code>, <code>.shift</code>, <code>.meta</code></li>
-<li>此範例為 <code>@keyup.shift.enter</code><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h6</span> <span class="attr">class</span>=<span class="string">&quot;mt-3&quot;</span>&gt;</span>相應按鍵時才觸發的監聽器<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">v-model</span>=<span class="string">&quot;text&quot;</span> @<span class="attr">keyup.shift.enter</span>=<span class="string">&quot;trigger(&#x27;shift + Enter&#x27;)&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<img src="https://i.imgur.com/gQjWYVy.png" alt=""></li>
-</ul>
-<ol start="2">
-<li>滑鼠修飾符<br><code>.left</code> 只當點擊鼠標左鍵時觸發。<br><code>.right</code> 只當點擊鼠標右鍵時觸發。<br><code>.middle</code> 只當點擊鼠標中鍵時觸發。</li>
-</ol>
-<ul>
-<li>按下滑鼠右鍵<br><code>&lt;span class=&quot;box&quot; @click.right=&quot;trigger(&#39;right button&#39;)&quot;&gt;</code></li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>滑鼠修飾符<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h6</span> <span class="attr">class</span>=<span class="string">&quot;mt-3&quot;</span>&gt;</span>滑鼠修飾符<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;p-3 bg-primary&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> @<span class="attr">click.right</span>=<span class="string">&quot;trigger(&#x27;right button&#x27;)&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://i.imgur.com/lddG6zT.png" alt=""></p>
-<ol start="3">
-<li>事件修飾符</li>
-</ol>
-<ul>
-<li>不會限定，是使用滑鼠還是鍵盤，是針對事件本身來進行修飾<br><code>.stop</code> - 調用 <code>event.stopPropagation()</code>。<br><code>.prevent</code> - 調用 <code>event.preventDefault()</code>。<br><code>.capture</code> - 添加事件偵聽器時使用 capture 模式。<br><code>.self</code> - 只當事件是從偵聽器綁定的元素本身觸發時才觸發回調。<br><code>.once</code> - 只觸發一次回調。</li>
-<li>常用的是 <code>&lt;a&gt;</code>外部連結：移除預設事件<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span>事件修飾符<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.stop - 調用 event.stopPropagation()。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>.prevent - 調用 event.preventDefault()。<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.capture - 添加事件偵聽器時使用 capture 模式。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.self - 只當事件是從偵聽器綁定的元素本身觸發時才觸發回調。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span>.once - 只觸發一次回調。<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://www.google.com/&quot;</span> @<span class="attr">click.prevent</span>=<span class="string">&quot;trigger(&#x27;prevent&#x27;)&quot;</span>&gt;</span>加入 Prevent<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>資料來源：<br>六角學院 - Vue 3.js</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1683,19 +1965,19 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-count">73</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
