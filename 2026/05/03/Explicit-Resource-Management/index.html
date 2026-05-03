@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="這篇文章在談的是 JavaScript 的 Explicit Resource Management，也就是讓程式碼更一致地處理「資源的建立與清理」。 對前端工程師來說，這類問題很常出現在 WebSocket、fetch abort、Streams、IntersectionObserver、檔案處理、計時器或任何需要明確釋放的 API 上。文章的重點不是「控制垃圾回收」，而是讓我們用更一致、可預期">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 的 Explicit Resource Management 筆記">
+<meta property="og:url" content="https://eva813.github.io/2026/05/03/Explicit-Resource-Management/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="這篇文章在談的是 JavaScript 的 Explicit Resource Management，也就是讓程式碼更一致地處理「資源的建立與清理」。 對前端工程師來說，這類問題很常出現在 WebSocket、fetch abort、Streams、IntersectionObserver、檔案處理、計時器或任何需要明確釋放的 API 上。文章的重點不是「控制垃圾回收」，而是讓我們用更一致、可預期">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-05-03T08:03:31.000Z">
+<meta property="article:modified_time" content="2026-05-03T08:19:25.714Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="Resource Management">
+<meta property="article:tag" content="TC39">
+<meta property="article:tag" content="Frontend">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2026/05/03/Explicit-Resource-Management/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JavaScript 的 Explicit Resource Management 筆記 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2026/05/03/Explicit-Resource-Management/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript 的 Explicit Resource Management 筆記
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-05-03 16:03:31 / Modified: 16:19:25" itemprop="dateCreated datePublished" datetime="2026-05-03T16:03:31+08:00">2026-05-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這篇文章在談的是 JavaScript 的 Explicit Resource Management，也就是讓程式碼更一致地處理「資源的建立與清理」。</p>
+<p>對前端工程師來說，這類問題很常出現在 WebSocket、fetch abort、Streams、IntersectionObserver、檔案處理、計時器或任何需要明確釋放的 API 上。文章的重點不是「控制垃圾回收」，而是讓我們用更一致、可預期的方式，告訴 JavaScript：這個資源什麼時候該收尾。</p>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><p>作者把這件事拆成兩層：</p>
+<ol>
+<li>Implicit resource management</li>
+<li>Explicit resource management</li>
+</ol>
+<p>前者是 JavaScript 既有機制，後者是新的語法與協定。</p>
+<span id="more"></span>
+
+<h3 id="1-Implicit-resource-management"><a href="#1-Implicit-resource-management" class="headerlink" title="1. Implicit resource management"></a>1. Implicit resource management</h3><p>文章先用 WeakSet 和 WeakMap 當例子。</p>
+<p>這兩個資料結構的關鍵在於 weakly held references。當物件沒有其他強引用時，JavaScript 可以把它回收，WeakSet 和 WeakMap 裡對應的項目也會一起失去存在意義。</p>
+<p>這代表它們很適合拿來做「不想阻止 garbage collection」的暫存資料，但用途很特定，不是一般集合的替代品。</p>
+<p>簡單理解：</p>
+<ul>
+<li>WeakMap 適合把額外資料綁在 object 上，但不想影響回收</li>
+<li>WeakSet 適合追蹤 object 是否曾被處理過，但不想強迫它一直留在記憶體裡</li>
+</ul>
+<p>這是 JavaScript 已經有的 implicit 行為，不需要我們手動清理。</p>
+<h3 id="2-Explicit-resource-management"><a href="#2-Explicit-resource-management" class="headerlink" title="2. Explicit resource management"></a>2. Explicit resource management</h3><p>作者強調，explicit resource management 不是直接管理 memory，而是管理 resource lifecycle。也就是說，我們不是去控制 garbage collector，而是明確定義「這個物件結束使用時要做什麼」。</p>
+<p>這個提案的核心是統一 cleanup contract：<code>[Symbol.dispose]()</code>。</p>
+<p>只要某個物件有這個方法，就表示它知道自己怎麼收尾。這讓不同 API 的關閉操作可以有一致介面，例如：</p>
+<ul>
+<li><code>close()</code></li>
+<li><code>abort()</code></li>
+<li><code>disconnect()</code></li>
+<li><code>return()</code></li>
+</ul>
+<p>都可以被包裝成同一種可預期的 cleanup 語意。</p>
+<h2 id="關鍵機制"><a href="#關鍵機制" class="headerlink" title="關鍵機制"></a>關鍵機制</h2><h3 id="Symbol-dispose"><a href="#Symbol-dispose" class="headerlink" title="[Symbol.dispose]()"></a><code>[Symbol.dispose]()</code></h3><p>文章的重點是，<code>[Symbol.dispose]()</code> 讓「清理」這件事有了標準入口。</p>
+<p>以 generator 為例，generator object 原本就有 <code>return()</code>，而 <code>return()</code> 會讓 generator 提前結束，並觸發 <code>finally</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>* <span class="title function_">generatorFunction</span>(<span class="params"></span>) &#123;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">yield</span> <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">yield</span> <span class="literal">false</span>;</span><br><span class="line">	&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;All done.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> generatorObject = <span class="title function_">generatorFunction</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(generatorObject.<span class="title function_">next</span>());</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(generatorObject[<span class="title class_">Symbol</span>.<span class="property">dispose</span>]());</span><br></pre></td></tr></table></figure>
+
+<p>這裡的重點不是 generator 本身，而是它展示了一個可預期的 cleanup 模式：</p>
+<ul>
+<li>物件知道自己何時結束</li>
+<li>結束時會執行 cleanup</li>
+<li>cleanup 可以被標準化</li>
+</ul>
+<h3 id="using"><a href="#using" class="headerlink" title="using"></a><code>using</code></h3><p><code>using</code> 是提案裡另一個重要語法。</p>
+<p>它不是新的 <code>const</code>，而是「生命週期綁定」宣告。被 <code>using</code> 宣告的變數，會在離開作用域時自動呼叫 <code>[Symbol.dispose]()</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	using resource = &#123;</span><br><span class="line">		[<span class="title class_">Symbol</span>.<span class="property">dispose</span>]() &#123;</span><br><span class="line">			<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;All done.&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>概念上可以把它理解成：</p>
+<ul>
+<li><code>const</code> 負責不可重新指定 binding</li>
+<li><code>using</code> 負責在 scope 結束時自動 cleanup</li>
+</ul>
+<p>文章也提醒，<code>using</code> 的值不是隨便什麼都可以，必須是：</p>
+<ul>
+<li><code>null</code></li>
+<li><code>undefined</code></li>
+<li>有 <code>[Symbol.dispose]()</code> 的物件</li>
+</ul>
+<p>也就是說，它的用途很專一，就是拿來管理 disposable resource。</p>
+<h3 id="自動清理的效果"><a href="#自動清理的效果" class="headerlink" title="自動清理的效果"></a>自動清理的效果</h3><p>最實用的地方在這裡。</p>
+<p>如果你把一個 resource 包成 <code>using</code>，那麼離開 block scope 時，JavaScript 就會幫你呼叫 disposer。這意味著你不必每次都手動記得在 <code>finally</code>、callback 結束前、或各種分支尾端做清理。</p>
+<p>文章用 class 示範了這個流程：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TheClass</span> &#123;</span><br><span class="line">	<span class="title function_">constructor</span>(<span class="params">theFile</span>) &#123;</span><br><span class="line">		<span class="variable language_">this</span>.<span class="property">theFile</span> = theFile;</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Open <span class="subst">$&#123;theFile&#125;</span>`</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	[<span class="title class_">Symbol</span>.<span class="property">dispose</span>]() &#123;</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Close <span class="subst">$&#123;<span class="variable language_">this</span>.theFile&#125;</span>`</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">	using fileOpener = <span class="keyword">new</span> <span class="title class_">TheClass</span>(<span class="string">&quot;./some-file&quot;</span>);</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Do things with <span class="subst">$&#123;fileOpener.constructor.name&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這種寫法的好處很明顯，因為它把「建立」和「清理」放進同一個 lifecycle 裡。</p>
+<h2 id="對前端工程師的實務意義"><a href="#對前端工程師的實務意義" class="headerlink" title="對前端工程師的實務意義"></a>對前端工程師的實務意義</h2><p>這篇文章最值得記住的不是語法本身，而是設計思維。</p>
+<p>當你在前端處理以下情境時，就很適合思考是否能做成 disposable resource：</p>
+<ul>
+<li>WebSocket 連線</li>
+<li><code>AbortController</code></li>
+<li><code>IntersectionObserver</code></li>
+<li><code>ReadableStream</code> / <code>WritableStream</code></li>
+<li>計時器與長生命週期 callback</li>
+<li>開啟中的 file handle 或類似外部資源</li>
+</ul>
+<p>如果你的物件有清楚的「開始」和「結束」，那它就很適合納入這種模式。</p>
+<p>這帶來幾個好處：</p>
+<ul>
+<li>cleanup 規則一致</li>
+<li>code review 更容易檢查是否有釋放資源</li>
+<li>降低 memory leak 與資源懸掛的風險</li>
+<li>讓資源管理從 scattered imperative code 變成 declarative pattern</li>
+</ul>
+<h2 id="實作筆記"><a href="#實作筆記" class="headerlink" title="實作筆記"></a>實作筆記</h2><p>如果之後你要在專案裡實作類似概念，可以這樣想：</p>
+<ol>
+<li>先找出有哪些物件需要明確 cleanup</li>
+<li>為這些物件定義一致的 disposal method</li>
+<li>若環境支援 <code>using</code>，就讓 scope 管理生命週期</li>
+<li>若還不支援，就先用 <code>try...finally</code> 保證收尾</li>
+</ol>
+<h3 id="什麼情況適合用-using"><a href="#什麼情況適合用-using" class="headerlink" title="什麼情況適合用 using"></a>什麼情況適合用 <code>using</code></h3><p>如果一個物件同時滿足下面幾件事，就很適合考慮 <code>using</code>：</p>
+<ul>
+<li>它會先被建立，再在某個明確時間點結束</li>
+<li>結束時需要固定做 cleanup</li>
+<li>你不想把 cleanup 分散在很多分支裡</li>
+<li>這個資源的生命週期剛好可以被 block scope 表達</li>
+</ul>
+<p>前端最常見的例子，就是「啟動時要註冊，結束時要解除註冊」的 API，例如 observer、connection、stream、timer 之類。</p>
+<h3 id="什麼情況不能直接用-using"><a href="#什麼情況不能直接用-using" class="headerlink" title="什麼情況不能直接用 using"></a>什麼情況不能直接用 <code>using</code></h3><p>如果你遇到下面情況，就不適合直接依賴 <code>using</code>：</p>
+<ul>
+<li>執行環境還不支援這個提案</li>
+<li>你所在的 scope 不是可以結束的 block、function、module scope</li>
+<li>你拿到的物件本身沒有 <code>[Symbol.dispose]()</code></li>
+<li>這個資源的 cleanup 邏輯不是單純「離開作用域就結束」</li>
+</ul>
+<p>這時候不要硬套 <code>using</code>，而是改成手動管理生命週期。</p>
+<h3 id="fallback-怎麼做"><a href="#fallback-怎麼做" class="headerlink" title="fallback 怎麼做"></a>fallback 怎麼做</h3><p>fallback 的核心不是「換另一個神奇語法」，而是保留同樣的設計：</p>
+<ol>
+<li>先建立資源</li>
+<li>使用資源</li>
+<li>不管中間有沒有錯誤，都保證 cleanup</li>
+</ol>
+<p>最穩定的寫法仍然是 <code>try...finally</code>，而且最好讓物件也保留同一個 cleanup 介面，例如 <code>[Symbol.dispose]()</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Resource</span> &#123;</span><br><span class="line">	<span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">		<span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Open <span class="subst">$&#123;name&#125;</span>`</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	[<span class="title class_">Symbol</span>.<span class="property">dispose</span>]() &#123;</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Close <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>`</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> resource = <span class="keyword">new</span> <span class="title class_">Resource</span>(<span class="string">&quot;socket&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	<span class="comment">// use resource</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">	resource[<span class="title class_">Symbol</span>.<span class="property">dispose</span>]();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這樣做的好處是，你之後如果有一天可以改成 <code>using</code>，幾乎不用重寫物件本身，只要把外層的生命週期控制換掉就好。</p>
+<h3 id="你可以怎麼判斷要不要改成這種模式"><a href="#你可以怎麼判斷要不要改成這種模式" class="headerlink" title="你可以怎麼判斷要不要改成這種模式"></a>你可以怎麼判斷要不要改成這種模式</h3><p>如果你現在的程式碼裡常看到下面這些寫法，就值得考慮整理成 disposable resource：</p>
+<ul>
+<li>到處都是 <code>cleanup()</code>、<code>destroy()</code>、<code>close()</code>、<code>disconnect()</code> 的呼叫</li>
+<li>同一個資源需要在很多地方重複寫解除註冊流程</li>
+<li>一旦中間 throw error，就很容易漏掉收尾</li>
+<li>你的團隊很常忘記在 component unmount、request 結束、頁面切換時做清理</li>
+</ul>
+<p>這種情況下，把 cleanup 集中成一個明確的 contract，通常會比把清理邏輯散落在各處更穩定。</p>
+<h3 id="最小-fallback-範例"><a href="#最小-fallback-範例" class="headerlink" title="最小 fallback 範例"></a>最小 fallback 範例</h3><p>如果你只想看最精簡的做法，在還不能使用 <code>using</code> 的環境，最穩的寫法仍然是 <code>try...finally</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> resource = <span class="title function_">createResource</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	<span class="comment">// use resource</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">	resource.<span class="property">dispose</span>?.();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這不是新東西，但它跟文章的方向一致：把 cleanup 規則明確化。</p>
+<h2 id="我從這篇文章記下來的重點"><a href="#我從這篇文章記下來的重點" class="headerlink" title="我從這篇文章記下來的重點"></a>我從這篇文章記下來的重點</h2><ul>
+<li>WeakMap 和 WeakSet 是 implicit resource management 的例子，重點在不阻止 garbage collection</li>
+<li><code>[Symbol.dispose]()</code> 是統一的 cleanup contract</li>
+<li><code>using</code> 讓資源在離開 scope 時自動 cleanup</li>
+<li>這個提案不是在控制 garbage collection，而是在管理 resource lifecycle</li>
+<li>對前端來說，凡是有 open/close、subscribe/unsubscribe、observe/disconnect、start/stop 的 API，都值得思考是否能套用這種模式</li>
+</ul>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>如果你的前端工作常常碰到需要手動清理的資源，這篇文章的價值很高。</p>
+<p>它傳達的核心不是「JavaScript 多了一個新關鍵字」，而是「JavaScript 終於有更一致的方式描述 resource cleanup」。對實務開發來說，這會讓 code 更可讀，也更不容易留下忘記收尾的 bug。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+              <a href="/tags/Resource-Management/" rel="tag"># Resource Management</a>
+              <a href="/tags/TC39/" rel="tag"># TC39</a>
+              <a href="/tags/Frontend/" rel="tag"># Frontend</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/12/24/nameCard-nauto/" rel="prev" title="建立名片自動建檔系統（Google Drive + Sheets + Gemini）">
+      <i class="fa fa-chevron-left"></i> 建立名片自動建檔系統（Google Drive + Sheets + Gemini）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Implicit-resource-management"><span class="nav-number">1.1.</span> <span class="nav-text">1. Implicit resource management</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Explicit-resource-management"><span class="nav-number">1.2.</span> <span class="nav-text">2. Explicit resource management</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%9C%E9%8D%B5%E6%A9%9F%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">關鍵機制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Symbol-dispose"><span class="nav-number">2.1.</span> <span class="nav-text">[Symbol.dispose]()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#using"><span class="nav-number">2.2.</span> <span class="nav-text">using</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8B%95%E6%B8%85%E7%90%86%E7%9A%84%E6%95%88%E6%9E%9C"><span class="nav-number">2.3.</span> <span class="nav-text">自動清理的效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8D%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E5%AF%A6%E5%8B%99%E6%84%8F%E7%BE%A9"><span class="nav-number">3.</span> <span class="nav-text">對前端工程師的實務意義</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E7%AD%86%E8%A8%98"><span class="nav-number">4.</span> <span class="nav-text">實作筆記</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%83%85%E6%B3%81%E9%81%A9%E5%90%88%E7%94%A8-using"><span class="nav-number">4.1.</span> <span class="nav-text">什麼情況適合用 using</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%83%85%E6%B3%81%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E7%94%A8-using"><span class="nav-number">4.2.</span> <span class="nav-text">什麼情況不能直接用 using</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fallback-%E6%80%8E%E9%BA%BC%E5%81%9A"><span class="nav-number">4.3.</span> <span class="nav-text">fallback 怎麼做</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%A0%E5%8F%AF%E4%BB%A5%E6%80%8E%E9%BA%BC%E5%88%A4%E6%96%B7%E8%A6%81%E4%B8%8D%E8%A6%81%E6%94%B9%E6%88%90%E9%80%99%E7%A8%AE%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.4.</span> <span class="nav-text">你可以怎麼判斷要不要改成這種模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F-fallback-%E7%AF%84%E4%BE%8B"><span class="nav-number">4.5.</span> <span class="nav-text">最小 fallback 範例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E5%BE%9E%E9%80%99%E7%AF%87%E6%96%87%E7%AB%A0%E8%A8%98%E4%B8%8B%E4%BE%86%E7%9A%84%E9%87%8D%E9%BB%9E"><span class="nav-number">5.</span> <span class="nav-text">我從這篇文章記下來的重點</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">6.</span> <span class="nav-text">結論</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
