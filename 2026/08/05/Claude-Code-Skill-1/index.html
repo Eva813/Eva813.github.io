@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得 本文整理自 Anthropic 技術成員 Thariq Shihipar 的實戰分享，探討如何有效撰寫 Claude Code Skills。截至 2026 年 6 月，Anthropic 內部已有「數百個」skill 在活躍使用。  核心概念Skill 是什麼？Skill 可以理解成一種「脈絡工程」（conte">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得">
+<meta property="og:url" content="https://eva813.github.io/2026/08/05/Claude-Code-Skill-1/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得 本文整理自 Anthropic 技術成員 Thariq Shihipar 的實戰分享，探討如何有效撰寫 Claude Code Skills。截至 2026 年 6 月，Anthropic 內部已有「數百個」skill 在活躍使用。  核心概念Skill 是什麼？Skill 可以理解成一種「脈絡工程」（conte">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-05T13:00:31.690Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Claude">
+<meta property="article:tag" content="Skill">
+<meta property="article:tag" content="開發工具">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2026/08/05/Claude-Code-Skill-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2026/08/05/Claude-Code-Skill-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-08-05 00:00:00 / Modified: 21:00:31" itemprop="dateCreated datePublished" datetime="2026-08-05T00:00:00+08:00">2026-08-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Claude-Code-Skill-撰寫指南：Anthropic-工程師親授實戰心得"><a href="#Claude-Code-Skill-撰寫指南：Anthropic-工程師親授實戰心得" class="headerlink" title="Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得"></a>Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得</h1><blockquote>
+<p>本文整理自 Anthropic 技術成員 Thariq Shihipar 的實戰分享，探討如何有效撰寫 Claude Code Skills。<br>截至 2026 年 6 月，Anthropic 內部已有「數百個」skill 在活躍使用。</p>
+</blockquote>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="Skill-是什麼？"><a href="#Skill-是什麼？" class="headerlink" title="Skill 是什麼？"></a>Skill 是什麼？</h3><p><strong>Skill 可以理解成一種「脈絡工程」（context engineering）</strong>：在對的時機，把對的資訊提供給 AI。</p>
+<h2 id="一、為什麼資料夾比單一檔案好用？"><a href="#一、為什麼資料夾比單一檔案好用？" class="headerlink" title="一、為什麼資料夾比單一檔案好用？"></a>一、為什麼資料夾比單一檔案好用？</h2><h3 id="問題點"><a href="#問題點" class="headerlink" title="問題點"></a>問題點</h3><ul>
+<li>如果把所有東西塞進一個檔案，等於每次都把整本說明書攤在 Claude 面前</li>
+</ul>
+<h3 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案"></a>解決方案</h3><ul>
+<li>改用<strong>資料夾結構</strong>，搭配<strong>「漸進揭露」（progressive disclosure）</strong></li>
+<li>需要時才讀對應檔案，Claude 才不會被無關內容干擾</li>
+</ul>
+<h3 id="官方建議"><a href="#官方建議" class="headerlink" title="官方建議"></a>官方建議</h3><p>把詳細 API 文件、範例、腳本等 supporting files 放在 skill 資料夾裡，並由 <code>SKILL.md</code> 說明何時讀取。</p>
+<hr>
+<h2 id="二、9-大-Skill-分類"><a href="#二、9-大-Skill-分類" class="headerlink" title="二、9 大 Skill 分類"></a>二、9 大 Skill 分類</h2><p>Anthropic 盤點內部 skill 後，發現它們大致聚成 9 種類型。<strong>最好的 skill 通常只做一類</strong>；想做太多事的會橫跨多類，反而把 agent 搞混。</p>
+<h3 id="1-函式庫與-API-參考"><a href="#1-函式庫與-API-參考" class="headerlink" title="1. 函式庫與 API 參考"></a>1. 函式庫與 API 參考</h3><ul>
+<li>教 Claude 正確使用某個函式庫、CLI 或 SDK</li>
+<li>附上常踩的雷</li>
+</ul>
+<h3 id="2-產品驗證"><a href="#2-產品驗證" class="headerlink" title="2. 產品驗證"></a>2. 產品驗證</h3><ul>
+<li>描述怎麼測試、驗證程式碼有沒有真的動</li>
+<li>Anthropic 說這類對產出品質「<strong>可量測的影響最大</strong>」</li>
+<li>值得花一週做到極好</li>
+</ul>
+<h3 id="3-資料抓取與分析"><a href="#3-資料抓取與分析" class="headerlink" title="3. 資料抓取與分析"></a>3. 資料抓取與分析</h3><ul>
+<li>接上你的資料與監控系統</li>
+<li>內含抓資料的腳本、儀表板代號</li>
+</ul>
+<h3 id="4-業務流程與團隊自動化"><a href="#4-業務流程與團隊自動化" class="headerlink" title="4. 業務流程與團隊自動化"></a>4. 業務流程與團隊自動化</h3><ul>
+<li>把重複工作流收成一個指令</li>
+<li>例如：每日 standup、開票</li>
+</ul>
+<h3 id="5-程式碼鷹架與範本"><a href="#5-程式碼鷹架與範本" class="headerlink" title="5. 程式碼鷹架與範本"></a>5. 程式碼鷹架與範本</h3><ul>
+<li>自動生出新服務、新模組的樣板</li>
+</ul>
+<h3 id="6-程式碼品質與審查"><a href="#6-程式碼品質與審查" class="headerlink" title="6. 程式碼品質與審查"></a>6. 程式碼品質與審查</h3><ul>
+<li>強制團隊的程式風格</li>
+<li>協助 code review</li>
+</ul>
+<h3 id="7-CI-CD-與部署"><a href="#7-CI-CD-與部署" class="headerlink" title="7. CI/CD 與部署"></a>7. CI/CD 與部署</h3><ul>
+<li>顧 PR、跑測試、漸進部署</li>
+<li>出問題自動回滾</li>
+</ul>
+<h3 id="8-Runbooks（故障排除手冊）"><a href="#8-Runbooks（故障排除手冊）" class="headerlink" title="8. Runbooks（故障排除手冊）"></a>8. Runbooks（故障排除手冊）</h3><ul>
+<li>接到一個症狀，走完多工具調查</li>
+<li>產出結構化報告</li>
+</ul>
+<h3 id="9-基礎設施操作"><a href="#9-基礎設施操作" class="headerlink" title="9. 基礎設施操作"></a>9. 基礎設施操作</h3><ul>
+<li>執行例行維運</li>
+<li>對破壞性動作加上護欄</li>
+</ul>
+<hr>
+<h2 id="三、最高價值的「Gotchas（陷阱）」區塊"><a href="#三、最高價值的「Gotchas（陷阱）」區塊" class="headerlink" title="三、最高價值的「Gotchas（陷阱）」區塊"></a>三、最高價值的「Gotchas（陷阱）」區塊</h2><h3 id="核心觀念"><a href="#核心觀念" class="headerlink" title="核心觀念"></a>核心觀念</h3><blockquote>
+<p><strong>任何 skill 裡訊號最高的內容，就是 Gotchas 區塊。</strong></p>
+</blockquote>
+<h3 id="什麼是-Gotchas？"><a href="#什麼是-Gotchas？" class="headerlink" title="什麼是 Gotchas？"></a>什麼是 Gotchas？</h3><ul>
+<li>Claude 使用這個 skill 時<strong>最常踩的失敗點</strong></li>
+<li>要隨時間累積、持續補充</li>
+<li>往往是「<strong>文件不會寫、但你踩過坑才知道</strong>」的細節</li>
+</ul>
+<h3 id="實例（以請假系統為例）"><a href="#實例（以請假系統為例）" class="headerlink" title="實例（以請假系統為例）"></a>實例（以請假系統為例）</h3><h4 id="範例一：版本問題"><a href="#範例一：版本問題" class="headerlink" title="範例一：版本問題"></a>範例一：版本問題</h4><p>「同一張假單可能改過好幾次，要抓『最後核准』那一版，不是最早送出的那張。」</p>
+<h4 id="範例二：術語對應"><a href="#範例二：術語對應" class="headerlink" title="範例二：術語對應"></a>範例二：術語對應</h4><p>「業務部口中的『出差』，在人資系統裡叫『公假』，其實是同一件事，只是部門叫法不同。」</p>
+<h4 id="範例三：狀態判斷"><a href="#範例三：狀態判斷" class="headerlink" title="範例三：狀態判斷"></a>範例三：狀態判斷</h4><p>「系統顯示『已送出』不代表假請成功了，還要看主管那關有沒有按下核准。」</p>
+<h3 id="重點"><a href="#重點" class="headerlink" title="重點"></a>重點</h3><ul>
+<li>把「<strong>平常沒人會特別告訴你、有出錯過而學到</strong>」的細節寫下來</li>
+<li>skill 才會越用越準</li>
+</ul>
+<hr>
+<h2 id="四、描述（description）要寫給模型看"><a href="#四、描述（description）要寫給模型看" class="headerlink" title="四、描述（description）要寫給模型看"></a>四、描述（description）要寫給模型看</h2><h3 id="關鍵認知"><a href="#關鍵認知" class="headerlink" title="關鍵認知"></a>關鍵認知</h3><p><strong>description 欄位不是給人看的摘要，而是「什麼情況下該觸發我」的說明。</strong></p>
+<h3 id="運作機制"><a href="#運作機制" class="headerlink" title="運作機制"></a>運作機制</h3><ul>
+<li>Claude Code 啟動 session 時，會建立一份可用 skill 與 description 的清單</li>
+<li>用它判斷「使用者這個請求，有沒有對應的 skill 可以用」</li>
+</ul>
+<h3 id="實務技巧"><a href="#實務技巧" class="headerlink" title="實務技巧"></a>實務技巧</h3><p><strong>把觸發詞直接寫進描述，命中率會更高</strong></p>
+<p>例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">彙整這週完成的工作，產生給主管看的週報。當使用者說「跑週報」「整理這週進度」時觸發。</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、給-Claude-腳本與檔案，讓它「組合」而不是「重造」"><a href="#五、給-Claude-腳本與檔案，讓它「組合」而不是「重造」" class="headerlink" title="五、給 Claude 腳本與檔案，讓它「組合」而不是「重造」"></a>五、給 Claude 腳本與檔案，讓它「組合」而不是「重造」</h2><h3 id="核心概念-1"><a href="#核心概念-1" class="headerlink" title="核心概念"></a>核心概念</h3><p>把可重複的動作寫成腳本交給 Claude，它就能把每一回合花在「決定下一步做什麼」，而不是重打一次樣板。</p>
+<h3 id="進階技巧：隨選-hooks（on-demand-hooks）"><a href="#進階技巧：隨選-hooks（on-demand-hooks）" class="headerlink" title="進階技巧：隨選 hooks（on-demand hooks）"></a>進階技巧：隨選 hooks（on-demand hooks）</h3><p>只在這個 skill 被呼叫時才生效</p>
+<h4 id="範例-1：-careful"><a href="#範例-1：-careful" class="headerlink" title="範例 1：/careful"></a>範例 1：<code>/careful</code></h4><ul>
+<li>動正式環境時才開</li>
+<li>自動擋掉 <code>rm -rf</code>、<code>DROP TABLE</code>、force-push 等危險指令</li>
+</ul>
+<h4 id="範例-2：-freeze"><a href="#範例-2：-freeze" class="headerlink" title="範例 2：/freeze"></a>範例 2：<code>/freeze</code></h4><ul>
+<li>debug 時只准改特定資料夾</li>
+<li>避免手滑「修好」無關的程式碼</li>
+</ul>
+<hr>
+<h2 id="六、SKILL-md-完整範本"><a href="#六、SKILL-md-完整範本" class="headerlink" title="六、SKILL.md 完整範本"></a>六、SKILL.md 完整範本</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: weekly-report</span><br><span class="line"><span class="section">description: 彙整這週完成的工作，產生給主管看的週報。當使用者說「跑週報」「整理這週進度」時觸發。</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># 週報產生器</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 怎麼做</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">1.</span> 讀 <span class="code">`config.json`</span> 取得週報要寄給誰、用什麼格式；若還沒設定，先問使用者。</span><br><span class="line"><span class="bullet">2.</span> 彙整這週完成的事項，只列「跟上週相比的新進度」，不要把舊的重講一遍。</span><br><span class="line"><span class="bullet">3.</span> 把這次的週報存進 <span class="code">`reports.log`</span>（只新增、不覆蓋），下次執行時讀自己的歷史，自動判斷哪些是新的。</span><br><span class="line"></span><br><span class="line"><span class="section">## Gotchas（踩過的坑）</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 「標記完成」不等於真的結案，有些項目會被退回重做，狀態要看最新的那一版。</span><br><span class="line"><span class="bullet">-</span> 同一件事這週可能改過好幾次，只取最後定案的版本，別把過程中的草稿都列進去。</span><br><span class="line"></span><br><span class="line"><span class="section">## 參考</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 欄位與格式範本見 <span class="code">`references/format.md`</span>（需要時再讀，不必一開始全載入）。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、動手前要知道的兩個前提"><a href="#七、動手前要知道的兩個前提" class="headerlink" title="七、動手前要知道的兩個前提"></a>七、動手前要知道的兩個前提</h2><h3 id="前提一：Skill-不是免費的"><a href="#前提一：Skill-不是免費的" class="headerlink" title="前提一：Skill 不是免費的"></a>前提一：Skill 不是免費的</h3><ul>
+<li>一般 session 中，skill 的 <strong>description 會進入 context</strong></li>
+<li>完整 <code>SKILL.md</code> 則是在使用者或 Claude 呼叫後才載入</li>
+<li>每多一個放進專案的 skill，都會增加一點模型需要掃描的脈絡</li>
+</ul>
+<h4 id="團隊規模建議"><a href="#團隊規模建議" class="headerlink" title="團隊規模建議"></a>團隊規模建議</h4><p>改用 <strong>plugin marketplace</strong>，讓成員自己挑要裝哪些，而不是全部塞進每個專案。</p>
+<h3 id="前提二：別想一次寫到完美"><a href="#前提二：別想一次寫到完美" class="headerlink" title="前提二：別想一次寫到完美"></a>前提二：別想一次寫到完美</h3><blockquote>
+<p><strong>Anthropic 最好用的 skill 多半是從「寥寥幾行字加一個 gotcha」起步</strong></p>
+</blockquote>
+<h4 id="迭代思維"><a href="#迭代思維" class="headerlink" title="迭代思維"></a>迭代思維</h4><ul>
+<li>先做一個小的</li>
+<li>撞到坑就補一條 gotcha</li>
+<li>慢慢變強</li>
+</ul>
+<h4 id="核心價值"><a href="#核心價值" class="headerlink" title="核心價值"></a>核心價值</h4><p><strong>Skill 的價值不在你寫了多少，而在你有沒有告訴 Claude「它原本不知道、或老是做錯的那件事」。</strong></p>
+<hr>
+<h2 id="八、總結與行動建議"><a href="#八、總結與行動建議" class="headerlink" title="八、總結與行動建議"></a>八、總結與行動建議</h2><h3 id="撰寫-Skill-的黃金法則"><a href="#撰寫-Skill-的黃金法則" class="headerlink" title="撰寫 Skill 的黃金法則"></a>撰寫 Skill 的黃金法則</h3><ol>
+<li><strong>用資料夾結構，不要單一檔案</strong></li>
+<li><strong>一個 Skill 只做一類事</strong></li>
+<li><strong>Gotchas 區塊是最高價值內容</strong></li>
+<li><strong>description 要寫觸發詞，給模型看</strong></li>
+<li><strong>提供腳本讓 Claude 組合，不是重造</strong></li>
+<li><strong>從小開始，持續迭代</strong></li>
+</ol>
+<h3 id="優先順序"><a href="#優先順序" class="headerlink" title="優先順序"></a>優先順序</h3><p><strong>產品驗證類 Skill</strong> 對品質影響最大，值得優先投入。</p>
+<hr>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://claude.com/blog/lessons-from-building-claude-code-how-we-use-skills">Anthropic 官方部落格：Lessons from building Claude Code: how we use skills</a></li>
+<li><a target="_blank" rel="noopener" href="https://fc.bnext.com.tw/articles/view/4687?utm_source=bn_daily&utm_medium=email&utm_campaign=06-16-2026&bx_heid=8475539909">數位時代</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/Claude/" rel="tag"># Claude</a>
+              <a href="/tags/Skill/" rel="tag"># Skill</a>
+              <a href="/tags/%E9%96%8B%E7%99%BC%E5%B7%A5%E5%85%B7/" rel="tag"># 開發工具</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/05/03/Explicit-Resource-Management/" rel="prev" title="JavaScript 的 Explicit Resource Management 筆記">
+      <i class="fa fa-chevron-left"></i> JavaScript 的 Explicit Resource Management 筆記
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Claude-Code-Skill-%E6%92%B0%E5%AF%AB%E6%8C%87%E5%8D%97%EF%BC%9AAnthropic-%E5%B7%A5%E7%A8%8B%E5%B8%AB%E8%A6%AA%E6%8E%88%E5%AF%A6%E6%88%B0%E5%BF%83%E5%BE%97"><span class="nav-number">1.</span> <span class="nav-text">Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Skill-%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F"><span class="nav-number">1.1.1.</span> <span class="nav-text">Skill 是什麼？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%82%BA%E4%BB%80%E9%BA%BC%E8%B3%87%E6%96%99%E5%A4%BE%E6%AF%94%E5%96%AE%E4%B8%80%E6%AA%94%E6%A1%88%E5%A5%BD%E7%94%A8%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">一、為什麼資料夾比單一檔案好用？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%95%8F%E9%A1%8C%E9%BB%9E"><span class="nav-number">1.2.1.</span> <span class="nav-text">問題點</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%A1%88"><span class="nav-number">1.2.2.</span> <span class="nav-text">解決方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%98%E6%96%B9%E5%BB%BA%E8%AD%B0"><span class="nav-number">1.2.3.</span> <span class="nav-text">官方建議</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%819-%E5%A4%A7-Skill-%E5%88%86%E9%A1%9E"><span class="nav-number">1.3.</span> <span class="nav-text">二、9 大 Skill 分類</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%87%BD%E5%BC%8F%E5%BA%AB%E8%88%87-API-%E5%8F%83%E8%80%83"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. 函式庫與 API 參考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%94%A2%E5%93%81%E9%A9%97%E8%AD%89"><span class="nav-number">1.3.2.</span> <span class="nav-text">2. 產品驗證</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%B3%87%E6%96%99%E6%8A%93%E5%8F%96%E8%88%87%E5%88%86%E6%9E%90"><span class="nav-number">1.3.3.</span> <span class="nav-text">3. 資料抓取與分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%A5%AD%E5%8B%99%E6%B5%81%E7%A8%8B%E8%88%87%E5%9C%98%E9%9A%8A%E8%87%AA%E5%8B%95%E5%8C%96"><span class="nav-number">1.3.4.</span> <span class="nav-text">4. 業務流程與團隊自動化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%A8%8B%E5%BC%8F%E7%A2%BC%E9%B7%B9%E6%9E%B6%E8%88%87%E7%AF%84%E6%9C%AC"><span class="nav-number">1.3.5.</span> <span class="nav-text">5. 程式碼鷹架與範本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%A8%8B%E5%BC%8F%E7%A2%BC%E5%93%81%E8%B3%AA%E8%88%87%E5%AF%A9%E6%9F%A5"><span class="nav-number">1.3.6.</span> <span class="nav-text">6. 程式碼品質與審查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-CI-CD-%E8%88%87%E9%83%A8%E7%BD%B2"><span class="nav-number">1.3.7.</span> <span class="nav-text">7. CI&#x2F;CD 與部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-Runbooks%EF%BC%88%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4%E6%89%8B%E5%86%8A%EF%BC%89"><span class="nav-number">1.3.8.</span> <span class="nav-text">8. Runbooks（故障排除手冊）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E5%9F%BA%E7%A4%8E%E8%A8%AD%E6%96%BD%E6%93%8D%E4%BD%9C"><span class="nav-number">1.3.9.</span> <span class="nav-text">9. 基礎設施操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%9C%80%E9%AB%98%E5%83%B9%E5%80%BC%E7%9A%84%E3%80%8CGotchas%EF%BC%88%E9%99%B7%E9%98%B1%EF%BC%89%E3%80%8D%E5%8D%80%E5%A1%8A"><span class="nav-number">1.4.</span> <span class="nav-text">三、最高價值的「Gotchas（陷阱）」區塊</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E8%A7%80%E5%BF%B5"><span class="nav-number">1.4.1.</span> <span class="nav-text">核心觀念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF-Gotchas%EF%BC%9F"><span class="nav-number">1.4.2.</span> <span class="nav-text">什麼是 Gotchas？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%A6%E4%BE%8B%EF%BC%88%E4%BB%A5%E8%AB%8B%E5%81%87%E7%B3%BB%E7%B5%B1%E7%82%BA%E4%BE%8B%EF%BC%89"><span class="nav-number">1.4.3.</span> <span class="nav-text">實例（以請假系統為例）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E4%B8%80%EF%BC%9A%E7%89%88%E6%9C%AC%E5%95%8F%E9%A1%8C"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">範例一：版本問題</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E4%BA%8C%EF%BC%9A%E8%A1%93%E8%AA%9E%E5%B0%8D%E6%87%89"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">範例二：術語對應</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E4%B8%89%EF%BC%9A%E7%8B%80%E6%85%8B%E5%88%A4%E6%96%B7"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">範例三：狀態判斷</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E9%BB%9E"><span class="nav-number">1.4.4.</span> <span class="nav-text">重點</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%8F%8F%E8%BF%B0%EF%BC%88description%EF%BC%89%E8%A6%81%E5%AF%AB%E7%B5%A6%E6%A8%A1%E5%9E%8B%E7%9C%8B"><span class="nav-number">1.5.</span> <span class="nav-text">四、描述（description）要寫給模型看</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%9C%E9%8D%B5%E8%AA%8D%E7%9F%A5"><span class="nav-number">1.5.1.</span> <span class="nav-text">關鍵認知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%8B%E4%BD%9C%E6%A9%9F%E5%88%B6"><span class="nav-number">1.5.2.</span> <span class="nav-text">運作機制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%A6%E5%8B%99%E6%8A%80%E5%B7%A7"><span class="nav-number">1.5.3.</span> <span class="nav-text">實務技巧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E7%B5%A6-Claude-%E8%85%B3%E6%9C%AC%E8%88%87%E6%AA%94%E6%A1%88%EF%BC%8C%E8%AE%93%E5%AE%83%E3%80%8C%E7%B5%84%E5%90%88%E3%80%8D%E8%80%8C%E4%B8%8D%E6%98%AF%E3%80%8C%E9%87%8D%E9%80%A0%E3%80%8D"><span class="nav-number">1.6.</span> <span class="nav-text">五、給 Claude 腳本與檔案，讓它「組合」而不是「重造」</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5-1"><span class="nav-number">1.6.1.</span> <span class="nav-text">核心概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%B2%E9%9A%8E%E6%8A%80%E5%B7%A7%EF%BC%9A%E9%9A%A8%E9%81%B8-hooks%EF%BC%88on-demand-hooks%EF%BC%89"><span class="nav-number">1.6.2.</span> <span class="nav-text">進階技巧：隨選 hooks（on-demand hooks）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B-1%EF%BC%9A-careful"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">範例 1：&#x2F;careful</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B-2%EF%BC%9A-freeze"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">範例 2：&#x2F;freeze</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81SKILL-md-%E5%AE%8C%E6%95%B4%E7%AF%84%E6%9C%AC"><span class="nav-number">1.7.</span> <span class="nav-text">六、SKILL.md 完整範本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E5%8B%95%E6%89%8B%E5%89%8D%E8%A6%81%E7%9F%A5%E9%81%93%E7%9A%84%E5%85%A9%E5%80%8B%E5%89%8D%E6%8F%90"><span class="nav-number">1.8.</span> <span class="nav-text">七、動手前要知道的兩個前提</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E6%8F%90%E4%B8%80%EF%BC%9ASkill-%E4%B8%8D%E6%98%AF%E5%85%8D%E8%B2%BB%E7%9A%84"><span class="nav-number">1.8.1.</span> <span class="nav-text">前提一：Skill 不是免費的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%98%E9%9A%8A%E8%A6%8F%E6%A8%A1%E5%BB%BA%E8%AD%B0"><span class="nav-number">1.8.1.1.</span> <span class="nav-text">團隊規模建議</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E6%8F%90%E4%BA%8C%EF%BC%9A%E5%88%A5%E6%83%B3%E4%B8%80%E6%AC%A1%E5%AF%AB%E5%88%B0%E5%AE%8C%E7%BE%8E"><span class="nav-number">1.8.2.</span> <span class="nav-text">前提二：別想一次寫到完美</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E6%80%9D%E7%B6%AD"><span class="nav-number">1.8.2.1.</span> <span class="nav-text">迭代思維</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%83%B9%E5%80%BC"><span class="nav-number">1.8.2.2.</span> <span class="nav-text">核心價值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E7%B8%BD%E7%B5%90%E8%88%87%E8%A1%8C%E5%8B%95%E5%BB%BA%E8%AD%B0"><span class="nav-number">1.9.</span> <span class="nav-text">八、總結與行動建議</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%92%B0%E5%AF%AB-Skill-%E7%9A%84%E9%BB%83%E9%87%91%E6%B3%95%E5%89%87"><span class="nav-number">1.9.1.</span> <span class="nav-text">撰寫 Skill 的黃金法則</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%84%AA%E5%85%88%E9%A0%86%E5%BA%8F"><span class="nav-number">1.9.2.</span> <span class="nav-text">優先順序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">1.10.</span> <span class="nav-text">參考資料</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">80</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

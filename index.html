@@ -180,6 +180,194 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2026/08/05/Claude-Code-Skill-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/08/05/Claude-Code-Skill-1/" class="post-title-link" itemprop="url">Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-08-05 00:00:00 / Modified: 21:00:31" itemprop="dateCreated datePublished" datetime="2026-08-05T00:00:00+08:00">2026-08-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Claude-Code-Skill-撰寫指南：Anthropic-工程師親授實戰心得"><a href="#Claude-Code-Skill-撰寫指南：Anthropic-工程師親授實戰心得" class="headerlink" title="Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得"></a>Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得</h1><blockquote>
+<p>本文整理自 Anthropic 技術成員 Thariq Shihipar 的實戰分享，探討如何有效撰寫 Claude Code Skills。<br>截至 2026 年 6 月，Anthropic 內部已有「數百個」skill 在活躍使用。</p>
+</blockquote>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="Skill-是什麼？"><a href="#Skill-是什麼？" class="headerlink" title="Skill 是什麼？"></a>Skill 是什麼？</h3><p><strong>Skill 可以理解成一種「脈絡工程」（context engineering）</strong>：在對的時機，把對的資訊提供給 AI。</p>
+<h2 id="一、為什麼資料夾比單一檔案好用？"><a href="#一、為什麼資料夾比單一檔案好用？" class="headerlink" title="一、為什麼資料夾比單一檔案好用？"></a>一、為什麼資料夾比單一檔案好用？</h2><h3 id="問題點"><a href="#問題點" class="headerlink" title="問題點"></a>問題點</h3><ul>
+<li>如果把所有東西塞進一個檔案，等於每次都把整本說明書攤在 Claude 面前</li>
+</ul>
+<h3 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案"></a>解決方案</h3><ul>
+<li>改用<strong>資料夾結構</strong>，搭配<strong>「漸進揭露」（progressive disclosure）</strong></li>
+<li>需要時才讀對應檔案，Claude 才不會被無關內容干擾</li>
+</ul>
+<h3 id="官方建議"><a href="#官方建議" class="headerlink" title="官方建議"></a>官方建議</h3><p>把詳細 API 文件、範例、腳本等 supporting files 放在 skill 資料夾裡，並由 <code>SKILL.md</code> 說明何時讀取。</p>
+<hr>
+<h2 id="二、9-大-Skill-分類"><a href="#二、9-大-Skill-分類" class="headerlink" title="二、9 大 Skill 分類"></a>二、9 大 Skill 分類</h2><p>Anthropic 盤點內部 skill 後，發現它們大致聚成 9 種類型。<strong>最好的 skill 通常只做一類</strong>；想做太多事的會橫跨多類，反而把 agent 搞混。</p>
+<h3 id="1-函式庫與-API-參考"><a href="#1-函式庫與-API-參考" class="headerlink" title="1. 函式庫與 API 參考"></a>1. 函式庫與 API 參考</h3><ul>
+<li>教 Claude 正確使用某個函式庫、CLI 或 SDK</li>
+<li>附上常踩的雷</li>
+</ul>
+<h3 id="2-產品驗證"><a href="#2-產品驗證" class="headerlink" title="2. 產品驗證"></a>2. 產品驗證</h3><ul>
+<li>描述怎麼測試、驗證程式碼有沒有真的動</li>
+<li>Anthropic 說這類對產出品質「<strong>可量測的影響最大</strong>」</li>
+<li>值得花一週做到極好</li>
+</ul>
+<h3 id="3-資料抓取與分析"><a href="#3-資料抓取與分析" class="headerlink" title="3. 資料抓取與分析"></a>3. 資料抓取與分析</h3><ul>
+<li>接上你的資料與監控系統</li>
+<li>內含抓資料的腳本、儀表板代號</li>
+</ul>
+<h3 id="4-業務流程與團隊自動化"><a href="#4-業務流程與團隊自動化" class="headerlink" title="4. 業務流程與團隊自動化"></a>4. 業務流程與團隊自動化</h3><ul>
+<li>把重複工作流收成一個指令</li>
+<li>例如：每日 standup、開票</li>
+</ul>
+<h3 id="5-程式碼鷹架與範本"><a href="#5-程式碼鷹架與範本" class="headerlink" title="5. 程式碼鷹架與範本"></a>5. 程式碼鷹架與範本</h3><ul>
+<li>自動生出新服務、新模組的樣板</li>
+</ul>
+<h3 id="6-程式碼品質與審查"><a href="#6-程式碼品質與審查" class="headerlink" title="6. 程式碼品質與審查"></a>6. 程式碼品質與審查</h3><ul>
+<li>強制團隊的程式風格</li>
+<li>協助 code review</li>
+</ul>
+<h3 id="7-CI-CD-與部署"><a href="#7-CI-CD-與部署" class="headerlink" title="7. CI/CD 與部署"></a>7. CI/CD 與部署</h3><ul>
+<li>顧 PR、跑測試、漸進部署</li>
+<li>出問題自動回滾</li>
+</ul>
+<h3 id="8-Runbooks（故障排除手冊）"><a href="#8-Runbooks（故障排除手冊）" class="headerlink" title="8. Runbooks（故障排除手冊）"></a>8. Runbooks（故障排除手冊）</h3><ul>
+<li>接到一個症狀，走完多工具調查</li>
+<li>產出結構化報告</li>
+</ul>
+<h3 id="9-基礎設施操作"><a href="#9-基礎設施操作" class="headerlink" title="9. 基礎設施操作"></a>9. 基礎設施操作</h3><ul>
+<li>執行例行維運</li>
+<li>對破壞性動作加上護欄</li>
+</ul>
+<hr>
+<h2 id="三、最高價值的「Gotchas（陷阱）」區塊"><a href="#三、最高價值的「Gotchas（陷阱）」區塊" class="headerlink" title="三、最高價值的「Gotchas（陷阱）」區塊"></a>三、最高價值的「Gotchas（陷阱）」區塊</h2><h3 id="核心觀念"><a href="#核心觀念" class="headerlink" title="核心觀念"></a>核心觀念</h3><blockquote>
+<p><strong>任何 skill 裡訊號最高的內容，就是 Gotchas 區塊。</strong></p>
+</blockquote>
+<h3 id="什麼是-Gotchas？"><a href="#什麼是-Gotchas？" class="headerlink" title="什麼是 Gotchas？"></a>什麼是 Gotchas？</h3><ul>
+<li>Claude 使用這個 skill 時<strong>最常踩的失敗點</strong></li>
+<li>要隨時間累積、持續補充</li>
+<li>往往是「<strong>文件不會寫、但你踩過坑才知道</strong>」的細節</li>
+</ul>
+<h3 id="實例（以請假系統為例）"><a href="#實例（以請假系統為例）" class="headerlink" title="實例（以請假系統為例）"></a>實例（以請假系統為例）</h3><h4 id="範例一：版本問題"><a href="#範例一：版本問題" class="headerlink" title="範例一：版本問題"></a>範例一：版本問題</h4><p>「同一張假單可能改過好幾次，要抓『最後核准』那一版，不是最早送出的那張。」</p>
+<h4 id="範例二：術語對應"><a href="#範例二：術語對應" class="headerlink" title="範例二：術語對應"></a>範例二：術語對應</h4><p>「業務部口中的『出差』，在人資系統裡叫『公假』，其實是同一件事，只是部門叫法不同。」</p>
+<h4 id="範例三：狀態判斷"><a href="#範例三：狀態判斷" class="headerlink" title="範例三：狀態判斷"></a>範例三：狀態判斷</h4><p>「系統顯示『已送出』不代表假請成功了，還要看主管那關有沒有按下核准。」</p>
+<h3 id="重點"><a href="#重點" class="headerlink" title="重點"></a>重點</h3><ul>
+<li>把「<strong>平常沒人會特別告訴你、有出錯過而學到</strong>」的細節寫下來</li>
+<li>skill 才會越用越準</li>
+</ul>
+<hr>
+<h2 id="四、描述（description）要寫給模型看"><a href="#四、描述（description）要寫給模型看" class="headerlink" title="四、描述（description）要寫給模型看"></a>四、描述（description）要寫給模型看</h2><h3 id="關鍵認知"><a href="#關鍵認知" class="headerlink" title="關鍵認知"></a>關鍵認知</h3><p><strong>description 欄位不是給人看的摘要，而是「什麼情況下該觸發我」的說明。</strong></p>
+<h3 id="運作機制"><a href="#運作機制" class="headerlink" title="運作機制"></a>運作機制</h3><ul>
+<li>Claude Code 啟動 session 時，會建立一份可用 skill 與 description 的清單</li>
+<li>用它判斷「使用者這個請求，有沒有對應的 skill 可以用」</li>
+</ul>
+<h3 id="實務技巧"><a href="#實務技巧" class="headerlink" title="實務技巧"></a>實務技巧</h3><p><strong>把觸發詞直接寫進描述，命中率會更高</strong></p>
+<p>例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">description:</span> <span class="string">彙整這週完成的工作，產生給主管看的週報。當使用者說「跑週報」「整理這週進度」時觸發。</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、給-Claude-腳本與檔案，讓它「組合」而不是「重造」"><a href="#五、給-Claude-腳本與檔案，讓它「組合」而不是「重造」" class="headerlink" title="五、給 Claude 腳本與檔案，讓它「組合」而不是「重造」"></a>五、給 Claude 腳本與檔案，讓它「組合」而不是「重造」</h2><h3 id="核心概念-1"><a href="#核心概念-1" class="headerlink" title="核心概念"></a>核心概念</h3><p>把可重複的動作寫成腳本交給 Claude，它就能把每一回合花在「決定下一步做什麼」，而不是重打一次樣板。</p>
+<h3 id="進階技巧：隨選-hooks（on-demand-hooks）"><a href="#進階技巧：隨選-hooks（on-demand-hooks）" class="headerlink" title="進階技巧：隨選 hooks（on-demand hooks）"></a>進階技巧：隨選 hooks（on-demand hooks）</h3><p>只在這個 skill 被呼叫時才生效</p>
+<h4 id="範例-1：-careful"><a href="#範例-1：-careful" class="headerlink" title="範例 1：/careful"></a>範例 1：<code>/careful</code></h4><ul>
+<li>動正式環境時才開</li>
+<li>自動擋掉 <code>rm -rf</code>、<code>DROP TABLE</code>、force-push 等危險指令</li>
+</ul>
+<h4 id="範例-2：-freeze"><a href="#範例-2：-freeze" class="headerlink" title="範例 2：/freeze"></a>範例 2：<code>/freeze</code></h4><ul>
+<li>debug 時只准改特定資料夾</li>
+<li>避免手滑「修好」無關的程式碼</li>
+</ul>
+<hr>
+<h2 id="六、SKILL-md-完整範本"><a href="#六、SKILL-md-完整範本" class="headerlink" title="六、SKILL.md 完整範本"></a>六、SKILL.md 完整範本</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: weekly-report</span><br><span class="line"><span class="section">description: 彙整這週完成的工作，產生給主管看的週報。當使用者說「跑週報」「整理這週進度」時觸發。</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># 週報產生器</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 怎麼做</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">1.</span> 讀 <span class="code">`config.json`</span> 取得週報要寄給誰、用什麼格式；若還沒設定，先問使用者。</span><br><span class="line"><span class="bullet">2.</span> 彙整這週完成的事項，只列「跟上週相比的新進度」，不要把舊的重講一遍。</span><br><span class="line"><span class="bullet">3.</span> 把這次的週報存進 <span class="code">`reports.log`</span>（只新增、不覆蓋），下次執行時讀自己的歷史，自動判斷哪些是新的。</span><br><span class="line"></span><br><span class="line"><span class="section">## Gotchas（踩過的坑）</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 「標記完成」不等於真的結案，有些項目會被退回重做，狀態要看最新的那一版。</span><br><span class="line"><span class="bullet">-</span> 同一件事這週可能改過好幾次，只取最後定案的版本，別把過程中的草稿都列進去。</span><br><span class="line"></span><br><span class="line"><span class="section">## 參考</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 欄位與格式範本見 <span class="code">`references/format.md`</span>（需要時再讀，不必一開始全載入）。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、動手前要知道的兩個前提"><a href="#七、動手前要知道的兩個前提" class="headerlink" title="七、動手前要知道的兩個前提"></a>七、動手前要知道的兩個前提</h2><h3 id="前提一：Skill-不是免費的"><a href="#前提一：Skill-不是免費的" class="headerlink" title="前提一：Skill 不是免費的"></a>前提一：Skill 不是免費的</h3><ul>
+<li>一般 session 中，skill 的 <strong>description 會進入 context</strong></li>
+<li>完整 <code>SKILL.md</code> 則是在使用者或 Claude 呼叫後才載入</li>
+<li>每多一個放進專案的 skill，都會增加一點模型需要掃描的脈絡</li>
+</ul>
+<h4 id="團隊規模建議"><a href="#團隊規模建議" class="headerlink" title="團隊規模建議"></a>團隊規模建議</h4><p>改用 <strong>plugin marketplace</strong>，讓成員自己挑要裝哪些，而不是全部塞進每個專案。</p>
+<h3 id="前提二：別想一次寫到完美"><a href="#前提二：別想一次寫到完美" class="headerlink" title="前提二：別想一次寫到完美"></a>前提二：別想一次寫到完美</h3><blockquote>
+<p><strong>Anthropic 最好用的 skill 多半是從「寥寥幾行字加一個 gotcha」起步</strong></p>
+</blockquote>
+<h4 id="迭代思維"><a href="#迭代思維" class="headerlink" title="迭代思維"></a>迭代思維</h4><ul>
+<li>先做一個小的</li>
+<li>撞到坑就補一條 gotcha</li>
+<li>慢慢變強</li>
+</ul>
+<h4 id="核心價值"><a href="#核心價值" class="headerlink" title="核心價值"></a>核心價值</h4><p><strong>Skill 的價值不在你寫了多少，而在你有沒有告訴 Claude「它原本不知道、或老是做錯的那件事」。</strong></p>
+<hr>
+<h2 id="八、總結與行動建議"><a href="#八、總結與行動建議" class="headerlink" title="八、總結與行動建議"></a>八、總結與行動建議</h2><h3 id="撰寫-Skill-的黃金法則"><a href="#撰寫-Skill-的黃金法則" class="headerlink" title="撰寫 Skill 的黃金法則"></a>撰寫 Skill 的黃金法則</h3><ol>
+<li><strong>用資料夾結構，不要單一檔案</strong></li>
+<li><strong>一個 Skill 只做一類事</strong></li>
+<li><strong>Gotchas 區塊是最高價值內容</strong></li>
+<li><strong>description 要寫觸發詞，給模型看</strong></li>
+<li><strong>提供腳本讓 Claude 組合，不是重造</strong></li>
+<li><strong>從小開始，持續迭代</strong></li>
+</ol>
+<h3 id="優先順序"><a href="#優先順序" class="headerlink" title="優先順序"></a>優先順序</h3><p><strong>產品驗證類 Skill</strong> 對品質影響最大，值得優先投入。</p>
+<hr>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://claude.com/blog/lessons-from-building-claude-code-how-we-use-skills">Anthropic 官方部落格：Lessons from building Claude Code: how we use skills</a></li>
+<li><a target="_blank" rel="noopener" href="https://fc.bnext.com.tw/articles/view/4687?utm_source=bn_daily&utm_medium=email&utm_campaign=06-16-2026&bx_heid=8475539909">數位時代</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2026/05/03/Explicit-Resource-Management/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1023,96 +1211,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/05/17/side-project-mongoDB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Let's Coding">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/17/side-project-mongoDB/" class="post-title-link" itemprop="url">Next.js API 與 MongoDB 設計實作：整合 NextAuth 多元驗證方式（Credentials + OAuth）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-05-17 18:23:24" itemprop="dateCreated datePublished" datetime="2025-05-17T18:23:24+08:00">2025-05-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-09-07 09:00:44" itemprop="dateModified" datetime="2025-09-07T09:00:44+08:00">2025-09-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/side-project/" itemprop="url" rel="index"><span itemprop="name">side-project</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在開發 SaaS 或工具型應用時，「使用者驗證系統」往往是關鍵基礎設施。這篇文章將分享我如何使用 Next.js（App Router）+ MongoDB + NextAuth，同時支援 Google OAuth 和 自定義帳密登入，並分享專案 mongoDB 資料結構與 API 架構。</p>
-<h2 id="MongoDB-資料模型設計"><a href="#MongoDB-資料模型設計" class="headerlink" title="MongoDB 資料模型設計"></a>MongoDB 資料模型設計</h2><p>為了支援多元登入方式，我設計了以下幾個集合（Collections）：</p>
-<ol>
-<li>users - 使用者基本資訊</li>
-</ol>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  _id<span class="punctuation">:</span> ObjectId<span class="punctuation">,</span></span><br><span class="line">  email<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">  name<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">  createdAt<span class="punctuation">:</span> Date<span class="punctuation">,</span></span><br><span class="line">  updatedAt<span class="punctuation">:</span> Date</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>authProviders - 自定義驗證方式（帳密）</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/05/17/side-project-mongoDB/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1184,19 +1282,19 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">80</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
