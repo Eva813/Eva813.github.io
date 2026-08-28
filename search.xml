@@ -4,6 +4,99 @@
   
     
     <entry>
+      <title>刪掉你的 CLAUDE.md！別再堆指令了，定期重建才是正解</title>
+      <link href="/2026/08/28/Claude-Code-Delete-ClaudeMd/"/>
+      <url>/2026/08/28/Claude-Code-Delete-ClaudeMd/</url>
+      
+        <content type="html"><![CDATA[<h1 id="刪掉你的-CLAUDE-md！別再堆指令了，定期重建才是正解"><a href="#刪掉你的-CLAUDE-md！別再堆指令了，定期重建才是正解" class="headerlink" title="刪掉你的 CLAUDE.md！別再堆指令了，定期重建才是正解"></a>刪掉你的 CLAUDE.md！別再堆指令了，定期重建才是正解</h1><blockquote><p>本文整理自工程師 Charlie Hills 的部落格文章《Delete your CLAUDE.md》。文章源頭是 Anthropic Claude Code 負責人 Boris Cherny 曾透露：Anthropic 把系統提示砍掉超過 80%，模型反而表現更好（詳見前篇〈<a href="/2026/08/07/Claude-Code-Prompt-Reduction/">狠砍80%系統指令！Claude Code之父揭AI心法</a>〉）。Charlie Hills 把這個反直覺的建議，變成一套自己也真的跑過一遍的具體操作流程。</p></blockquote><h2 id="核心論點：CLAUDE-md-不是越寫越好"><a href="#核心論點：CLAUDE-md-不是越寫越好" class="headerlink" title="核心論點：CLAUDE.md 不是越寫越好"></a>核心論點：CLAUDE.md 不是越寫越好</h2><p>大多數人維護 CLAUDE.md 的方式是「加法」——踩到一個坑，就補一條規則；AI 犯了一次錯，就多寫一段叮嚀。半年下來，檔案只會愈疊愈厚，卻很少有人回頭刪東西。</p><p>Charlie Hills 的主張很直接：<strong>這份文件應該定期整個調整重建，而不是無限累加</strong>。主要是三個主要的代價。</p><h2 id="文件臃腫的三重代價"><a href="#文件臃腫的三重代價" class="headerlink" title="文件臃腫的三重代價"></a>文件臃腫的三重代價</h2><ol><li><strong>成本</strong> — CLAUDE.md 是全局系統提示，每一行都會在<strong>每一次</strong>對話中被讀入、被計費，不管這次任務用不用得到。</li><li><strong>衝突</strong> — 規則堆多了難免互相矛盾，模型只能自己「隨便選一條」來遵守，行為變得不可預期。</li><li><strong>注意力衰減</strong> — 對應「<a href="https://arxiv.org/abs/2307.03172">Lost in the Middle</a>」這類研究：長上下文中間段落的內容，模型的注意力本來就會下降。塞進 CLAUDE.md 中段的規則，很可能根本沒被認真「看到」。</li></ol><h2 id="作者的真實案例"><a href="#作者的真實案例" class="headerlink" title="作者的真實案例"></a>作者的真實案例</h2><p>Charlie Hills 攤開自己的 CLAUDE.md：<strong>305 行</strong>，遠超過 Anthropic 官方建議的 <strong>200 行上限</strong>（官方原話：「目標控制在 200 行以下，更長的文件會消耗更多上下文，降低遵守率」）。</p><p>裡面裝的是六個月份、東拼西湊的修正，還有 <strong>195 個 skill</strong>——但實際被呼叫過的只有 <strong>65 個</strong>，等於三分之二是根本沒人用的死代碼。</p><p>這不是特例，是每個長期用 Claude Code 的人都會自然走到的狀態。</p><span id="more"></span><h2 id="先搞懂五層架構，再談要刪什麼"><a href="#先搞懂五層架構，再談要刪什麼" class="headerlink" title="先搞懂五層架構，再談要刪什麼"></a>先搞懂五層架構，再談要刪什麼</h2><p>在動手清理前，得先分清楚哪些東西該放哪一層，不然刪錯地方只會更亂：</p><table><thead><tr><th>層級</th><th>作用</th><th>載入時機</th></tr></thead><tbody><tr><td><strong>CLAUDE.md</strong></td><td>全局系統提示</td><td>每次對話開始就讀取</td></tr><tr><td><strong>記憶文件</strong></td><td>持久化的學習記錄</td><td>依相關性載入</td></tr><tr><td><strong>Skills</strong></td><td>已保存的工作流程</td><td>按需載入（description 先進 context，內文用到才讀）</td></tr><tr><td><strong>Hooks</strong></td><td>自動觸發機制</td><td>事件觸發時執行</td></tr><tr><td><strong>專案文件</strong></td><td>特定專案的細節指令</td><td>按需載入</td></tr></tbody></table><p>核心原則就一句話：<strong>只有真的「每次都要用」的東西，才配得上放進 CLAUDE.md</strong>。其他的都該下放到 skill、hook 或專案文件，讓它們「按需出現」而不是「常駐佔位」。</p><h2 id="還沒有-CLAUDE-md？先用這個-prompt-生一份"><a href="#還沒有-CLAUDE-md？先用這個-prompt-生一份" class="headerlink" title="還沒有 CLAUDE.md？先用這個 prompt 生一份"></a>還沒有 CLAUDE.md？先用這個 prompt 生一份</h2><p>如果你根本還沒開始寫 CLAUDE.md，Charlie Hills 的建議是別自己空手生字，直接請 Claude 用 Boris Cherny 的版本當起手範本，反過來訪談你：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Help me build my CLAUDE.md from scratch. Use Boris Cherny&#x27;s CLAUDE.md as a starting template. Ask me about my business, voice, banned words, output defaults, and how I want you to work. Save the final file to ~/CLAUDE.md.</span><br></pre></td></tr></table></figure><h2 id="三個可以直接複製的檢視-Prompt"><a href="#三個可以直接複製的檢視-Prompt" class="headerlink" title="三個可以直接複製的檢視 Prompt"></a>三個可以直接複製的檢視 Prompt</h2><p>已經有 CLAUDE.md 的話，就進入下一步：把內容重新檢視一遍。以下三段是原文「Paste this」要讀者逐字貼上的內容，這裡刻意保留英文原文——這幾段是作者實際測試過、要 Claude 照步驟執行的指令，翻成中文容易在轉譯過程中弄丟語氣裡的強制性（例如 FLAG、NEVER 這類全大寫的強調）。</p><h3 id="一、CLAUDE-md-逐行檢視"><a href="#一、CLAUDE-md-逐行檢視" class="headerlink" title="一、CLAUDE.md 逐行檢視"></a>一、CLAUDE.md 逐行檢視</h3><p>這段的核心是「先查證、再判斷」：拿 Anthropic 當下最新的官方指引當標準，一條一條比對，而不是憑印象覺得哪句該留哪句該刪。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">My Claude instructions were written for older models. Audit them against Anthropic&#x27;s current guidance and tell me what to delete.</span><br><span class="line"></span><br><span class="line">1. FETCH THE LIVE RULES FIRST. Read Anthropic&#x27;s prompting best practices page and the page for the exact model I am on. Use what is published today, never what you remember.</span><br><span class="line"></span><br><span class="line">2. GO LINE BY LINE. One verdict per instruction: DELETE, KEEP or REWRITE, with the reason in plain English.</span><br><span class="line"></span><br><span class="line">3. QUOTE YOUR SOURCE. Every DELETE quotes the sentence from Anthropic&#x27;s guidance that justifies it. Cannot find one? The verdict is KEEP. Never invent a source.</span><br><span class="line"></span><br><span class="line">4. FLAG EVERY VERIFY-TWICE RULE. &quot;Always verify your work&quot;, &quot;double-check before answering&quot;. The model already self-corrects. These make it do the work twice, and I pay for both.</span><br><span class="line"></span><br><span class="line">5. FLAG &quot;ONLY FLAG THE BIG ISSUES&quot;. Taken literally, so I get told less than I wanted. Replace with: report everything, I do the filtering.</span><br><span class="line"></span><br><span class="line">6. FLAG ANY &quot;DON&#x27;T OVERTHINK&quot; RULE. Rules against thinking make internal tags leak into the answer. Cut them.</span><br><span class="line"></span><br><span class="line">7. FLAG ROLE PADDING. &quot;You are an expert with 20 years of experience&quot; was once good advice. Now optional. Keep a role only where it genuinely changes the output.</span><br><span class="line"></span><br><span class="line">8. FLAG STALE EXAMPLES. Examples written for an old model teach old habits. One current example beats ten stale ones.</span><br><span class="line"></span><br><span class="line">9. NEVER TOUCH A TRUTH RULE. &quot;Only claim what you verified&quot; is not a severity filter, it stops made-up facts. Rules like that stay, whatever else goes.</span><br><span class="line"></span><br><span class="line">10. TELL ME WHAT IS MISSING. The new models need five instructions the old ones did not: keep answers short, cap document length, say how to update me while you work, hold the task scope, limit the helpers you spawn.</span><br><span class="line"></span><br><span class="line">THEN GIVE ME:</span><br><span class="line">- A table, one row per instruction: my line, the verdict, the why, and Anthropic&#x27;s line.</span><br><span class="line">- The exact wording to paste in for each of the five missing instructions.</span><br><span class="line">- The honest count. &quot;307 lines in. 4 deletes, 4 rewrites, 5 additions.&quot;</span><br><span class="line">- What you could not check, marked NOT RUN. Never a clean bill you did not earn.</span><br><span class="line"></span><br><span class="line">AND BE HONEST:</span><br><span class="line">- If most of my file should go, say so plainly. The scaffolding I am proudest of is the likeliest casualty.</span><br><span class="line"></span><br><span class="line">My instructions are below. Go.</span><br></pre></td></tr></table></figure><h3 id="二、Skill-去重"><a href="#二、Skill-去重" class="headerlink" title="二、Skill 去重"></a>二、Skill 去重</h3><p>這段的重點不是比對名稱，而是看兩個 skill 做的是不是同一件「工作」——名字取得再不一樣，邏輯重複就算數。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Audit my skills folder for overlap and dead weight. Do not delete anything.</span><br><span class="line"></span><br><span class="line">1. List every skill with its name and one line on what it does.</span><br><span class="line">2. Group them by the JOB they do, not by their name. Skills doing the same job in different words are the same skill.</span><br><span class="line">3. For each group of two or more, tell me which one to keep and why, and exactly what the others have that it is missing.</span><br><span class="line">4. Flag every skill I have never actually used.</span><br><span class="line">5. Flag every skill that only works because of a file or folder that no longer exists.</span><br><span class="line"></span><br><span class="line">Then give me ONE merged version of the biggest group, written out in full, ready to save. Tell me what I lose by merging.</span><br></pre></td></tr></table></figure><h3 id="三、Hooks-清查（把重複請求變成自動化）"><a href="#三、Hooks-清查（把重複請求變成自動化）" class="headerlink" title="三、Hooks 清查（把重複請求變成自動化）"></a>三、Hooks 清查（把重複請求變成自動化）</h3><p>這段不是憑空猜你可能需要哪些自動化，而是回頭翻對話紀錄，抓出你真的一講再講、或是它一錯再錯的地方，再從中挑出來當 hook。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Help me work out what I should turn into a hook.</span><br><span class="line"></span><br><span class="line">Look back over our recent conversations and find:</span><br><span class="line"></span><br><span class="line">1. Things I ask for over and over, in roughly the same words.</span><br><span class="line">2. Times I had to tell you something you should already have known.</span><br><span class="line">3. Times you did something I had to correct more than once.</span><br><span class="line"></span><br><span class="line">For each one, tell me:</span><br><span class="line">- the word or phrase I actually say when I want it</span><br><span class="line">- what you should go and read, or do, the moment I say it</span><br><span class="line">- whether that word is unique enough that it won&#x27;t fire by accident</span><br><span class="line"></span><br><span class="line">Give me your top three, ranked, with the best one first. Do not build anything yet.</span><br></pre></td></tr></table></figure><p>這四段 prompt 的共通點是：<strong>都要求 Claude 給理由、給清單，而不是直接動手改檔案</strong>（”Do not delete anything”、”Do not build anything yet” 都明講了這點）。檢查和動手分開，才不會一次盤點就把還在用的規則也一起砍掉。</p><h2 id="建議的執行順序"><a href="#建議的執行順序" class="headerlink" title="建議的執行順序"></a>建議的執行順序</h2><ol start="0"><li><strong>如果還沒有 CLAUDE.md</strong>，先跑「從零開始」那段 prompt，用 Boris Cherny 的版本當範本生一份，再進入下面的檢視循環。</li><li><strong>先切到最新模型版本</strong>（<code>/model</code>），舊模型可能還需要那些「補足能力」的規則，換了新模型再重新檢查才準。</li><li><strong>備份現有的 CLAUDE.md、skills、hooks</strong>，這一步不能省。</li><li><strong>照第一段 prompt 檢查 CLAUDE.md</strong>，拿到變更清單後再逐條批准套用。</li><li><strong>跑 skill 去重</strong>，合併掉那些名字不同、做的事一樣的 skill。</li><li><strong>跑 hooks 清查</strong>，把真正高頻、機械式的重複請求收斂成自動化。</li><li><strong>設一個週期提醒</strong>（例如每六個月），重複整套流程，這呼應 Boris Cherny 原本的建議：定期清空，觀察模型在沒有這些規則時會怎麼做，只把它真的還會踩的坑補回去。</li></ol><h2 id="實務上的一點提醒"><a href="#實務上的一點提醒" class="headerlink" title="實務上的一點提醒"></a>實務上的一點提醒</h2><p>這套流程好用,但有兩個地方值得留意:</p><ul><li><strong>重新檢視不代表清空</strong>。Charlie Hills 的標題聳動,實際做法是「重新評估後保留該保留的」,不是無腦全刪。真正的重點是<strong>別讓文件只增不減</strong>,而不是追求一份空白的 CLAUDE.md。</li><li><strong>這整套流程要花實際的人力去看清單、做決定</strong>。這不是一個丟給 Claude 就能全自動跑完的流程——最後那份「可批准的變更清單」,還是得靠你自己的經驗判斷哪些真的該留。這也呼應了 Boris Cherny 那句話:真正不會過時的資產,是「看得出哪裡該優化」的判斷力,不是規則本身。</li></ul><h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>CLAUDE.md、skills、hooks 都會隨著模型進化而「折舊」——今天為了補足模型缺陷寫下的規則，很可能半年後就變成多餘的雜訊。與其把它們當一次性寫完就不管的資產，不如當成需要定期體檢、汰舊換新的東西。</p><p><strong>精即是強，不是多即是好。</strong></p><p>這套邏輯也不是 Claude Code 專屬的。如果你用的是 ChatGPT／OpenAI Codex CLI、GitHub Copilot、Cursor 這類工具，對應的檔案是 <strong><code>AGENTS.md</code></strong>（複數，不是 <code>AGENT.md</code>）——這是由 OpenAI 發起、現由 Linux Foundation 治理的跨工具標準，目前已有超過 30 個 agent 工具支援讀取，包含 Codex、Copilot、Cursor、Gemini CLI、Aider、Windsurf 等。就連 Claude Code 自己現在也讀得懂 <code>AGENTS.md</code>，常見做法是在 <code>CLAUDE.md</code> 第一行寫 <code>@AGENTS.md</code> 把兩者串起來：共用規則放進 <code>AGENTS.md</code>，工具專屬的細節才留在各自的原生檔案裡。這篇文章的審計邏輯放到 <code>AGENTS.md</code> 上一樣成立，甚至更該做，因為它同時提供給更多工具讀，內容臃腫的代價會被工具數量放大，不是只影響單一個 agent。</p><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul><li><a href="https://charliehills.substack.com/p/delete-your-claudemd">Charlie Hills：Delete your CLAUDE.md</a></li><li><a href="/2026/08/07/Claude-Code-Prompt-Reduction/">前篇：狠砍80%系統指令！Claude Code之父揭AI心法</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> AI </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> AI </tag>
+            
+            <tag> Claude </tag>
+            
+            <tag> CLAUDE.md </tag>
+            
+            <tag> 開發工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JWT 做登入這件事：一篇 Gist 引發的整理</title>
+      <link href="/2026/08/15/Stop-Using-JWT-For-Sessions/"/>
+      <url>/2026/08/15/Stop-Using-JWT-For-Sessions/</url>
+      
+        <content type="html"><![CDATA[<p>在前端 / 後端開發圈，「用 JWT 做登入驗證」幾乎已經是預設選項，很多教學、範例專案打開就是 <code>jsonwebtoken</code> 直接簽一包塞進 cookie 或 localStorage。但 <a href="https://gist.github.com/samsch/0d1f3d3b4745d778f78b230cf6061452">Stop using JWTs!</a> 這篇 Gist 提出了一個很直接的反對意見：</p><blockquote><p>JWTs should not be used for keeping your user logged in. They are not designed for this purpose, they are not secure, and there is a much better tool which is designed for it: regular cookie sessions.</p></blockquote><p>這篇文章記錄我讀完之後的整理，包含作者的核心論點、對常見反駁的回應，以及我自己在實務上觀察到的紀錄分享。</p><span id="more"></span><h2 id="先講結論：JWT-不等於「安全的登入機制」"><a href="#先講結論：JWT-不等於「安全的登入機制」" class="headerlink" title="先講結論：JWT 不等於「安全的登入機制」"></a>先講結論：JWT 不等於「安全的登入機制」</h2><p>很多人把 JWT 跟「安全」畫上等號，但這其實是規格用途上的誤會。作者的主張很清楚：<strong>JWT 不是為「維持登入狀態」這種長生命週期的場景設計的</strong>，硬拿來用，反而會犧牲安全性跟彈性。</p><h2 id="作者的三個核心論點"><a href="#作者的三個核心論點" class="headerlink" title="作者的三個核心論點"></a>作者的三個核心論點</h2><h3 id="1-JWT-適合的場景是短生命週期"><a href="#1-JWT-適合的場景是短生命週期" class="headerlink" title="1. JWT 適合的場景是短生命週期"></a>1. JWT 適合的場景是短生命週期</h3><p>作者主張 JWT 適合的使用情境是極短的存活時間，實務上通常建議 5 分鐘或更短——這是把它當「一次性授權憑證」的用法。而一般使用者的登入 session 動輒數小時、數天甚至數週，已經超出這個原本適用的範圍。</p><p>（RFC 7519 本身並沒有規定 token 的存活時間，「5 分鐘」是作者跟主流資安實務的建議，不是規格明文規定。）</p><h3 id="2-「無狀態」認證在安全實踐上不成立"><a href="#2-「無狀態」認證在安全實踐上不成立" class="headerlink" title="2.「無狀態」認證在安全實踐上不成立"></a>2.「無狀態」認證在安全實踐上不成立</h3><p>這是整篇文章關鍵的一點。JWT 常被包裝成「無狀態（stateless）」的賣點——伺服器不用查資料庫，直接驗簽章就能信任 token。但作者引用 <a href="http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/">joepie91 的文章</a> 指出：</p><ul><li>真正安全的認證機制，仍然需要某種方式維持狀態（例如：token 被撤銷、使用者被登出、密碼被重設後舊 token 要失效）</li><li>既然最終還是得存一份狀態資料，那不如直接存完整的 session 資料，而不是先簽一個 JWT，之後還要另外處理撤銷、黑名單這些「無狀態」處理不了的問題</li></ul><p>換句話說，「無狀態」在話術上很吸引人，但落地到真實系統時，往往只是把狀態管理的複雜度換了個地方藏起來，而不是真的消失。</p><p>規格本身在資安圈的評價也不高——<a href="https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid">Paragon Initiative 的文章</a> 指出，JWT 規格甚至允許偽造 token（例如惡名昭彰的 <code>alg: none</code> 問題），這種先天缺陷讓人擔心還有其他沒被發現的坑。</p><h3 id="3-效率跟靈活性都不如傳統-session"><a href="#3-效率跟靈活性都不如傳統-session" class="headerlink" title="3. 效率跟靈活性都不如傳統 session"></a>3. 效率跟靈活性都不如傳統 session</h3><p>如果 JWT 裡面存的東西本質上就是一組 session 資訊，那用 JWT 存反而比傳統 session cookie 更沒效率、更不靈活——因為每次都要把整包資料塞進 token 裡傳來傳去，而不是伺服器端存一份、client 只帶一個輕量的 session id。</p><h2 id="常見反駁，作者怎麼回應"><a href="#常見反駁，作者怎麼回應" class="headerlink" title="常見反駁，作者怎麼回應"></a>常見反駁，作者怎麼回應</h2><p>以下這些反駁幾乎就是我自己心裡會出現的疑問。</p><h3 id="「Google-不是也在用-JWT-嗎？」"><a href="#「Google-不是也在用-JWT-嗎？」" class="headerlink" title="「Google 不是也在用 JWT 嗎？」"></a>「Google 不是也在用 JWT 嗎？」</h3><p>作者的回應是：Google 在瀏覽器裡維持使用者登入狀態，用的其實是<strong>傳統的簽章加密 cookie session</strong>（例如 <code>SID</code>、<code>HSID</code> 這類 cookie，記錄帳號 ID 與最近登入時間），JWT 只出現在單一登入（SSO）情境——把「某伺服器上已登入」這件事轉換成「另一個伺服器也承認你已登入」的傳輸媒介。這正好符合 JWT 原本設計的短生命週期、單次驗證用途，而不是拿來當作日常登入狀態的儲存機制。</p><h3 id="「無狀態架構比較潮，效能比較好吧？」"><a href="#「無狀態架構比較潮，效能比較好吧？」" class="headerlink" title="「無狀態架構比較潮，效能比較好吧？」"></a>「無狀態架構比較潮，效能比較好吧？」</h3><p>作者的回應很直接：完全無狀態的認證在安全上做不到。可以參考另一篇他寫的 <a href="https://gist.github.com/samsch/259517828ab4557c5c8b72ca1252992d">Stateless is a lie</a>。追求「無狀態」這個目標本身，可能就已經走偏了方向。</p><h3 id="「我不知道怎麼設定-session，JWT-比較簡單」"><a href="#「我不知道怎麼設定-session，JWT-比較簡單」" class="headerlink" title="「我不知道怎麼設定 session，JWT 比較簡單」"></a>「我不知道怎麼設定 session，JWT 比較簡單」</h3><p>這其實是最常見的理由。作者的回應是：session 不是新技術，只是這幾年因為 JWT 太紅，相關教學變少、顯得比較「過時」而已。絕大多數後端框架（Rails、Django、Laravel 等）都內建或很容易整合 session 機制；Node.js 生態因為高度模組化，需要自己組裝，可以搭配 <a href="https://github.com/expressjs/session"><code>express-session</code></a> 加上 store（例如 <code>connect-session-knex</code> 接 PostgreSQL / MySQL）。</p><p>流程上跟 JWT 最大的差異在於：伺服器端保有一份「這個 session id 目前是誰、有沒有效」的紀錄，撤銷、登出、強制過期都只是改一筆資料，不需要額外設計黑名單機制。</p><h3 id="那真的需要短期-token-怎麼辦？"><a href="#那真的需要短期-token-怎麼辦？" class="headerlink" title="那真的需要短期 token 怎麼辦？"></a>那真的需要短期 token 怎麼辦？</h3><p>作者建議可以考慮 <a href="https://paseto.io/">PASETO</a>——一個從設計之初就把安全性放在第一位的規格，用來取代 JWT 在一次性授權、跨服務短暫驗證這類場景的角色。但作者也強調：<strong>PASETO 一樣不該拿來做 session 管理</strong>。這個界線也呼應 <a href="https://owasp.org/www-chapter-vancouver/assets/presentations/2020-01_Attacking_and_Securing_JWT.pdf">OWASP Vancouver 的簡報</a> 提到的 JWT 合理用途：授權（authorization）而非會話管理、存活時間短、預期只使用一次（驗證完就去換取真正的 session）。</p><h2 id="換個角度看：JWT-和-Session-未必是二選一"><a href="#換個角度看：JWT-和-Session-未必是二選一" class="headerlink" title="換個角度看：JWT 和 Session 未必是二選一"></a>換個角度看：JWT 和 Session 未必是二選一</h2><p>整理完 Gist 的論點之後，我又讀到另一篇角度更中立的文章 <a href="https://www.chia1104.dev/posts/jwt-vs-session-cookie-authentication-differences">《JWT 跟 Session Cookie 登入認證的差異》</a>（作者 chia1104），是從面試官視角出發，把兩種機制的實務做法拆得很細，剛好補上 Gist 那篇比較強硬立場沒講到的東西。</p><h3 id="JWT-的「refresh」跟-Session-的「refresh」其實是兩件事"><a href="#JWT-的「refresh」跟-Session-的「refresh」其實是兩件事" class="headerlink" title="JWT 的「refresh」跟 Session 的「refresh」其實是兩件事"></a>JWT 的「refresh」跟 Session 的「refresh」其實是兩件事</h3><p>這是原文講得最清楚、也是我自己之前最容易搞混的地方：</p><ul><li><strong>JWT 的 refresh</strong>：短命的 <code>access_token</code> 搭配長命的 <code>refresh_token</code>。<code>access_token</code> 過期後，前端拿 <code>refresh_token</code> 去換一顆<strong>全新的</strong> <code>access_token</code>，整包內容換掉，兩者通常都存在 <code>localStorage</code>。</li><li><strong>Session Cookie 的「refresh」</strong>：正式名稱是 sliding expiration，伺服器在每次合法請求時，把該筆 Session 在 store（例如 Redis）裡的過期時間往後延，瀏覽器手上的 <code>sessionId</code> cookie <strong>整個登入期間通常不會變</strong>。</li></ul><p>同樣叫「刷新」，一個是發新證件，一個是幫舊證件延簽，機制完全不是同一個層次的東西。</p><h3 id="兩者的實務比較"><a href="#兩者的實務比較" class="headerlink" title="兩者的實務比較"></a>兩者的實務比較</h3><p>原文附了一張比較表，我把重點摘錄如下（表格整理自原文，完整細節與案例可見<a href="https://www.chia1104.dev/posts/jwt-vs-session-cookie-authentication-differences">原文連結</a>）：</p><table><thead><tr><th>面向</th><th>JWT（Bearer token）</th><th>Session Cookie</th></tr></thead><tbody><tr><td>狀態存放</td><td>無狀態，登入資訊在 token 本身，前端保存</td><td>有狀態，資訊存在後端 Session store，前端只存 sessionId</td></tr><tr><td>擴充性</td><td>適合多服務、跨網域、微服務架構</td><td>單機或搭配 Redis 共享即可，適合一般規模系統</td></tr><tr><td>撤銷登出</td><td>純無狀態下難以即時撤銷，需要黑名單機制</td><td>伺服器刪 Session 即可即時生效</td></tr><tr><td>安全風險</td><td>為了塞進 <code>Authorization</code> header，通常放 localStorage，JS 讀得到，XSS 得手就能直接冒用</td><td>Cookie 只是隨機 ID，可搭配 HttpOnly／Secure／SameSite，JS 完全讀不到</td></tr><tr><td>適用情境</td><td>SPA、行動 App、對外 API、微服務</td><td>傳統 Web、後台系統、單體架構</td></tr></tbody></table><p>安全風險那一列是重點：JWT 存 localStorage 之所以危險，正是因為它「必須」被 JS 讀到才能塞進 header；而 session cookie 之所以能相對安全，是因為它可以走 HttpOnly，瀏覽器會自動帶、JS 完全碰不到。</p><h3 id="跟-Gist-文章的差異"><a href="#跟-Gist-文章的差異" class="headerlink" title="跟 Gist 文章的差異"></a>跟 Gist 文章的差異</h3><p>Gist 作者是資安背景，結論偏向「乾脆別在 session 場景用 JWT」；chia1104 這篇則更貼近多數團隊的實際狀況——他認為兩者很少是純二選一，常見做法反而是<strong>混搭</strong>：Web 前台用 Session Cookie 管登入狀態，服務與服務之間、或對外開放的 API，再用 JWT 做授權資訊傳遞。專案規模小、單一後端時，Session Cookie 通常更好維護；一旦拆成微服務或要對外開 API，JWT「自我描述、可跨服務驗證」的特性才真正派上用場。</p><p>這點我覺得比 Gist 的立場更貼近現實：兩篇合在一起讀反而更完整——一篇提醒你 JWT 的代價常被低估，一篇提醒你選型該看架構規模。</p><h2 id="一個實際的案例：寫好的-refresh-機制，不代表真的有在跑"><a href="#一個實際的案例：寫好的-refresh-機制，不代表真的有在跑" class="headerlink" title="一個實際的案例：寫好的 refresh 機制，不代表真的有在跑"></a>一個實際的案例：寫好的 refresh 機制，不代表真的有在跑</h2><p>這是我自己在實務上觀察到、覺得值得記錄下來的一個狀況：</p><p>一個 Vue 3 + Pinia 的前端專案，登入機制是典型的 JWT 模式。拆開來看每個角色的分工，會比條列規格更容易懂：</p><ul><li><strong>後端</strong>：登入成功時，決定「這 token 到哪個時間點為止有效」，把這個 Unix 時間戳當一個獨立欄位（<code>expiration</code>）連同 <code>token / type</code> 一起回傳；之後每次請求，只驗證 token 的簽章沒被竄改、再拿 <code>expiration</code> 跟伺服器自己當下的時間比對，完全不查任何「這個人現在是否登入中」的紀錄——這就是「無狀態」的具體樣子</li><li><strong>localStorage</strong>：單純的持久化儲存，本身不會主動變化，只有在登入成功、refresh 成功、登出這三個時機，才會被程式碼整包覆寫或清除</li><li><strong>Pinia store</strong>：把 localStorage 的內容鏡射一份到記憶體，讓畫面能用 <code>isLogin</code> 這種 computed 直接判斷登入狀態；這份鏡像<strong>不會自動</strong>跟 localStorage 同步，而是同一個 <code>setToken()</code> 動作裡手動把兩邊各寫一次</li><li><strong>axios request interceptor</strong>：每次送出請求前，都重新從 localStorage 讀一次最新 token 塞進 <code>Authorization</code> header——不是快取住舊值，所以 localStorage 一被更新，下一個請求就自動吃到新 token</li><li><strong>過期判斷</strong>：前端自己拿 <code>expiration</code> 這個時間戳跟現在時間比對。要注意這不是「前端 token 跟後端比」，而是前後端<strong>各自拿同一份 <code>expiration</code>，各自跟自己手上的時間比</strong>——兩邊互不通訊，只是剛好比的是同一個數字。前端這一比只是「別浪費一次注定失敗的請求」的 UX 優化，不是安全機制；真正決定放不放行的，永遠是後端驗證簽章跟過期時間那一關</li></ul><blockquote><p>附帶一個技術細節：標準 JWT 會把過期時間放在 payload 的 <code>exp</code> claim 裡，後端解簽章時直接讀出來就好；這個專案額外再回一個 <code>expiration</code> 欄位，是為了讓前端完全不用解 JWT payload。這是一個刻意的封裝設計——後端保留隨時調整 JWT 內部結構的自由，前端也不會因為讀了 payload 而對它產生隱形依賴：<code>expiration</code> 對前端來說只是 API 回傳的一個欄位，不是「前端懂了 JWT 裡面裝什麼」。</p></blockquote><h3 id="這樣算不算「保持登入」？算，但只有一半"><a href="#這樣算不算「保持登入」？算，但只有一半" class="headerlink" title="這樣算不算「保持登入」？算，但只有一半"></a>這樣算不算「保持登入」？算，但只有一半</h3><p>拆開角色之後，會發現「保持登入」其實可以分成兩種完全不同的能力，這個專案只做到第一種：</p><ul><li><strong>做到的（session persistence，工作階段持久化）</strong>：使用者重新整理頁面、關掉分頁、隔天再打開網站，只要 token 還沒過期，App 啟動時的檢查邏輯就會直接沿用 localStorage 裡的舊 token，讓使用者維持登入狀態——這是靠「一顆效期夠長的 token ＋ 持久化儲存」撐出來的</li><li><strong>沒做到的（silent renewal，無感續期）</strong>：一旦 <code>expiration</code> 那個時間點真正到了，不管使用者當下多活躍、正在操作到一半，下一次打 API 就是直接被判定過期。<strong>沒有任何機制會在背景默默換一新 token 延續下去</strong>——這種「無感延續」才是一般人講「保持登入」時真正期待的效果，而它需要額外的 refresh 機制才做得到</li></ul><p>這兩個詞值得刻意分開記：session persistence 靠儲存就能達成，silent renewal 才需要 refresh 機制——這個專案有前者、沒有後者。</p><p>這個落差看程式碼會更清楚：仔細看 response interceptor 處理 401 的地方，會發現一個很寫實的細節——<strong>當初確實把「用 refresh_token 換新 access_token、排隊重試失敗請求」這整套邏輯寫出來過</strong>，寫法跟前面 chia1104 文章那張流程圖幾乎一致，但這段程式碼<strong>整段被註解掉</strong>，實際運作的行為只是「401 就直接登出、導回登入頁」。理論上想過、也寫過，只是沒有真正跑在線上——通常不是設計錯了，而是 refresh 排隊邏輯的邊界情況（多個請求同時 401、refresh token 也過期）比想像中難測乾淨，時程壓力下先上「401 直接登出」這個穩定版本，剩下的就無限期擱置。</p><blockquote><p>順帶一提一個容易誤導人的小細節：登入畫面上的「記住我」核取方塊，其實跟 token 有沒有存起來完全無關——不管有沒有勾選，<code>setToken()</code> 都無條件會把 token 寫進 localStorage。這個核取方塊真正影響的，只是下次打開登入頁時帳號欄位要不要幫你預填。如果只看 UI，很容易誤以為「保持登入」是靠這個核取方塊控制的，但實際上它完全不參與這件事。</p></blockquote><p>這剛好印證了 Gist 那篇文章的核心論點：<strong>JWT 的「無狀態」優勢，需要額外的狀態管理機制才能安全撤銷／刷新，而這套機制的實作與維護成本，很容易在真實專案的時程壓力下被犧牲掉</strong>，最後留下的是一個「效期內免重新登入，但效期一到就得整個重來」的系統——理論上有 refresh 設計，實際上從未真正運作過。</p><p>說到底，這個系統的登入壽命就是 token 的效期，一秒不多不少：在時間內做任何事（reload、關分頁、隔天再打開）都能保持登入，壽命一到，不管使用者在做什麼，就是結束。</p><h2 id="結論與觀察"><a href="#結論與觀察" class="headerlink" title="結論與觀察"></a>結論與觀察</h2><p>這篇 Gist 的價值不在於「JWT 是不好東西」這種一刀切的結論，而在於提醒我們：<strong>技術選型要對應到它原本被設計要解決的問題</strong>。JWT 被設計來處理短生命週期、一次性、跨服務的信任傳遞問題；而「讓使用者維持登入」這件事，傳統的 cookie session 其實一直都做得比較好、也比較好維護。</p><p>讀完兩篇之後，補充兩個比較落地的觀察：</p><ul><li><strong>選 JWT 的理由如果是「session 設定太麻煩」，那多半是被 Node.js 生態的模組化嚇到，而不是 session 本身真的難用</strong>。其他主流框架的 session 大多是開箱即用等級。</li><li>如果未來要做無密碼登入或更現代的驗證方式，<a href="https://webauthn.io/">Passkeys / WebAuthn</a> 反而是更值得研究的方向，跟這篇文章談的「session vs JWT」是互補而非互斥的議題。</li></ul><p>下次在專案裡看到「要不要用 JWT 做登入」這個選擇時，值得先停下來想一句：我需要的到底是「驗證身份的短期憑證」，還是「使用者的登入狀態」？這兩者用同一個工具解決，很可能就是問題的起點。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Web Security </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JWT </tag>
+            
+            <tag> Session </tag>
+            
+            <tag> Web Security </tag>
+            
+            <tag> 後端 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證</title>
+      <link href="/2026/08/07/Claude-Code-Prompt-Reduction/"/>
+      <url>/2026/08/07/Claude-Code-Prompt-Reduction/</url>
+      
+        <content type="html"><![CDATA[<h1 id="狠砍80-系統指令！Claude-Code之父揭AI心法：別細寫Prompt了，時間要花在驗證"><a href="#狠砍80-系統指令！Claude-Code之父揭AI心法：別細寫Prompt了，時間要花在驗證" class="headerlink" title="狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證"></a>狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證</h1><blockquote><p>本文整理自 Anthropic Claude Code 負責人 Boris Cherny 的分享。Boris 曾在 Meta 擔任五年首席工程師，著有《Programming TypeScript》一書，是 Claude Code 的創造者。</p></blockquote><h2 id="核心改變：系統提示大幅精簡"><a href="#核心改變：系統提示大幅精簡" class="headerlink" title="核心改變：系統提示大幅精簡"></a>核心改變：系統提示大幅精簡</h2><p>2026 年 7 月推出 Opus 5 後，Anthropic <strong>把 Claude Code 的系統提示砍掉超過 80%</strong>。</p><p>這是一個反直覺的決策——業界共識向來是「指令寫得越細越好」，但 Boris 反其道而行。</p><h2 id="為什麼可以砍？"><a href="#為什麼可以砍？" class="headerlink" title="為什麼可以砍？"></a>為什麼可以砍？</h2><blockquote><p>「那些指令原本是在修正模型『本來就該會、但當時不會』的行為，Opus 5 已經會了。」</p></blockquote><p>模型能力提升後，過去那些詳細的約束反而成為多餘的負擔。Boris 提到，模型在沒有繁瑣提示的狀態下<strong>其實聰明一點</strong>。</p><h2 id="重心轉移：從「寫提示」到「驗證」"><a href="#重心轉移：從「寫提示」到「驗證」" class="headerlink" title="重心轉移：從「寫提示」到「驗證」"></a>重心轉移：從「寫提示」到「驗證」</h2><p>Boris 認為，真正該投資的不是提示詞工程，而是<strong>驗證</strong>——他形容這是「大多數人沒做對的那件最重要的事」。</p><p>現代 AI 編碼的技能核心在於：</p><blockquote><p>給 Claude 一個看起來有點太難的任務，再讓它有辦法在過程中<strong>自己檢查成果</strong>。</p></blockquote><span id="more"></span><h2 id="具體方法論：刪除法評測（Ablation）"><a href="#具體方法論：刪除法評測（Ablation）" class="headerlink" title="具體方法論：刪除法評測（Ablation）"></a>具體方法論：刪除法評測（Ablation）</h2><p>Anthropic 內部採用「刪除法評測」，這是研究界的標準做法：</p><ol><li>把整段系統提示<strong>全部刪掉</strong></li><li>照常使用，觀察模型行為</li><li>只有在模型<strong>重複踩同一個坑</strong>時，才把那條指令加回去</li><li>一行一行加回、逐行檢視實際影響</li></ol><h3 id="給一般使用者的建議"><a href="#給一般使用者的建議" class="headerlink" title="給一般使用者的建議"></a>給一般使用者的建議</h3><p>Boris 建議每個人都可以定期做這個實驗：</p><blockquote><p><strong>每六個月刪掉自己的 CLAUDE.md、skills 與 hooks，看看模型會怎麼做。</strong></p></blockquote><blockquote><p>這句話後來也被工程師 Charlie Hills 拿去延伸成一套具體的操作流程，包含三個可以直接複製的審計 prompt，詳見〈<a href="/2026/08/28/Claude-Code-Delete-ClaudeMd/">刪掉你的 CLAUDE.md！別再堆指令了，定期重建才是正解</a>〉。</p></blockquote><hr><h2 id="實驗案例：14-天不停的重寫任務"><a href="#實驗案例：14-天不停的重寫任務" class="headerlink" title="實驗案例：14 天不停的重寫任務"></a>實驗案例：14 天不停的重寫任務</h2><p>Boris 親自跑過一個實驗：用 Claude Tag 下達指令，要求把 Claude 的 Electron 桌面版<strong>改寫成 Swift 原生版</strong>，指令內容是：</p><blockquote><p>「改寫、在 Mac 虛擬機裡跑起來、截圖、逐像素比對，沒做完不要停。」</p></blockquote><p>結果這個任務<strong>運行了 14 到 15 天還沒停</strong>，過程中衍生出數千到數萬個代理（agents），Claude 甚至自行開設 Slack 頻道，定期上傳進度截圖回報。</p><hr><h2 id="評測集也會折舊"><a href="#評測集也會折舊" class="headerlink" title="評測集也會折舊"></a>評測集也會折舊</h2><p>Boris 坦言，評測集（eval set）並非一勞永逸的資產：</p><ul><li>大概只能活 <strong>1 到 3 個模型世代</strong></li><li>因為模型進步太快，分數很快就會滿分飽和</li><li>一旦滿分，就得整組重做</li></ul><h2 id="重要限制：不是所有問題都解決了"><a href="#重要限制：不是所有問題都解決了" class="headerlink" title="重要限制：不是所有問題都解決了"></a>重要限制：不是所有問題都解決了</h2><p>Boris 特別澄清，「編碼問題已經解決」這句話<strong>只對他做的那類程式成立</strong>，不適用所有場景。以下情境 Claude 仍會卡關：</p><ul><li>深層系統程式庫（deep systems libraries）</li><li>分散式系統</li><li>像素級的介面驗證</li></ul><h2 id="別跟風-要靠經驗累積判斷力"><a href="#別跟風-要靠經驗累積判斷力" class="headerlink" title="別跟風,要靠經驗累積判斷力"></a>別跟風,要靠經驗累積判斷力</h2><p>Boris 反對盲目跟風式的提示技巧：</p><blockquote><p>「不要聽 LinkedIn 網紅，不要看 Twitter。」</p></blockquote><p>成為頂尖使用者的方法是<strong>經驗性</strong>的：</p><ol><li>給模型一個困難任務</li><li>提供它自我檢查的工具</li><li>觀察它卡在哪裡</li><li>用更好的提示或 skill 補上那個缺口</li></ol><hr><h2 id="總結：真正會累積的資產是什麼？"><a href="#總結：真正會累積的資產是什麼？" class="headerlink" title="總結：真正會累積的資產是什麼？"></a>總結：真正會累積的資產是什麼？</h2><p>會隨時間折舊的是規範檔（CLAUDE.md）與評測集，因為模型一直在進化,今天寫的細則明天可能就過時。</p><p>真正留得住的資產,是<strong>「判斷該往哪裡優化」的那個人</strong>——這需要:</p><ul><li>設計判斷力</li><li>商業判斷力</li><li>與使用者對話、挖掘真實需求的能力</li></ul><p>換句話說,與其把時間花在雕琢完美的 prompt,不如把時間花在培養「看得出模型哪裡卡住、該怎麼補」的判斷力。這件事,不會因為模型換代而過時。</p><hr><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul><li><a href="https://www.bnext.com.tw/article/91670/claude-code-prompt-reduction-agent-verification">數位時代:狠砍80%系統指令!Claude Code之父揭AI心法</a></li><li>延伸閱讀:<a href="/2026/08/28/Claude-Code-Delete-ClaudeMd/">刪掉你的 CLAUDE.md!別再堆指令了,定期重建才是正解</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> AI </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> AI </tag>
+            
+            <tag> Claude </tag>
+            
+            <tag> 開發工具 </tag>
+            
+            <tag> Prompt Engineering </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得</title>
       <link href="/2026/08/05/Claude-Code-Skill-1/"/>
       <url>/2026/08/05/Claude-Code-Skill-1/</url>
@@ -24,9 +117,9 @@
             
             <tag> Claude </tag>
             
-            <tag> Skill </tag>
-            
             <tag> 開發工具 </tag>
+            
+            <tag> Skill </tag>
             
         </tags>
       
@@ -136,9 +229,9 @@
       
         <tags>
             
-            <tag> side-project </tag>
-            
             <tag> Next.js </tag>
+            
+            <tag> side-project </tag>
             
         </tags>
       
@@ -213,9 +306,9 @@
       
         <tags>
             
-            <tag> firebase </tag>
-            
             <tag> side-project </tag>
+            
+            <tag> firebase </tag>
             
         </tags>
       
@@ -240,9 +333,9 @@
       
         <tags>
             
-            <tag> side-project </tag>
-            
             <tag> Next.js </tag>
+            
+            <tag> side-project </tag>
             
         </tags>
       
@@ -267,9 +360,9 @@
       
         <tags>
             
-            <tag> side-project </tag>
-            
             <tag> Next.js </tag>
+            
+            <tag> side-project </tag>
             
         </tags>
       
@@ -294,9 +387,9 @@
       
         <tags>
             
-            <tag> side-project </tag>
-            
             <tag> Next.js </tag>
+            
+            <tag> side-project </tag>
             
             <tag> MongoDB </tag>
             
@@ -2737,9 +2830,9 @@
             
             <tag> 切版 </tag>
             
-            <tag> icon </tag>
-            
             <tag> animation </tag>
+            
+            <tag> icon </tag>
             
         </tags>
       

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證 本文整理自 Anthropic Claude Code 負責人 Boris Cherny 的分享。Boris 曾在 Meta 擔任五年首席工程師，著有《Programming TypeScript》一書，是 Claude Code 的創造者。  核心改變：系統提示大幅精簡2026 年 7 月推出 Opu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證">
+<meta property="og:url" content="https://eva813.github.io/2026/08/07/Claude-Code-Prompt-Reduction/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證 本文整理自 Anthropic Claude Code 負責人 Boris Cherny 的分享。Boris 曾在 Meta 擔任五年首席工程師，著有《Programming TypeScript》一書，是 Claude Code 的創造者。  核心改變：系統提示大幅精簡2026 年 7 月推出 Opu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-28T05:47:43.098Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Claude">
+<meta property="article:tag" content="開發工具">
+<meta property="article:tag" content="Prompt Engineering">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2026/08/07/Claude-Code-Prompt-Reduction/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2026/08/07/Claude-Code-Prompt-Reduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-08-07 00:00:00" itemprop="dateCreated datePublished" datetime="2026-08-07T00:00:00+08:00">2026-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-08-28 13:47:43" itemprop="dateModified" datetime="2026-08-28T13:47:43+08:00">2026-08-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="狠砍80-系統指令！Claude-Code之父揭AI心法：別細寫Prompt了，時間要花在驗證"><a href="#狠砍80-系統指令！Claude-Code之父揭AI心法：別細寫Prompt了，時間要花在驗證" class="headerlink" title="狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證"></a>狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證</h1><blockquote>
+<p>本文整理自 Anthropic Claude Code 負責人 Boris Cherny 的分享。Boris 曾在 Meta 擔任五年首席工程師，著有《Programming TypeScript》一書，是 Claude Code 的創造者。</p>
+</blockquote>
+<h2 id="核心改變：系統提示大幅精簡"><a href="#核心改變：系統提示大幅精簡" class="headerlink" title="核心改變：系統提示大幅精簡"></a>核心改變：系統提示大幅精簡</h2><p>2026 年 7 月推出 Opus 5 後，Anthropic <strong>把 Claude Code 的系統提示砍掉超過 80%</strong>。</p>
+<p>這是一個反直覺的決策——業界共識向來是「指令寫得越細越好」，但 Boris 反其道而行。</p>
+<h2 id="為什麼可以砍？"><a href="#為什麼可以砍？" class="headerlink" title="為什麼可以砍？"></a>為什麼可以砍？</h2><blockquote>
+<p>「那些指令原本是在修正模型『本來就該會、但當時不會』的行為，Opus 5 已經會了。」</p>
+</blockquote>
+<p>模型能力提升後，過去那些詳細的約束反而成為多餘的負擔。Boris 提到，模型在沒有繁瑣提示的狀態下<strong>其實聰明一點</strong>。</p>
+<h2 id="重心轉移：從「寫提示」到「驗證」"><a href="#重心轉移：從「寫提示」到「驗證」" class="headerlink" title="重心轉移：從「寫提示」到「驗證」"></a>重心轉移：從「寫提示」到「驗證」</h2><p>Boris 認為，真正該投資的不是提示詞工程，而是<strong>驗證</strong>——他形容這是「大多數人沒做對的那件最重要的事」。</p>
+<p>現代 AI 編碼的技能核心在於：</p>
+<blockquote>
+<p>給 Claude 一個看起來有點太難的任務，再讓它有辦法在過程中<strong>自己檢查成果</strong>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="具體方法論：刪除法評測（Ablation）"><a href="#具體方法論：刪除法評測（Ablation）" class="headerlink" title="具體方法論：刪除法評測（Ablation）"></a>具體方法論：刪除法評測（Ablation）</h2><p>Anthropic 內部採用「刪除法評測」，這是研究界的標準做法：</p>
+<ol>
+<li>把整段系統提示<strong>全部刪掉</strong></li>
+<li>照常使用，觀察模型行為</li>
+<li>只有在模型<strong>重複踩同一個坑</strong>時，才把那條指令加回去</li>
+<li>一行一行加回、逐行檢視實際影響</li>
+</ol>
+<h3 id="給一般使用者的建議"><a href="#給一般使用者的建議" class="headerlink" title="給一般使用者的建議"></a>給一般使用者的建議</h3><p>Boris 建議每個人都可以定期做這個實驗：</p>
+<blockquote>
+<p><strong>每六個月刪掉自己的 CLAUDE.md、skills 與 hooks，看看模型會怎麼做。</strong></p>
+</blockquote>
+<blockquote>
+<p>這句話後來也被工程師 Charlie Hills 拿去延伸成一套具體的操作流程，包含三個可以直接複製的審計 prompt，詳見〈<a href="/2026/08/28/Claude-Code-Delete-ClaudeMd/">刪掉你的 CLAUDE.md！別再堆指令了，定期重建才是正解</a>〉。</p>
+</blockquote>
+<hr>
+<h2 id="實驗案例：14-天不停的重寫任務"><a href="#實驗案例：14-天不停的重寫任務" class="headerlink" title="實驗案例：14 天不停的重寫任務"></a>實驗案例：14 天不停的重寫任務</h2><p>Boris 親自跑過一個實驗：用 Claude Tag 下達指令，要求把 Claude 的 Electron 桌面版<strong>改寫成 Swift 原生版</strong>，指令內容是：</p>
+<blockquote>
+<p>「改寫、在 Mac 虛擬機裡跑起來、截圖、逐像素比對，沒做完不要停。」</p>
+</blockquote>
+<p>結果這個任務<strong>運行了 14 到 15 天還沒停</strong>，過程中衍生出數千到數萬個代理（agents），Claude 甚至自行開設 Slack 頻道，定期上傳進度截圖回報。</p>
+<hr>
+<h2 id="評測集也會折舊"><a href="#評測集也會折舊" class="headerlink" title="評測集也會折舊"></a>評測集也會折舊</h2><p>Boris 坦言，評測集（eval set）並非一勞永逸的資產：</p>
+<ul>
+<li>大概只能活 <strong>1 到 3 個模型世代</strong></li>
+<li>因為模型進步太快，分數很快就會滿分飽和</li>
+<li>一旦滿分，就得整組重做</li>
+</ul>
+<h2 id="重要限制：不是所有問題都解決了"><a href="#重要限制：不是所有問題都解決了" class="headerlink" title="重要限制：不是所有問題都解決了"></a>重要限制：不是所有問題都解決了</h2><p>Boris 特別澄清，「編碼問題已經解決」這句話<strong>只對他做的那類程式成立</strong>，不適用所有場景。以下情境 Claude 仍會卡關：</p>
+<ul>
+<li>深層系統程式庫（deep systems libraries）</li>
+<li>分散式系統</li>
+<li>像素級的介面驗證</li>
+</ul>
+<h2 id="別跟風-要靠經驗累積判斷力"><a href="#別跟風-要靠經驗累積判斷力" class="headerlink" title="別跟風,要靠經驗累積判斷力"></a>別跟風,要靠經驗累積判斷力</h2><p>Boris 反對盲目跟風式的提示技巧：</p>
+<blockquote>
+<p>「不要聽 LinkedIn 網紅，不要看 Twitter。」</p>
+</blockquote>
+<p>成為頂尖使用者的方法是<strong>經驗性</strong>的：</p>
+<ol>
+<li>給模型一個困難任務</li>
+<li>提供它自我檢查的工具</li>
+<li>觀察它卡在哪裡</li>
+<li>用更好的提示或 skill 補上那個缺口</li>
+</ol>
+<hr>
+<h2 id="總結：真正會累積的資產是什麼？"><a href="#總結：真正會累積的資產是什麼？" class="headerlink" title="總結：真正會累積的資產是什麼？"></a>總結：真正會累積的資產是什麼？</h2><p>會隨時間折舊的是規範檔（CLAUDE.md）與評測集，因為模型一直在進化,今天寫的細則明天可能就過時。</p>
+<p>真正留得住的資產,是<strong>「判斷該往哪裡優化」的那個人</strong>——這需要:</p>
+<ul>
+<li>設計判斷力</li>
+<li>商業判斷力</li>
+<li>與使用者對話、挖掘真實需求的能力</li>
+</ul>
+<p>換句話說,與其把時間花在雕琢完美的 prompt,不如把時間花在培養「看得出模型哪裡卡住、該怎麼補」的判斷力。這件事,不會因為模型換代而過時。</p>
+<hr>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bnext.com.tw/article/91670/claude-code-prompt-reduction-agent-verification">數位時代:狠砍80%系統指令!Claude Code之父揭AI心法</a></li>
+<li>延伸閱讀:<a href="/2026/08/28/Claude-Code-Delete-ClaudeMd/">刪掉你的 CLAUDE.md!別再堆指令了,定期重建才是正解</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/Claude/" rel="tag"># Claude</a>
+              <a href="/tags/%E9%96%8B%E7%99%BC%E5%B7%A5%E5%85%B7/" rel="tag"># 開發工具</a>
+              <a href="/tags/Prompt-Engineering/" rel="tag"># Prompt Engineering</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/08/05/Claude-Code-Skill-1/" rel="prev" title="Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得">
+      <i class="fa fa-chevron-left"></i> Claude Code Skill 撰寫指南：Anthropic 工程師親授實戰心得
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/08/15/Stop-Using-JWT-For-Sessions/" rel="next" title="JWT 做登入這件事：一篇 Gist 引發的整理">
+      JWT 做登入這件事：一篇 Gist 引發的整理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8B%A0%E7%A0%8D80-%E7%B3%BB%E7%B5%B1%E6%8C%87%E4%BB%A4%EF%BC%81Claude-Code%E4%B9%8B%E7%88%B6%E6%8F%ADAI%E5%BF%83%E6%B3%95%EF%BC%9A%E5%88%A5%E7%B4%B0%E5%AF%ABPrompt%E4%BA%86%EF%BC%8C%E6%99%82%E9%96%93%E8%A6%81%E8%8A%B1%E5%9C%A8%E9%A9%97%E8%AD%89"><span class="nav-number">1.</span> <span class="nav-text">狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%94%B9%E8%AE%8A%EF%BC%9A%E7%B3%BB%E7%B5%B1%E6%8F%90%E7%A4%BA%E5%A4%A7%E5%B9%85%E7%B2%BE%E7%B0%A1"><span class="nav-number">1.1.</span> <span class="nav-text">核心改變：系統提示大幅精簡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E5%8F%AF%E4%BB%A5%E7%A0%8D%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">為什麼可以砍？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%BF%83%E8%BD%89%E7%A7%BB%EF%BC%9A%E5%BE%9E%E3%80%8C%E5%AF%AB%E6%8F%90%E7%A4%BA%E3%80%8D%E5%88%B0%E3%80%8C%E9%A9%97%E8%AD%89%E3%80%8D"><span class="nav-number">1.3.</span> <span class="nav-text">重心轉移：從「寫提示」到「驗證」</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E9%AB%94%E6%96%B9%E6%B3%95%E8%AB%96%EF%BC%9A%E5%88%AA%E9%99%A4%E6%B3%95%E8%A9%95%E6%B8%AC%EF%BC%88Ablation%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">具體方法論：刪除法評測（Ablation）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%A6%E4%B8%80%E8%88%AC%E4%BD%BF%E7%94%A8%E8%80%85%E7%9A%84%E5%BB%BA%E8%AD%B0"><span class="nav-number">1.4.1.</span> <span class="nav-text">給一般使用者的建議</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E9%A9%97%E6%A1%88%E4%BE%8B%EF%BC%9A14-%E5%A4%A9%E4%B8%8D%E5%81%9C%E7%9A%84%E9%87%8D%E5%AF%AB%E4%BB%BB%E5%8B%99"><span class="nav-number">1.5.</span> <span class="nav-text">實驗案例：14 天不停的重寫任務</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A9%95%E6%B8%AC%E9%9B%86%E4%B9%9F%E6%9C%83%E6%8A%98%E8%88%8A"><span class="nav-number">1.6.</span> <span class="nav-text">評測集也會折舊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E8%A6%81%E9%99%90%E5%88%B6%EF%BC%9A%E4%B8%8D%E6%98%AF%E6%89%80%E6%9C%89%E5%95%8F%E9%A1%8C%E9%83%BD%E8%A7%A3%E6%B1%BA%E4%BA%86"><span class="nav-number">1.7.</span> <span class="nav-text">重要限制：不是所有問題都解決了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A5%E8%B7%9F%E9%A2%A8-%E8%A6%81%E9%9D%A0%E7%B6%93%E9%A9%97%E7%B4%AF%E7%A9%8D%E5%88%A4%E6%96%B7%E5%8A%9B"><span class="nav-number">1.8.</span> <span class="nav-text">別跟風,要靠經驗累積判斷力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90%EF%BC%9A%E7%9C%9F%E6%AD%A3%E6%9C%83%E7%B4%AF%E7%A9%8D%E7%9A%84%E8%B3%87%E7%94%A2%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F"><span class="nav-number">1.9.</span> <span class="nav-text">總結：真正會累積的資產是什麼？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">1.10.</span> <span class="nav-text">參考資料</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">86</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eva813.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在前端 &#x2F; 後端開發圈，「用 JWT 做登入驗證」幾乎已經是預設選項，很多教學、範例專案打開就是 jsonwebtoken 直接簽一包塞進 cookie 或 localStorage。但 Stop using JWTs! 這篇 Gist 提出了一個很直接的反對意見：  JWTs should not be used for keeping your user logged in. They are">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JWT 做登入這件事：一篇 Gist 引發的整理">
+<meta property="og:url" content="https://eva813.github.io/2026/08/15/Stop-Using-JWT-For-Sessions/index.html">
+<meta property="og:site_name" content="Let&#39;s Coding">
+<meta property="og:description" content="在前端 &#x2F; 後端開發圈，「用 JWT 做登入驗證」幾乎已經是預設選項，很多教學、範例專案打開就是 jsonwebtoken 直接簽一包塞進 cookie 或 localStorage。但 Stop using JWTs! 這篇 Gist 提出了一個很直接的反對意見：  JWTs should not be used for keeping your user logged in. They are">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-28T02:53:16.117Z">
+<meta property="article:author" content="Eva Chan">
+<meta property="article:tag" content="JWT">
+<meta property="article:tag" content="Session">
+<meta property="article:tag" content="Web Security">
+<meta property="article:tag" content="後端">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eva813.github.io/2026/08/15/Stop-Using-JWT-For-Sessions/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JWT 做登入這件事：一篇 Gist 引發的整理 | Let's Coding</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Let's Coding" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Let's Coding</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2026/08/15/Stop-Using-JWT-For-Sessions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Let's Coding">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JWT 做登入這件事：一篇 Gist 引發的整理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-08-15 00:00:00" itemprop="dateCreated datePublished" datetime="2026-08-15T00:00:00+08:00">2026-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-08-28 10:53:16" itemprop="dateModified" datetime="2026-08-28T10:53:16+08:00">2026-08-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web-Security/" itemprop="url" rel="index"><span itemprop="name">Web Security</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在前端 / 後端開發圈，「用 JWT 做登入驗證」幾乎已經是預設選項，很多教學、範例專案打開就是 <code>jsonwebtoken</code> 直接簽一包塞進 cookie 或 localStorage。但 <a target="_blank" rel="noopener" href="https://gist.github.com/samsch/0d1f3d3b4745d778f78b230cf6061452">Stop using JWTs!</a> 這篇 Gist 提出了一個很直接的反對意見：</p>
+<blockquote>
+<p>JWTs should not be used for keeping your user logged in. They are not designed for this purpose, they are not secure, and there is a much better tool which is designed for it: regular cookie sessions.</p>
+</blockquote>
+<p>這篇文章記錄我讀完之後的整理，包含作者的核心論點、對常見反駁的回應，以及我自己在實務上觀察到的紀錄分享。</p>
+<span id="more"></span>
+
+<h2 id="先講結論：JWT-不等於「安全的登入機制」"><a href="#先講結論：JWT-不等於「安全的登入機制」" class="headerlink" title="先講結論：JWT 不等於「安全的登入機制」"></a>先講結論：JWT 不等於「安全的登入機制」</h2><p>很多人把 JWT 跟「安全」畫上等號，但這其實是規格用途上的誤會。作者的主張很清楚：<strong>JWT 不是為「維持登入狀態」這種長生命週期的場景設計的</strong>，硬拿來用，反而會犧牲安全性跟彈性。</p>
+<h2 id="作者的三個核心論點"><a href="#作者的三個核心論點" class="headerlink" title="作者的三個核心論點"></a>作者的三個核心論點</h2><h3 id="1-JWT-適合的場景是短生命週期"><a href="#1-JWT-適合的場景是短生命週期" class="headerlink" title="1. JWT 適合的場景是短生命週期"></a>1. JWT 適合的場景是短生命週期</h3><p>作者主張 JWT 適合的使用情境是極短的存活時間，實務上通常建議 5 分鐘或更短——這是把它當「一次性授權憑證」的用法。而一般使用者的登入 session 動輒數小時、數天甚至數週，已經超出這個原本適用的範圍。</p>
+<p>（RFC 7519 本身並沒有規定 token 的存活時間，「5 分鐘」是作者跟主流資安實務的建議，不是規格明文規定。）</p>
+<h3 id="2-「無狀態」認證在安全實踐上不成立"><a href="#2-「無狀態」認證在安全實踐上不成立" class="headerlink" title="2.「無狀態」認證在安全實踐上不成立"></a>2.「無狀態」認證在安全實踐上不成立</h3><p>這是整篇文章關鍵的一點。JWT 常被包裝成「無狀態（stateless）」的賣點——伺服器不用查資料庫，直接驗簽章就能信任 token。但作者引用 <a target="_blank" rel="noopener" href="http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/">joepie91 的文章</a> 指出：</p>
+<ul>
+<li>真正安全的認證機制，仍然需要某種方式維持狀態（例如：token 被撤銷、使用者被登出、密碼被重設後舊 token 要失效）</li>
+<li>既然最終還是得存一份狀態資料，那不如直接存完整的 session 資料，而不是先簽一個 JWT，之後還要另外處理撤銷、黑名單這些「無狀態」處理不了的問題</li>
+</ul>
+<p>換句話說，「無狀態」在話術上很吸引人，但落地到真實系統時，往往只是把狀態管理的複雜度換了個地方藏起來，而不是真的消失。</p>
+<p>規格本身在資安圈的評價也不高——<a target="_blank" rel="noopener" href="https://paragonie.com/blog/2017/03/jwt-json-web-tokens-is-bad-standard-that-everyone-should-avoid">Paragon Initiative 的文章</a> 指出，JWT 規格甚至允許偽造 token（例如惡名昭彰的 <code>alg: none</code> 問題），這種先天缺陷讓人擔心還有其他沒被發現的坑。</p>
+<h3 id="3-效率跟靈活性都不如傳統-session"><a href="#3-效率跟靈活性都不如傳統-session" class="headerlink" title="3. 效率跟靈活性都不如傳統 session"></a>3. 效率跟靈活性都不如傳統 session</h3><p>如果 JWT 裡面存的東西本質上就是一組 session 資訊，那用 JWT 存反而比傳統 session cookie 更沒效率、更不靈活——因為每次都要把整包資料塞進 token 裡傳來傳去，而不是伺服器端存一份、client 只帶一個輕量的 session id。</p>
+<h2 id="常見反駁，作者怎麼回應"><a href="#常見反駁，作者怎麼回應" class="headerlink" title="常見反駁，作者怎麼回應"></a>常見反駁，作者怎麼回應</h2><p>以下這些反駁幾乎就是我自己心裡會出現的疑問。</p>
+<h3 id="「Google-不是也在用-JWT-嗎？」"><a href="#「Google-不是也在用-JWT-嗎？」" class="headerlink" title="「Google 不是也在用 JWT 嗎？」"></a>「Google 不是也在用 JWT 嗎？」</h3><p>作者的回應是：Google 在瀏覽器裡維持使用者登入狀態，用的其實是<strong>傳統的簽章加密 cookie session</strong>（例如 <code>SID</code>、<code>HSID</code> 這類 cookie，記錄帳號 ID 與最近登入時間），JWT 只出現在單一登入（SSO）情境——把「某伺服器上已登入」這件事轉換成「另一個伺服器也承認你已登入」的傳輸媒介。這正好符合 JWT 原本設計的短生命週期、單次驗證用途，而不是拿來當作日常登入狀態的儲存機制。</p>
+<h3 id="「無狀態架構比較潮，效能比較好吧？」"><a href="#「無狀態架構比較潮，效能比較好吧？」" class="headerlink" title="「無狀態架構比較潮，效能比較好吧？」"></a>「無狀態架構比較潮，效能比較好吧？」</h3><p>作者的回應很直接：完全無狀態的認證在安全上做不到。可以參考另一篇他寫的 <a target="_blank" rel="noopener" href="https://gist.github.com/samsch/259517828ab4557c5c8b72ca1252992d">Stateless is a lie</a>。追求「無狀態」這個目標本身，可能就已經走偏了方向。</p>
+<h3 id="「我不知道怎麼設定-session，JWT-比較簡單」"><a href="#「我不知道怎麼設定-session，JWT-比較簡單」" class="headerlink" title="「我不知道怎麼設定 session，JWT 比較簡單」"></a>「我不知道怎麼設定 session，JWT 比較簡單」</h3><p>這其實是最常見的理由。作者的回應是：session 不是新技術，只是這幾年因為 JWT 太紅，相關教學變少、顯得比較「過時」而已。絕大多數後端框架（Rails、Django、Laravel 等）都內建或很容易整合 session 機制；Node.js 生態因為高度模組化，需要自己組裝，可以搭配 <a target="_blank" rel="noopener" href="https://github.com/expressjs/session"><code>express-session</code></a> 加上 store（例如 <code>connect-session-knex</code> 接 PostgreSQL / MySQL）。</p>
+<p>流程上跟 JWT 最大的差異在於：伺服器端保有一份「這個 session id 目前是誰、有沒有效」的紀錄，撤銷、登出、強制過期都只是改一筆資料，不需要額外設計黑名單機制。</p>
+<h3 id="那真的需要短期-token-怎麼辦？"><a href="#那真的需要短期-token-怎麼辦？" class="headerlink" title="那真的需要短期 token 怎麼辦？"></a>那真的需要短期 token 怎麼辦？</h3><p>作者建議可以考慮 <a target="_blank" rel="noopener" href="https://paseto.io/">PASETO</a>——一個從設計之初就把安全性放在第一位的規格，用來取代 JWT 在一次性授權、跨服務短暫驗證這類場景的角色。但作者也強調：<strong>PASETO 一樣不該拿來做 session 管理</strong>。這個界線也呼應 <a target="_blank" rel="noopener" href="https://owasp.org/www-chapter-vancouver/assets/presentations/2020-01_Attacking_and_Securing_JWT.pdf">OWASP Vancouver 的簡報</a> 提到的 JWT 合理用途：授權（authorization）而非會話管理、存活時間短、預期只使用一次（驗證完就去換取真正的 session）。</p>
+<h2 id="換個角度看：JWT-和-Session-未必是二選一"><a href="#換個角度看：JWT-和-Session-未必是二選一" class="headerlink" title="換個角度看：JWT 和 Session 未必是二選一"></a>換個角度看：JWT 和 Session 未必是二選一</h2><p>整理完 Gist 的論點之後，我又讀到另一篇角度更中立的文章 <a target="_blank" rel="noopener" href="https://www.chia1104.dev/posts/jwt-vs-session-cookie-authentication-differences">《JWT 跟 Session Cookie 登入認證的差異》</a>（作者 chia1104），是從面試官視角出發，把兩種機制的實務做法拆得很細，剛好補上 Gist 那篇比較強硬立場沒講到的東西。</p>
+<h3 id="JWT-的「refresh」跟-Session-的「refresh」其實是兩件事"><a href="#JWT-的「refresh」跟-Session-的「refresh」其實是兩件事" class="headerlink" title="JWT 的「refresh」跟 Session 的「refresh」其實是兩件事"></a>JWT 的「refresh」跟 Session 的「refresh」其實是兩件事</h3><p>這是原文講得最清楚、也是我自己之前最容易搞混的地方：</p>
+<ul>
+<li><strong>JWT 的 refresh</strong>：短命的 <code>access_token</code> 搭配長命的 <code>refresh_token</code>。<code>access_token</code> 過期後，前端拿 <code>refresh_token</code> 去換一顆<strong>全新的</strong> <code>access_token</code>，整包內容換掉，兩者通常都存在 <code>localStorage</code>。</li>
+<li><strong>Session Cookie 的「refresh」</strong>：正式名稱是 sliding expiration，伺服器在每次合法請求時，把該筆 Session 在 store（例如 Redis）裡的過期時間往後延，瀏覽器手上的 <code>sessionId</code> cookie <strong>整個登入期間通常不會變</strong>。</li>
+</ul>
+<p>同樣叫「刷新」，一個是發新證件，一個是幫舊證件延簽，機制完全不是同一個層次的東西。</p>
+<h3 id="兩者的實務比較"><a href="#兩者的實務比較" class="headerlink" title="兩者的實務比較"></a>兩者的實務比較</h3><p>原文附了一張比較表，我把重點摘錄如下（表格整理自原文，完整細節與案例可見<a target="_blank" rel="noopener" href="https://www.chia1104.dev/posts/jwt-vs-session-cookie-authentication-differences">原文連結</a>）：</p>
+<table>
+<thead>
+<tr>
+<th>面向</th>
+<th>JWT（Bearer token）</th>
+<th>Session Cookie</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>狀態存放</td>
+<td>無狀態，登入資訊在 token 本身，前端保存</td>
+<td>有狀態，資訊存在後端 Session store，前端只存 sessionId</td>
+</tr>
+<tr>
+<td>擴充性</td>
+<td>適合多服務、跨網域、微服務架構</td>
+<td>單機或搭配 Redis 共享即可，適合一般規模系統</td>
+</tr>
+<tr>
+<td>撤銷登出</td>
+<td>純無狀態下難以即時撤銷，需要黑名單機制</td>
+<td>伺服器刪 Session 即可即時生效</td>
+</tr>
+<tr>
+<td>安全風險</td>
+<td>為了塞進 <code>Authorization</code> header，通常放 localStorage，JS 讀得到，XSS 得手就能直接冒用</td>
+<td>Cookie 只是隨機 ID，可搭配 HttpOnly／Secure／SameSite，JS 完全讀不到</td>
+</tr>
+<tr>
+<td>適用情境</td>
+<td>SPA、行動 App、對外 API、微服務</td>
+<td>傳統 Web、後台系統、單體架構</td>
+</tr>
+</tbody></table>
+<p>安全風險那一列是重點：JWT 存 localStorage 之所以危險，正是因為它「必須」被 JS 讀到才能塞進 header；而 session cookie 之所以能相對安全，是因為它可以走 HttpOnly，瀏覽器會自動帶、JS 完全碰不到。</p>
+<h3 id="跟-Gist-文章的差異"><a href="#跟-Gist-文章的差異" class="headerlink" title="跟 Gist 文章的差異"></a>跟 Gist 文章的差異</h3><p>Gist 作者是資安背景，結論偏向「乾脆別在 session 場景用 JWT」；chia1104 這篇則更貼近多數團隊的實際狀況——他認為兩者很少是純二選一，常見做法反而是<strong>混搭</strong>：Web 前台用 Session Cookie 管登入狀態，服務與服務之間、或對外開放的 API，再用 JWT 做授權資訊傳遞。專案規模小、單一後端時，Session Cookie 通常更好維護；一旦拆成微服務或要對外開 API，JWT「自我描述、可跨服務驗證」的特性才真正派上用場。</p>
+<p>這點我覺得比 Gist 的立場更貼近現實：兩篇合在一起讀反而更完整——一篇提醒你 JWT 的代價常被低估，一篇提醒你選型該看架構規模。</p>
+<h2 id="一個實際的案例：寫好的-refresh-機制，不代表真的有在跑"><a href="#一個實際的案例：寫好的-refresh-機制，不代表真的有在跑" class="headerlink" title="一個實際的案例：寫好的 refresh 機制，不代表真的有在跑"></a>一個實際的案例：寫好的 refresh 機制，不代表真的有在跑</h2><p>這是我自己在實務上觀察到、覺得值得記錄下來的一個狀況：</p>
+<p>一個 Vue 3 + Pinia 的前端專案，登入機制是典型的 JWT 模式。拆開來看每個角色的分工，會比條列規格更容易懂：</p>
+<ul>
+<li><strong>後端</strong>：登入成功時，決定「這 token 到哪個時間點為止有效」，把這個 Unix 時間戳當一個獨立欄位（<code>expiration</code>）連同 <code>token / type</code> 一起回傳；之後每次請求，只驗證 token 的簽章沒被竄改、再拿 <code>expiration</code> 跟伺服器自己當下的時間比對，完全不查任何「這個人現在是否登入中」的紀錄——這就是「無狀態」的具體樣子</li>
+<li><strong>localStorage</strong>：單純的持久化儲存，本身不會主動變化，只有在登入成功、refresh 成功、登出這三個時機，才會被程式碼整包覆寫或清除</li>
+<li><strong>Pinia store</strong>：把 localStorage 的內容鏡射一份到記憶體，讓畫面能用 <code>isLogin</code> 這種 computed 直接判斷登入狀態；這份鏡像<strong>不會自動</strong>跟 localStorage 同步，而是同一個 <code>setToken()</code> 動作裡手動把兩邊各寫一次</li>
+<li><strong>axios request interceptor</strong>：每次送出請求前，都重新從 localStorage 讀一次最新 token 塞進 <code>Authorization</code> header——不是快取住舊值，所以 localStorage 一被更新，下一個請求就自動吃到新 token</li>
+<li><strong>過期判斷</strong>：前端自己拿 <code>expiration</code> 這個時間戳跟現在時間比對。要注意這不是「前端 token 跟後端比」，而是前後端<strong>各自拿同一份 <code>expiration</code>，各自跟自己手上的時間比</strong>——兩邊互不通訊，只是剛好比的是同一個數字。前端這一比只是「別浪費一次注定失敗的請求」的 UX 優化，不是安全機制；真正決定放不放行的，永遠是後端驗證簽章跟過期時間那一關</li>
+</ul>
+<blockquote>
+<p>附帶一個技術細節：標準 JWT 會把過期時間放在 payload 的 <code>exp</code> claim 裡，後端解簽章時直接讀出來就好；這個專案額外再回一個 <code>expiration</code> 欄位，是為了讓前端完全不用解 JWT payload。這是一個刻意的封裝設計——後端保留隨時調整 JWT 內部結構的自由，前端也不會因為讀了 payload 而對它產生隱形依賴：<code>expiration</code> 對前端來說只是 API 回傳的一個欄位，不是「前端懂了 JWT 裡面裝什麼」。</p>
+</blockquote>
+<h3 id="這樣算不算「保持登入」？算，但只有一半"><a href="#這樣算不算「保持登入」？算，但只有一半" class="headerlink" title="這樣算不算「保持登入」？算，但只有一半"></a>這樣算不算「保持登入」？算，但只有一半</h3><p>拆開角色之後，會發現「保持登入」其實可以分成兩種完全不同的能力，這個專案只做到第一種：</p>
+<ul>
+<li><strong>做到的（session persistence，工作階段持久化）</strong>：使用者重新整理頁面、關掉分頁、隔天再打開網站，只要 token 還沒過期，App 啟動時的檢查邏輯就會直接沿用 localStorage 裡的舊 token，讓使用者維持登入狀態——這是靠「一顆效期夠長的 token ＋ 持久化儲存」撐出來的</li>
+<li><strong>沒做到的（silent renewal，無感續期）</strong>：一旦 <code>expiration</code> 那個時間點真正到了，不管使用者當下多活躍、正在操作到一半，下一次打 API 就是直接被判定過期。<strong>沒有任何機制會在背景默默換一新 token 延續下去</strong>——這種「無感延續」才是一般人講「保持登入」時真正期待的效果，而它需要額外的 refresh 機制才做得到</li>
+</ul>
+<p>這兩個詞值得刻意分開記：session persistence 靠儲存就能達成，silent renewal 才需要 refresh 機制——這個專案有前者、沒有後者。</p>
+<p>這個落差看程式碼會更清楚：仔細看 response interceptor 處理 401 的地方，會發現一個很寫實的細節——<strong>當初確實把「用 refresh_token 換新 access_token、排隊重試失敗請求」這整套邏輯寫出來過</strong>，寫法跟前面 chia1104 文章那張流程圖幾乎一致，但這段程式碼<strong>整段被註解掉</strong>，實際運作的行為只是「401 就直接登出、導回登入頁」。理論上想過、也寫過，只是沒有真正跑在線上——通常不是設計錯了，而是 refresh 排隊邏輯的邊界情況（多個請求同時 401、refresh token 也過期）比想像中難測乾淨，時程壓力下先上「401 直接登出」這個穩定版本，剩下的就無限期擱置。</p>
+<blockquote>
+<p>順帶一提一個容易誤導人的小細節：登入畫面上的「記住我」核取方塊，其實跟 token 有沒有存起來完全無關——不管有沒有勾選，<code>setToken()</code> 都無條件會把 token 寫進 localStorage。這個核取方塊真正影響的，只是下次打開登入頁時帳號欄位要不要幫你預填。如果只看 UI，很容易誤以為「保持登入」是靠這個核取方塊控制的，但實際上它完全不參與這件事。</p>
+</blockquote>
+<p>這剛好印證了 Gist 那篇文章的核心論點：<strong>JWT 的「無狀態」優勢，需要額外的狀態管理機制才能安全撤銷／刷新，而這套機制的實作與維護成本，很容易在真實專案的時程壓力下被犧牲掉</strong>，最後留下的是一個「效期內免重新登入，但效期一到就得整個重來」的系統——理論上有 refresh 設計，實際上從未真正運作過。</p>
+<p>說到底，這個系統的登入壽命就是 token 的效期，一秒不多不少：在時間內做任何事（reload、關分頁、隔天再打開）都能保持登入，壽命一到，不管使用者在做什麼，就是結束。</p>
+<h2 id="結論與觀察"><a href="#結論與觀察" class="headerlink" title="結論與觀察"></a>結論與觀察</h2><p>這篇 Gist 的價值不在於「JWT 是不好東西」這種一刀切的結論，而在於提醒我們：<strong>技術選型要對應到它原本被設計要解決的問題</strong>。JWT 被設計來處理短生命週期、一次性、跨服務的信任傳遞問題；而「讓使用者維持登入」這件事，傳統的 cookie session 其實一直都做得比較好、也比較好維護。</p>
+<p>讀完兩篇之後，補充兩個比較落地的觀察：</p>
+<ul>
+<li><strong>選 JWT 的理由如果是「session 設定太麻煩」，那多半是被 Node.js 生態的模組化嚇到，而不是 session 本身真的難用</strong>。其他主流框架的 session 大多是開箱即用等級。</li>
+<li>如果未來要做無密碼登入或更現代的驗證方式，<a target="_blank" rel="noopener" href="https://webauthn.io/">Passkeys / WebAuthn</a> 反而是更值得研究的方向，跟這篇文章談的「session vs JWT」是互補而非互斥的議題。</li>
+</ul>
+<p>下次在專案裡看到「要不要用 JWT 做登入」這個選擇時，值得先停下來想一句：我需要的到底是「驗證身份的短期憑證」，還是「使用者的登入狀態」？這兩者用同一個工具解決，很可能就是問題的起點。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JWT/" rel="tag"># JWT</a>
+              <a href="/tags/Session/" rel="tag"># Session</a>
+              <a href="/tags/Web-Security/" rel="tag"># Web Security</a>
+              <a href="/tags/%E5%BE%8C%E7%AB%AF/" rel="tag"># 後端</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/08/07/Claude-Code-Prompt-Reduction/" rel="prev" title="狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證">
+      <i class="fa fa-chevron-left"></i> 狠砍80%系統指令！Claude Code之父揭AI心法：別細寫Prompt了，時間要花在驗證
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/08/28/Claude-Code-Delete-ClaudeMd/" rel="next" title="刪掉你的 CLAUDE.md！別再堆指令了，定期重建才是正解">
+      刪掉你的 CLAUDE.md！別再堆指令了，定期重建才是正解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E8%AC%9B%E7%B5%90%E8%AB%96%EF%BC%9AJWT-%E4%B8%8D%E7%AD%89%E6%96%BC%E3%80%8C%E5%AE%89%E5%85%A8%E7%9A%84%E7%99%BB%E5%85%A5%E6%A9%9F%E5%88%B6%E3%80%8D"><span class="nav-number">1.</span> <span class="nav-text">先講結論：JWT 不等於「安全的登入機制」</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E8%80%85%E7%9A%84%E4%B8%89%E5%80%8B%E6%A0%B8%E5%BF%83%E8%AB%96%E9%BB%9E"><span class="nav-number">2.</span> <span class="nav-text">作者的三個核心論點</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-JWT-%E9%81%A9%E5%90%88%E7%9A%84%E5%A0%B4%E6%99%AF%E6%98%AF%E7%9F%AD%E7%94%9F%E5%91%BD%E9%80%B1%E6%9C%9F"><span class="nav-number">2.1.</span> <span class="nav-text">1. JWT 適合的場景是短生命週期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E3%80%8C%E7%84%A1%E7%8B%80%E6%85%8B%E3%80%8D%E8%AA%8D%E8%AD%89%E5%9C%A8%E5%AE%89%E5%85%A8%E5%AF%A6%E8%B8%90%E4%B8%8A%E4%B8%8D%E6%88%90%E7%AB%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2.「無狀態」認證在安全實踐上不成立</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%95%88%E7%8E%87%E8%B7%9F%E9%9D%88%E6%B4%BB%E6%80%A7%E9%83%BD%E4%B8%8D%E5%A6%82%E5%82%B3%E7%B5%B1-session"><span class="nav-number">2.3.</span> <span class="nav-text">3. 效率跟靈活性都不如傳統 session</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A6%8B%E5%8F%8D%E9%A7%81%EF%BC%8C%E4%BD%9C%E8%80%85%E6%80%8E%E9%BA%BC%E5%9B%9E%E6%87%89"><span class="nav-number">3.</span> <span class="nav-text">常見反駁，作者怎麼回應</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%8CGoogle-%E4%B8%8D%E6%98%AF%E4%B9%9F%E5%9C%A8%E7%94%A8-JWT-%E5%97%8E%EF%BC%9F%E3%80%8D"><span class="nav-number">3.1.</span> <span class="nav-text">「Google 不是也在用 JWT 嗎？」</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%8C%E7%84%A1%E7%8B%80%E6%85%8B%E6%9E%B6%E6%A7%8B%E6%AF%94%E8%BC%83%E6%BD%AE%EF%BC%8C%E6%95%88%E8%83%BD%E6%AF%94%E8%BC%83%E5%A5%BD%E5%90%A7%EF%BC%9F%E3%80%8D"><span class="nav-number">3.2.</span> <span class="nav-text">「無狀態架構比較潮，效能比較好吧？」</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%8C%E6%88%91%E4%B8%8D%E7%9F%A5%E9%81%93%E6%80%8E%E9%BA%BC%E8%A8%AD%E5%AE%9A-session%EF%BC%8CJWT-%E6%AF%94%E8%BC%83%E7%B0%A1%E5%96%AE%E3%80%8D"><span class="nav-number">3.3.</span> <span class="nav-text">「我不知道怎麼設定 session，JWT 比較簡單」</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%A3%E7%9C%9F%E7%9A%84%E9%9C%80%E8%A6%81%E7%9F%AD%E6%9C%9F-token-%E6%80%8E%E9%BA%BC%E8%BE%A6%EF%BC%9F"><span class="nav-number">3.4.</span> <span class="nav-text">那真的需要短期 token 怎麼辦？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%9B%E5%80%8B%E8%A7%92%E5%BA%A6%E7%9C%8B%EF%BC%9AJWT-%E5%92%8C-Session-%E6%9C%AA%E5%BF%85%E6%98%AF%E4%BA%8C%E9%81%B8%E4%B8%80"><span class="nav-number">4.</span> <span class="nav-text">換個角度看：JWT 和 Session 未必是二選一</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT-%E7%9A%84%E3%80%8Crefresh%E3%80%8D%E8%B7%9F-Session-%E7%9A%84%E3%80%8Crefresh%E3%80%8D%E5%85%B6%E5%AF%A6%E6%98%AF%E5%85%A9%E4%BB%B6%E4%BA%8B"><span class="nav-number">4.1.</span> <span class="nav-text">JWT 的「refresh」跟 Session 的「refresh」其實是兩件事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A9%E8%80%85%E7%9A%84%E5%AF%A6%E5%8B%99%E6%AF%94%E8%BC%83"><span class="nav-number">4.2.</span> <span class="nav-text">兩者的實務比較</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9F-Gist-%E6%96%87%E7%AB%A0%E7%9A%84%E5%B7%AE%E7%95%B0"><span class="nav-number">4.3.</span> <span class="nav-text">跟 Gist 文章的差異</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%80%8B%E5%AF%A6%E9%9A%9B%E7%9A%84%E6%A1%88%E4%BE%8B%EF%BC%9A%E5%AF%AB%E5%A5%BD%E7%9A%84-refresh-%E6%A9%9F%E5%88%B6%EF%BC%8C%E4%B8%8D%E4%BB%A3%E8%A1%A8%E7%9C%9F%E7%9A%84%E6%9C%89%E5%9C%A8%E8%B7%91"><span class="nav-number">5.</span> <span class="nav-text">一個實際的案例：寫好的 refresh 機制，不代表真的有在跑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%99%E6%A8%A3%E7%AE%97%E4%B8%8D%E7%AE%97%E3%80%8C%E4%BF%9D%E6%8C%81%E7%99%BB%E5%85%A5%E3%80%8D%EF%BC%9F%E7%AE%97%EF%BC%8C%E4%BD%86%E5%8F%AA%E6%9C%89%E4%B8%80%E5%8D%8A"><span class="nav-number">5.1.</span> <span class="nav-text">這樣算不算「保持登入」？算，但只有一半</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AB%96%E8%88%87%E8%A7%80%E5%AF%9F"><span class="nav-number">6.</span> <span class="nav-text">結論與觀察</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eva Chan"
+      src="/images/eva-round.png">
+  <p class="site-author-name" itemprop="name">Eva Chan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">86</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Eva813" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Eva813" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eva Chan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
