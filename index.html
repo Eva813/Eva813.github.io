@@ -181,6 +181,166 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2026/10/10/Colab-Breeze-ASR-25/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eva-round.png">
+      <meta itemprop="name" content="Eva Chan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eva's Dev Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/10/10/Colab-Breeze-ASR-25/" class="post-title-link" itemprop="url">用 Colab 免費 GPU 與 Breeze ASR 25，把錄音轉成正體中文逐字稿</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-10-10 00:00:00" itemprop="dateCreated datePublished" datetime="2026-10-10T00:00:00+08:00">2026-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-10-13 20:29:25" itemprop="dateModified" datetime="2026-10-13T20:29:25+08:00">2026-10-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近有些錄音需要轉成文字，但手動整理非常耗時。需求很單純：聽得懂台灣口音與中英夾雜、輸出是正體中文、成本越低越好。因此，我決定嘗試用 Colab 免費 GPU 搭配 Breeze ASR 25 來自動化這個流程。</p>
+<p>這篇記錄我用 Google Colab 的免費 GPU，搭配聯發創新基地開源的 <a target="_blank" rel="noopener" href="https://huggingface.co/MediaTek-Research/Breeze-ASR-25">Breeze ASR 25</a>，做出一個可批次、可續跑的轉錄流程。</p>
+<h2 id="方案比較：本機、雲端-API，還是借-GPU"><a href="#方案比較：本機、雲端-API，還是借-GPU" class="headerlink" title="方案比較：本機、雲端 API，還是借 GPU"></a>方案比較：本機、雲端 API，還是借 GPU</h2><p>一次性的批次轉錄，使用 Colab 免費 GPU 跑開源模型最划算。三種做法的取捨如下：</p>
+<table>
+<thead>
+<tr>
+<th>做法</th>
+<th>優點</th>
+<th>缺點</th>
+<th>適合情境</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本機執行</td>
+<td>錄音不離開電腦</td>
+<td>需要夠力的硬體，環境要自己裝</td>
+<td>內容敏感，且有 Apple Silicon 或獨立顯卡</td>
+</tr>
+<tr>
+<td>雲端 API</td>
+<td>幾行程式就能用，速度快</td>
+<td>按量計費，錄音要上傳第三方</td>
+<td>想最快拿到結果</td>
+</tr>
+<tr>
+<td>Colab 加開源模型</td>
+<td>免費，可選台灣在地模型</td>
+<td>工作階段會中斷，流程要自己寫</td>
+<td>批次、非即時的需求</td>
+</tr>
+</tbody></table>
+<p>模型選 Breeze ASR 25 的理由有三個：它以 Whisper-large-v2 微調，專門針對台灣華語與中英夾雜；採 Apache 2.0 授權可免費使用；模型約 3 GB，免費的 T4 顯卡就跑得動。</p>
+<h2 id="整體架構"><a href="#整體架構" class="headerlink" title="整體架構"></a>整體架構</h2><ol>
+<li>錄音檔（m4a）放進 Google Drive 的 <code>transcribe/audio</code></li>
+<li>ffmpeg 把音檔解碼成 16 kHz 單聲道的浮點數陣列</li>
+<li>Breeze ASR 25 把陣列轉成帶時間戳的文字段落</li>
+<li>每個音檔寫出兩份 txt 到 <code>transcribe/output</code></li>
+</ol>
+<p>Colab 是用完即丟的虛擬機，所以輸入和輸出都放在雲端空間，就算斷線，已經存好的成果也不會遺失。</p>
+<p>整份 notebook 只有六段程式碼，由上到下依序執行。前四段是準備，後兩段才真正轉錄：</p>
+<table>
+<thead>
+<tr>
+<th>段</th>
+<th>目的</th>
+<th>執行後得到什麼</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 確認 GPU</td>
+<td>檢查有沒有拿到顯卡</td>
+<td>印出 GPU 名稱</td>
+</tr>
+<tr>
+<td>2 掛載 Google Drive</td>
+<td>連上雲端硬碟，設定輸入與輸出資料夾</td>
+<td><code>list_audio()</code> 函式與音檔清單</td>
+</tr>
+<tr>
+<td>3 載入模型</td>
+<td>下載權重，組成轉錄管線</td>
+<td>可直接呼叫的 <code>asr</code> 物件</td>
+</tr>
+<tr>
+<td>4 定義函式</td>
+<td>音檔前處理、時間格式化、轉錄</td>
+<td><code>load_audio</code>、<code>fmt</code>、<code>transcribe</code></td>
+</tr>
+<tr>
+<td>5 試跑</td>
+<td>只轉第一個檔案的前 5 分鐘</td>
+<td>畫面上印出帶時間的逐字稿</td>
+</tr>
+<tr>
+<td>6 整批轉錄</td>
+<td>處理資料夾內全部音檔</td>
+<td>每個音檔兩份 txt</td>
+</tr>
+</tbody></table>
+<p>後面的段落會用到前面定義的東西，所以順序不能跳。例如第 6 段呼叫第 4 段的 <code>transcribe</code>，而 <code>transcribe</code> 又用到第 3 段的 <code>asr</code>。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/10/10/Colab-Breeze-ASR-25/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2026/09/21/OKF-Open-Knowledge-Format/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1122,89 +1282,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://eva813.github.io/2025/10/04/Merge-Two-Sorted-Lists/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/eva-round.png">
-      <meta itemprop="name" content="Eva Chan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eva's Dev Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/04/Merge-Two-Sorted-Lists/" class="post-title-link" itemprop="url">刷題練習 - Merge-Two-Sorted-Lists</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-10-04 19:59:06 / Modified: 20:11:11" itemprop="dateCreated datePublished" datetime="2025-10-04T19:59:06+08:00">2025-10-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="題目描述"><a href="#題目描述" class="headerlink" title="題目描述"></a>題目描述</h2><p>You are given the heads of two sorted linked lists list1 and list2.</p>
-<p>Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.</p>
-<p>Return the head of the merged linked list.</p>
-<p>給定兩個已排序鏈結串列的頭節點 list1 和 list2。<br>將兩個串列合併為一個已排序的串列。該串列應透過拼接前兩個串列的節點來建立。<br>回傳合併後鏈結串列的頭節點。</p>
-<p>Example 1:<br>Input: list1 = [1,2,4], list2 = [1,3,4]<br>Output: [1,1,2,3,4,4]</p>
-<p>Example 2:<br>Input: list1 = [], list2 = []<br>Output: []</p>
-<p>Example 3:<br>Input: list1 = [], list2 = [0]<br>Output: [0]</p>
-<h2 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h2><p>我一開始想法，會需要 2 迴圈去比較，然後組出一個新的 list node，最後再將新的 list node 回傳。<br>但是這樣的話，時間複雜度會是 O(n^2)，因為每次都要從頭開始比較。<br>後來想說，因為兩個 list 都是已排序好的，所以可以用雙指標的方式，一次比較兩個 list 的頭節點，將較小的節點加入新的 list node，然後將該指標往後移動一位，這樣時間複雜度就會是 O(n)，因為每個節點只會被比較一次。</p>
-<h2 id="範例程式碼"><a href="#範例程式碼" class="headerlink" title="範例程式碼"></a>範例程式碼</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * function ListNode(val, next) &#123;</span></span><br><span class="line"><span class="comment"> *     this.val = (val===undefined ? 0 : val)</span></span><br><span class="line"><span class="comment"> *     this.next = (next===undefined ? null : next)</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">ListNode</span>&#125; <span class="variable">list1</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">ListNode</span>&#125; <span class="variable">list2</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">ListNode</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> mergeTwoLists = <span class="keyword">function</span>(<span class="params">list1, list2</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> head = <span class="literal">null</span></span><br><span class="line">        <span class="keyword">let</span> nowNode = <span class="literal">null</span> </span><br><span class="line">        <span class="keyword">let</span> list1pointer = list1;</span><br><span class="line">        <span class="keyword">let</span> list2pointer = list2;</span><br><span class="line">		<span class="comment">// 兩兩比較</span></span><br><span class="line">        <span class="keyword">if</span>(list1 === <span class="literal">null</span> &amp;&amp; list2 === <span class="literal">null</span>) <span class="keyword">return</span> head</span><br><span class="line">        <span class="keyword">if</span>(list1 === <span class="literal">null</span> &amp;&amp; list2 !== <span class="literal">null</span>) <span class="keyword">return</span> list2</span><br><span class="line">        <span class="keyword">if</span>(list1 !== <span class="literal">null</span> &amp;&amp; list2 === <span class="literal">null</span>) <span class="keyword">return</span> list1</span><br><span class="line">        </span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 決定 head</span></span><br><span class="line">        <span class="comment">// 因為當你選擇了 list1pointer 作為頭節點後，你應該：</span></span><br><span class="line">            <span class="comment">// 移動 list1pointer 指針：list1pointer = list1pointer.next</span></span><br><span class="line">            <span class="comment">// 設定 nowNode 為當前的尾節點：nowNode = head</span></span><br><span class="line">        <span class="keyword">if</span>(list1pointer.<span class="property">val</span> &lt;= list2pointer.<span class="property">val</span> )&#123;</span><br><span class="line">            head = list1pointer</span><br><span class="line">            list1pointer = list1pointer.<span class="property">next</span></span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">             head = list2pointer</span><br><span class="line">             list2pointer = list2pointer.<span class="property">next</span></span><br><span class="line">        &#125;</span><br><span class="line">        nowNode = head</span><br><span class="line"></span><br><span class="line">        <span class="comment">//進入迴圈檢查</span></span><br><span class="line">        <span class="keyword">while</span>(list1pointer !== <span class="literal">null</span> &amp;&amp; list2pointer !== <span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(list1pointer.<span class="property">val</span> &lt;= list2pointer.<span class="property">val</span>)&#123;</span><br><span class="line">                nowNode.<span class="property">next</span> =  list1pointer</span><br><span class="line">                list1pointer = list1pointer.<span class="property">next</span></span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                nowNode.<span class="property">next</span> =  list2pointer</span><br><span class="line">                <span class="comment">// 移動指針</span></span><br><span class="line">                list2pointer = list2pointer.<span class="property">next</span></span><br><span class="line">            &#125;</span><br><span class="line">            nowNode = nowNode.<span class="property">next</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 最後要再檢查。其中一不為 null </span></span><br><span class="line">        <span class="keyword">if</span>(list1pointer !== <span class="literal">null</span>)&#123;</span><br><span class="line">            nowNode.<span class="property">next</span> = list1pointer</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            nowNode.<span class="property">next</span> = list2pointer</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/10/04/Merge-Two-Sorted-Lists/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1276,7 +1353,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1288,7 +1365,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">88</span>
+        <span class="site-state-item-count">91</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
